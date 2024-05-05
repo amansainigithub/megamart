@@ -14,6 +14,7 @@ public class TestController {
 	@GetMapping("/all")
 	public String allAccess() {
 		return "Public Content.";
+
 	}
 	
 	@GetMapping("/user")
@@ -32,5 +33,11 @@ public class TestController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
 		return "Admin Board.";
+	}
+
+	@GetMapping("/seller")
+	@PreAuthorize("hasRole('SELLER')")
+	public String sellerAccess() {
+		return "Seller Board.";
 	}
 }

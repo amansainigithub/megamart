@@ -4,6 +4,7 @@ import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.payload.request.LoginRequest;
+import com.coder.springjwt.payload.request.Passkey;
 import com.coder.springjwt.payload.request.SignupRequest;
 import com.coder.springjwt.payload.response.JwtResponse;
 import com.coder.springjwt.payload.response.MessageResponse;
@@ -26,7 +27,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:8080","http://localhost:4200"}, maxAge = 3600,allowCredentials="true")
+@CrossOrigin(
+		origins = {"http://localhost:8080","http://localhost:4200"},
+		maxAge = 3600,allowCredentials="true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -107,10 +110,10 @@ public class AuthController {
 					roles.add(modRole);
 
 					break;
-				case "sch":
-						Role schRole = roleRepository.findByName(ERole.ROLE_SACHT)
+				case "seller":
+						Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
 								.orElseThrow(() -> new RuntimeException("Error: Role is not 4 found."));
-						roles.add(schRole);
+						roles.add(sellerRole);
 
 						break;
 				default:
@@ -126,4 +129,7 @@ public class AuthController {
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
+
+
+
 }
