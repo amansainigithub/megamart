@@ -89,12 +89,13 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 						auth.requestMatchers("/api/auth/**").permitAll()
 								.requestMatchers("/api/test/**").permitAll()
 								.requestMatchers("/shopping/api/admin/auth/**").permitAll()
+								.requestMatchers("/shopping/api/seller/v1/**").permitAll()
 //								.requestMatchers("/med-admin/api/v1/**").permitAll()
 								.requestMatchers(
 										"/v3/api-docs/**",
 										"/swagger-ui/**",
 										"/api/auth/**",
-										"/api/test/**").permitAll()
+										"/api/test/**`").permitAll()
 								.anyRequest().authenticated()
 				);
 

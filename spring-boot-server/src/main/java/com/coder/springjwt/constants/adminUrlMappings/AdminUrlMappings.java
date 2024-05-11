@@ -1,6 +1,6 @@
 package com.coder.springjwt.constants.adminUrlMappings;
 
-public class UrlMappings {
+public class AdminUrlMappings {
 
 
     //ADMIN MAPPING START

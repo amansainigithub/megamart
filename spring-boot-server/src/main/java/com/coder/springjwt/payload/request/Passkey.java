@@ -10,6 +10,7 @@ public class Passkey {
     @NotBlank
     private String password;
 
+    @NotBlank(message = "PassKey is Empty")
     private String passKey;
 
     public String getUsername() {

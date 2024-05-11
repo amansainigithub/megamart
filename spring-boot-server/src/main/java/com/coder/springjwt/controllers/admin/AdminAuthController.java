@@ -1,6 +1,6 @@
 package com.coder.springjwt.controllers.admin;
 
-import com.coder.springjwt.constants.adminUrlMappings.UrlMappings;
+import com.coder.springjwt.constants.adminUrlMappings.AdminUrlMappings;
 import com.coder.springjwt.dto.emailDto.EmailDetailsDto;
 import com.coder.springjwt.helpers.admin.RandomNumberGenerator;
 import com.coder.springjwt.models.User;
@@ -23,34 +23,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping(UrlMappings.AUTH_BASE_URL)
+@RequestMapping(AdminUrlMappings.AUTH_BASE_URL)
 public class AdminAuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private  JwtUtils jwtUtils;
 
     @Autowired
     private SimpleEmailService simpleEmailService;
 
 
-    @PostMapping(UrlMappings.ADMIN_SIGN_IN)
+    @PostMapping(AdminUrlMappings.ADMIN_SIGN_IN)
     public ResponseEntity<?> adminAuthenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -84,13 +83,11 @@ public class AdminAuthController {
         emailDetailsDto.setMsgBody("Hi Your Pass-Key : " + passKey);
         simpleEmailService.sendSimpleMail(emailDetailsDto);
 
+
         System.out.println("PASS KEY :: " + passKey );
         User user =  this.userRepository.findByUsername(userDetails.getUsername()).get();
-        System.out.println("Fetch User Success" + user);
         user.setPassKey(passKey);
-        System.out.println("Pass Key set Success");
         userRepository.save(user);
-        System.out.println("Update user Success");
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -100,7 +97,7 @@ public class AdminAuthController {
     }
 
 
-    @PostMapping(UrlMappings.ADMIN_PASS_KEY)
+    @PostMapping(AdminUrlMappings.ADMIN_PASS_KEY)
     public ResponseEntity<?> passKey(@Validated @RequestBody Passkey passkey) {
 
         //check Passkey is Empty or Not
