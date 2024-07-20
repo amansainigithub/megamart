@@ -23,6 +23,11 @@ public class User {
 	private String username;
 
 	@NotBlank
+	private String firstName;
+
+	private String lastName;
+
+	@NotBlank
 	@Size(max = 50)
 	@Email
 	private String email;
@@ -30,6 +35,15 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
+
+	@Size(max = 10)
+	private String mobile;
+
+	@Column(name = "isMobileVerify", columnDefinition = "varchar(255) default 'N'")
+	private String isMobileVerify;
+
+	@Column(name = "isEmailVerify", columnDefinition = "varchar(255) default 'N'")
+	private String isEmailVerify;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -40,6 +54,12 @@ public class User {
 	@Size(max = 200)
 	private String passKey;
 
+	@Size(max = 200)
+	private String custUsername;
+
+	@Size(max = 20)
+	private String mobileOtp;
+
 	public User() {
 	}
 
@@ -47,6 +67,13 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+	}
+
+	public User(String username, String email, String password,String custUsername) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.custUsername = custUsername;
 	}
 
 	public Long getId() {
@@ -95,5 +122,61 @@ public class User {
 
 	public void setPassKey(String passKey) {
 		this.passKey = passKey;
+	}
+
+	public String getCustUsername() {
+		return custUsername;
+	}
+
+	public void setCustUsername(String custUsername) {
+		this.custUsername = custUsername;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getIsMobileVerify() {
+		return isMobileVerify;
+	}
+
+	public void setIsMobileVerify(String isMobileVerify) {
+		this.isMobileVerify = isMobileVerify;
+	}
+
+	public String getIsEmailVerify() {
+		return isEmailVerify;
+	}
+
+	public void setIsEmailVerify(String isEmailVerify) {
+		this.isEmailVerify = isEmailVerify;
+	}
+
+	public String getMobileOtp() {
+		return mobileOtp;
+	}
+
+	public void setMobileOtp(String mobileOtp) {
+		this.mobileOtp = mobileOtp;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

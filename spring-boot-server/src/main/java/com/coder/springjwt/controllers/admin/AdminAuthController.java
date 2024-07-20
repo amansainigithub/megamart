@@ -1,7 +1,7 @@
 package com.coder.springjwt.controllers.admin;
 
 import com.coder.springjwt.constants.adminUrlMappings.AdminUrlMappings;
-import com.coder.springjwt.dto.emailDto.EmailDetailsDto;
+import com.coder.springjwt.payload.emailPayloads.EmailDetailsPayload;
 import com.coder.springjwt.helpers.admin.RandomNumberGenerator;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.payload.request.LoginRequest;
@@ -77,11 +77,11 @@ public class AdminAuthController {
             throw new RuntimeException("PassKey Error " + AdminAuthController.class.getName());
         }
         //send PassKey To E-MAIL
-        EmailDetailsDto emailDetailsDto = new EmailDetailsDto();
-        emailDetailsDto.setRecipient(userDetails.getEmail());
-        emailDetailsDto.setSubject("Pass-Key");
-        emailDetailsDto.setMsgBody("Hi Your Pass-Key : " + passKey);
-        simpleEmailService.sendSimpleMail(emailDetailsDto);
+        EmailDetailsPayload emailDetailsPayload = new EmailDetailsPayload();
+        emailDetailsPayload.setRecipient(userDetails.getEmail());
+        emailDetailsPayload.setSubject("Pass-Key");
+        emailDetailsPayload.setMsgBody("Hi Your Pass-Key : " + passKey);
+        simpleEmailService.sendSimpleMail(emailDetailsPayload);
 
 
         System.out.println("PASS KEY :: " + passKey );

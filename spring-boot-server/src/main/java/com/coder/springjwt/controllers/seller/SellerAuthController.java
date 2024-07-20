@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller;
 
 import com.coder.springjwt.constants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.payload.response.JwtResponse;
-import com.coder.springjwt.payload.sellerPayload.SellerLoginRequest;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
@@ -42,9 +42,8 @@ public class SellerAuthController {
     @Autowired
     private SimpleEmailService simpleEmailService;
 
-
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
-    public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody SellerLoginRequest sellerLoginRequest) {
+    public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody SellerLoginPayload sellerLoginRequest) {
 
         try {  Thread.sleep(2000);}
         catch (Exception e){ }

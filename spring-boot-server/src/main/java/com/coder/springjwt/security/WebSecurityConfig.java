@@ -90,7 +90,7 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 								.requestMatchers("/api/test/**").permitAll()
 								.requestMatchers("/shopping/api/admin/auth/**").permitAll()
 								.requestMatchers("/shopping/api/seller/v1/**").permitAll()
-//								.requestMatchers("/med-admin/api/v1/**").permitAll()
+								.requestMatchers("/customer/api/v1/**").permitAll()
 								.requestMatchers(
 										"/v3/api-docs/**",
 										"/swagger-ui/**",

@@ -1,8 +1,8 @@
-package com.coder.springjwt.payload.sellerPayload;
+package com.coder.springjwt.payload.sellerPayloads.sellerPayload;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class SellerLoginRequest {
+public class SellerLoginPayload {
 
     @NotBlank
     private String username;

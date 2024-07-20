@@ -1,4 +1,4 @@
-package com.coder.springjwt.dto.emailDto;
+package com.coder.springjwt.payload.emailPayloads;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class EmailDetailsDto {
+public class EmailDetailsPayload {
     private String recipient;
     private String msgBody;
     private String subject;
