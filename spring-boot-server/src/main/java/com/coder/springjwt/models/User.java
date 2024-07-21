@@ -22,10 +22,7 @@ public class User {
 	@Size(max = 20)
 	private String username;
 
-	@NotBlank
-	private String firstName;
 
-	private String lastName;
 
 	@NotBlank
 	@Size(max = 50)
@@ -59,6 +56,9 @@ public class User {
 
 	@Size(max = 20)
 	private String mobileOtp;
+
+	@Column(name = "registrationCompleted", columnDefinition = "varchar(255) default 'N'")
+	private String registrationCompleted ;
 
 	public User() {
 	}
@@ -164,19 +164,30 @@ public class User {
 		this.mobileOtp = mobileOtp;
 	}
 
-	public String getFirstName() {
-		return firstName;
+
+	public String getRegistrationCompleted() {
+		return registrationCompleted;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setRegistrationCompleted(String registrationCompleted) {
+		this.registrationCompleted = registrationCompleted;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", mobile='" + mobile + '\'' +
+				", isMobileVerify='" + isMobileVerify + '\'' +
+				", isEmailVerify='" + isEmailVerify + '\'' +
+				", roles=" + roles +
+				", passKey='" + passKey + '\'' +
+				", custUsername='" + custUsername + '\'' +
+				", mobileOtp='" + mobileOtp + '\'' +
+				", registrationCompleted='" + registrationCompleted + '\'' +
+				'}';
 	}
 }

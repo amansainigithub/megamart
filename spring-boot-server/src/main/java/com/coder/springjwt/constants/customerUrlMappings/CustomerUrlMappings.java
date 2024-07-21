@@ -14,12 +14,7 @@ public class CustomerUrlMappings {
 
     public static final String CUSTOMER_SIGN_UP= "/customerSignUp";
 
-    public static final String VERIFY_MOBILE_OTP = "/verifyMobileOtp";
-
-
-    public static final String SAVE_FRESH_USER = "/saveFreshUser";
-
-    public static final String GET_FRESH_USER = "/getFreshUser";
+    public static final String CUSTOMER_SIGN_UP_COMPLETED= "/customerSignUpCompleted";
 
     public static final String VERIFY_FRESH_USER_MOBILE_OTP = "/verifyFreshUserMobileOtp";
 
