@@ -1,4 +1,4 @@
-package com.coder.springjwt.constants.adminUrlMappings;
+package com.coder.springjwt.constants.adminConstants.adminUrlMappings;
 
 public class AdminUrlMappings {
 
@@ -14,6 +14,8 @@ public class AdminUrlMappings {
     //SignIn
     public static final String ADMIN_SIGN_IN = "/adminSignin";
     public static final String  ADMIN_PASS_KEY= "/adminPassKey";
+
+    public static final String  ADMIN_SIGN_UP= "/adminSignUp";
 
     //ADMIN MAPPING ENDING
 

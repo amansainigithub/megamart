@@ -1,12 +1,14 @@
-package com.coder.springjwt.helpers.OTP;
+package com.coder.springjwt.helpers.generateRandomNumbers;
 
-public class MobileOTP {
+public class GenerateMobileOTP {
 
     public static String generateOtp(int n)
     {
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                +"0123456789"
-                +"abcdefghijklmnopqrstuvxyz"; ;
+//        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+//                +"0123456789"
+//                +"abcdefghijklmnopqrstuvxyz"; ;
+
+        String AlphaNumericString = "0123456789"; ;
 
         StringBuilder sb = new StringBuilder(n);
 

@@ -1,4 +1,4 @@
-package com.coder.springjwt.helpers;
+package com.coder.springjwt.helpers.ValidateMobNumber;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

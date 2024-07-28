@@ -57,6 +57,10 @@ public class User {
 	@Size(max = 20)
 	private String mobileOtp;
 
+	@Size(max = 20)
+	@NotBlank
+	private String projectRole;
+
 	@Column(name = "registrationCompleted", columnDefinition = "varchar(255) default 'N'")
 	private String registrationCompleted ;
 
@@ -189,5 +193,13 @@ public class User {
 				", mobileOtp='" + mobileOtp + '\'' +
 				", registrationCompleted='" + registrationCompleted + '\'' +
 				'}';
+	}
+
+	public String getProjectRole() {
+		return projectRole;
+	}
+
+	public void setProjectRole(String projectRole) {
+		this.projectRole = projectRole;
 	}
 }

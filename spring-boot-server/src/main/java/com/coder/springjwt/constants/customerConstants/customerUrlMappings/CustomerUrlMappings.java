@@ -1,4 +1,4 @@
-package com.coder.springjwt.constants.customerUrlMappings;
+package com.coder.springjwt.constants.customerConstants.customerUrlMappings;
 
 public class CustomerUrlMappings {
 

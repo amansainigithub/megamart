@@ -1,6 +1,6 @@
-package com.coder.springjwt.controllers.seller;
+package com.coder.springjwt.controllers.seller.sellerAuthController;
 
-import com.coder.springjwt.constants.sellerUrlMappings.SellerUrlMappings;
+import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.payload.response.JwtResponse;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import com.coder.springjwt.repository.RoleRepository;
@@ -44,9 +44,6 @@ public class SellerAuthController {
 
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody SellerLoginPayload sellerLoginRequest) {
-
-        try {  Thread.sleep(2000);}
-        catch (Exception e){ }
 
         if(sellerLoginRequest.getUserrole().equals("ROLE_SELLER"))
         {

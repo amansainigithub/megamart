@@ -1,13 +1,13 @@
 package com.coder.springjwt.helpers.admin;
 
-public class RandomNumberGenerator {
-
+public class GeneratePassKeyAdmin {
 
     public static String generatePassKey(int n)
     {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                    +"0123456789"
-                                    +"abcdefghijklmnopqrstuvxyz"; ;
+                +"0123456789"
+                +"abcdefghijklmnopqrstuvxyz"; ;
+
 
         StringBuilder sb = new StringBuilder(n);
 

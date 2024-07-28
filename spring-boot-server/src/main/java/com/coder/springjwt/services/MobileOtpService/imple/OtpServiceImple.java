@@ -1,6 +1,5 @@
 package com.coder.springjwt.services.MobileOtpService.imple;
 
-import com.coder.springjwt.controllers.customer.CustomerAuthController;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import org.json.JSONArray;
 import org.json.JSONObject;

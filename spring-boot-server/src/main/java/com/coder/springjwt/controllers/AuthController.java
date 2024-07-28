@@ -4,16 +4,16 @@ import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.payload.request.LoginRequest;
-import com.coder.springjwt.payload.request.Passkey;
 import com.coder.springjwt.payload.request.SignupRequest;
 import com.coder.springjwt.payload.response.JwtResponse;
-import com.coder.springjwt.payload.response.MessageResponse;
+import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,13 +74,13 @@ public class AuthController {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+					.body(new MessageResponse("Error: Username is already taken!", HttpStatus.BAD_GATEWAY));
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+					.body(new MessageResponse("Error: Email is already in use!",HttpStatus.BAD_REQUEST));
 		}
 
 		// Create new user's account
@@ -127,7 +127,7 @@ public class AuthController {
 		user.setRoles(roles);
 		userRepository.save(user);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!",HttpStatus.CREATED));
 	}
 
 

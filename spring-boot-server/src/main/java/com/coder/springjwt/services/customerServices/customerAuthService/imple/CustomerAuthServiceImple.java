@@ -1,9 +1,10 @@
-package com.coder.springjwt.controllers.customer;
+package com.coder.springjwt.services.customerServices.customerAuthService.imple;
 
-import com.coder.springjwt.constants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
-import com.coder.springjwt.helpers.OTP.MobileOTP;
-import com.coder.springjwt.helpers.ValidateMobileNumber;
+import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
+import com.coder.springjwt.helpers.generateRandomNumbers.GenerateMobileOTP;
+import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
@@ -12,34 +13,34 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpP
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
 import com.coder.springjwt.payload.response.JwtResponse;
-import com.coder.springjwt.payload.response.MessageResponse;
+import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
+import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(CustomerUrlMappings.CUSTOMER_BASE_URL)
-public class CustomerAuthController {
+@Component
+public class CustomerAuthServiceImple implements CustomerAuthService {
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -64,12 +65,9 @@ public class CustomerAuthController {
 
     Logger logger  = LoggerFactory.getLogger(CustomerAuthController.class);
 
-    @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_IN)
-    public ResponseEntity<?> customerAuthenticateUser(@Validated @RequestBody CustomerLoginPayload customerLoginPayload) {
 
-//        try {  Thread.sleep(2000);}
-//        catch (Exception e){ }
-
+    @Override
+    public ResponseEntity<?> customerAuthenticateUser(CustomerLoginPayload customerLoginPayload) {
         if(customerLoginPayload.getUserrole().equals("ROLE_CUSTOMER"))
         {
             Authentication authentication = authenticationManager.authenticate(
@@ -93,17 +91,16 @@ public class CustomerAuthController {
                 }
             }
         } else{
-            throw new RuntimeException("Error: Unauthorized User");
+            logger.error("CustomerAuthService :: " + "Unauthorized User ==> " + customerLoginPayload.getUsername() );
+            throw new InvalidUsernameAndPasswordException("Invalid UserName and Password!");
         }
         return ResponseEntity.badRequest().body("Error: Unauthorized");
-
     }
 
-
-    @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_UP)
-    public ResponseEntity<?> CustomerSignUp(@Valid @RequestBody FreshUserPayload freshUserPayload) {
-
+    @Override
+    public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload) {
         //Validate Mobile Number
+        //FreshUserPayload Parameter Role Is Not Mandatory------
         if(!ValidateMobileNumber.isValid(freshUserPayload.getUsername())) {
             throw new InvalidMobileNumberException("Invalid Mobile Number");
         }
@@ -115,11 +112,11 @@ public class CustomerAuthController {
             {
                 return ResponseEntity
                         .ok()
-                        .body(new MessageResponse("FLY_LOGIN_PAGE"));
+                        .body(new MessageResponse("FLY_LOGIN_PAGE",HttpStatus.OK));
             }else{
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Username is already taken!"));
+                        .body(new MessageResponse("Error: Username is already taken!",HttpStatus.BAD_REQUEST));
             }
 
         }else {
@@ -129,58 +126,81 @@ public class CustomerAuthController {
                     encoder.encode("password"),
                     freshUserPayload.getUsername());
 
+            //Set Project Role
+            user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
+
+            //User Set Username or mobile
             user.setMobile(freshUserPayload.getUsername());
+
             //Set Mobile OTP Verified
             user.setIsMobileVerify("N");
             //Set Reg Completed
             user.setRegistrationCompleted("N");
 
             //Mobile OTP Generator [Mobile]
-            String otp = MobileOTP.generateOtp(6);
+            String otp = GenerateMobileOTP.generateOtp(6);
 
-            System.out.println("OTP :: " + otp);
             logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
-            mobileOtpService.sendSMS(otp,freshUserPayload.getUsername());
+
+            //mobileOtpService.sendSMS(otp,freshUserPayload.getUsername());
             user.setMobileOtp(otp);
 
             //Set<String> strRoles = customerSignUpRequest.getRole();
             Set<Role> roles = new HashSet<>();
             Role customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not 5 found."));
+                    .orElseThrow(() -> new RuntimeException("Error: ROLE_CUSTOMER NOT FOUND."));
             roles.add(customerRole);
 
             user.setRoles(roles);
 
             userRepository.save(user);
-            return ResponseEntity.ok(new MessageResponse("Fresh User Created Success!!!"));
+            logger.info("FRESH USER CREATED SUCCESSFULLY");
+            return ResponseEntity.ok(new MessageResponse("FRESH USER CREATED SUCCESSFULLY",HttpStatus.OK));
         }
     }
 
-    @PostMapping(CustomerUrlMappings.VERIFY_FRESH_USER_MOBILE_OTP)
-    public ResponseEntity<?> verifyFreshUserMobileOtp(@Validated @RequestBody VerifyMobileOtpPayload verifyMobileOtpPayload) {
-        return this.verifyMobileOtp(verifyMobileOtpPayload);
-    }
+    @Override
+    public ResponseEntity<?> verifyFreshUserMobileOtp(VerifyMobileOtpPayload verifyMobileOtpPayload) {
+        MessageResponse response = new MessageResponse();
 
-
-
-    public ResponseEntity<?> verifyMobileOtp(VerifyMobileOtpPayload verifyMobileOtpPayload) {
         User user =  this.userRepository.findByUsername
-                (verifyMobileOtpPayload.getUsername()).get();
+                (verifyMobileOtpPayload.getUsername()).orElseThrow(()-> new UsernameNotFoundException("UserName Not Found"));
+
+        if(user != null)
+        {
+            if(user.getRegistrationCompleted().equals("Y") && user.getIsMobileVerify().equals("Y")){
+            response.setMessage("You are Already Authenticated Please Login ");
+            response.setStatus(HttpStatus.OK);
+            return ResponseEntity.ok(response);
+            }
+        }
+
+        if(user == null){
+            response.setMessage("Invaid User");
+            return ResponseEntity.badRequest().body(response);
+        }
         if(verifyMobileOtpPayload.getMobileOtp().equals(user.getMobileOtp()))
         {
             user.setIsMobileVerify("Y");
             this.userRepository.save(user);
-            return ResponseEntity.ok(user);
+
+            //Set Response Message
+            response.setMessage("Verify OTP Success");
+            response.setStatus(HttpStatus.OK);
+            logger.info("OTP Verified Success");
+            return ResponseEntity.ok(response);
         }else{
-            return ResponseEntity.badRequest().build();
+            //Set Response Message
+
+            response.setMessage("OTP Not Verified ");
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            logger.error("OTP not Verified" , response);
+            return ResponseEntity.badRequest().body(response);
         }
-
     }
-
-    @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_UP_COMPLETED)
-    public ResponseEntity<?> customerSignUpCompleted(@Valid @RequestBody FreshSignUpPayload freshSignUpPayload) {
-
-        User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
+    @Override
+    public ResponseEntity<?> customerSignUpCompleted(FreshSignUpPayload freshSignUpPayload) {
+                User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
                 orElseThrow(()-> new RuntimeException("User Not Fount"));
 
         if ( (user.getRegistrationCompleted().equals("N") ||  user.getRegistrationCompleted().isEmpty()
@@ -189,18 +209,18 @@ public class CustomerAuthController {
 
             user.setRegistrationCompleted("Y");
             user.setPassword(encoder.encode(freshSignUpPayload.getPassword()));
-            userRepository.save(user);
-            System.out.println("Registration Completed Fully");
 
-            return ResponseEntity.ok(new MessageResponse("Registration Completed Fully"));
+            //Set Project Role
+            user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
+
+            userRepository.save(user);
+            logger.info("Registration Completed Fully");
+
+            return ResponseEntity.ok(new MessageResponse("Registration Completed Fully",HttpStatus.OK));
         }else{
-            return ResponseEntity.badRequest().body(new MessageResponse("Something Went Wrong"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Something Went Wrong",HttpStatus.BAD_REQUEST));
         }
     }
-
-
-
-
 
 
 }
