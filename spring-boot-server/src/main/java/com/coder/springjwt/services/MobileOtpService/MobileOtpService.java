@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 @Component
 public interface MobileOtpService {
 
-    void sendSMS(String otp , String number);
+    void sendSMS(String otp , String number , String messageContent);
 }

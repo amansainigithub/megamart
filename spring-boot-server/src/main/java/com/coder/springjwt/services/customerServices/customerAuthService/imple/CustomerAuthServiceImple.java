@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.customerServices.customerAuthService.imple;
 
+import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
@@ -57,14 +58,9 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private SimpleEmailService simpleEmailService;
-
-    @Autowired
     private MobileOtpService mobileOtpService;
 
-
     Logger logger  = LoggerFactory.getLogger(CustomerAuthController.class);
-
 
     @Override
     public ResponseEntity<?> customerAuthenticateUser(CustomerLoginPayload customerLoginPayload) {
@@ -92,7 +88,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             }
         } else{
             logger.error("CustomerAuthService :: " + "Unauthorized User ==> " + customerLoginPayload.getUsername() );
-            throw new InvalidUsernameAndPasswordException("Invalid UserName and Password!");
+            throw new InvalidUsernameAndPasswordException(CustMessageResponse.INVALID_USERNAME_AND_PASSWORD);
         }
         return ResponseEntity.badRequest().body("Error: Unauthorized");
     }
@@ -102,7 +98,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         //Validate Mobile Number
         //FreshUserPayload Parameter Role Is Not Mandatory------
         if(!ValidateMobileNumber.isValid(freshUserPayload.getUsername())) {
-            throw new InvalidMobileNumberException("Invalid Mobile Number");
+            throw new InvalidMobileNumberException(CustMessageResponse.INVALID_MOBILE_NUMBER);
         }
 
         if (userRepository.existsByUsername(freshUserPayload.getUsername())) {
@@ -112,11 +108,11 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             {
                 return ResponseEntity
                         .ok()
-                        .body(new MessageResponse("FLY_LOGIN_PAGE",HttpStatus.OK));
+                        .body(new MessageResponse(CustMessageResponse.FLY_LOGIN_PAGE,HttpStatus.OK));
             }else{
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Username is already taken!",HttpStatus.BAD_REQUEST));
+                        .body(new MessageResponse(CustMessageResponse.USERNAME_ALREADY_TAKEN,HttpStatus.BAD_REQUEST));
             }
 
         }else {
@@ -142,20 +138,22 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
             logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
 
-            //mobileOtpService.sendSMS(otp,freshUserPayload.getUsername());
+            //SEND OTP TO MOBILE
+            mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
+
             user.setMobileOtp(otp);
 
             //Set<String> strRoles = customerSignUpRequest.getRole();
             Set<Role> roles = new HashSet<>();
             Role customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Error: ROLE_CUSTOMER NOT FOUND."));
+                    .orElseThrow(() -> new RuntimeException(CustMessageResponse.ROLE_CUSTOMER_NOT_FOUND));
             roles.add(customerRole);
 
             user.setRoles(roles);
 
             userRepository.save(user);
             logger.info("FRESH USER CREATED SUCCESSFULLY");
-            return ResponseEntity.ok(new MessageResponse("FRESH USER CREATED SUCCESSFULLY",HttpStatus.OK));
+            return ResponseEntity.ok(new MessageResponse(CustMessageResponse.FRESH_USER_CREATED_SUCCESSFULLY,HttpStatus.OK));
         }
     }
 
@@ -164,12 +162,12 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         MessageResponse response = new MessageResponse();
 
         User user =  this.userRepository.findByUsername
-                (verifyMobileOtpPayload.getUsername()).orElseThrow(()-> new UsernameNotFoundException("UserName Not Found"));
+                (verifyMobileOtpPayload.getUsername()).orElseThrow(()-> new UsernameNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
         if(user != null)
         {
             if(user.getRegistrationCompleted().equals("Y") && user.getIsMobileVerify().equals("Y")){
-            response.setMessage("You are Already Authenticated Please Login ");
+            response.setMessage(CustMessageResponse.ALREADY_AUTHENTICATED);
             response.setStatus(HttpStatus.OK);
             return ResponseEntity.ok(response);
             }
@@ -191,7 +189,6 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             return ResponseEntity.ok(response);
         }else{
             //Set Response Message
-
             response.setMessage("OTP Not Verified ");
             response.setStatus(HttpStatus.BAD_REQUEST);
             logger.error("OTP not Verified" , response);
@@ -203,7 +200,8 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                 User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
                 orElseThrow(()-> new RuntimeException("User Not Fount"));
 
-        if ( (user.getRegistrationCompleted().equals("N") ||  user.getRegistrationCompleted().isEmpty()
+        if ( (user.getRegistrationCompleted().equals("N")
+                ||  user.getRegistrationCompleted().isEmpty()
                 || user.getRegistrationCompleted() == null)
                 && user.getIsMobileVerify().equals("Y")) {
 
@@ -216,10 +214,17 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             userRepository.save(user);
             logger.info("Registration Completed Fully");
 
-            return ResponseEntity.ok(new MessageResponse("Registration Completed Fully",HttpStatus.OK));
+            return ResponseEntity.ok(new MessageResponse(CustMessageResponse.REGISTER_COMPLETED_FULLY,HttpStatus.OK));
         }else{
-            return ResponseEntity.badRequest().body(new MessageResponse("Something Went Wrong",HttpStatus.BAD_REQUEST));
+            return ResponseEntity.badRequest().body(new MessageResponse(CustMessageResponse.SOMETHING_WENT_WRONG,HttpStatus.BAD_REQUEST));
         }
+    }
+
+
+    public String getMessageContent(String OTP)
+    {
+        return "Your OTP for ECOMM login is " + OTP + " and is valid for 30 mins. " +
+            "Please DO NOT share this OTP with anyone to keep your account safe ";
     }
 
 

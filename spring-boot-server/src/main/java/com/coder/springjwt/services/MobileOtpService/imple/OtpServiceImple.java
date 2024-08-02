@@ -16,21 +16,16 @@ import java.net.URLEncoder;
 
 @Component
 public class OtpServiceImple implements MobileOtpService {
-
     Logger logger  = LoggerFactory.getLogger(OtpServiceImple.class);
-
     private static String API_KEY = "a4TmdJ0BDoIUu7e5VkzNRiZYbs3rQW928lcyM6vfhg1jwpOCHGvsS6tPlA04H15bIrjpKF8gqdQ2uc7J";
     private static String LANGUAGE = "english";
     private static String ROUTE = "q";
 
-    public  void sendSMS(String otp , String number)
+    public  void sendSMS(String otp , String number , String messageContent)
     {
         logger.info("Starting Messaging Service");
 
-        String messageFormat = "Your OTP for ECOMM login is "+otp+" and is valid for 30 mins. Please DO NOT share this OTP with anyone to keep your account safe. oBcOM6bXKNc ";
-
-
-        String encodeMessage = OtpServiceImple.encodeMessage(messageFormat);
+        String encodeMessage = OtpServiceImple.encodeMessage(messageContent);
             String smsUrl = "https://www.fast2sms.com/dev/bulkV2?authorization="+API_KEY+"&message="+encodeMessage+"&language="+LANGUAGE+"&route="+ROUTE+"&numbers="+number+"";
         try {
             URL url = new URL(smsUrl);
@@ -63,7 +58,7 @@ public class OtpServiceImple implements MobileOtpService {
             logger.info("OTP send Successfully");
 
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Message Not Sent ! Error in FastSMS API " + this.getClass().getName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
