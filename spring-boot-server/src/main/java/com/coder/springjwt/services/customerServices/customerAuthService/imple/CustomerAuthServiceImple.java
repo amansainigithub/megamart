@@ -21,7 +21,6 @@ import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
-import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +121,19 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                     encoder.encode("password"),
                     freshUserPayload.getUsername());
 
+            //Mobile OTP Generator [Mobile]
+            String otp = GenerateMobileOTP.generateOtp(6);
+            logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
+
+            //SEND OTP TO MOBILE
+           try {
+               mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
+           }
+           catch (Exception e)
+           {
+               e.printStackTrace();
+           }
+
             //Set Project Role
             user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
 
@@ -132,14 +144,6 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             user.setIsMobileVerify("N");
             //Set Reg Completed
             user.setRegistrationCompleted("N");
-
-            //Mobile OTP Generator [Mobile]
-            String otp = GenerateMobileOTP.generateOtp(6);
-
-            logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
-
-            //SEND OTP TO MOBILE
-            mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
 
             user.setMobileOtp(otp);
 
