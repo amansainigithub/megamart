@@ -1,18 +1,24 @@
 package com.coder.springjwt.controllers.customer.customerAuthController;
 
 import com.coder.springjwt.constants.customerConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.payload.customerPayloads.customerPayload.CustForgotPasswordPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLoginPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
 import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
+import com.coder.springjwt.util.MessageResponse;
+import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.CUSTOMER_BASE_URL)
@@ -44,5 +50,19 @@ public class CustomerAuthController {
 
         return this.customerAuthService.customerSignUpCompleted(freshSignUpPayload);
     }
+
+    @PostMapping(CustomerUrlMappings.CUSTOMER_FORGOT_PASSWORD)
+    public ResponseEntity<?> customerForgotPassword(@Valid @RequestBody CustForgotPasswordPayload custForgotPasswordPayload) {
+
+        return this.customerAuthService.customerForgotPassword(custForgotPasswordPayload);
+    }
+
+    @PostMapping(CustomerUrlMappings.CUSTOMER_FORGOT_PASSWORD_FINAL)
+    public ResponseEntity<?> customerForgotPasswordFinal(@Valid @RequestBody CustForgotPasswordPayload custForgotPasswordPayload) {
+        return this.customerAuthService.customerForgotPasswordFinal(custForgotPasswordPayload);
+    }
+
+
+
 
 }

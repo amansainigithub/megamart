@@ -4,11 +4,14 @@ import com.coder.springjwt.constants.customerConstants.messageConstants.test.Cus
 import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
-import com.coder.springjwt.helpers.generateRandomNumbers.GenerateMobileOTP;
+import com.coder.springjwt.helpers.generateDateandTime.GenerateDateAndTime;
+import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
+import com.coder.springjwt.helpers.passwordValidation.PasswordValidator;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
+import com.coder.springjwt.payload.customerPayloads.customerPayload.CustForgotPasswordPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLoginPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
@@ -21,6 +24,7 @@ import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
+import com.coder.springjwt.util.ResponseGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +126,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                     freshUserPayload.getUsername());
 
             //Mobile OTP Generator [Mobile]
-            String otp = GenerateMobileOTP.generateOtp(6);
+            String otp = GenerateOTP.generateOtp(6);
             logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
 
             //SEND OTP TO MOBILE
@@ -225,10 +229,136 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     }
 
 
+    @Override
+    public ResponseEntity<?> customerForgotPassword(CustForgotPasswordPayload custForgotPasswordPayload) {
+        MessageResponse response = new MessageResponse();
+
+        try {
+           User user =  this.userRepository.findByUsernameAndRegistrationCompleted(custForgotPasswordPayload.getUsername() , "Y")
+                    .orElseThrow( ()->  new UsernameNotFoundException("Username not Found"));
+
+          if(!custForgotPasswordPayload.getPassword().equals(custForgotPasswordPayload.getConformPassword()))
+          {
+              logger.error("Password and conformPassword did not matched!!");
+
+              response.setMessage("Password and conformPassword did not matched!!");
+              response.setStatus(HttpStatus.BAD_REQUEST);
+          }
+
+          if(custForgotPasswordPayload.getPassword().equals(custForgotPasswordPayload.getConformPassword()))
+          {
+                logger.info("Password matched success");
+                boolean password =   PasswordValidator.validatePassword(custForgotPasswordPayload.getPassword());
+                boolean conformPassword =   PasswordValidator.validatePassword(custForgotPasswordPayload.getConformPassword());
+
+              logger.info("REGEX-Password :: " + password );
+              logger.info("REGEX-Conform-Password :: " + conformPassword );
+
+              if(user != null && password == Boolean.TRUE && conformPassword == Boolean.TRUE  ){
+                logger.info("Password REGEX matched success");
+
+                  //Mobile OTP Generator [Mobile]
+                  String otp = GenerateOTP.generateOtp(6);
+
+                  logger.info("FORGOT PASSWORD OTP SUCCESSFULLY GENERATED :: " + otp);
+
+                  //SEND OTP TO MOBILE
+                  try {
+                      //Username == MobileNumber
+                      mobileOtpService.sendSMS(otp, custForgotPasswordPayload.getUsername(), this.forgotPasswordOtpContent(otp));
+                  }
+                  catch (Exception e)
+                  {
+                      response.setMessage("Error in Third Party Api's");
+                      e.printStackTrace();
+                  }
+                  //Forgot Password Otp set to user Object
+                  user.setForgotPasswordOtp(otp);
+
+                  this.userRepository.save(user);
+
+                  response.setMessage("VALID_OTP-FORM-OPEN");
+                  response.setStatus(HttpStatus.OK);
+              }else{
+                response.setMessage("Error :: Password Regex Problem " );
+                response.setStatus(HttpStatus.BAD_REQUEST);
+              }
+          }else{
+              response.setMessage("Password and conformPassword did not matched!!");
+              response.setStatus(HttpStatus.BAD_REQUEST);
+          }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    public ResponseEntity<?> customerForgotPasswordFinal(CustForgotPasswordPayload custForgotPasswordPayload) {
+        MessageResponse response = new MessageResponse();
+        try {
+            System.out.println(custForgotPasswordPayload.toString());
+            User user =  this.userRepository.findByUsernameAndRegistrationCompleted(custForgotPasswordPayload.getUsername() , "Y")
+                    .orElseThrow( ()->  new UsernameNotFoundException("Username not Found"));
+
+            if(custForgotPasswordPayload.getUsername() == null || custForgotPasswordPayload.getUsername() == ""
+                || custForgotPasswordPayload.getPassword() == null || custForgotPasswordPayload.getPassword() == ""
+                 || custForgotPasswordPayload.getOtp() == null || custForgotPasswordPayload.getOtp() == ""){
+
+                logger.error("Something Went Wrong");
+                return ResponseGenerator.generateBadRequestResponse("Something Went Wrong");
+            }
+
+            if(user!= null && user.getForgotPasswordOtp().trim().toString().equals(custForgotPasswordPayload.getOtp().trim().toString()))
+            {
+                    logger.info("Password Update Process Starting...");
+                    user.setPassword(encoder.encode(custForgotPasswordPayload.getPassword()));
+
+                    //set OTP TO null
+                    user.setForgotPasswordOtp("");
+
+                    //set OTP Update
+                    user.setIsForgotPassword("Y");
+
+                    //Set Forgot Date
+                    user.setForgotPasswordDate(GenerateDateAndTime.getTodayDate());
+
+                    //Set Forgot Time
+                    user.setForgotPasswordTime(GenerateDateAndTime.getCurrentTime());
+
+                    //Set Forgot Date-and-Time
+                    user.setForgotPasswordDateTime(GenerateDateAndTime.getLocalDateTime());
+
+                    userRepository.save(user);
+                    response.setMessage("Password Update Success :: " + custForgotPasswordPayload.getUsername());
+                    response.setStatus(HttpStatus.OK);
+                    return ResponseEntity.ok(response);
+            }else{
+                response.setMessage("Username Not Found ! something went Wrong 111");
+                response.setStatus(HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().body(response);
+    }
+
+
     public String getMessageContent(String OTP)
     {
-        return "Your OTP for ECOMM login is " + OTP + " and is valid for 30 mins. " +
+        return "Your OTP for E-COMM login is " + OTP + " and is valid for 30 mins. " +
             "Please DO NOT share this OTP with anyone to keep your account safe ";
+    }
+
+    public String forgotPasswordOtpContent(String OTP)
+    {
+        return "We’ve sent a one-time password "+OTP+" to your registered Mobile Number is valid for 30 mins." +
+                "Please DO NOT share this OTP with anyone to keep your account safe ";
     }
 
 

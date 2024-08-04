@@ -64,6 +64,22 @@ public class User {
 	@Column(name = "registrationCompleted", columnDefinition = "varchar(255) default 'N'")
 	private String registrationCompleted ;
 
+	@Column(length = 50)
+	private String forgotPasswordOtp ;
+
+	@Column(length = 10)
+	private String isForgotPassword;
+
+	@Column(length = 100)
+	private String forgotPasswordDate;
+
+	@Column(length = 100)
+	private String forgotPasswordTime;
+
+	@Column(length = 100)
+	private String forgotPasswordDateTime;
+
+
 	public User() {
 	}
 
@@ -177,22 +193,30 @@ public class User {
 		this.registrationCompleted = registrationCompleted;
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", username='" + username + '\'' +
-				", email='" + email + '\'' +
-				", password='" + password + '\'' +
-				", mobile='" + mobile + '\'' +
-				", isMobileVerify='" + isMobileVerify + '\'' +
-				", isEmailVerify='" + isEmailVerify + '\'' +
-				", roles=" + roles +
-				", passKey='" + passKey + '\'' +
-				", custUsername='" + custUsername + '\'' +
-				", mobileOtp='" + mobileOtp + '\'' +
-				", registrationCompleted='" + registrationCompleted + '\'' +
-				'}';
+
+	public User(Long id, String username, String email, String password, String mobile, String isMobileVerify, String isEmailVerify, Set<Role> roles, String passKey, String custUsername, String mobileOtp, String projectRole, String registrationCompleted, String forgotPasswordOtp) {
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.mobile = mobile;
+		this.isMobileVerify = isMobileVerify;
+		this.isEmailVerify = isEmailVerify;
+		this.roles = roles;
+		this.passKey = passKey;
+		this.custUsername = custUsername;
+		this.mobileOtp = mobileOtp;
+		this.projectRole = projectRole;
+		this.registrationCompleted = registrationCompleted;
+		this.forgotPasswordOtp = forgotPasswordOtp;
+	}
+
+	public String getForgotPasswordOtp() {
+		return forgotPasswordOtp;
+	}
+
+	public void setForgotPasswordOtp(String forgotPasswordOtp) {
+		this.forgotPasswordOtp = forgotPasswordOtp;
 	}
 
 	public String getProjectRole() {
@@ -201,5 +225,38 @@ public class User {
 
 	public void setProjectRole(String projectRole) {
 		this.projectRole = projectRole;
+	}
+
+	public String getIsForgotPassword() {
+		return isForgotPassword;
+	}
+
+	public void setIsForgotPassword(String isForgotPassword) {
+		this.isForgotPassword = isForgotPassword;
+	}
+
+
+	public String getForgotPasswordDate() {
+		return forgotPasswordDate;
+	}
+
+	public void setForgotPasswordDate(String forgotPasswordDate) {
+		this.forgotPasswordDate = forgotPasswordDate;
+	}
+
+	public String getForgotPasswordTime() {
+		return forgotPasswordTime;
+	}
+
+	public void setForgotPasswordTime(String forgotPasswordTime) {
+		this.forgotPasswordTime = forgotPasswordTime;
+	}
+
+	public String getForgotPasswordDateTime() {
+		return forgotPasswordDateTime;
+	}
+
+	public void setForgotPasswordDateTime(String forgotPasswordDateTime) {
+		this.forgotPasswordDateTime = forgotPasswordDateTime;
 	}
 }

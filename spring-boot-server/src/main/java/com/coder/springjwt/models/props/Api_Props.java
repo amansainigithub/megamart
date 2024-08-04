@@ -30,10 +30,4 @@ public class Api_Props extends BaseEntity {
     @Column(length = 20)
     private String status;
 
-
-
-
-
-
-
 }

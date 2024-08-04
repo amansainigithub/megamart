@@ -1,6 +1,6 @@
 package com.coder.springjwt.helpers.generateRandomNumbers;
 
-public class GenerateMobileOTP {
+public class GenerateOTP {
 
     public static String generateOtp(int n)
     {

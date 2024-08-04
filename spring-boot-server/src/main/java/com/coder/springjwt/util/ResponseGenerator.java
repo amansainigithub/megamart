@@ -32,6 +32,12 @@ public class ResponseGenerator {
         return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
     }
 
+    public static <T> ResponseEntity<Object> generateBadRequestResponse(T data,String message) {
+        ResponseDto<T> responseDTO = new ResponseDto(data, message, true,
+                HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+    }
+
 
     public static <T> ResponseEntity<Object> generateValidationRequest(Object value) {
         ResponseDto<T> responseDTO = new ResponseDto<>();

@@ -18,5 +18,10 @@ public class CustomerUrlMappings {
 
     public static final String VERIFY_FRESH_USER_MOBILE_OTP = "/verifyFreshUserMobileOtp";
 
+    public static final String CUSTOMER_FORGOT_PASSWORD= "/customerForgotPassword";
+
+    public static final String CUSTOMER_FORGOT_PASSWORD_FINAL= "/customerForgotPasswordFinal";
+
+
 
 }

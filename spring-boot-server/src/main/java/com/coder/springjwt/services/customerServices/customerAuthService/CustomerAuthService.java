@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.customerServices.customerAuthService;
 
+import com.coder.springjwt.payload.customerPayloads.customerPayload.CustForgotPasswordPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLoginPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
@@ -17,4 +18,8 @@ public interface CustomerAuthService {
     public ResponseEntity<?> verifyFreshUserMobileOtp(VerifyMobileOtpPayload verifyMobileOtpPayload);
 
     public  ResponseEntity<?> customerSignUpCompleted(FreshSignUpPayload freshSignUpPayload);
+
+    public  ResponseEntity<?> customerForgotPassword(CustForgotPasswordPayload custForgotPasswordPayload);
+
+    ResponseEntity<?> customerForgotPasswordFinal(CustForgotPasswordPayload custForgotPasswordPayload);
 }
