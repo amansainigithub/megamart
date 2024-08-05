@@ -51,14 +51,11 @@ public class AdminAuthController {
 
     @PostMapping(AdminUrlMappings.ADMIN_PASS_KEY)
     public ResponseEntity<?> passKey(@Validated @RequestBody Passkey passkey) {
-
         return adminAuthService.passKey(passkey);
-
     }
 
     @PostMapping(AdminUrlMappings.ADMIN_SIGN_UP)
     public ResponseEntity<?> adminSignUp(@Valid @RequestBody SignupRequest signUpRequest) {
-
         return adminAuthService.adminSignUp(signUpRequest);
     }
 

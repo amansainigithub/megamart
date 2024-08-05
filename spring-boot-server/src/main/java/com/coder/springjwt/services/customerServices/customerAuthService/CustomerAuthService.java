@@ -5,6 +5,7 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLogi
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ public interface CustomerAuthService {
 
     public ResponseEntity<?> customerAuthenticateUser(CustomerLoginPayload customerLoginPayload);
 
-    public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload);
+    public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload , HttpServletRequest request);
 
     public ResponseEntity<?> verifyFreshUserMobileOtp(VerifyMobileOtpPayload verifyMobileOtpPayload);
 

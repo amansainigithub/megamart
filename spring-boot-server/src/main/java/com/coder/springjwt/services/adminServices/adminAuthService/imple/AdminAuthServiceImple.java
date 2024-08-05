@@ -2,6 +2,7 @@ package com.coder.springjwt.services.adminServices.adminAuthService.imple;
 
 import com.coder.springjwt.controllers.admin.adminAuthController.AdminAuthController;
 import com.coder.springjwt.helpers.admin.GeneratePassKeyAdmin;
+import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
@@ -165,7 +166,7 @@ public class AdminAuthServiceImple implements AdminAuthService {
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
+                "ROLE_ADMIN-" + GenerateOTP.generateOtpByAlpha(6) + "-" + signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
         // Set<String> strRoles = signUpRequest.getRole();

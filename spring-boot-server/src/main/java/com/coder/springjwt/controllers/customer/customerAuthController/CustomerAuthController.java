@@ -9,6 +9,7 @@ import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobil
 import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +37,8 @@ public class CustomerAuthController {
     }
 
     @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_UP)
-    public ResponseEntity<?> CustomerSignUp(@Valid @RequestBody FreshUserPayload freshUserPayload) {
-        return customerAuthService.CustomerSignUp(freshUserPayload);
+    public ResponseEntity<?> CustomerSignUp(@Valid @RequestBody FreshUserPayload freshUserPayload , HttpServletRequest request) {
+        return customerAuthService.CustomerSignUp(freshUserPayload , request);
     }
 
     @PostMapping(CustomerUrlMappings.VERIFY_FRESH_USER_MOBILE_OTP)

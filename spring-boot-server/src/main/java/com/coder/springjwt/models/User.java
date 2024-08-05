@@ -79,6 +79,35 @@ public class User {
 	@Column(length = 100)
 	private String forgotPasswordDateTime;
 
+	@Size(max = 100)
+	@Email
+	@Column(unique = true)
+	private String customerEmail;
+
+	@Size(max = 100)
+	@Email
+	@Column(unique = true)
+	private String sellerEmail;
+
+	@Size(max = 100)
+	@Email
+	@Column(unique = true)
+	private String adminEmail;
+
+	@Column(length = 255)
+	private String browserDetails;
+
+	@Column(length = 255)
+	private String userAgent;
+
+	@Column(length = 255)
+	private String userAgentVersion;
+
+	@Column(length = 255)
+	private String operatingSystem;
+
+	@Column(length = 255)
+	private String browserName;
 
 	public User() {
 	}
@@ -194,22 +223,6 @@ public class User {
 	}
 
 
-	public User(Long id, String username, String email, String password, String mobile, String isMobileVerify, String isEmailVerify, Set<Role> roles, String passKey, String custUsername, String mobileOtp, String projectRole, String registrationCompleted, String forgotPasswordOtp) {
-		this.id = id;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.mobile = mobile;
-		this.isMobileVerify = isMobileVerify;
-		this.isEmailVerify = isEmailVerify;
-		this.roles = roles;
-		this.passKey = passKey;
-		this.custUsername = custUsername;
-		this.mobileOtp = mobileOtp;
-		this.projectRole = projectRole;
-		this.registrationCompleted = registrationCompleted;
-		this.forgotPasswordOtp = forgotPasswordOtp;
-	}
 
 	public String getForgotPasswordOtp() {
 		return forgotPasswordOtp;
@@ -258,5 +271,101 @@ public class User {
 
 	public void setForgotPasswordDateTime(String forgotPasswordDateTime) {
 		this.forgotPasswordDateTime = forgotPasswordDateTime;
+	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public String getSellerEmail() {
+		return sellerEmail;
+	}
+
+	public void setSellerEmail(String sellerEmail) {
+		this.sellerEmail = sellerEmail;
+	}
+
+	public String getAdminEmail() {
+		return adminEmail;
+	}
+
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+
+	public String getBrowserDetails() {
+		return browserDetails;
+	}
+
+	public void setBrowserDetails(String browserDetails) {
+		this.browserDetails = browserDetails;
+	}
+
+	public String getUserAgent() {
+		return userAgent;
+	}
+
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
+	}
+
+	public String getUserAgentVersion() {
+		return userAgentVersion;
+	}
+
+	public void setUserAgentVersion(String userAgentVersion) {
+		this.userAgentVersion = userAgentVersion;
+	}
+
+	public String getOperatingSystem() {
+		return operatingSystem;
+	}
+
+	public void setOperatingSystem(String operatingSystem) {
+		this.operatingSystem = operatingSystem;
+	}
+
+	public String getBrowserName() {
+		return browserName;
+	}
+
+	public void setBrowserName(String browserName) {
+		this.browserName = browserName;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", mobile='" + mobile + '\'' +
+				", isMobileVerify='" + isMobileVerify + '\'' +
+				", isEmailVerify='" + isEmailVerify + '\'' +
+				", roles=" + roles +
+				", passKey='" + passKey + '\'' +
+				", custUsername='" + custUsername + '\'' +
+				", mobileOtp='" + mobileOtp + '\'' +
+				", projectRole='" + projectRole + '\'' +
+				", registrationCompleted='" + registrationCompleted + '\'' +
+				", forgotPasswordOtp='" + forgotPasswordOtp + '\'' +
+				", isForgotPassword='" + isForgotPassword + '\'' +
+				", forgotPasswordDate='" + forgotPasswordDate + '\'' +
+				", forgotPasswordTime='" + forgotPasswordTime + '\'' +
+				", forgotPasswordDateTime='" + forgotPasswordDateTime + '\'' +
+				", customerEmail='" + customerEmail + '\'' +
+				", sellerEmail='" + sellerEmail + '\'' +
+				", adminEmail='" + adminEmail + '\'' +
+				", browserDetails='" + browserDetails + '\'' +
+				", userAgent='" + userAgent + '\'' +
+				", userAgentVersion='" + userAgentVersion + '\'' +
+				", operatingSystem='" + operatingSystem + '\'' +
+				", browserName='" + browserName + '\'' +
+				'}';
 	}
 }

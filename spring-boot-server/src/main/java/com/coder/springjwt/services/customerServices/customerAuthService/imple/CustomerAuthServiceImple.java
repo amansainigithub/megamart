@@ -4,6 +4,7 @@ import com.coder.springjwt.constants.customerConstants.messageConstants.test.Cus
 import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
+import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
 import com.coder.springjwt.helpers.generateDateandTime.GenerateDateAndTime;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
@@ -25,6 +26,7 @@ import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.util.ResponseGenerator;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -97,72 +98,113 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     }
 
     @Override
-    public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload) {
+    public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload, HttpServletRequest request) {
+
         //Validate Mobile Number
         //FreshUserPayload Parameter Role Is Not Mandatory------
         if(!ValidateMobileNumber.isValid(freshUserPayload.getUsername())) {
             throw new InvalidMobileNumberException(CustMessageResponse.INVALID_MOBILE_NUMBER);
         }
 
-        if (userRepository.existsByUsername(freshUserPayload.getUsername())) {
-            User user = userRepository.findByUsername(freshUserPayload.getUsername()).get();
-
+        Optional<User> userOptional = userRepository.findByUsername(freshUserPayload.getUsername());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             if(user.getRegistrationCompleted().equals("Y") && user.getIsMobileVerify().equals("Y"))
             {
                 return ResponseEntity
                         .ok()
                         .body(new MessageResponse(CustMessageResponse.FLY_LOGIN_PAGE,HttpStatus.OK));
-            }else{
+            }
+            else if(user.getRegistrationCompleted().equals("N") && user.getIsMobileVerify().equals("N"))
+            {
+                this.userRepository.deleteById(user.getId());
+                logger.info("deleted Success:: " + user.getId());
+
+                logger.info("User save Process start");
+                return this.saveUser(freshUserPayload , request);
+            }
+
+            else{
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse(CustMessageResponse.USERNAME_ALREADY_TAKEN,HttpStatus.BAD_REQUEST));
             }
-
-        }else {
-            // Create new user's account
-            User user = new User(freshUserPayload.getUsername(),
-                    freshUserPayload.getUsername() + "no@gmail.com",
-                    encoder.encode("password"),
-                    freshUserPayload.getUsername());
-
-            //Mobile OTP Generator [Mobile]
-            String otp = GenerateOTP.generateOtp(6);
-            logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
-
-            //SEND OTP TO MOBILE
-           try {
-               mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
-           }
-           catch (Exception e)
-           {
-               e.printStackTrace();
-           }
-
-            //Set Project Role
-            user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
-
-            //User Set Username or mobile
-            user.setMobile(freshUserPayload.getUsername());
-
-            //Set Mobile OTP Verified
-            user.setIsMobileVerify("N");
-            //Set Reg Completed
-            user.setRegistrationCompleted("N");
-
-            user.setMobileOtp(otp);
-
-            //Set<String> strRoles = customerSignUpRequest.getRole();
-            Set<Role> roles = new HashSet<>();
-            Role customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException(CustMessageResponse.ROLE_CUSTOMER_NOT_FOUND));
-            roles.add(customerRole);
-
-            user.setRoles(roles);
-
-            userRepository.save(user);
-            logger.info("FRESH USER CREATED SUCCESSFULLY");
-            return ResponseEntity.ok(new MessageResponse(CustMessageResponse.FRESH_USER_CREATED_SUCCESSFULLY,HttpStatus.OK));
+        } else if (userOptional.isEmpty()) {
+            //save the users....
+            return this.saveUser(freshUserPayload , request);
         }
+        else
+        {
+            logger.error(CustMessageResponse.SOMETHING_WENT_WRONG);
+            return ResponseEntity.badRequest().body(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+
+    }
+
+
+    public ResponseEntity<?> saveUser(FreshUserPayload freshUserPayload , HttpServletRequest request)
+    {
+        // Create new user's account
+        User user = new User(freshUserPayload.getUsername(),
+                freshUserPayload.getUsername()+ "-ROLE_CUSTOMER-" + GenerateOTP.generateOtpByAlpha(6) +"-"+ "NO@gmail.com",
+                encoder.encode("password"),
+                freshUserPayload.getUsername());
+
+        //Mobile OTP Generator [Mobile]
+        String otp = GenerateOTP.generateOtp(6);
+        logger.info("OTP SUCCESSFULLY GENERATED :: " + otp);
+
+        //SEND OTP TO MOBILE
+        try {
+            mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        //Set Project Role
+        user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
+
+        //User Set Username or mobile
+        user.setMobile(freshUserPayload.getUsername());
+
+        //Set Mobile OTP Verified
+        user.setIsMobileVerify("N");
+        //Set Reg Completed
+        user.setRegistrationCompleted("N");
+
+        user.setMobileOtp(otp);
+
+        //Set<String> strRoles = customerSignUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+        Role customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                .orElseThrow(() -> new RuntimeException(CustMessageResponse.ROLE_CUSTOMER_NOT_FOUND));
+        roles.add(customerRole);
+
+        user.setRoles(roles);
+
+        logger.info("=====Writing OS Data====");
+        this.saveOsLeakedData(request , user);
+
+        userRepository.save(user);
+        logger.info(CustMessageResponse.FRESH_USER_CREATED_SUCCESSFULLY);
+
+        return ResponseEntity.ok(new MessageResponse
+                (CustMessageResponse.FRESH_USER_CREATED_SUCCESSFULLY,
+                        HttpStatus.OK));
+    }
+
+    public void saveOsLeakedData(HttpServletRequest request, User user)
+    {
+        logger.info("Writing os data start");
+        Map<String,String> node =OsLeaked.getOsData(request);
+        user.setBrowserDetails(node.get("OsbrowserDetails"));
+        user.setUserAgent(node.get("OsUserAgent"));
+        user.setUserAgentVersion(node.get("osUser"));
+        user.setOperatingSystem(node.get("operatingSystem"));
+        user.setBrowserName(node.get("browserName"));
+        logger.info("Writing os data Ending");
     }
 
     @Override
