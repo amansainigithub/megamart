@@ -20,6 +20,7 @@ public class ResponseDto<T> implements Serializable {
     private T data;
     private String message;
     private boolean success;
+
     private long timestamp = System.currentTimeMillis();
 
 
@@ -30,10 +31,12 @@ public class ResponseDto<T> implements Serializable {
         this.success = success;
     }
 
+
     public ResponseDto(T data) {
         super();
         this.data = data;
         this.success = true;
+
     }
 
 }
