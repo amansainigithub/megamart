@@ -32,6 +32,13 @@ public class CustomerAuthController {
 
     @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_IN)
     public ResponseEntity<?> customerAuthenticateUser(@Validated @RequestBody CustomerLoginPayload customerLoginPayload) {
+        try {
+            Thread.sleep(3000);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return customerAuthService.customerAuthenticateUser(customerLoginPayload);
 
     }
