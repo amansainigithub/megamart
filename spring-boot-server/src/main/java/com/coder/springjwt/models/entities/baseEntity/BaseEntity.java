@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
-public class BaseEntity   implements Serializable  {
+public class BaseEntity implements Serializable  {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

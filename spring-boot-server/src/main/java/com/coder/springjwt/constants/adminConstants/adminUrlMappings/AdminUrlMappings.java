@@ -19,6 +19,10 @@ public class AdminUrlMappings {
 
     //ADMIN MAPPING ENDING
 
+    public static final String  CATEGORY= "/category";
+    public static final String  PARAENT_CATEGORY= "/parentCategory";
+
+
 
 
 }

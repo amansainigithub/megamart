@@ -47,7 +47,6 @@ public class CustomerAuthController {
             e.printStackTrace();
         }
         return customerAuthService.customerAuthenticateUser(customerLoginPayload);
-
     }
 
     @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_UP)
@@ -77,6 +76,11 @@ public class CustomerAuthController {
         return this.customerAuthService.customerForgotPasswordFinal(custForgotPasswordPayload);
     }
 
+
+
+
+
+//    ENCRYPTION AND DECRYPTION USING
 
     private static final String SECRET_KEY = "1234567890008iu7yhygtfredfvgbhgg"; // Use the same key as in Angular
     private final Gson gson = new Gson();
