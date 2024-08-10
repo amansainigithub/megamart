@@ -36,6 +36,7 @@ public class ResponseDto<T> implements Serializable {
         super();
         this.data = data;
         this.success = true;
+        this.timestamp = System.currentTimeMillis();
 
     }
 

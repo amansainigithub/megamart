@@ -7,19 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(
+        origins = {"http://localhost:8080","http://localhost:4200"},
+        maxAge = 3600,allowCredentials="true")
 @RestController
-@RequestMapping(AdminUrlMappings.AUTH_BASE_URL)
+@RequestMapping(AdminUrlMappings.BASE_PROTECTED_URL)
 public class CategoryController {
-
-
    @Autowired
     private ParentCategoryimple parentCategoryimple;
-
 
     @PostMapping(AdminUrlMappings.PARAENT_CATEGORY)
     @PreAuthorize("hasRole('ADMIN')")

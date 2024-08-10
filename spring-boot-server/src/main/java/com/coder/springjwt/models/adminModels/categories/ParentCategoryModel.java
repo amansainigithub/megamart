@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "ParentCategory")
 public class ParentCategoryModel extends BaseEntity {
 
     @Id
@@ -33,8 +34,6 @@ public class ParentCategoryModel extends BaseEntity {
     private String metaDescription;
 
     private String featuredStatus;
-
-    private String featuredFile;
 
     private String categoryFile;
 
