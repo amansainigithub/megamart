@@ -1,27 +1,22 @@
-package com.coder.springjwt.models.adminModels.categories;
+package com.coder.springjwt.dtos.adminDtos.categoriesDtos;
 
-import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.ToString;
 
 @Data
-@Entity
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
-@Table(name = "ParentCategory")
-public class ParentCategoryModel extends BaseEntity {
+@NoArgsConstructor
+public class ChildCategoryDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true,nullable = false )
     @Size(min=4, max=100)
     @NotBlank(message = "Category Name must Not be Blank")
     private String categoryName;
@@ -32,7 +27,6 @@ public class ParentCategoryModel extends BaseEntity {
 
     private String description;
 
-    @Column(length = 500)
     private String metaDescription;
 
     private String featuredStatus;
@@ -45,7 +39,7 @@ public class ParentCategoryModel extends BaseEntity {
 
     private boolean isActive = Boolean.FALSE;
 
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER, mappedBy = "parentCategory")
-    private List<ChildCategoryModel> childCategoryModelList;
-
+    @NotBlank
+    @NotNull(message = "Parent Category Id must be Not Blank")
+    private String parentCategoryId;
 }

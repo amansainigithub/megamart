@@ -91,6 +91,7 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 								.requestMatchers("/shopping/api/admin/auth/**").permitAll()
 								.requestMatchers("/shopping/api/seller/v1/**").permitAll()
 								.requestMatchers("/customer/api/v1/**").permitAll()
+								.requestMatchers("/shopping/api/flying/v1/**").permitAll()
 								.requestMatchers(
 										"/v3/api-docs/**",
 										"/swagger-ui/**",

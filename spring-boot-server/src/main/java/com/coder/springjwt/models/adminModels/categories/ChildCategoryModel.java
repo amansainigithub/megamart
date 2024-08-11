@@ -1,6 +1,5 @@
 package com.coder.springjwt.models.adminModels.categories;
 
-import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,14 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ParentCategory")
-public class ParentCategoryModel extends BaseEntity {
+@Table(name = "ChildCategory")
+public class ChildCategoryModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +27,9 @@ public class ParentCategoryModel extends BaseEntity {
 
     private String slug;
 
+    @Column(length = 500)
     private String description;
 
-    @Column(length = 500)
     private String metaDescription;
 
     private String featuredStatus;
@@ -45,7 +42,9 @@ public class ParentCategoryModel extends BaseEntity {
 
     private boolean isActive = Boolean.FALSE;
 
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER, mappedBy = "parentCategory")
-    private List<ChildCategoryModel> childCategoryModelList;
+    @ManyToOne
+    @JoinColumn( referencedColumnName = "id")
+    private ParentCategoryModel parentCategory;
+
 
 }

@@ -24,6 +24,8 @@ public class AdminUrlMappings {
     public static final String BASE_PROTECTED_URL = APPLICATION_CONTEXT_PATH + "/api/flying/v1";
     public static final String  PARAENT_CATEGORY= "/parentCategory";
 
+    public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
+
 
 
 
