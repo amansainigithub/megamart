@@ -1,6 +1,7 @@
 package com.coder.springjwt.models.adminModels.categories;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -46,6 +47,7 @@ public class ParentCategoryModel extends BaseEntity {
     private boolean isActive = Boolean.FALSE;
 
     @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER, mappedBy = "parentCategory")
+    @JsonBackReference
     private List<ChildCategoryModel> childCategoryModelList;
 
 }

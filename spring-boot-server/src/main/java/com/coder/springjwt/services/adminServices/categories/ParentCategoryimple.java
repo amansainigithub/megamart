@@ -8,4 +8,6 @@ import org.springframework.stereotype.Component;
 public interface ParentCategoryimple {
 
     ResponseEntity<?> saveParentCategory(ParentCategoryModel parentCategoryModel);
+
+    ResponseEntity<?> getParentCategoryList();
 }

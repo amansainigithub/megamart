@@ -24,5 +24,10 @@ public class CategoryController {
         return this.parentCategoryimple.saveParentCategory(parentCategoryModel);
     }
 
+    @GetMapping(AdminUrlMappings.GET_PARENT_CATEGORY_LIST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getParentCategoryList() {
+        return this.parentCategoryimple.getParentCategoryList();
+    }
 
 }

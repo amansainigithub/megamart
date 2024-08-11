@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ParentCategoryService implements ParentCategoryimple {
 
@@ -47,5 +49,11 @@ public class ParentCategoryService implements ParentCategoryimple {
             return ResponseGenerator.generateBadRequestResponse(response);
         }
 
+    }
+
+    @Override
+    public ResponseEntity<?> getParentCategoryList() {
+        List<ParentCategoryModel> parentList =  this.parentCategoryRepo.findAll();
+        return ResponseGenerator.generateSuccessResponse(parentList,"Success");
     }
 }

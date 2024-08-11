@@ -1,6 +1,5 @@
 package com.coder.springjwt.services.adminServices.categories.childCategory;
 
-import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.ChildCategoryDto;
 import com.coder.springjwt.models.adminModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.ParentCategoryModel;
@@ -9,7 +8,6 @@ import com.coder.springjwt.repository.adminRepository.categories.ParentCategoryR
 import com.coder.springjwt.services.adminServices.categories.ChildCategoryimple;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
-import org.hibernate.annotations.Parent;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +80,5 @@ public class ChildCategoryService implements ChildCategoryimple {
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
-
     }
 }

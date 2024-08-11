@@ -1,6 +1,5 @@
 package com.coder.springjwt.dtos.adminDtos.categoriesDtos;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
