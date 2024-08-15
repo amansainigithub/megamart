@@ -1,5 +1,7 @@
 package com.coder.springjwt.models.adminModels.categories;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -43,7 +45,8 @@ public class ChildCategoryModel {
     private boolean isActive = Boolean.FALSE;
 
     @ManyToOne
-    @JoinColumn( referencedColumnName = "id")
+    @JoinColumn( referencedColumnName = "id" )
+    @JsonIgnore
     private ParentCategoryModel parentCategory;
 
 

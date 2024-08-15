@@ -45,7 +45,7 @@ public class ParentCategoryModel extends BaseEntity {
 
     private boolean isActive = Boolean.FALSE;
 
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER, mappedBy = "parentCategory")
+    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY, mappedBy = "parentCategory")
     @JsonBackReference
     private List<ChildCategoryModel> childCategoryModelList;
 

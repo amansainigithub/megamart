@@ -39,5 +39,18 @@ public class AdminUrlMappings {
 
 
 
+    //CHILD URL's
+    public static final String  GET_CHILD_CATEGORY_LIST= "/getChildCategoryList";
+
+    public static final String  DELETE_CHILD_CATEGORY_BY_ID= "/deleteChildCategoryById/{categoryId}";
+
+    public static final String  GET_CHILD_CATEGORY_BY_ID= "/getChildCategoryById/{categoryId}";
+
+    public static final String  UPDATE_CHILD_CATEGORY= "/updateChildCategory";
+
+    public static final String UPDATE_CHILD_CATEGORY_FILE="/updateChildCategoryFile/{childCategoryId}";
+
+
+
 
 }
