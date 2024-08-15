@@ -8,4 +8,6 @@ public class BucketUrlMappings {
     public static final String DOWNLOAD_FILE="/downloadFile/{fileName}";
     public static final String DELETE_BUCKET_FILE="/deleteBucketFile/{fileName}";
 
+
+
 }

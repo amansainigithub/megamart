@@ -1,8 +1,8 @@
 package com.coder.springjwt.controllers.admin.categoryController;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
-import com.coder.springjwt.dtos.adminDtos.categoriesDtos.ChildCategoryDto;
-import com.coder.springjwt.services.adminServices.categories.ChildCategoryimple;
+import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
+import com.coder.springjwt.services.adminServices.categories.ChildCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +18,7 @@ public class ChildCategoryController {
 
 
     @Autowired
-    private ChildCategoryimple childCategoryimple;
+    private ChildCategoryService childCategoryimple;
 
     @PostMapping(AdminUrlMappings.SAVE_CHILD_CATEGORY)
     @PreAuthorize("hasRole('ADMIN')")

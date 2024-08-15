@@ -22,7 +22,7 @@ public class BucketController {
 
     @PostMapping(BucketUrlMappings.UPLOAD_FILE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> uploadFile(@RequestParam(value = "file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam(value = "file" ) MultipartFile file) {
         log.info(file.getOriginalFilename());
         return ResponseEntity.ok(this.serviceBucket.uploadFile(file));
     }
@@ -45,4 +45,5 @@ public class BucketController {
     public ResponseEntity<String> deleteBucketFile(@PathVariable String fileName) {
         return new ResponseEntity<>(serviceBucket.deleteFile(fileName), HttpStatus.OK);
     }
+
 }

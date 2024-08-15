@@ -1,24 +1,19 @@
-package com.coder.springjwt.models.adminModels.categories;
+package com.coder.springjwt.dtos.adminDtos.categoriesDtos.parentDtos;
 
-import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
+import lombok.ToString;
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ParentCategory")
-public class ParentCategoryModel extends BaseEntity {
+@ToString
+public class ParentCategoryDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true,nullable = false )
@@ -44,9 +39,4 @@ public class ParentCategoryModel extends BaseEntity {
     private String user;
 
     private boolean isActive = Boolean.FALSE;
-
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER, mappedBy = "parentCategory")
-    @JsonBackReference
-    private List<ChildCategoryModel> childCategoryModelList;
-
 }

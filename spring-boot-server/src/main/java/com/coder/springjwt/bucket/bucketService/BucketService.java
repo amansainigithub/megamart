@@ -64,6 +64,7 @@ public class BucketService {
            s3Client.deleteObject(bucketName, fileName);
        }catch (Exception e)
        {
+           e.printStackTrace();
            log.error("Exception : " , e);
            log.error("Error in delete File in AWS Bucket :::::::::::  {}");
        }

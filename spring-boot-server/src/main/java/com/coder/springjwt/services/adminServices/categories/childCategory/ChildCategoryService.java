@@ -1,11 +1,10 @@
 package com.coder.springjwt.services.adminServices.categories.childCategory;
 
-import com.coder.springjwt.dtos.adminDtos.categoriesDtos.ChildCategoryDto;
+import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.models.adminModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.ParentCategoryModel;
 import com.coder.springjwt.repository.adminRepository.categories.ChildCategoryRepo;
 import com.coder.springjwt.repository.adminRepository.categories.ParentCategoryRepo;
-import com.coder.springjwt.services.adminServices.categories.ChildCategoryimple;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import org.modelmapper.ModelMapper;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ChildCategoryService implements ChildCategoryimple {
+public class ChildCategoryService implements com.coder.springjwt.services.adminServices.categories.ChildCategoryService {
 
     @Autowired
     ChildCategoryRepo childCategoryRepo;

@@ -22,11 +22,20 @@ public class AdminUrlMappings {
 
     //Protected URL's
     public static final String BASE_PROTECTED_URL = APPLICATION_CONTEXT_PATH + "/api/flying/v1";
-    public static final String  PARAENT_CATEGORY= "/parentCategory";
+    public static final String  CREATE_PARENT_CATEGORY= "/createParentCategory";
 
     public static final String  GET_PARENT_CATEGORY_LIST= "/getParentCategoryList";
 
     public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
+
+    public static final String  DELETE_CATEGORY_BY_ID= "/deleteCategoryById/{categoryId}";
+
+
+    public static final String  GET_PARENT_CATEGORY_BY_ID= "/getParentCategoryById/{categoryId}";
+
+    public static final String  UPDATE_PARENT_CATEGORY= "/updateParentCategory";
+
+    public static final String UPDATE_PARENT_CATEGORY_FILE="/updateParentCategoryFile/{parentCategoryId}";
 
 
 

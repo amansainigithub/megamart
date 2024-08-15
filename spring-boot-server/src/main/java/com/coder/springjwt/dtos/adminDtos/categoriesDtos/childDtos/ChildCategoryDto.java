@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos.adminDtos.categoriesDtos;
+package com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
