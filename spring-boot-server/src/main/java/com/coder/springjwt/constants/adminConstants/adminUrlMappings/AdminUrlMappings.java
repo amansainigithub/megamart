@@ -22,14 +22,14 @@ public class AdminUrlMappings {
 
     //Protected URL's
     public static final String BASE_PROTECTED_URL = APPLICATION_CONTEXT_PATH + "/api/flying/v1";
+
+
+
     public static final String  CREATE_PARENT_CATEGORY= "/createParentCategory";
 
     public static final String  GET_PARENT_CATEGORY_LIST= "/getParentCategoryList";
 
-    public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
-
     public static final String  DELETE_CATEGORY_BY_ID= "/deleteCategoryById/{categoryId}";
-
 
     public static final String  GET_PARENT_CATEGORY_BY_ID= "/getParentCategoryById/{categoryId}";
 
@@ -40,6 +40,9 @@ public class AdminUrlMappings {
 
 
     //CHILD URL's
+
+    public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
+
     public static final String  GET_CHILD_CATEGORY_LIST= "/getChildCategoryList";
 
     public static final String  DELETE_CHILD_CATEGORY_BY_ID= "/deleteChildCategoryById/{categoryId}";
@@ -50,6 +53,15 @@ public class AdminUrlMappings {
 
     public static final String UPDATE_CHILD_CATEGORY_FILE="/updateChildCategoryFile/{childCategoryId}";
 
+
+
+    //CHILD URL's
+
+    public static final String  SAVE_BABY_CATEGORY= "/saveBabyCategory";
+
+    public static final String  GET_BABY_CATEGORY_LIST= "/getBabyCategoryList";
+
+    public static final String  DELETE_BABY_CATEGORY_BY_ID= "/deleteBabyCategoryById/{categoryId}";
 
 
 
