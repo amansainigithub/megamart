@@ -5,6 +5,7 @@ import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategory
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.parentDtos.ParentCategoryDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public interface BabyCategoryService {
@@ -15,4 +16,9 @@ public interface BabyCategoryService {
 
     ResponseEntity<?> deleteBabyCategoryById(long categoryId);
 
+    ResponseEntity<?> updateBabyCategory(BabyCategoryDto babyCategoryDto);
+
+    ResponseEntity<?> getBabyCategoryById(long categoryId);
+
+    ResponseEntity<?> updateBabyCategoryFile(MultipartFile file, Long childCategoryId);
 }

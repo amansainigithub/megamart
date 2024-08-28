@@ -1,9 +1,11 @@
 package com.coder.springjwt.services.adminServices.categories.babyCategoryImple;
 
+import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.babyDto.BabyCategoryDto;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
+import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.ParentCategoryModel;
@@ -24,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,4 +134,85 @@ public class BabyCategoryServiceImple implements BabyCategoryService {
                     ("Category Could not deleted :: " + e.getMessage() , "Error");
         }
     }
+
+    @Override
+    public ResponseEntity<?> updateBabyCategory(BabyCategoryDto babyCategoryDto) {
+        MessageResponse response = new MessageResponse();
+        try {
+            System.out.println("BAB111YY Category DTO :: " + babyCategoryDto);
+            logger.info(babyCategoryDto.toString());
+           BabyCategoryModel babydata =   this.babyCategoryRepo.findById(babyCategoryDto.getId()).orElseThrow(()->new DataNotFoundException("Data not Found"));
+
+            BabyCategoryModel babyCategoryModel =  modelMapper.map(babyCategoryDto , BabyCategoryModel.class);
+
+            //Set baby Data in Modal
+            babyCategoryModel.setChildCategoryModel(babydata.getChildCategoryModel());
+
+            this.babyCategoryRepo.save(babyCategoryModel);
+
+            logger.info("Data Update Success");
+            return ResponseGenerator.generateSuccessResponse("Success" , "Data update Success");
+
+        }
+        catch (Exception e)
+        {
+            logger.info("Data Update Failed");
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("failed" ," Data Update Failed");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getBabyCategoryById(long categoryId) {
+        try {
+            BabyCategoryModel babyCategoryModel = this.babyCategoryRepo.findById(categoryId).orElseThrow(
+                    () -> new RuntimeException("Data not Found ! Error"));
+            BabyCategoryDto babyCategoryDto = modelMapper.map(babyCategoryModel, BabyCategoryDto.class);
+            logger.info("Child Category Fetch Success !");
+            return ResponseGenerator.generateSuccessResponse(babyCategoryDto , "Success");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            logger.error("");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , "Error");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateBabyCategoryFile(MultipartFile file, Long babyCategoryId) {
+        try {
+            BabyCategoryModel babyCategoryModel = this.babyCategoryRepo.findById(babyCategoryId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
+
+            System.out.println("QWERTYYYY LOGIC ::: 122211222 ");
+            //Delete old File
+            try {
+                bucketService.deleteFile(babyCategoryModel.getCategoryFile());
+            }catch (Exception e)
+            {
+                logger.error("File Not deleted Id:: " + babyCategoryId);
+            }
+            System.out.println("QWERTYYYY  ::: ");
+            //upload New File
+            BucketModel bucketModel = bucketService.uploadFile(file);
+            if(bucketModel != null)
+            {
+                babyCategoryModel.setCategoryFile(bucketModel.getBucketUrl());
+                this.babyCategoryRepo.save(babyCategoryModel);
+                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+            }
+            else {
+                logger.error("Bucket Model is null | please check AWS bucket configuration");
+                throw new Exception("Bucket AWS is Empty");
+            }
+        }
+        catch (Exception e)
+        {
+            logger.info("Exception" , e.getMessage());
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
+        }
+    }
+
+
 }

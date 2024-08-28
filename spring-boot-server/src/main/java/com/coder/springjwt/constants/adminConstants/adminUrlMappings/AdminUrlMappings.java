@@ -63,6 +63,11 @@ public class AdminUrlMappings {
 
     public static final String  DELETE_BABY_CATEGORY_BY_ID= "/deleteBabyCategoryById/{categoryId}";
 
+    public static final String  UPDATE_BABY_CATEGORY= "/updateBabyCategory";
+
+    public static final String  GET_BABY_CATEGORY_BY_ID= "/getBabyCategoryById/{categoryId}";
+
+    public static final String UPDATE_BABY_CATEGORY_FILE="/updateBabyCategoryFile/{babyCategoryId}";
 
 
 }
