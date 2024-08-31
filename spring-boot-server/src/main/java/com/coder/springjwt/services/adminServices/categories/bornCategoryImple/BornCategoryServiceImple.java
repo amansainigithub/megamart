@@ -141,15 +141,23 @@ public class BornCategoryServiceImple implements BornCategoryService {
     public ResponseEntity<?> updateBornCategory(BornCategoryDto bornCategoryDto) {
         MessageResponse response = new MessageResponse();
         try {
-            System.out.println("bornCategoryDto Category DTO :: " + bornCategoryDto);
+
             logger.info(bornCategoryDto.toString());
+
+            //get Born Data
             BornCategoryModel bornData =   this.bornCategoryRepo.findById(bornCategoryDto.getId()).
                     orElseThrow(()->new DataNotFoundException("Data not Found"));
 
+            //getBaby Category By ID
+            BabyCategoryModel babyData =   this.babyCategoryRepo.findById(Long.valueOf(bornCategoryDto.getBabyCategoryId())).
+                    orElseThrow(()->new DataNotFoundException("Data not Found"));
+
+
+//            Convert DTO TO Model Class
             BornCategoryModel bornCategoryModel =  modelMapper.map(bornCategoryDto , BornCategoryModel.class);
 
             //Set baby Data in Modal
-            bornCategoryModel.setBabyCategoryModel(bornData.getBabyCategoryModel());
+            bornCategoryModel.setBabyCategoryModel(babyData);
 
             this.bornCategoryRepo.save(bornCategoryModel);
 

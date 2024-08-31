@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ChildCategory")
+@ToString
 public class ChildCategoryModel extends BaseEntity {
 
     @Id
@@ -49,7 +51,6 @@ public class ChildCategoryModel extends BaseEntity {
 
     @ManyToOne
     @JoinColumn( referencedColumnName = "id" )
-    @JsonIgnore
     private ParentCategoryModel parentCategory;
 
     @OneToMany(mappedBy = "childCategoryModel",cascade = CascadeType.ALL)

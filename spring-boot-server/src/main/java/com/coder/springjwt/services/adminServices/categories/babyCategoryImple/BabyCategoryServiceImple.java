@@ -135,16 +135,18 @@ public class BabyCategoryServiceImple implements BabyCategoryService {
     public ResponseEntity<?> updateBabyCategory(BabyCategoryDto babyCategoryDto) {
         MessageResponse response = new MessageResponse();
         try {
-            System.out.println("BAB111YY Category DTO :: " + babyCategoryDto);
-            logger.info(babyCategoryDto.toString());
-           BabyCategoryModel babydata =   this.babyCategoryRepo.findById(babyCategoryDto.getId()).orElseThrow(()->new DataNotFoundException("Data not Found"));
 
-            BabyCategoryModel babyCategoryModel =  modelMapper.map(babyCategoryDto , BabyCategoryModel.class);
+           logger.info(babyCategoryDto.toString());
 
-            //Set baby Data in Modal
-            babyCategoryModel.setChildCategoryModel(babydata.getChildCategoryModel());
+           this.babyCategoryRepo.findById(babyCategoryDto.getId()).orElseThrow(()->new DataNotFoundException("Data not Found"));
+           BabyCategoryModel babyCategoryModel =  modelMapper.map(babyCategoryDto , BabyCategoryModel.class);
 
-            this.babyCategoryRepo.save(babyCategoryModel);
+           //Get Child Data
+           ChildCategoryModel childCategoryModel =
+                   this.childCategoryRepo.findById(Long.valueOf(babyCategoryDto.getChildCategoryId())).get();
+           babyCategoryModel.setChildCategoryModel(childCategoryModel);
+
+           this.babyCategoryRepo.save(babyCategoryModel);
 
             logger.info("Data Update Success");
             return ResponseGenerator.generateSuccessResponse("Success" , "Data update Success");
