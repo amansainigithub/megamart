@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(
         origins = {"http://localhost:8080","http://localhost:4200"},
@@ -50,6 +51,14 @@ public class BornCategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getBornCategoryById(@PathVariable long categoryId ) {
         return this.bornCategoryService.getBornCategoryById(categoryId);
+    }
+
+    @PostMapping(AdminUrlMappings.UPDATE_BORN_CATEGORY_FILE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateBornCategoryFile(@RequestParam(value = "file") MultipartFile file ,
+                                                    @PathVariable Long bornCategoryId)
+    {
+        return bornCategoryService.updateBornCategoryFile(file,bornCategoryId);
     }
 
 

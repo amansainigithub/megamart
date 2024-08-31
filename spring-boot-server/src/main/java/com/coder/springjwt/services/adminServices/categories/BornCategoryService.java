@@ -4,6 +4,7 @@ import com.coder.springjwt.dtos.adminDtos.categoriesDtos.babyDto.BabyCategoryDto
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public interface BornCategoryService {
@@ -17,6 +18,9 @@ public interface BornCategoryService {
     ResponseEntity<?> updateBornCategory(BornCategoryDto bornCategoryDto);
 
     ResponseEntity<?> getBornCategoryById(long categoryId);
+
+    ResponseEntity<?> updateBornCategoryFile(MultipartFile file, Long bornCategoryId);
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.adminServices.categories.bornCategoryImple;
 
+import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.babyDto.BabyCategoryDto;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -177,6 +179,39 @@ public class BornCategoryServiceImple implements BornCategoryService {
             e.printStackTrace();
             logger.error("");
             return ResponseGenerator.generateBadRequestResponse(e.getMessage() , "Error");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateBornCategoryFile(MultipartFile file, Long bornCategoryId) {
+        try {
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
+
+            //Delete old File
+            try {
+                bucketService.deleteFile(bornCategoryModel.getCategoryFile());
+            }catch (Exception e)
+            {
+                logger.error("File Not deleted Id:: " + bornCategoryId);
+            }
+            //upload New File
+            BucketModel bucketModel = bucketService.uploadFile(file);
+            if(bucketModel != null)
+            {
+                bornCategoryModel.setCategoryFile(bucketModel.getBucketUrl());
+                this.bornCategoryRepo.save(bornCategoryModel);
+                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+            }
+            else {
+                logger.error("Bucket Model is null | please check AWS bucket configuration");
+                throw new Exception("Bucket AWS is Empty");
+            }
+        }
+        catch (Exception e)
+        {
+            logger.info("Exception" , e.getMessage());
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
         }
     }
 }

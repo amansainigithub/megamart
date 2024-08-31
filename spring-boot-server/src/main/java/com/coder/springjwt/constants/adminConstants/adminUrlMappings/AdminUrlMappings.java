@@ -71,6 +71,8 @@ public class AdminUrlMappings {
 
 
 
+
+
     //BORN URL's
 
     public static final String  SAVE_BORN_CATEGORY= "/saveBornCategory";
@@ -82,6 +84,8 @@ public class AdminUrlMappings {
     public static final String  UPDATE_BORN_CATEGORY= "/updateBornCategory";
 
     public static final String  GET_BORN_CATEGORY_BY_ID= "/getBornCategoryById/{categoryId}";
+
+    public static final String UPDATE_BORN_CATEGORY_FILE="/updateBornCategoryFile/{bornCategoryId}";
 
 
 
