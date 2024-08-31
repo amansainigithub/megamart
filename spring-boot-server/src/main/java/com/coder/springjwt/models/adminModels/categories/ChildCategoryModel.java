@@ -1,5 +1,6 @@
 package com.coder.springjwt.models.adminModels.categories;
 
+import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -9,12 +10,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ChildCategory")
-public class ChildCategoryModel {
+public class ChildCategoryModel extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +51,10 @@ public class ChildCategoryModel {
     @JoinColumn( referencedColumnName = "id" )
     @JsonIgnore
     private ParentCategoryModel parentCategory;
+
+    @OneToMany(mappedBy = "childCategoryModel",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<BabyCategoryModel> babyCategoryModel ;
 
 
 }

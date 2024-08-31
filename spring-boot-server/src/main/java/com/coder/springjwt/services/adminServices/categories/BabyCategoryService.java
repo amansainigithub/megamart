@@ -21,4 +21,6 @@ public interface BabyCategoryService {
     ResponseEntity<?> getBabyCategoryById(long categoryId);
 
     ResponseEntity<?> updateBabyCategoryFile(MultipartFile file, Long childCategoryId);
+
+
 }

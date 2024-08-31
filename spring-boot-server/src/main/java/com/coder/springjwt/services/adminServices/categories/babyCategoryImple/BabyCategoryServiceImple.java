@@ -3,15 +3,12 @@ package com.coder.springjwt.services.adminServices.categories.babyCategoryImple;
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.babyDto.BabyCategoryDto;
-import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.ChildCategoryModel;
-import com.coder.springjwt.models.adminModels.categories.ParentCategoryModel;
 import com.coder.springjwt.repository.adminRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.adminRepository.categories.ChildCategoryRepo;
-import com.coder.springjwt.repository.adminRepository.categories.ParentCategoryRepo;
 import com.coder.springjwt.services.adminServices.categories.BabyCategoryService;
 import com.coder.springjwt.services.adminServices.categories.ParentCategory.ParentCategoryServiceImple;
 import com.coder.springjwt.util.MessageResponse;
@@ -27,7 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -184,7 +180,6 @@ public class BabyCategoryServiceImple implements BabyCategoryService {
         try {
             BabyCategoryModel babyCategoryModel = this.babyCategoryRepo.findById(babyCategoryId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
 
-            System.out.println("QWERTYYYY LOGIC ::: 122211222 ");
             //Delete old File
             try {
                 bucketService.deleteFile(babyCategoryModel.getCategoryFile());
@@ -192,7 +187,6 @@ public class BabyCategoryServiceImple implements BabyCategoryService {
             {
                 logger.error("File Not deleted Id:: " + babyCategoryId);
             }
-            System.out.println("QWERTYYYY  ::: ");
             //upload New File
             BucketModel bucketModel = bucketService.uploadFile(file);
             if(bucketModel != null)

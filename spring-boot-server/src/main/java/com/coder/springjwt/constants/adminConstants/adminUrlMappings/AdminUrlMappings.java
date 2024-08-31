@@ -70,4 +70,21 @@ public class AdminUrlMappings {
     public static final String UPDATE_BABY_CATEGORY_FILE="/updateBabyCategoryFile/{babyCategoryId}";
 
 
+
+    //BORN URL's
+
+    public static final String  SAVE_BORN_CATEGORY= "/saveBornCategory";
+
+    public static final String  GET_BORN_CATEGORY_LIST= "/getBornCategoryList";
+
+    public static final String  DELETE_BORN_CATEGORY_BY_ID= "/deleteBornCategoryById/{categoryId}";
+
+    public static final String  UPDATE_BORN_CATEGORY= "/updateBornCategory";
+
+    public static final String  GET_BORN_CATEGORY_BY_ID= "/getBornCategoryById/{categoryId}";
+
+
+
+
+
 }
