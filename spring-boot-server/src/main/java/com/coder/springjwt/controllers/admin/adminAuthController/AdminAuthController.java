@@ -7,6 +7,8 @@ import com.coder.springjwt.payload.request.SignupRequest;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
+import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
+import com.coder.springjwt.services.MobileOtpService.imple.OtpServiceImple;
 import com.coder.springjwt.services.adminServices.adminAuthService.AdminAuthService;
 import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
 import jakarta.validation.Valid;
@@ -16,6 +18,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 
 @RestController
@@ -59,7 +63,18 @@ public class AdminAuthController {
         return adminAuthService.adminSignUp(signUpRequest);
     }
 
-
+//@Autowired
+//OtpServiceImple otpServiceImple;
+//    @PostMapping("sendsms")
+//    public ResponseEntity<?> sendsms() {
+//        try {
+//             otpServiceImple.sendSMS("9818644140","New Number Send to OTP" ,"SELLER");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+//
 
 
 }

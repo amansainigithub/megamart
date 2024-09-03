@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.customerServices.customerAuthService.imple;
 
+import com.coder.springjwt.constants.OtpMessageContent;
 import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
@@ -163,7 +164,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
         //SEND OTP TO MOBILE
         try {
-            mobileOtpService.sendSMS(otp,freshUserPayload.getUsername(), this.getMessageContent(otp));
+            mobileOtpService.sendSMS(freshUserPayload.getUsername(), OtpMessageContent.getMessageContent(otp),"CUSTOMER");
         }
         catch (Exception e)
         {
@@ -320,7 +321,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                   //SEND OTP TO MOBILE
                   try {
                       //Username == MobileNumber
-                      mobileOtpService.sendSMS(otp, custForgotPasswordPayload.getUsername(), this.forgotPasswordOtpContent(otp));
+                      mobileOtpService.sendSMS(custForgotPasswordPayload.getUsername(), OtpMessageContent.forgotPasswordOtpContent(otp),"CUSTOMER");
                   }
                   catch (Exception e)
                   {
@@ -405,17 +406,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     }
 
 
-    public String getMessageContent(String OTP)
-    {
-        return "Your OTP for E-COMM login is " + OTP + " and is valid for 30 mins. " +
-            "Please DO NOT share this OTP with anyone to keep your account safe ";
-    }
 
-    public String forgotPasswordOtpContent(String OTP)
-    {
-        return "We’ve sent a one-time password "+OTP+" to your registered Mobile Number is valid for 30 mins." +
-                "Please DO NOT share this OTP with anyone to keep your account safe ";
-    }
 
 
 }

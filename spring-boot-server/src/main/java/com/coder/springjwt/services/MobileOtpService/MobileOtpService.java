@@ -3,8 +3,10 @@ package com.coder.springjwt.services.MobileOtpService;
 
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public interface MobileOtpService {
 
-    void sendSMS(String otp , String number , String messageContent);
+    void sendSMS(String number , String messageContent , String userRole) throws IOException;
 }
