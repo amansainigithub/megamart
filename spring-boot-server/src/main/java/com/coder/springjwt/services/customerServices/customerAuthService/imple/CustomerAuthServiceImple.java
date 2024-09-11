@@ -111,13 +111,13 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         Optional<User> userOptional = userRepository.findByUsername(freshUserPayload.getUsername());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if(user.getRegistrationCompleted().equals("Y") && user.getIsMobileVerify().equals("Y"))
+            if(user.getCustomerRegisterComplete().equals("Y") && user.getCustomerMobileVerify().equals("Y"))
             {
                 return ResponseEntity
                         .ok()
                         .body(new MessageResponse(CustMessageResponse.FLY_LOGIN_PAGE,HttpStatus.OK));
             }
-            else if(user.getRegistrationCompleted().equals("N") && user.getIsMobileVerify().equals("N"))
+            else if(user.getCustomerRegisterComplete().equals("N") && user.getCustomerMobileVerify().equals("N"))
             {
                 this.userRepository.deleteById(user.getId());
                 logger.info("deleted Success:: " + user.getId());
@@ -125,7 +125,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                 logger.info("User save Process start");
                 return this.saveUser(freshUserPayload , request);
             }
-            else if(user.getRegistrationCompleted().equals("N") && user.getIsMobileVerify().equals("Y"))
+            else if(user.getCustomerRegisterComplete().equals("N") && user.getCustomerMobileVerify().equals("Y"))
             {
                 this.userRepository.deleteById(user.getId());
                 logger.info("Deleted Success :: when  Registration Complete 'Y' and mobile Verified 'N' :: " + user.getId());
@@ -178,11 +178,11 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         user.setMobile(freshUserPayload.getUsername());
 
         //Set Mobile OTP Verified
-        user.setIsMobileVerify("N");
+        user.setCustomerMobileVerify("N");
         //Set Reg Completed
-        user.setRegistrationCompleted("N");
+        user.setCustomerRegisterComplete("N");
 
-        user.setMobileOtp(otp);
+        user.setCustomerMobileOtp(otp);
 
         //Set<String> strRoles = customerSignUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -231,19 +231,19 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             //Get User
             User user = userOp.get();
 
-            if(user.getRegistrationCompleted().equals("Y") && user.getIsMobileVerify().equals("Y")){
+            if(user.getCustomerRegisterComplete().equals("Y") && user.getCustomerMobileVerify().equals("Y")){
             response.setMessage(CustMessageResponse.ALREADY_AUTHENTICATED);
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateBadRequestResponse(response);
             }
 
-            if(verifyMobileOtpPayload.getMobileOtp().equals(user.getMobileOtp()))
+            if(verifyMobileOtpPayload.getMobileOtp().equals(user.getCustomerMobileOtp()))
             {
                 //Verfied Users "Y"
-                user.setIsMobileVerify("Y");
+                user.setCustomerMobileVerify("Y");
 
                 // VERIFIED TRUE
-                user.setMobileOtp("VERIFIED");
+                user.setCustomerMobileOtp("VERIFIED");
                 this.userRepository.save(user);
 
                 logger.info("OTP Verified Success");
@@ -268,12 +268,12 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                 User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
                 orElseThrow(()-> new RuntimeException("User Not Fount"));
 
-        if ( (user.getRegistrationCompleted().equals("N")
-                ||  user.getRegistrationCompleted().isEmpty()
-                || user.getRegistrationCompleted() == null)
-                && user.getIsMobileVerify().equals("Y")) {
+        if ( (user.getCustomerRegisterComplete().equals("N")
+                ||  user.getCustomerRegisterComplete().isEmpty()
+                || user.getCustomerRegisterComplete() == null)
+                && user.getCustomerMobileVerify().equals("Y")) {
 
-            user.setRegistrationCompleted("Y");
+            user.setCustomerRegisterComplete("Y");
             user.setPassword(encoder.encode(freshSignUpPayload.getPassword()));
 
             //Set Project Role
@@ -294,7 +294,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         MessageResponse response = new MessageResponse();
 
         try {
-           User user =  this.userRepository.findByUsernameAndRegistrationCompleted(custForgotPasswordPayload.getUsername() , "Y")
+           User user =  this.userRepository.findByUsernameAndCustomerRegisterComplete(custForgotPasswordPayload.getUsername() , "Y")
                     .orElseThrow( ()->  new UsernameNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
           if(!custForgotPasswordPayload.getPassword().equals(custForgotPasswordPayload.getConformPassword()))
@@ -329,7 +329,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                       e.printStackTrace();
                   }
                   //Forgot Password Otp set to user Object
-                  user.setForgotPasswordOtp(otp);
+                  user.setCustomerForgotPasswordOtp(otp);
                   this.userRepository.save(user);
                   response.setMessage(CustMessageResponse.VALID_OTP_FORM_OPEN);
                   response.setStatus(HttpStatus.OK);
@@ -357,7 +357,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
         MessageResponse response = new MessageResponse();
         try {
             System.out.println(custForgotPasswordPayload.toString());
-            User user =  this.userRepository.findByUsernameAndRegistrationCompleted(custForgotPasswordPayload.getUsername() , "Y")
+            User user =  this.userRepository.findByUsernameAndCustomerRegisterComplete(custForgotPasswordPayload.getUsername() , "Y")
                     .orElseThrow( ()->  new UsernameNotFoundException("Username not Found"));
 
             if(custForgotPasswordPayload.getUsername() == null || custForgotPasswordPayload.getUsername() == ""
@@ -368,25 +368,16 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                 return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
             }
 
-            if(user!= null && user.getForgotPasswordOtp().trim().toString().equals(custForgotPasswordPayload.getOtp().trim().toString()))
+            if(user!= null && user.getCustomerForgotPasswordOtp().trim().toString().equals(custForgotPasswordPayload.getOtp().trim().toString()))
             {
                     logger.info("Password Update Process Starting...");
                     user.setPassword(encoder.encode(custForgotPasswordPayload.getPassword()));
 
                     //set OTP TO null
-                    user.setForgotPasswordOtp("");
+                    user.setCustomerForgotPasswordOtp("");
 
                     //set OTP Update
-                    user.setIsForgotPassword("Y");
-
-                    //Set Forgot Date
-                    user.setForgotPasswordDate(GenerateDateAndTime.getTodayDate());
-
-                    //Set Forgot Time
-                    user.setForgotPasswordTime(GenerateDateAndTime.getCurrentTime());
-
-                    //Set Forgot Date-and-Time
-                    user.setForgotPasswordDateTime(GenerateDateAndTime.getLocalDateTime());
+                    user.setIsCustomerForgotPassword("Y");
 
                     userRepository.save(user);
                     response.setMessage("Password Update Success :: " + custForgotPasswordPayload.getUsername());

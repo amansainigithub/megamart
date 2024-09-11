@@ -36,11 +36,11 @@ public class User {
 	@Size(max = 10)
 	private String mobile;
 
-	@Column(name = "isMobileVerify", columnDefinition = "varchar(255) default 'N'")
-	private String isMobileVerify;
+	@Column(name = "customerMobileVerify", columnDefinition = "varchar(255) default 'N'")
+	private String customerMobileVerify;
 
-	@Column(name = "isEmailVerify", columnDefinition = "varchar(255) default 'N'")
-	private String isEmailVerify;
+	@Column(name = "customerEmailVerify", columnDefinition = "varchar(255) default 'N'")
+	private String customerEmailVerify;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -55,29 +55,22 @@ public class User {
 	private String custUsername;
 
 	@Size(max = 20)
-	private String mobileOtp;
+	private String customerMobileOtp;
 
 	@Size(max = 20)
 	@NotBlank
 	private String projectRole;
 
-	@Column(name = "registrationCompleted", columnDefinition = "varchar(255) default 'N'")
-	private String registrationCompleted ;
+	@Column(name = "customerRegisterComplete", columnDefinition = "varchar(255) default 'N'")
+	private String customerRegisterComplete ;
 
 	@Column(length = 50)
-	private String forgotPasswordOtp ;
+	private String customerForgotPasswordOtp ;
 
 	@Column(length = 10)
-	private String isForgotPassword;
+	private String isCustomerForgotPassword;
 
-	@Column(length = 100)
-	private String forgotPasswordDate;
 
-	@Column(length = 100)
-	private String forgotPasswordTime;
-
-	@Column(length = 100)
-	private String forgotPasswordDateTime;
 
 	@Size(max = 100)
 	@Email
@@ -189,48 +182,32 @@ public class User {
 		this.mobile = mobile;
 	}
 
-	public String getIsMobileVerify() {
-		return isMobileVerify;
+
+	public String getCustomerEmailVerify() {
+		return customerEmailVerify;
 	}
 
-	public void setIsMobileVerify(String isMobileVerify) {
-		this.isMobileVerify = isMobileVerify;
+	public void setCustomerEmailVerify(String customerEmailVerify) {
+		this.customerEmailVerify = customerEmailVerify;
 	}
 
-	public String getIsEmailVerify() {
-		return isEmailVerify;
+	public String getCustomerMobileOtp() {
+		return customerMobileOtp;
 	}
 
-	public void setIsEmailVerify(String isEmailVerify) {
-		this.isEmailVerify = isEmailVerify;
-	}
-
-	public String getMobileOtp() {
-		return mobileOtp;
-	}
-
-	public void setMobileOtp(String mobileOtp) {
-		this.mobileOtp = mobileOtp;
+	public void setCustomerMobileOtp(String customerMobileOtp) {
+		this.customerMobileOtp = customerMobileOtp;
 	}
 
 
-	public String getRegistrationCompleted() {
-		return registrationCompleted;
+	public String getCustomerRegisterComplete() {
+		return customerRegisterComplete;
 	}
 
-	public void setRegistrationCompleted(String registrationCompleted) {
-		this.registrationCompleted = registrationCompleted;
+	public void setCustomerRegisterComplete(String customerRegisterComplete) {
+		this.customerRegisterComplete = customerRegisterComplete;
 	}
 
-
-
-	public String getForgotPasswordOtp() {
-		return forgotPasswordOtp;
-	}
-
-	public void setForgotPasswordOtp(String forgotPasswordOtp) {
-		this.forgotPasswordOtp = forgotPasswordOtp;
-	}
 
 	public String getProjectRole() {
 		return projectRole;
@@ -240,37 +217,20 @@ public class User {
 		this.projectRole = projectRole;
 	}
 
-	public String getIsForgotPassword() {
-		return isForgotPassword;
+	public String getCustomerForgotPasswordOtp() {
+		return customerForgotPasswordOtp;
 	}
 
-	public void setIsForgotPassword(String isForgotPassword) {
-		this.isForgotPassword = isForgotPassword;
+	public void setCustomerForgotPasswordOtp(String customerForgotPasswordOtp) {
+		this.customerForgotPasswordOtp = customerForgotPasswordOtp;
 	}
 
-
-	public String getForgotPasswordDate() {
-		return forgotPasswordDate;
+	public String getIsCustomerForgotPassword() {
+		return isCustomerForgotPassword;
 	}
 
-	public void setForgotPasswordDate(String forgotPasswordDate) {
-		this.forgotPasswordDate = forgotPasswordDate;
-	}
-
-	public String getForgotPasswordTime() {
-		return forgotPasswordTime;
-	}
-
-	public void setForgotPasswordTime(String forgotPasswordTime) {
-		this.forgotPasswordTime = forgotPasswordTime;
-	}
-
-	public String getForgotPasswordDateTime() {
-		return forgotPasswordDateTime;
-	}
-
-	public void setForgotPasswordDateTime(String forgotPasswordDateTime) {
-		this.forgotPasswordDateTime = forgotPasswordDateTime;
+	public void setIsCustomerForgotPassword(String isCustomerForgotPassword) {
+		this.isCustomerForgotPassword = isCustomerForgotPassword;
 	}
 
 	public String getCustomerEmail() {
@@ -337,6 +297,14 @@ public class User {
 		this.browserName = browserName;
 	}
 
+	public String getCustomerMobileVerify() {
+		return customerMobileVerify;
+	}
+
+	public void setCustomerMobileVerify(String customerMobileVerify) {
+		this.customerMobileVerify = customerMobileVerify;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -345,19 +313,16 @@ public class User {
 				", email='" + email + '\'' +
 				", password='" + password + '\'' +
 				", mobile='" + mobile + '\'' +
-				", isMobileVerify='" + isMobileVerify + '\'' +
-				", isEmailVerify='" + isEmailVerify + '\'' +
+				", customerMobileVerify='" + customerMobileVerify + '\'' +
+				", customerEmailVerify='" + customerEmailVerify + '\'' +
 				", roles=" + roles +
 				", passKey='" + passKey + '\'' +
 				", custUsername='" + custUsername + '\'' +
-				", mobileOtp='" + mobileOtp + '\'' +
+				", customerMobileOtp='" + customerMobileOtp + '\'' +
 				", projectRole='" + projectRole + '\'' +
-				", registrationCompleted='" + registrationCompleted + '\'' +
-				", forgotPasswordOtp='" + forgotPasswordOtp + '\'' +
-				", isForgotPassword='" + isForgotPassword + '\'' +
-				", forgotPasswordDate='" + forgotPasswordDate + '\'' +
-				", forgotPasswordTime='" + forgotPasswordTime + '\'' +
-				", forgotPasswordDateTime='" + forgotPasswordDateTime + '\'' +
+				", customerRegisterComplete='" + customerRegisterComplete + '\'' +
+				", customerForgotPasswordOtp='" + customerForgotPasswordOtp + '\'' +
+				", isCustomerForgotPassword='" + isCustomerForgotPassword + '\'' +
 				", customerEmail='" + customerEmail + '\'' +
 				", sellerEmail='" + sellerEmail + '\'' +
 				", adminEmail='" + adminEmail + '\'' +
