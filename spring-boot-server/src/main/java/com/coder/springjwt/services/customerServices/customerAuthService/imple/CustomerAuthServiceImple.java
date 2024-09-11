@@ -6,7 +6,6 @@ import com.coder.springjwt.controllers.customer.customerAuthController.CustomerA
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
 import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
-import com.coder.springjwt.helpers.generateDateandTime.GenerateDateAndTime;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
 import com.coder.springjwt.helpers.passwordValidation.PasswordValidator;
