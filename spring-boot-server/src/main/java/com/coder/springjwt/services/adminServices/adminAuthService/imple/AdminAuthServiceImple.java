@@ -6,7 +6,7 @@ import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.payload.emailPayloads.EmailDetailsPayload;
+import com.coder.springjwt.payload.emailPayloads.EmailPayload;
 import com.coder.springjwt.payload.request.LoginRequest;
 import com.coder.springjwt.payload.request.Passkey;
 import com.coder.springjwt.payload.request.SignupRequest;
@@ -17,7 +17,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.adminServices.adminAuthService.AdminAuthService;
-import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
+import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class AdminAuthServiceImple implements AdminAuthService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private SimpleEmailService simpleEmailService;
+    private EmailService simpleEmailService;
 
     @Override
     public ResponseEntity<?> adminAuthenticateUser(LoginRequest loginRequest) {
@@ -63,8 +63,8 @@ public class AdminAuthServiceImple implements AdminAuthService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+                            .map(item -> item.getAuthority())
+                            .collect(Collectors.toList());
 
 
         //Role Authentication only ADMIN can work
@@ -80,11 +80,11 @@ public class AdminAuthServiceImple implements AdminAuthService {
             throw new RuntimeException("PassKey Error " + AdminAuthController.class.getName());
         }
         //send PassKey To E-MAIL
-        EmailDetailsPayload emailDetailsPayload = new EmailDetailsPayload();
-        emailDetailsPayload.setRecipient(userDetails.getEmail());
-        emailDetailsPayload.setSubject("Pass-Key");
-        emailDetailsPayload.setMsgBody("Hi Your Pass-Key : " + passKey);
-        simpleEmailService.sendSimpleMail(emailDetailsPayload);
+        EmailPayload emailPayload = new EmailPayload();
+        emailPayload.setRecipient(userDetails.getEmail());
+        emailPayload.setSubject("Pass-Key");
+        emailPayload.setContent("Hi Your Pass-Key : " + passKey);
+        simpleEmailService.sendSimpleMail(emailPayload);
 
 
         System.out.println("PASS KEY :: " + passKey );

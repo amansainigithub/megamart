@@ -7,10 +7,8 @@ import com.coder.springjwt.payload.request.SignupRequest;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
-import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
-import com.coder.springjwt.services.MobileOtpService.imple.OtpServiceImple;
 import com.coder.springjwt.services.adminServices.adminAuthService.AdminAuthService;
-import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
+import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 
 @RestController
@@ -42,7 +38,7 @@ public class AdminAuthController {
     private  JwtUtils jwtUtils;
 
     @Autowired
-    private SimpleEmailService simpleEmailService;
+    private EmailService simpleEmailService;
 
     @Autowired
     private AdminAuthService adminAuthService;

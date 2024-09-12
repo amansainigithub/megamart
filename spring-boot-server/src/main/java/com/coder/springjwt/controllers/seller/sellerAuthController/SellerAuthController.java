@@ -7,7 +7,7 @@ import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
-import com.coder.springjwt.services.emailServices.simpleEmailService.SimpleEmailService;
+import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +40,7 @@ public class SellerAuthController {
     private  JwtUtils jwtUtils;
 
     @Autowired
-    private SimpleEmailService simpleEmailService;
+    private EmailService simpleEmailService;
 
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody SellerLoginPayload sellerLoginRequest) {

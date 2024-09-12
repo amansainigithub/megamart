@@ -3,13 +3,20 @@ package com.coder.springjwt.payload.emailPayloads;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-public class EmailDetailsPayload {
+@NoArgsConstructor
+public class EmailPayload {
     private String recipient;
-    private String msgBody;
+
     private String subject;
-    private String attachment;
+
+    private String content;
+
+    private String mailArea;
+
+    private String status;
+
+
+
+
 }
