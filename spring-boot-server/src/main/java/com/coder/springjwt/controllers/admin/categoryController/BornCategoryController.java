@@ -62,4 +62,11 @@ public class BornCategoryController {
     }
 
 
+    @GetMapping(AdminUrlMappings.GET_BORN_CATEGORY_LIST_BY_PAGINATION)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getBornCategoryListByPagination(@RequestParam  Integer page ,@RequestParam  Integer size)
+    {
+        return bornCategoryService.getBornCategoryListByPagination(page,size);
+    }
+
 }

@@ -21,6 +21,7 @@ public interface BornCategoryService {
 
     ResponseEntity<?> updateBornCategoryFile(MultipartFile file, Long bornCategoryId);
 
+    ResponseEntity<?> getBornCategoryListByPagination(Integer page,Integer size);
 
 
 }

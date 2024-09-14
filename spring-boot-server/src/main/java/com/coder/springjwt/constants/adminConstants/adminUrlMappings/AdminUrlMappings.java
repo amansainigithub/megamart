@@ -42,15 +42,10 @@ public class AdminUrlMappings {
     //CHILD URL's
 
     public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
-
     public static final String  GET_CHILD_CATEGORY_LIST= "/getChildCategoryList";
-
     public static final String  DELETE_CHILD_CATEGORY_BY_ID= "/deleteChildCategoryById/{categoryId}";
-
     public static final String  GET_CHILD_CATEGORY_BY_ID= "/getChildCategoryById/{categoryId}";
-
     public static final String  UPDATE_CHILD_CATEGORY= "/updateChildCategory";
-
     public static final String UPDATE_CHILD_CATEGORY_FILE="/updateChildCategoryFile/{childCategoryId}";
 
 
@@ -58,15 +53,10 @@ public class AdminUrlMappings {
     //CHILD URL's
 
     public static final String  SAVE_BABY_CATEGORY= "/saveBabyCategory";
-
     public static final String  GET_BABY_CATEGORY_LIST= "/getBabyCategoryList";
-
     public static final String  DELETE_BABY_CATEGORY_BY_ID= "/deleteBabyCategoryById/{categoryId}";
-
     public static final String  UPDATE_BABY_CATEGORY= "/updateBabyCategory";
-
     public static final String  GET_BABY_CATEGORY_BY_ID= "/getBabyCategoryById/{categoryId}";
-
     public static final String UPDATE_BABY_CATEGORY_FILE="/updateBabyCategoryFile/{babyCategoryId}";
 
 
@@ -76,19 +66,17 @@ public class AdminUrlMappings {
     //BORN URL's
 
     public static final String  SAVE_BORN_CATEGORY= "/saveBornCategory";
-
     public static final String  GET_BORN_CATEGORY_LIST= "/getBornCategoryList";
-
     public static final String  DELETE_BORN_CATEGORY_BY_ID= "/deleteBornCategoryById/{categoryId}";
-
     public static final String  UPDATE_BORN_CATEGORY= "/updateBornCategory";
-
     public static final String  GET_BORN_CATEGORY_BY_ID= "/getBornCategoryById/{categoryId}";
-
     public static final String UPDATE_BORN_CATEGORY_FILE="/updateBornCategoryFile/{bornCategoryId}";
+    public static final String GET_BORN_CATEGORY_LIST_BY_PAGINATION="/getBornCategoryListByPagination";
 
 
 
+    //FETCH CUSTOMER USER
+    public static final String GET_CUSTOMER_BY_PAGINATION="/getCustomerByPagination";
 
 
 }

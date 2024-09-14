@@ -2,6 +2,7 @@ package com.coder.springjwt.services.adminServices.categories.bornCategoryImple;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
+import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
@@ -12,11 +13,15 @@ import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRep
 import com.coder.springjwt.services.adminServices.categories.BornCategoryService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BornCategoryServiceImple implements BornCategoryService {
 
     @Autowired
@@ -218,6 +224,19 @@ public class BornCategoryServiceImple implements BornCategoryService {
             logger.info("Exception" , e.getMessage());
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getBornCategoryListByPagination(Integer page, Integer size) {
+        Page<BornCategoryModel> bornData = this.bornCategoryRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
+        System.out.println("BORN DATA " + bornData.toString());
+        if(!bornData.isEmpty()) {
+
+            return ResponseGenerator.generateSuccessResponse(bornData, "BORN_SUCCESSFULLY_FETCH");
+        }else {
+            log.info("Born Data Data Not Found its NULL or BLANK ::::::::: {}", "BornCategory" );
+            return ResponseGenerator.generateDataNotFound(CustMessageResponse.DATA_NOT_FOUND);
         }
     }
 }

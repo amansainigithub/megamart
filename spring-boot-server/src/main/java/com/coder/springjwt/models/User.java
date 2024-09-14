@@ -1,5 +1,6 @@
 package com.coder.springjwt.models;
 
+import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +14,7 @@ import java.util.Set;
 			@UniqueConstraint(columnNames = "username"),
 			@UniqueConstraint(columnNames = "email") 
 		})
-public class User {
+public class User extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
