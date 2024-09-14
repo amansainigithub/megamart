@@ -10,11 +10,9 @@ public class AdminUrlMappings {
     //############## AUTH BASE URL #####################
     //Publically Allow
     public static final String AUTH_BASE_URL = APPLICATION_CONTEXT_PATH + "/api/admin/auth";
-
     //SignIn
     public static final String ADMIN_SIGN_IN = "/adminSignin";
     public static final String  ADMIN_PASS_KEY= "/adminPassKey";
-
     public static final String  ADMIN_SIGN_UP= "/adminSignUp";
 
     //ADMIN MAPPING ENDING

@@ -8,6 +8,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.services.adminServices.userService.UserService;
+import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -39,14 +41,29 @@ public class UserServiceImple implements UserService {
     private UserRepository userRepository;
     @Override
     public ResponseEntity<?> getCustomerByPagination(Integer page, Integer size) {
-        Page<User> userData = this.userRepository.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
-        log.info("USER DATA " + userData.toString());
-        if(!userData.isEmpty()) {
-
-            return ResponseGenerator.generateSuccessResponse(userData, "USER_SUCCESSFULLY_FETCH");
-        }else {
-            log.info("USER Data Data Not Found its NULL or BLANK ::::::::: {}", "USER DATA" );
-            return ResponseGenerator.generateDataNotFound(CustMessageResponse.DATA_NOT_FOUND);
+        MessageResponse response = new MessageResponse();
+        try {
+            Page<User> userData = this.userRepository.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
+            if(userData.isEmpty())
+            {
+                response.setStatus(HttpStatus.BAD_GATEWAY);
+                response.setMessage("Data Not Found");
+                log.info("Data Not found :::: {} " + UserServiceImple.class.getName());
+                return ResponseGenerator.generateBadRequestResponse(response, "DATA NOT FOUND");
+            }else{
+                response.setStatus(HttpStatus.OK);
+                response.setMessage("Data FETCH SUCCESS");
+                log.info("Data fetch Success :::: {}" + UserServiceImple.class.getName());
+                return ResponseGenerator.generateSuccessResponse(userData, "DATA FETCH SUCCESS");
+            }
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setMessage("Data Not Found");
+            return ResponseGenerator.generateBadRequestResponse(response, "DATA NOT FOUND");
+        }
+
     }
 }
