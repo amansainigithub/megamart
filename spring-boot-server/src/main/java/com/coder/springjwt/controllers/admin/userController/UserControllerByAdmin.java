@@ -18,5 +18,15 @@ public class UserControllerByAdmin {
         return userService.getCustomerByPagination(page,size);
     }
 
+    @PostMapping(AdminUrlMappings.GET_SELLER_BY_PAGINATION)
+    public ResponseEntity<?> getSellerByPagination(@RequestParam Integer page , @RequestParam  Integer size) {
+        return userService.getSellerByPagination(page,size);
+    }
+
+    @PostMapping(AdminUrlMappings.GET_ADMIN_BY_PAGINATION)
+    public ResponseEntity<?> getAdminByPagination(@RequestParam Integer page , @RequestParam  Integer size) {
+        return userService.getAdminByPagination(page,size);
+    }
+
 
 }

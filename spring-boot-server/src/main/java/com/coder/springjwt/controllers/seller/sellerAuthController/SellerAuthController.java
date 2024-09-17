@@ -1,6 +1,8 @@
 package com.coder.springjwt.controllers.seller.sellerAuthController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
+import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
+import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
 import com.coder.springjwt.payload.response.JwtResponse;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import com.coder.springjwt.repository.RoleRepository;
@@ -8,6 +10,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
+import com.coder.springjwt.services.sellerServices.sellerAuthService.SellerAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +45,9 @@ public class SellerAuthController {
     @Autowired
     private EmailService simpleEmailService;
 
+    @Autowired
+    SellerAuthService sellerAuthService;
+
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody SellerLoginPayload sellerLoginRequest) {
 
@@ -73,6 +79,20 @@ public class SellerAuthController {
         return ResponseEntity.badRequest().body("Error: Unauthorized");
 
     }
+
+    @PostMapping(SellerUrlMappings.SELLER_MOBILE_CHECKER)
+    public ResponseEntity<?> sellerMobileChecker(@Validated @RequestBody SellerMobile SellerMobile) {
+        return sellerAuthService.sellerMobile(SellerMobile);
+    }
+
+    @PostMapping(SellerUrlMappings.VALIDATE_SELLER_OTP)
+    public ResponseEntity<?> validateSellerOtp(@Validated @RequestBody SellerOtpRequest sellerOtpRequest) {
+        return sellerAuthService.validateSellerOtp(sellerOtpRequest);
+    }
+
+
+
+
 
 
 

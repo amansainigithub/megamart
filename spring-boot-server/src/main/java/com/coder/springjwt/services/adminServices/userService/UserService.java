@@ -7,4 +7,11 @@ import org.springframework.stereotype.Component;
 public interface UserService {
 
     public ResponseEntity<?> getCustomerByPagination(Integer page, Integer size);
+
+
+    public ResponseEntity<?> getAdminByPagination(Integer page, Integer size);
+
+    public ResponseEntity<?> getSellerByPagination(Integer page, Integer size);
+
+
 }

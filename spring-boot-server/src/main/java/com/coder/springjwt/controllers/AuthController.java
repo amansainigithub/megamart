@@ -123,11 +123,11 @@ public class AuthController {
 				}
 			});
 		}
-
+		user.setProjectRole("ROLE_SELLER");
 		user.setRoles(roles);
 		userRepository.save(user);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!",HttpStatus.CREATED));
+		return ResponseEntity.ok(new MessageResponse("SELLER User registered successfully!",HttpStatus.CREATED));
 	}
 
 

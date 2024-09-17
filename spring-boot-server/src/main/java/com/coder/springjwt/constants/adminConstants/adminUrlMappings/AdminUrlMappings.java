@@ -76,5 +76,8 @@ public class AdminUrlMappings {
     //FETCH CUSTOMER USER
     public static final String GET_CUSTOMER_BY_PAGINATION="/getCustomerByPagination";
 
+    public static final String GET_SELLER_BY_PAGINATION="/getSellerByPagination";
+    public static final String GET_ADMIN_BY_PAGINATION="/getAdminByPagination";
+
 
 }

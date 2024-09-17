@@ -6,11 +6,27 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MessageResponse {
+public class MessageResponse<T> {
 	private String message;
 
 	private HttpStatus status;
 
+	private T data;
+
+	public MessageResponse(String message) {
+		this.message = message;
+	}
+
+	public MessageResponse(String message, HttpStatus status) {
+		this.message = message;
+		this.status = status;
+	}
+
+	public MessageResponse(String message, T data) {
+		this.message = message;
+		this.data = data;
+	}
+
+	public MessageResponse() {
+	}
 }
