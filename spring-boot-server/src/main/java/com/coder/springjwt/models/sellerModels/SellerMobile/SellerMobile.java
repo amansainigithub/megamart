@@ -22,9 +22,10 @@ public class SellerMobile {
     private Long id;
 
     private String mobile;
+    private Boolean isVerified;
     private String otp;
     private LocalDateTime expiresAt;
-    private Boolean isVerified;
+
 
     // Getters and Setters
 

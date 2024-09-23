@@ -31,23 +31,33 @@ public class SellerAuthServiceImple implements SellerAuthService {
     public ResponseEntity<?> sellerMobile(SellerMobile sellerMobile) {
         MessageResponse response = new MessageResponse();
         try {
-            //Generate OTP FOR VALIDATE SELLER USER
-            String otp =  GenerateOTP.generateOtp(6);
-            log.info("Otp Generated Success  :: {}" + otp );
 
-            sellerMobile.setOtp(otp);
+            Optional<SellerMobile> sellerDataNode =   this.sellerMobileRepository.findByMobile(sellerMobile.getMobile());
 
-            // Set expiration time to 5 minutes from now
-            LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(OTP_VALIDITY_DURATION);
-            sellerMobile.setExpiresAt(expiresAt);
 
-            response.setMessage("DATA SAVED SUCCESS");
-            response.setStatus(HttpStatus.OK);
+            //If Data is Empty
+            if(sellerDataNode.isEmpty() )
+            {
+                ResponseEntity<?> responseEntity = this.saveSellerData(sellerMobile, response);
+                return responseEntity;
 
-            //save Seller Useer
-            SellerMobile sellerData = this.sellerMobileRepository.save(sellerMobile);
+            }else if (!sellerDataNode.isEmpty() && sellerDataNode.get().getIsVerified() == Boolean.FALSE){
+                //Deleted Data
+                this.sellerMobileRepository.deleteById(sellerDataNode.get().getId());
+                log.info("Data Deleted Success :: {} " + sellerDataNode.get().getId());
 
-            return ResponseGenerator.generateSuccessResponse(response ,"DATA SAVED SUCCESS");
+                // save New Seller Entry
+                ResponseEntity<?> responseEntity = this.saveSellerData(sellerMobile, response);
+                return responseEntity;
+
+            }else if(!sellerDataNode.isEmpty() && sellerDataNode.get().getIsVerified() == Boolean.TRUE){
+                response.setMessage("ALREADY_VERIFIED");
+                response.setStatus(HttpStatus.OK);
+                return ResponseGenerator.generateSuccessResponse(response,"SUCCESS");
+            }else{
+
+                return ResponseGenerator.generateBadRequestResponse(response,"SOMETHING WENT WRONG");
+            }
 
         }
         catch (Exception e)
@@ -60,6 +70,30 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
     }
 
+
+    private ResponseEntity<?> saveSellerData(SellerMobile sellerMobile ,  MessageResponse response)
+    {
+        //Generate OTP FOR VALIDATE SELLER USER
+        String otp =  GenerateOTP.generateOtp(6);
+        log.info("Otp Generated Success  :: {}" + otp );
+        sellerMobile.setOtp(otp);
+
+        // Set expiration time to 5 minutes from now
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(OTP_VALIDITY_DURATION);
+        sellerMobile.setExpiresAt(expiresAt);
+
+
+        response.setMessage("OTP Sent Success");
+        response.setStatus(HttpStatus.OK);
+
+        //save Seller Useer
+        this.sellerMobileRepository.save(sellerMobile);
+
+        log.info("Data saved Successfully");
+
+        return ResponseGenerator.generateSuccessResponse(response ,"DATA SAVED SUCCESS");
+    }
+
     @Override
     public ResponseEntity<?> validateSellerOtp(SellerOtpRequest sellerOtpRequest) {
         MessageResponse response = new MessageResponse();
@@ -68,27 +102,39 @@ public class SellerAuthServiceImple implements SellerAuthService {
         if(selleData.isEmpty())
         {
             response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setMessage("Data Not Found");
+            response.setMessage("DATA_NOT_FOUND");
             return ResponseGenerator.generateBadRequestResponse(response);
-        }
+        }else{
 
-        SellerMobile sellerMobile = selleData.get();
+            SellerMobile sellerMobile = selleData.get();
 
-        if(CheckExpiryAndValidateSellerOtp(sellerMobile , sellerOtpRequest))
-        {
-            System.out.println("OTP MOBILE VERIFIED SUCCESS");
-            response.setStatus(HttpStatus.OK);
-            response.setMessage("OTP Verified Success");
-            return ResponseGenerator.generateSuccessResponse(response,"OTP VERIFIED SUCCESS");
+            if(sellerMobile.getIsVerified().equals(Boolean.TRUE))
+            {
+                response.setStatus(HttpStatus.OK);
+                response.setMessage("YOU_ARE_ALREADY_AUTHENTICATED");
+                return ResponseGenerator.generateSuccessResponse(response,"USER_ALREADY_VERIFIED");
+            }
 
-        }
-        else {
-            System.out.println("OTP Expired OR Invalid");
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setMessage("OTP Expired OR Invalid");
-            return ResponseGenerator.generateBadRequestResponse(response,"OTP VERIFIED FAILED");
+            if(CheckExpiryAndValidateSellerOtp(sellerMobile , sellerOtpRequest))
+            {
+                //Set is Valid OTP TRUE...
+                sellerMobile.setIsVerified(Boolean.TRUE);
 
-        }
+                log.info("OTP SELLER MOBILE VERIFIED SUCCESS");
+                response.setStatus(HttpStatus.OK);
+                response.setMessage("OTP_VERIFIED_SUCCESS");
+                return ResponseGenerator.generateSuccessResponse(response,"OTP VERIFIED SUCCESS");
+
+            }
+            else {
+                System.out.println("OTP Expired OR Invalid");
+                response.setStatus(HttpStatus.BAD_REQUEST);
+                response.setMessage("OTP_EXPIRED_OR_INVALID");
+                return ResponseGenerator.generateBadRequestResponse(response,"OTP VERIFIED FAILED");
+
+            }
+
+            }
     }
 
 

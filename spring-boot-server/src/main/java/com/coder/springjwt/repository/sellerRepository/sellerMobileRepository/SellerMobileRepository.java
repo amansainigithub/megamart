@@ -14,4 +14,8 @@ public interface SellerMobileRepository  extends JpaRepository<SellerMobile,Long
 
     Optional<SellerMobile> findByMobile(String mobile);
 
+    //Optional<SellerMobile>  findByIsVerifiedAndMobile(String verified , String mobile );
+
+    Optional<SellerMobile> findByMobileAndIsVerified(String mobile, Boolean isVerified);
+
 }
