@@ -19,6 +19,9 @@ public class SellerUrlMappings {
 
     public static final String SELLER_SIGN_UP = "/sellerSignup";
 
+    public static final String SELLER_TAX = "/sellerTax";
+
+
 
 
 }

@@ -81,8 +81,6 @@ public class User extends BaseEntity {
 	@Column(length = 10)
 	private String isCustomerForgotPassword;
 
-
-
 	@Size(max = 100)
 	@Email
 	@Column(unique = true)
