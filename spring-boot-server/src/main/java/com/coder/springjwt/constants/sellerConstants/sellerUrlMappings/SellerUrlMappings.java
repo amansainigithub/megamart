@@ -13,9 +13,12 @@ public class SellerUrlMappings {
     //SignIn
     public static final String SELLER_SIGN_IN = "/sellerSignIn";
 
-    public static final String SELLER_MOBILE_CHECKER = "/sellerMobileChecker";
+    public static final String SELLER_SEND_OTP = "/sellerSendOtp";
 
     public static final String VALIDATE_SELLER_OTP = "/validateSellerOtp";
+
+    public static final String SELLER_SIGN_UP = "/sellerSignup";
+
 
 
 }

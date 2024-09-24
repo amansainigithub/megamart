@@ -35,11 +35,20 @@ public class User extends BaseEntity {
 	@Size(max = 10)
 	private String mobile;
 
+	@Size(max = 10)
+	private String sellerMobile;
+
 	@Column(name = "customerMobileVerify", columnDefinition = "varchar(255) default 'N'")
 	private String customerMobileVerify;
 
 	@Column(name = "customerEmailVerify", columnDefinition = "varchar(255) default 'N'")
 	private String customerEmailVerify;
+
+	@Column(name = "sellerMobileVerify", columnDefinition = "varchar(255) default 'N'")
+	private String sellerMobileVerify;
+
+	@Column(name = "sellerEmailVerify", columnDefinition = "varchar(255) default 'N'")
+	private String sellerEmailVerify;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -62,6 +71,9 @@ public class User extends BaseEntity {
 
 	@Column(name = "customerRegisterComplete", columnDefinition = "varchar(255) default 'N'")
 	private String customerRegisterComplete ;
+
+	@Column(name = "sellerRegisterComplete", columnDefinition = "varchar(255) default 'N'")
+	private String sellerRegisterComplete ;
 
 	@Column(length = 50)
 	private String customerForgotPasswordOtp ;
@@ -304,6 +316,31 @@ public class User extends BaseEntity {
 		this.customerMobileVerify = customerMobileVerify;
 	}
 
+	public String getSellerMobileVerify() {
+		return sellerMobileVerify;
+	}
+
+	public void setSellerMobileVerify(String sellerMobileVerify) {
+		this.sellerMobileVerify = sellerMobileVerify;
+	}
+
+	public String getSellerEmailVerify() {
+		return sellerEmailVerify;
+	}
+
+	public void setSellerEmailVerify(String sellerEmailVerify) {
+		this.sellerEmailVerify = sellerEmailVerify;
+	}
+
+
+	public String getSellerRegisterComplete() {
+		return sellerRegisterComplete;
+	}
+
+	public void setSellerRegisterComplete(String sellerRegisterComplete) {
+		this.sellerRegisterComplete = sellerRegisterComplete;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -312,14 +349,18 @@ public class User extends BaseEntity {
 				", email='" + email + '\'' +
 				", password='" + password + '\'' +
 				", mobile='" + mobile + '\'' +
+				", sellerMobile='" + sellerMobile + '\'' +
 				", customerMobileVerify='" + customerMobileVerify + '\'' +
 				", customerEmailVerify='" + customerEmailVerify + '\'' +
+				", sellerMobileVerify='" + sellerMobileVerify + '\'' +
+				", sellerEmailVerify='" + sellerEmailVerify + '\'' +
 				", roles=" + roles +
 				", passKey='" + passKey + '\'' +
 				", custUsername='" + custUsername + '\'' +
 				", customerMobileOtp='" + customerMobileOtp + '\'' +
 				", projectRole='" + projectRole + '\'' +
 				", customerRegisterComplete='" + customerRegisterComplete + '\'' +
+				", sellerRegisterComplete='" + sellerRegisterComplete + '\'' +
 				", customerForgotPasswordOtp='" + customerForgotPasswordOtp + '\'' +
 				", isCustomerForgotPassword='" + isCustomerForgotPassword + '\'' +
 				", customerEmail='" + customerEmail + '\'' +
@@ -331,5 +372,13 @@ public class User extends BaseEntity {
 				", operatingSystem='" + operatingSystem + '\'' +
 				", browserName='" + browserName + '\'' +
 				'}';
+	}
+
+	public String getSellerMobile() {
+		return sellerMobile;
+	}
+
+	public void setSellerMobile(String sellerMobile) {
+		this.sellerMobile = sellerMobile;
 	}
 }
