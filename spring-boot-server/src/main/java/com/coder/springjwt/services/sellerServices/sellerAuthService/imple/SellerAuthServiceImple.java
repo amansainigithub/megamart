@@ -308,7 +308,7 @@ public class SellerAuthServiceImple implements SellerAuthService {
                             this.sellerTaxRepository.save(sellerTax);
                             log.info("Seller Tax Data Saved Success  {}" + sellerTaxPayload.getUsername());
 
-                            response.setMessage("GST Verify & Data saved Success");
+                            response.setMessage("GST_VERIFIED");
                             response.setStatus(HttpStatus.OK);
                             return ResponseGenerator.generateSuccessResponse(response,"Success");
                         }else{
