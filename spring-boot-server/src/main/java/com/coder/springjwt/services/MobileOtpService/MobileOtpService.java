@@ -8,5 +8,5 @@ import java.io.IOException;
 @Component
 public interface MobileOtpService {
 
-    void sendSMS(String number , String messageContent , String userRole) throws IOException;
+    void sendSMS(String number , String messageContent , String userRole , String areaMode) throws IOException;
 }

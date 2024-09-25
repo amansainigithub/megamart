@@ -1,12 +1,14 @@
 package com.coder.springjwt.payload.emailPayloads;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class EmailHtmlPayload {
 
     private String recipient;
@@ -14,6 +16,13 @@ public class EmailHtmlPayload {
     private String subject;
 
     //for send to Html content
+    @Column(length = 10000)
     private String htmlContent;
+
+    private String areaMode;
+
+    private String status;
+
+    private String role;
 
 }

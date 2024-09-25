@@ -3,15 +3,21 @@ package com.coder.springjwt.services.emailServices.EmailService.imple;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.payload.emailPayloads.EmailPayload;
-import com.coder.springjwt.payload.emailPayloads.EmailSendContent;
+import com.coder.springjwt.payload.emailPayloads.EmailBucket;
 import com.coder.springjwt.repository.emailRepository.EmailRepository;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
+import com.coder.springjwt.util.MessageResponse;
+import com.coder.springjwt.util.ResponseGenerator;
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -30,8 +36,11 @@ public class EmailServiceImple implements EmailService {
     EmailRepository emailRepository;
 
 
-    public String sendSimpleMail(EmailPayload emailPayload)
+    public ResponseEntity<?> sendSimpleMail(EmailPayload emailPayload)
     {
+        log.info("Simple Mail Process Starting");
+        MessageResponse response = new MessageResponse();
+
         // Try block to check for exceptions
         try {
             // Creating a simple mail message
@@ -54,7 +63,9 @@ public class EmailServiceImple implements EmailService {
             this.saveEmailData(emailPayload);
             log.info("======Mail Sent Success========");
 
-            return "email Sent Success";
+            response.setMessage("MAIL SEND SUCCESS");
+            response.setStatus(HttpStatus.OK);
+            return ResponseGenerator.generateSuccessResponse(response,"Success");
         }
 
         // Catch block to handle the exceptions
@@ -66,7 +77,9 @@ public class EmailServiceImple implements EmailService {
             this.saveEmailData(emailPayload);
 
             e.printStackTrace();
-            return "Error while Sending Mail";
+            response.setMessage("MAIL SEND FAILED");
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            return ResponseGenerator.generateBadRequestResponse(response,"Failed");
         }
 
     }
@@ -77,28 +90,87 @@ public class EmailServiceImple implements EmailService {
         node.get("username");
         node.get("roles");
 
-        // Create a JSONObject from the Map
-        JSONObject jsonObject = new JSONObject(emailPayload);
-        // Convert the JSONObject to a JSON string
-        String jsonString = jsonObject.toString();
+        EmailBucket emailBucket = new EmailBucket();
+        emailBucket.setUser(node.get("username"));
+        emailBucket.setRole(emailPayload.getRole());
+        emailBucket.setContent(emailPayload.getContent());
+        emailBucket.setAreaMode(emailPayload.getAreaMode());
+        emailBucket.setStatus(emailPayload.getStatus());
+        emailBucket.setMailFrom(sender);
+        emailBucket.setMailTo(emailPayload.getRecipient());
 
-        EmailSendContent emailSendContent = new EmailSendContent();
-        emailSendContent.setUser(node.get("username"));
-        emailSendContent.setRole(node.get("role"));
-        emailSendContent.setContent(emailPayload.getContent());
-        emailSendContent.setRequestJson(jsonString);
-        emailSendContent.setResponseJson("setResponseJson");
-        emailSendContent.setMailArea(emailPayload.getMailArea());
-        emailSendContent.setStatus(emailPayload.getStatus());
-        emailSendContent.setMailFrom(sender);
-        emailSendContent.setMailTo(emailPayload.getRecipient());
-
-        EmailSendContent save = this.emailRepository.save(emailSendContent);
+        this.emailRepository.save(emailBucket);
         log.info("Data Saved Success Email Content ");
     }
 
     @Override
-    public String sendHtmlMail(EmailHtmlPayload emailHtmlPayload) {
-        return null;
+    public ResponseEntity<?> sendHtmlMail(EmailHtmlPayload emailHtmlPayload) {
+
+        log.info("HTML Mail Process Starting");
+
+        MessageResponse response = new MessageResponse();
+
+        // Try block to check for exceptions
+        try {
+            // Creating a simple mail message
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            // Setting up necessary details
+            helper.setText(emailHtmlPayload.getHtmlContent(), true);
+            helper.setTo(sender);
+            helper.setSubject(emailHtmlPayload.getSubject());
+            helper.setFrom(emailHtmlPayload.getRecipient());
+
+            // Sending the mail
+            javaMailSender.send(mimeMessage);
+
+            //set mail Status
+            emailHtmlPayload.setStatus("SUCCESS");
+
+            //Save Data to DB
+            this.saveEmailHtmlData(emailHtmlPayload);
+            log.info("======HTML Mail Sent Success========");
+
+            response.setMessage("MAIL SEND SUCCESS");
+            response.setStatus(HttpStatus.OK);
+            return ResponseGenerator.generateSuccessResponse(response,"Success");
+        }
+
+        // Catch block to handle the exceptions
+        catch (Exception e) {
+            //set mail Status
+            emailHtmlPayload.setStatus("FAILED");
+            //Save Data to DB
+            this.saveEmailHtmlData(emailHtmlPayload);
+
+            e.printStackTrace();
+
+            response.setMessage("MAIL SEND FAILED");
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            return ResponseGenerator.generateBadRequestResponse(response,"Failed");
+        }
     }
+
+
+    public void saveEmailHtmlData(EmailHtmlPayload emailHtmlPayload)
+    {
+        Map<String,String> node =  UserHelper.getCurrentUser();
+        node.get("username");
+        node.get("roles");
+
+        EmailBucket emailBucket = new EmailBucket();
+        emailBucket.setUser(node.get("username"));
+        emailBucket.setRole(emailHtmlPayload.getRole());
+        emailBucket.setContent(emailHtmlPayload.getHtmlContent());
+        emailBucket.setAreaMode(emailHtmlPayload.getAreaMode());
+        emailBucket.setStatus(emailHtmlPayload.getStatus());
+        emailBucket.setIsHtmlContent(Boolean.TRUE);
+        emailBucket.setMailFrom(sender);
+        emailBucket.setMailTo(emailHtmlPayload.getRecipient());
+
+        this.emailRepository.save(emailBucket);
+        log.info("Data Saved Success Email Content ");
+    }
+
+
 }

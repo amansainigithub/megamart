@@ -7,24 +7,23 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "emailSendContent")
-public class EmailSendContent extends BaseEntity {
+@Table(name = "emailBucket")
+public class EmailBucket extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String user;
 
     private String role;
 
+    private String areaMode;
+
+    @Column(length = 10000)
     private String content;
 
-    private String requestJson;
-
-    private String responseJson;
-
-    private String mailArea;
+    private Boolean isHtmlContent;
 
     private String status;
 

@@ -163,7 +163,8 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
         //SEND OTP TO MOBILE
         try {
-            mobileOtpService.sendSMS(freshUserPayload.getUsername(), OtpMessageContent.getMessageContent(otp),"CUSTOMER");
+            mobileOtpService.sendSMS(freshUserPayload.getUsername(),
+                    OtpMessageContent.getMessageContent(otp),"CUSTOMER" ,"MODE");
         }
         catch (Exception e)
         {
@@ -320,7 +321,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                   //SEND OTP TO MOBILE
                   try {
                       //Username == MobileNumber
-                      mobileOtpService.sendSMS(custForgotPasswordPayload.getUsername(), OtpMessageContent.forgotPasswordOtpContent(otp),"CUSTOMER");
+                      mobileOtpService.sendSMS(custForgotPasswordPayload.getUsername(), OtpMessageContent.forgotPasswordOtpContent(otp),"CUSTOMER" ,"MODE");
                   }
                   catch (Exception e)
                   {

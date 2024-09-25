@@ -1,5 +1,6 @@
 package com.coder.springjwt.payload.emailPayloads;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Data
@@ -10,11 +11,14 @@ public class EmailPayload {
 
     private String subject;
 
+    @Column(length = 10000)
     private String content;
 
-    private String mailArea;
+    private String areaMode;
 
     private String status;
+
+    private String role;
 
 
 

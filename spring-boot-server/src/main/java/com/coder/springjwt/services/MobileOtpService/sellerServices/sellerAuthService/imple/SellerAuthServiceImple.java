@@ -1,5 +1,8 @@
-package com.coder.springjwt.services.sellerServices.sellerAuthService.imple;
+package com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.imple;
 
+import com.coder.springjwt.constants.OtpMessageContent;
+import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.SellerEmailConstants;
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.validateGst.ValidateGst;
@@ -9,6 +12,8 @@ import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
 import com.coder.springjwt.models.sellerModels.sellerTax.SellerTax;
+import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerMobilePayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerTaxPayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import com.coder.springjwt.repository.RoleRepository;
@@ -16,13 +21,14 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerGstRepository.SellerTaxRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerMobileRepository.SellerMobileRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
+import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
+import com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.SellerAuthService;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
-import com.coder.springjwt.services.sellerServices.sellerAuthService.SellerAuthService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,21 +68,35 @@ public class SellerAuthServiceImple implements SellerAuthService {
     @Autowired
     private SellerTaxRepository sellerTaxRepository;
 
+    @Autowired
+    private MobileOtpService mobileOtpService;
+
     private static final long OTP_VALIDITY_DURATION = 1;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private EmailService emailService;
+
     @Override
-    public ResponseEntity<?> sellerMobile(SellerMobile sellerMobile) {
+    public ResponseEntity<?> sellerMobile(SellerMobilePayload sellerMobilePayload) {
         MessageResponse response = new MessageResponse();
         try {
 
+            SellerMobile sellerMobile = modelMapper.map(sellerMobilePayload, SellerMobile.class);
+
+            log.info(("seller mobile Data By model mapper:: " + sellerMobile.getIsVerified()));
+
             Optional<User>  verifySeller = this.userRepository.
-                                        findBySellerMobileAndSellerRegisterComplete(sellerMobile.getMobile() , "Y");
+                                            findBySellerMobileAndSellerRegisterComplete(sellerMobile.getMobile() ,
+                                                "Y");
 
             if(verifySeller.isPresent())
             {
-                response.setMessage("ALREADY_VERIFIED");
+                response.setMessage(SellerMessageResponse.ALREADY_VERIFIED);
                 response.setStatus(HttpStatus.OK);
-                return ResponseGenerator.generateSuccessResponse(response,"SUCCESS");
+                return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
             }
 
             Optional<SellerMobile> sellerDataNode =   this.sellerMobileRepository.findByMobile(sellerMobile.getMobile());
@@ -95,7 +115,7 @@ public class SellerAuthServiceImple implements SellerAuthService {
         }
         catch (Exception e)
         {
-            response.setMessage("DATA NOT SAVED");
+            response.setMessage(SellerMessageResponse.DATA_NOT_FOUND);
             response.setStatus(HttpStatus.BAD_REQUEST);
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(response);
@@ -108,19 +128,32 @@ public class SellerAuthServiceImple implements SellerAuthService {
         //Generate OTP FOR VALIDATE SELLER USER
         String otp =  GenerateOTP.generateOtp(6);
         log.info("Otp Generated Success  :: {}" + otp );
+
+        //Send OTP SMS
+       try {
+           this.mobileOtpService.sendSMS( sellerMobile.getMobile() ,
+                                          OtpMessageContent.sellerRegistrationContent(otp),
+                                   "ROLE_SELLER" ,
+                                   "REGISTER");
+       }catch (Exception e)
+       {
+           log.error("Error :: " + e.getMessage());
+           e.printStackTrace();
+       }
         sellerMobile.setOtp(otp);
 
         // Set expiration time to 5 minutes from now
         LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(OTP_VALIDITY_DURATION);
         sellerMobile.setExpiresAt(expiresAt);
-        //save Seller Useer
+
+        //save Seller User
         this.sellerMobileRepository.save(sellerMobile);
 
         log.info("Data saved Successfully");
 
-        response.setMessage("OTP Sent Success");
+        response.setMessage(SellerMessageResponse.OTP_SEND_SUCCESS);
         response.setStatus(HttpStatus.OK);
-        return ResponseGenerator.generateSuccessResponse(response ,"DATA SAVED SUCCESS");
+        return ResponseGenerator.generateSuccessResponse(response ,SellerMessageResponse.DATA_SAVED_SUCCESS);
     }
 
 
@@ -134,7 +167,7 @@ public class SellerAuthServiceImple implements SellerAuthService {
         if(selleData.isEmpty())
         {
             response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setMessage("DATA_NOT_FOUND");
+            response.setMessage(SellerMessageResponse.DATA_NOT_FOUND);
             return ResponseGenerator.generateBadRequestResponse(response);
         }else{
             SellerMobile sellerMobile = selleData.get();
@@ -147,7 +180,6 @@ public class SellerAuthServiceImple implements SellerAuthService {
                     log.info("Flying to create new Seller ");
                 }
 
-
             if(validateSellerOtp(sellerMobile , sellerOtpRequest))
             {
                 //Set is Valid OTP TRUE...
@@ -155,15 +187,15 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
                 log.info("OTP SELLER MOBILE VERIFIED SUCCESS");
                 response.setStatus(HttpStatus.OK);
-                response.setMessage("OTP_VERIFIED_SUCCESS");
-                return ResponseGenerator.generateSuccessResponse(response,"OTP VERIFIED SUCCESS");
+                response.setMessage(SellerMessageResponse.OTP_VERIFIED_SUCCESS);
+                return ResponseGenerator.generateSuccessResponse(response,SellerMessageResponse.SUCCESS);
 
             }
             else {
-                System.out.println("OTP Expired OR Invalid");
+                log.info("OTP Expired OR Invalid");
                 response.setStatus(HttpStatus.BAD_REQUEST);
-                response.setMessage("OTP_EXPIRED_OR_INVALID");
-                return ResponseGenerator.generateBadRequestResponse(response,"OTP VERIFIED FAILED");
+                response.setMessage(SellerMessageResponse.OTP_EXPIRED_OR_INVALID);
+                return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.OTP_EXPIRED_OR_INVALID);
             }
 
         }
@@ -174,7 +206,6 @@ public class SellerAuthServiceImple implements SellerAuthService {
         if (sellerMobile != null) {
 
             // Check if OTP is expired
-            System.out.println(" EXPIRED :: " + LocalDateTime.now().isBefore(sellerMobile.getExpiresAt()));
 
             if (LocalDateTime.now().isBefore(sellerMobile.getExpiresAt())) {
                 // Compare OTPs
@@ -191,18 +222,17 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
     @Override
     public ResponseEntity<?> sellerSignUp(SellerLoginPayload sellerLoginPayload ,  HttpServletRequest request) {
-        System.out.println(sellerLoginPayload);
 
         if (userRepository.existsByUsername(sellerLoginPayload.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email ID already taken!", HttpStatus.BAD_REQUEST));
+                    .body(new MessageResponse(SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN , HttpStatus.BAD_REQUEST));
         }
 
         if (userRepository.existsByEmail(sellerLoginPayload.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!", HttpStatus.BAD_REQUEST));
+                    .body(new MessageResponse(SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN, HttpStatus.BAD_REQUEST));
         }
 
         Optional<SellerMobile> sellerDataByMobileVerified = this.sellerMobileRepository.
@@ -213,7 +243,7 @@ public class SellerAuthServiceImple implements SellerAuthService {
             User user  = new User();
 
             //USERNAME
-            user.setUsername(sellerLoginPayload.getMobile() + ":SLR");
+            user.setUsername( sellerLoginPayload.getMobile() + SellerMessageResponse.SLR );
 
             //Set Email
             user.setEmail("ROLE_SELLER-" + GenerateOTP.generateOtpByAlpha(6) + "-" + sellerLoginPayload.getEmail());
@@ -253,10 +283,21 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
             userRepository.save(user);
 
-            return ResponseEntity.ok(new MessageResponse("Seller Create Account Successfully !",HttpStatus.CREATED));
+            //send Mail To seller
+            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
+            emailHtmlPayload.setRole("ROLE_SELLER");
+            emailHtmlPayload.setSubject("Registration Complete Successfully");
+            emailHtmlPayload.setAreaMode("SELLER_REGISTRATION");
+            emailHtmlPayload.setRecipient(sellerLoginPayload.getEmail());
+            emailHtmlPayload.setHtmlContent(SellerEmailConstants.registrationCompleted());
+            emailHtmlPayload.setStatus("");
+
+            this.emailService.sendHtmlMail(emailHtmlPayload);
+
+            return ResponseEntity.ok(new MessageResponse(SellerMessageResponse.SELLER_ACCOUNT_CREATED_SUCCESS ,HttpStatus.CREATED));
 
         }else{
-            return ResponseEntity.badRequest().body(new MessageResponse("USER_NOT_FOUND_HERE !! ", HttpStatus.BAD_REQUEST));
+            return ResponseEntity.badRequest().body(new MessageResponse(SellerMessageResponse.USER_NOT_FOUND, HttpStatus.BAD_REQUEST));
 
         }
     }
@@ -277,10 +318,11 @@ public class SellerAuthServiceImple implements SellerAuthService {
                 {
                     //second Validate User username and Registration Completed Flag (Y) AND ROLE-SELLER
                     Optional<User> sellerData = this.userRepository.findByUsernameAndSellerRegisterCompleteAndProjectRole
-                            (sellerTaxPayload.getUsername()+":SLR", "Y", ERole.ROLE_SELLER.toString());
+                                                (sellerTaxPayload.getUsername()+SellerMessageResponse.SLR, "Y",
+                                                 ERole.ROLE_SELLER.toString());
 
                     //Seller is Present in the Database or seller is Valid
-                    System.out.print("sellerData :: " + sellerData.isPresent());
+                    log.info("sellerData :: " + sellerData.isPresent());
                     if(sellerData.isPresent())
                     {
                         log.info("Seller Data Is Present");
@@ -288,9 +330,9 @@ public class SellerAuthServiceImple implements SellerAuthService {
                         {
                             log.info("Seller GST is Already Verified");
 
-                            response.setMessage("Seller is Already Verified");
+                            response.setMessage(SellerMessageResponse.SELLER_ALREADY_VERIFIED);
                             response.setStatus(HttpStatus.OK);
-                            return ResponseGenerator.generateSuccessResponse(response,"Success");
+                            return ResponseGenerator.generateSuccessResponse(response,SellerMessageResponse.SUCCESS);
                         }
 
                         if (this.verifyGst(sellerTaxPayload.getGstNumber()))
@@ -308,27 +350,27 @@ public class SellerAuthServiceImple implements SellerAuthService {
                             this.sellerTaxRepository.save(sellerTax);
                             log.info("Seller Tax Data Saved Success  {}" + sellerTaxPayload.getUsername());
 
-                            response.setMessage("GST_VERIFIED");
+                            response.setMessage(SellerMessageResponse.GST_VERIFIED);
                             response.setStatus(HttpStatus.OK);
-                            return ResponseGenerator.generateSuccessResponse(response,"Success");
+                            return ResponseGenerator.generateSuccessResponse(response,SellerMessageResponse.SUCCESS);
                         }else{
-                            response.setMessage("GST Number is Invalid");
+                            response.setMessage(SellerMessageResponse.INVALID_GST_NUMBER);
                             response.setStatus(HttpStatus.BAD_GATEWAY);
-                            return ResponseGenerator.generateBadRequestResponse(response,"Failed");
+                            return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.FAILED);
                         }
                     }
                 }
                 throw  new RuntimeException("SOMETHING WENT WRONG");
             }else{
-                    response.setMessage("please Enter a valid GST Number");
+                response.setMessage(SellerMessageResponse.INVALID_GST_NUMBER);
                     response.setStatus(HttpStatus.BAD_REQUEST);
-                    return ResponseGenerator.generateBadRequestResponse(response,"Something went wrong");
+                    return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.SOMETHING_WENT_WRONG);
                 }
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(response,"Something went wrong1");
+            return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.SOMETHING_WENT_WRONG);
         }
     }
 
@@ -372,9 +414,6 @@ public class SellerAuthServiceImple implements SellerAuthService {
         }
         return flag;
     }
-
-
-
 
     public void saveOsLeakedData(HttpServletRequest request, User user)
     {

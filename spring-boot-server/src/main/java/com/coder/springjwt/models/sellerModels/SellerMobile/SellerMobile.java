@@ -18,11 +18,11 @@ import java.time.LocalDateTime;
 public class SellerMobile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String mobile;
-    private Boolean isVerified;
+    private Boolean isVerified = Boolean.FALSE;
     private String otp;
     private LocalDateTime expiresAt;
 

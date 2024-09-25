@@ -16,4 +16,10 @@ public class OtpMessageContent {
         return "We’ve sent a one-time password "+OTP+" to your registered Mobile Number is valid for 30 mins." +
                 "Please DO NOT share this OTP with anyone to keep your account safe ";
     }
+
+    public static String sellerRegistrationContent(String OTP)
+    {
+        return "We’ve sent a one-time password "+OTP+" to your registered Mobile Number is valid for 2 mins." +
+                "Please DO NOT share this OTP with anyone to keep your account safe ";
+    }
 }

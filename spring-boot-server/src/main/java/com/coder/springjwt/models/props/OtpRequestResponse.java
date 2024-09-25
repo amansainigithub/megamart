@@ -1,11 +1,14 @@
 package com.coder.springjwt.models.props;
 
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.Map;
 
 @Data
 @Entity
@@ -16,11 +19,17 @@ import lombok.ToString;
 public class OtpRequestResponse extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String userName;
+
+    private String areaMode;
+
+    @Column(length = 1000)
     private String request;
 
+    @Column(length = 1000)
     private String response;
 
     private String status;

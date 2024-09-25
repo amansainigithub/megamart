@@ -1,7 +1,8 @@
-package com.coder.springjwt.services.sellerServices.sellerAuthService;
+package com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService;
 
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerMobilePayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerTaxPayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 public interface SellerAuthService {
 
 
-    public ResponseEntity<?> sellerMobile(SellerMobile sellerMobile);
+    public ResponseEntity<?> sellerMobile(SellerMobilePayload sellerMobilePayload);
 
     public ResponseEntity<?> validateSellerOtp(SellerOtpRequest sellerOtpRequest);
 

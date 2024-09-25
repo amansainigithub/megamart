@@ -1,9 +1,11 @@
 package com.coder.springjwt.controllers.seller.sellerAuthController;
 
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
+import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
 import com.coder.springjwt.payload.response.JwtResponse;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerMobilePayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerTaxPayload;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
 import com.coder.springjwt.repository.RoleRepository;
@@ -11,7 +13,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
-import com.coder.springjwt.services.sellerServices.sellerAuthService.SellerAuthService;
+import com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.SellerAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(SellerUrlMappings.SELLER_BASE_URL)
+@RequestMapping(SellerUrlMappings.SELLER_AUTH_CONTROLLER)
 public class SellerAuthController {
 
     @Autowired
@@ -56,7 +58,9 @@ public class SellerAuthController {
 
 
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(sellerLoginRequest.getEmail()+":SLR", sellerLoginRequest.getPassword()));
+                                            new UsernamePasswordAuthenticationToken(
+                                                    sellerLoginRequest.getEmail()+ SellerMessageResponse.SLR,
+                                                    sellerLoginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
@@ -67,7 +71,7 @@ public class SellerAuthController {
                     .collect(Collectors.toList());
 
             for(String role : roles){
-                if(role.equals("ROLE_SELLER")){
+                if(role.equals(ERole.ROLE_SELLER)){
                     return ResponseEntity.ok(new JwtResponse(jwt,
                             userDetails.getId(),
                             userDetails.getUsername(),
@@ -75,14 +79,12 @@ public class SellerAuthController {
                             roles));
                 }
             }
-
         return ResponseEntity.badRequest().body("Error: Unauthorized");
-
     }
 
     @PostMapping(SellerUrlMappings.SELLER_SEND_OTP)
-    public ResponseEntity<?> sellerSendOtp(@Validated @RequestBody SellerMobile SellerMobile) {
-        return sellerAuthService.sellerMobile(SellerMobile);
+    public ResponseEntity<?> sellerSendOtp(@Validated @RequestBody SellerMobilePayload sellerMobilePayload) {
+        return sellerAuthService.sellerMobile(sellerMobilePayload);
     }
 
     @PostMapping(SellerUrlMappings.VALIDATE_SELLER_OTP)
@@ -102,12 +104,6 @@ public class SellerAuthController {
 
         return sellerAuthService.saveAndVerifyTaxDetails(sellerTaxPayload);
     }
-
-
-
-
-
-
 
 
 }

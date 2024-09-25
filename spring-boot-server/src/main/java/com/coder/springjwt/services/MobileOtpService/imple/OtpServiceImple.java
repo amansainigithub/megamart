@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.MobileOtpService.imple;
 
 import com.coder.springjwt.exception.customerException.PropsNotFoundException;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.props.Api_Props;
 import com.coder.springjwt.models.props.OtpRequestResponse;
 import com.coder.springjwt.repository.OtpReqResRepository.OtpRequestResponseRepo;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 @Component
 public class OtpServiceImple implements MobileOtpService {
@@ -27,20 +29,23 @@ public class OtpServiceImple implements MobileOtpService {
     private ApiPropsRepository apiPropsRepository;
     @Autowired
     OtpRequestResponseRepo otpRequestResponseRepo;
-
     private static String LANGUAGE = "english";
     private static String ROUTE = "q";
 
 
-    public  void sendSMS(String number , String messageContent , String userRole) throws IOException {
+    public  void sendSMS(String number , String messageContent , String userRole , String areaMode) throws IOException {
         logger.info("Starting Messaging Service");
+
+        //get UserName
+        Map<String,String> node =  UserHelper.getCurrentUser();
+        String username =  node.get("username");
 
         //Get API Properties
         Api_Props props = this.apiPropsRepository.findByProvider("FAST2SMS");
         if(props == null)
         {
             //Save Data to Props
-            this.savePropsRequestResponse(number,userRole);
+            this.savePropsRequestResponse(number,userRole , areaMode , username);
 
             logger.error("Props Not Found :" +OtpServiceImple.class.getName());
             throw new PropsNotFoundException("Props Not Found " + "`FAST2SMS`");
@@ -70,11 +75,11 @@ public class OtpServiceImple implements MobileOtpService {
                         }
                     }
                     logger.info("OTP send Successfully");
-                    this.saveSuccessRequestResponse(number,response.toString() ,code,smsUrl , userRole);
+                    this.saveSuccessRequestResponse(number,response.toString() ,code,smsUrl , userRole , areaMode , username);
                     logger.info("OTP saveSuccessRequestResponse Save Success");
 
             }else{
-                this.saveErrorRequestResponse(number,code,smsUrl , userRole);
+                this.saveErrorRequestResponse(number,code,smsUrl , userRole , areaMode , username);
             }
             } catch (MalformedURLException e) {
                 throw new RuntimeException("Message Not Sent ! Error in FastSMS API " + this.getClass().getName());
@@ -98,7 +103,7 @@ public class OtpServiceImple implements MobileOtpService {
     }
 
 
-    public void savePropsRequestResponse(String number , String userRole)
+    public void savePropsRequestResponse(String number , String userRole , String areaMode , String username)
     {
         JSONObject jsonNode = new JSONObject();
         try {
@@ -107,6 +112,11 @@ public class OtpServiceImple implements MobileOtpService {
             jsonNode.put("code","500");
             jsonNode.put("status","failed");
             jsonNode.put("message","API Props Error and FAST2SMS Key not Matched in DB--");
+
+            //Set AreaMode and CurrentUser
+            otpRequestResponse.setUserName(username);
+            otpRequestResponse.setAreaMode(areaMode);
+
             //Set data to save Request Response Table
             otpRequestResponse.setStatus("FAILED");
             otpRequestResponse.setMessage("Internal Server Error");
@@ -123,11 +133,18 @@ public class OtpServiceImple implements MobileOtpService {
         }
     }
 
-    public void saveSuccessRequestResponse(String number , String response , int code ,String smsUrl , String userRole)
+    public void saveSuccessRequestResponse(String number , String response , int code ,String smsUrl ,
+                                           String userRole , String areaMode, String username)
     {
+
         try {
             OtpRequestResponse otpRequestResponse = new OtpRequestResponse();
             JSONObject jsonObject = new JSONObject(response.toString());
+
+            //Set User and Mode
+            otpRequestResponse.setAreaMode(areaMode);
+            otpRequestResponse.setUserName(username);
+
 
             //Set data to save Request Response Table
             otpRequestResponse.setStatus("SUCCESS");
@@ -146,7 +163,7 @@ public class OtpServiceImple implements MobileOtpService {
         }
     }
 
-    public void saveErrorRequestResponse(String number, int code ,String smsUrl , String userRole)
+    public void saveErrorRequestResponse(String number, int code ,String smsUrl , String userRole , String areaMode , String username)
     {
         JSONObject jsonNode = new JSONObject();
         try {
