@@ -54,7 +54,8 @@ public class AdminAuthServiceImple implements AdminAuthService {
     private EmailService simpleEmailService;
 
     @Override
-    public ResponseEntity<?> adminAuthenticateUser(LoginRequest loginRequest) {
+    public ResponseEntity<?>
+    adminAuthenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
