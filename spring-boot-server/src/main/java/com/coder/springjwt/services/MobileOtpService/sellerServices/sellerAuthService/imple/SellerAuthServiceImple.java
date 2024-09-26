@@ -222,24 +222,31 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
     @Override
     public ResponseEntity<?> sellerSignUp(SellerLoginPayload sellerLoginPayload ,  HttpServletRequest request) {
+        log.info("Seller Sign Up Starting..");
+        MessageResponse response =new MessageResponse();
 
-        if (userRepository.existsByUsername(sellerLoginPayload.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN , HttpStatus.BAD_REQUEST));
-        }
+//        if (userRepository.existsByUsername(sellerLoginPayload.getEmail())) {
+//            System.out.println("Username Existes");
+//            response.setMessage(SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN );
+//            response.setStatus(HttpStatus.BAD_GATEWAY);
+//            return ResponseGenerator.generateBadRequestResponse(response , "Failed");
+//        }
 
-        if (userRepository.existsByEmail(sellerLoginPayload.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN, HttpStatus.BAD_REQUEST));
+        if (userRepository.existsBySellerEmailAndSellerEmailVerify(sellerLoginPayload.getEmail() , "N")) {
+            log.info("Email Exist but Not Verified");
+            response.setMessage( SellerMessageResponse.EMAIL_ID_ALREADY_TAKEN );
+            response.setStatus( HttpStatus.BAD_GATEWAY);
+            return ResponseGenerator.generateBadRequestResponse( response , "Failed" );
         }
 
         Optional<SellerMobile> sellerDataByMobileVerified = this.sellerMobileRepository.
                 findByMobileAndIsVerified(sellerLoginPayload.getMobile(), Boolean.TRUE);
 
+
         if(sellerDataByMobileVerified.isPresent())
         {
+            log.info("Seller Data Found in Mobile Seller:: ");
+
             User user  = new User();
 
             //USERNAME
@@ -282,22 +289,29 @@ public class SellerAuthServiceImple implements SellerAuthService {
             this.saveOsLeakedData(request , user);
 
             userRepository.save(user);
+            log.info("Data Saved Success :: usr");
 
             //send Mail To seller
+            log.info("mail Process Starting");
             EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
             emailHtmlPayload.setRole("ROLE_SELLER");
             emailHtmlPayload.setSubject("Registration Complete Successfully");
             emailHtmlPayload.setAreaMode("SELLER_REGISTRATION");
+            System.out.println("sellerLoginPayload.getEmail( ==== :: "+ sellerLoginPayload.getEmail());
             emailHtmlPayload.setRecipient(sellerLoginPayload.getEmail());
             emailHtmlPayload.setHtmlContent(SellerEmailConstants.registrationCompleted());
             emailHtmlPayload.setStatus("");
 
             this.emailService.sendHtmlMail(emailHtmlPayload);
+            log.info("mail Sent Success");
 
-            return ResponseEntity.ok(new MessageResponse(SellerMessageResponse.SELLER_ACCOUNT_CREATED_SUCCESS ,HttpStatus.CREATED));
-
+            response.setMessage(SellerMessageResponse.SELLER_ACCOUNT_CREATED_SUCCESS);
+            response.setStatus(HttpStatus.CREATED);
+            return ResponseGenerator.generateSuccessResponse(response, "Success");
         }else{
-            return ResponseEntity.badRequest().body(new MessageResponse(SellerMessageResponse.USER_NOT_FOUND, HttpStatus.BAD_REQUEST));
+            response.setMessage(SellerMessageResponse.USER_NOT_FOUND);
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            return ResponseGenerator.generateBadRequestResponse(response, "FAILED");
 
         }
     }

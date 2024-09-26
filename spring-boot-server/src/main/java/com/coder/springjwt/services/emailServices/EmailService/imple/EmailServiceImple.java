@@ -117,9 +117,9 @@ public class EmailServiceImple implements EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             // Setting up necessary details
             helper.setText(emailHtmlPayload.getHtmlContent(), true);
-            helper.setTo(sender);
+            helper.setTo(emailHtmlPayload.getRecipient());
             helper.setSubject(emailHtmlPayload.getSubject());
-            helper.setFrom(emailHtmlPayload.getRecipient());
+            helper.setFrom(sender);
 
             // Sending the mail
             javaMailSender.send(mimeMessage);

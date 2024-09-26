@@ -20,7 +20,7 @@ public class SellerMessageResponse {
 
     public static final String OTP_EXPIRED_OR_INVALID = "Otp Expired or Invalid";
 
-    public static final String EMAIL_ID_ALREADY_TAKEN = "Error: Email ID already taken!";
+    public static final String EMAIL_ID_ALREADY_TAKEN = "Email ID already taken";
 
     public static final String SELLER_ACCOUNT_CREATED_SUCCESS = "Seller Account Created Success";
 

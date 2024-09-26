@@ -59,18 +59,14 @@ public class SellerAuthController {
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
-            System.out.print("Seller Auth Process Satrting");
             Authentication authentication = authenticationManager.authenticate(
                                             new UsernamePasswordAuthenticationToken(
                                                     loginRequest.getUsername()+ SellerMessageResponse.SLR,
                                                     loginRequest.getPassword()));
 
-        System.out.print("Seller Auth Process Satrting 22");
-
         Optional<User> userData  = this.userRepository.findBySellerMobileAndSellerRegisterComplete
                                      ("9818644140", "Y");
 
-        System.out.print("Seller Auth Process Satrting 2211 " +userData.isPresent());
         if(userData.isPresent())
         {
             SecurityContextHolder.getContext().setAuthentication(authentication);
