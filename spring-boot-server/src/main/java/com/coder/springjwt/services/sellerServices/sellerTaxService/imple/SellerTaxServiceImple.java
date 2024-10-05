@@ -1,7 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerTaxService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.helpers.validateGst.ValidateGst;
+import com.coder.springjwt.helpers.validateGstRegex.ValidateGstRegex;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.sellerTax.SellerTax;
@@ -86,7 +86,7 @@ public class SellerTaxServiceImple implements SellerTaxService {
         try {
 
             //check GST Pattern
-            if(ValidateGst.isValidGstNumber(sellerTaxPayload.getGstNumber()))
+            if(ValidateGstRegex.isValidGstNumberRegex(sellerTaxPayload.getGstNumber()))
             {
 
                 //First Validate User [username and password]

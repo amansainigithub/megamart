@@ -10,6 +10,10 @@ public class SellerUrlMappings {
     public static final String SELLER_BASE_URL = APPLICATION_CONTEXT_PATH + "/api/seller/v1";
 
 
+
+
+    //=======================================CONTROLLER=========================================================
+
     public static final String SELLER_AUTH_CONTROLLER = SELLER_BASE_URL + "/sellerAuthController";
 
     public static final String STATE_CITY_PINCODE_CONTROLLER = SELLER_BASE_URL + "/stateCityPincodeController";
@@ -24,13 +28,7 @@ public class SellerUrlMappings {
 
 
 
-
-
-
-
-
-
-
+    //=======================================API's=========================================================
 
     //SignIn API's
     public static final String SELLER_SIGN_IN = "/sellerSignIn";
@@ -41,13 +39,10 @@ public class SellerUrlMappings {
 
     public static final String SELLER_SIGN_UP = "/sellerSignup";
 
-    public static final String SELLER_TAX = "/sellerTax";
-
-
-
 
     public static final String STATE_CITY_PINCODE = "/stateCityPincode/{pincode}";
 
+    public static final String SELLER_TAX = "/sellerTax";
 
     //Seller pickup Data
     public static final String SELLER_PICKUP = "/sellerPickup";
