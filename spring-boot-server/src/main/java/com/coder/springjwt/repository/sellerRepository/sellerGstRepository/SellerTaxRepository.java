@@ -12,4 +12,6 @@ public interface SellerTaxRepository extends JpaRepository<SellerTax,Long> {
 
     Optional<SellerTax> findBySellerUsername(String username);
 
+    Optional<SellerTax> findByGstNumber(String gstNumber);
+
 }

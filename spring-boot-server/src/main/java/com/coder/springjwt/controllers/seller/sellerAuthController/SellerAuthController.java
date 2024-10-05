@@ -7,15 +7,13 @@ import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
 import com.coder.springjwt.payload.request.LoginRequest;
 import com.coder.springjwt.payload.response.JwtResponse;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerMobilePayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerTaxPayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.*;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
-import com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.SellerAuthService;
+import com.coder.springjwt.services.sellerServices.sellerAuthService.SellerAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -105,16 +103,12 @@ public class SellerAuthController {
 
     @PostMapping(SellerUrlMappings.SELLER_SIGN_UP)
     public ResponseEntity<?> sellerSignUp(@Validated @RequestBody SellerLoginPayload sellerLoginPayload , HttpServletRequest request) {
-
         return sellerAuthService.sellerSignUp(sellerLoginPayload , request);
     }
 
 
-    @PostMapping(SellerUrlMappings.SELLER_TAX)
-    public ResponseEntity<?> sellerTax(@Validated @RequestBody SellerTaxPayload sellerTaxPayload) {
 
-        return sellerAuthService.saveAndVerifyTaxDetails(sellerTaxPayload);
-    }
+
 
 
 }

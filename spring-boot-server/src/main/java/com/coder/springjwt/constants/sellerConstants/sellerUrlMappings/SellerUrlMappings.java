@@ -12,6 +12,22 @@ public class SellerUrlMappings {
 
     public static final String SELLER_AUTH_CONTROLLER = SELLER_BASE_URL + "/sellerAuthController";
 
+    public static final String STATE_CITY_PINCODE_CONTROLLER = SELLER_BASE_URL + "/stateCityPincodeController";
+
+    public static final String SELLER_TAX_CONTROLLER = SELLER_BASE_URL + "/sellerTaxController";
+
+    public static final String SELLER_PICKUP_CONTROLLER = SELLER_BASE_URL + "/sellerPickupController";
+
+    public static final String SELLER_BANK_CONTROLLER = SELLER_BASE_URL + "/sellerBankController";
+
+    public static final String SELLER_STORE_CONTROLLER = SELLER_BASE_URL + "/sellerStoreController";
+
+
+
+
+
+
+
 
 
 
@@ -26,6 +42,20 @@ public class SellerUrlMappings {
     public static final String SELLER_SIGN_UP = "/sellerSignup";
 
     public static final String SELLER_TAX = "/sellerTax";
+
+
+
+
+    public static final String STATE_CITY_PINCODE = "/stateCityPincode/{pincode}";
+
+
+    //Seller pickup Data
+    public static final String SELLER_PICKUP = "/sellerPickup";
+
+    public static final String SELLER_BANK = "/sellerBank";
+
+    public static final String SELLER_STORE = "/sellerStore";
+
 
 
 

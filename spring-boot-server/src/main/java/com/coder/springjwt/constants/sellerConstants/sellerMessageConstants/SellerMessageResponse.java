@@ -24,12 +24,18 @@ public class SellerMessageResponse {
 
     public static final String SELLER_ACCOUNT_CREATED_SUCCESS = "Seller Account Created Success";
 
-    public static final String SELLER_ALREADY_VERIFIED = "Seller Already Verified";
+    public static final String SELLER_GST_ALREADY_VERIFIED = "Seller Gst Already Verified";
 
     public static final String INVALID_GST_NUMBER= "Invalid GST Number";
     public static final String GST_VERIFIED= "GST Verified";
 
     public static final String SOMETHING_WENT_WRONG = "Something Went Wrong";
+
+    public static final String SOMETHING_WENT_WRONG_OR_INVALID_CRENDITIALS = "Something Went Wrong or Invalid Crenditails";
+
+
+    public static final String GST_NUMBER_ALREADY_USED_ANOTHER_SELLER = "Gst Number already Used Another seller";
+
 
 
 

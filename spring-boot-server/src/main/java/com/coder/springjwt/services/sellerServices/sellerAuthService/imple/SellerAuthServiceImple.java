@@ -1,28 +1,30 @@
-package com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.imple;
+package com.coder.springjwt.services.sellerServices.sellerAuthService.imple;
 
 import com.coder.springjwt.constants.OtpMessageContent;
 import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.SellerEmailConstants;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
-import com.coder.springjwt.helpers.validateGst.ValidateGst;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerOtpRequest;
-import com.coder.springjwt.models.sellerModels.sellerTax.SellerTax;
+import com.coder.springjwt.models.sellerModels.sellerBank.SellerBank;
+import com.coder.springjwt.models.sellerModels.sellerPickup.SellerPickup;
+import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerMobilePayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerTaxPayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerLoginPayload;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.*;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerBankRepository.SellerBankRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerGstRepository.SellerTaxRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerMobileRepository.SellerMobileRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerPickupRepository.SellerPickUpRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
-import com.coder.springjwt.services.MobileOtpService.sellerServices.sellerAuthService.SellerAuthService;
+import com.coder.springjwt.services.sellerServices.sellerAuthService.SellerAuthService;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -78,6 +80,16 @@ public class SellerAuthServiceImple implements SellerAuthService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private SellerPickUpRepository sellerPickUpRepository;
+
+    @Autowired
+    private SellerBankRepository sellerBankRepository;
+
+    @Autowired
+    private SellerStoreRepository sellerStoreRepository;
+
 
     @Override
     public ResponseEntity<?> sellerMobile(SellerMobilePayload sellerMobilePayload) {
@@ -316,118 +328,6 @@ public class SellerAuthServiceImple implements SellerAuthService {
         }
     }
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Override
-    public ResponseEntity<?> saveAndVerifyTaxDetails(SellerTaxPayload sellerTaxPayload) {
-        MessageResponse response = new MessageResponse();
-        try {
-
-            if(ValidateGst.isValidGstNumber(sellerTaxPayload.getGstNumber()))
-            {
-
-            //First Validate User [username and password]
-                if(this.userAuthenticated(sellerTaxPayload))
-                {
-                    //second Validate User username and Registration Completed Flag (Y) AND ROLE-SELLER
-                    Optional<User> sellerData = this.userRepository.findByUsernameAndSellerRegisterCompleteAndProjectRole
-                                                (sellerTaxPayload.getUsername()+SellerMessageResponse.SLR, "Y",
-                                                 ERole.ROLE_SELLER.toString());
-
-                    //Seller is Present in the Database or seller is Valid
-                    log.info("sellerData :: " + sellerData.isPresent());
-                    if(sellerData.isPresent())
-                    {
-                        log.info("Seller Data Is Present");
-                        if(this.gstAlreadyVerifiedOrNot(sellerTaxPayload.getUsername()))
-                        {
-                            log.info("Seller GST is Already Verified");
-
-                            response.setMessage(SellerMessageResponse.SELLER_ALREADY_VERIFIED);
-                            response.setStatus(HttpStatus.OK);
-                            return ResponseGenerator.generateSuccessResponse(response,SellerMessageResponse.SUCCESS);
-                        }
-
-                        if (this.verifyGst(sellerTaxPayload.getGstNumber()))
-                        {
-                            log.info("Seller Data not Present in Database");
-                            //set payload to seller Object
-                            SellerTax sellerTax = new SellerTax();
-                            sellerTax.setSeller_key(toString().valueOf(Math.random()));
-                            sellerTax.setSellerUsername(sellerTaxPayload.getUsername());
-                            sellerTax.setGstNumber(sellerTaxPayload.getGstNumber());
-                            sellerTax.setSellerId(String.valueOf(sellerData.get().getId()));
-                            sellerTax.setIsValidate("Y");
-
-                            //save Seller Data
-                            this.sellerTaxRepository.save(sellerTax);
-                            log.info("Seller Tax Data Saved Success  {}" + sellerTaxPayload.getUsername());
-
-                            response.setMessage(SellerMessageResponse.GST_VERIFIED);
-                            response.setStatus(HttpStatus.OK);
-                            return ResponseGenerator.generateSuccessResponse(response,SellerMessageResponse.SUCCESS);
-                        }else{
-                            response.setMessage(SellerMessageResponse.INVALID_GST_NUMBER);
-                            response.setStatus(HttpStatus.BAD_GATEWAY);
-                            return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.FAILED);
-                        }
-                    }
-                }
-                throw  new RuntimeException("SOMETHING WENT WRONG");
-            }else{
-                response.setMessage(SellerMessageResponse.INVALID_GST_NUMBER);
-                    response.setStatus(HttpStatus.BAD_REQUEST);
-                    return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.SOMETHING_WENT_WRONG);
-                }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-
-    public  boolean userAuthenticated(SellerTaxPayload sellerTaxPayload)
-    {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(sellerTaxPayload.getUsername()+":SLR", sellerTaxPayload.getPassword()));
-
-       if(authentication.isAuthenticated())
-       {
-           return Boolean.TRUE;
-       }else{
-           return Boolean.FALSE;
-       }
-    }
-
-    public boolean verifyGst(String gstNumber)
-    {
-        Boolean flag = Boolean.FALSE;
-        if(gstNumber.equals("23AAACC1206D2ZN") || gstNumber.equals("06AAACC1206D2ZJ") || gstNumber.equals("32AAACC1206D2ZO") )
-        {
-            //Write logic To Validate The GST Number and save Request Response Table
-            flag = Boolean.TRUE;
-        }
-        return flag;
-    }
-
-    public boolean gstAlreadyVerifiedOrNot(String userName)
-    {
-        Boolean flag = Boolean.FALSE;
-
-        //Get Seller Tax Data
-        Optional<SellerTax> verifiedGst = this.sellerTaxRepository.findBySellerUsername(userName);
-
-        if(verifiedGst.isPresent())
-        {
-            if(verifiedGst.get().getIsValidate().equals("Y")){
-                flag = Boolean.TRUE;
-            }
-        }
-        return flag;
-    }
 
     public void saveOsLeakedData(HttpServletRequest request, User user)
     {

@@ -29,4 +29,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUsernameAndSellerRegisterCompleteAndProjectRole(String mobile , String sellerRegisterComplete ,String projectRole);
 
 
+
 }
