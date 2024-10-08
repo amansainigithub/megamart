@@ -6,6 +6,7 @@ import com.coder.springjwt.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -82,31 +83,35 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 //  }
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth ->
-						auth.requestMatchers("/api/auth/**").permitAll()
-								.requestMatchers("/api/test/**").permitAll()
-								.requestMatchers("/shopping/api/admin/auth/**").permitAll()
-								.requestMatchers("/shopping/api/seller/v1/**").permitAll()
-								.requestMatchers("/customer/api/v1/**").permitAll()
-								.requestMatchers("/shopping/api/flying/v1/**").permitAll()
-								.requestMatchers(
-										"/v3/api-docs/**",
-										"/swagger-ui/**",
-										"/api/auth/**",
-										"/api/test/**`").permitAll()
-								.anyRequest().authenticated()
-				);
+		public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+			http.csrf(csrf -> csrf.disable())
+					.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+					.authorizeHttpRequests(auth ->
+							auth.requestMatchers("/api/auth/**").permitAll()
+									.requestMatchers("/api/test/**").permitAll()
+									.requestMatchers("/shopping/api/admin/auth/**").permitAll()
+									.requestMatchers("/shopping/api/seller/v1/**").permitAll()
+									.requestMatchers("/customer/api/v1/**").permitAll()
+									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
 
-		http.authenticationProvider(authenticationProvider());
+									// Only allow users with the SUPER_USER role to access DELETE APIs
+									.requestMatchers(HttpMethod.DELETE, "/admin/checkDelete/**").hasRole("SUPER_USER")
 
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+							.requestMatchers(
+											"/v3/api-docs/**",
+											"/swagger-ui/**",
+											"/api/auth/**",
+											"/api/test/**`").permitAll()
+									.anyRequest().authenticated()
+					);
 
-		return http.build();
-	}
+			http.authenticationProvider(authenticationProvider());
+
+			http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+			return http.build();
+		}
 
 
 	@Bean
