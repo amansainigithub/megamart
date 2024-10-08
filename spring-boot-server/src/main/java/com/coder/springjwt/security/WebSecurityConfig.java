@@ -96,6 +96,8 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 									.requestMatchers("/customer/api/v1/**").permitAll()
 									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
 
+									.requestMatchers("/admin/checkDelete/iAmPost/**").permitAll()
+
 									// Only allow users with the SUPER_USER role to access DELETE APIs
 									.requestMatchers(HttpMethod.DELETE, "/admin/checkDelete/**").hasRole("SUPER_ADMIN")
 
