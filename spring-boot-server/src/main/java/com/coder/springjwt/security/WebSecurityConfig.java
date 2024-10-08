@@ -1,5 +1,6 @@
 package com.coder.springjwt.security;
 
+import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.security.jwt.AuthEntryPointJwt;
 import com.coder.springjwt.security.jwt.AuthTokenFilter;
 import com.coder.springjwt.security.services.UserDetailsServiceImpl;
@@ -96,7 +97,7 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
 
 									// Only allow users with the SUPER_USER role to access DELETE APIs
-									.requestMatchers(HttpMethod.DELETE, "/admin/checkDelete/**").hasRole("SUPER_USER")
+									.requestMatchers(HttpMethod.DELETE, "/admin/checkDelete/**").hasRole("SUPER_ADMIN")
 
 							.requestMatchers(
 											"/v3/api-docs/**",
