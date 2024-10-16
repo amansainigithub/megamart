@@ -2,12 +2,10 @@ package com.coder.springjwt.controllers.seller.sellerProductCategoryController;
 
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerPickUpPayload;
 import com.coder.springjwt.services.sellerServices.sellerProductCategoryService.SellerProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +15,7 @@ public class SellerProductCategoryController {
     @Autowired
     private SellerProductCategoryService sellerProductCategoryService;
 
-    @PostMapping(SellerUrlMappings.GET_PARENT_CATEGORY_LIST)
+    @GetMapping(SellerUrlMappings.GET_PARENT_CATEGORY_LIST)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> getParentCategory() {
         return sellerProductCategoryService.getParentCategory();
