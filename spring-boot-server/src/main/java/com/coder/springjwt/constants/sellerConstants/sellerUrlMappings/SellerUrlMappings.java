@@ -9,6 +9,7 @@ public class SellerUrlMappings {
     //############## NOT-AUTH BASE URL #####################
     public static final String SELLER_BASE_URL = APPLICATION_CONTEXT_PATH + "/api/seller/v1";
 
+    public static final String SELLER_AUTH_URL = APPLICATION_CONTEXT_PATH + "/api/seller/fly/v1";
 
 
 
@@ -55,16 +56,12 @@ public class SellerUrlMappings {
 
 //    =========================================CAtegory Controller======================================
 
-    public static final String SELLER_PRODUCT_CATEGORY_CONTROLLER = SELLER_BASE_URL + "/sellerProductCategoryController";
-
+    public static final String SELLER_PRODUCT_CATEGORY_CONTROLLER = SELLER_AUTH_URL + "/sellerProductCategoryController";
     public static final String GET_PARENT_CATEGORY_LIST = "/getParentCategory";
-
     public static final String GET_CHILD_CATEGORY_LIST_BY_ID = "/getChildCategoryListById/{parentId}";
-
-
     public static final String GET_BABY_CATEGORY_LIST_BY_CHILD_ID = "/getBabyCategoryListChildById/{childId}";
-
-
     public static final String GET_BORN_CATEGORY_LIST_BY_BABY_ID = "/getBornCategoryListByBabyId/{babyId}";
+
+    public static final String GET_BORN_BY_ID = "/getBornById/{bornId}";
 
 }

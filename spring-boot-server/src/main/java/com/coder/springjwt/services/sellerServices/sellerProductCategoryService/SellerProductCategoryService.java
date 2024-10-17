@@ -14,4 +14,6 @@ public interface SellerProductCategoryService {
     ResponseEntity<?> getBabyCategoryListChildById(Long childId);
 
     ResponseEntity<?> getBornCategoryListByBabyId(Long babyId);
+
+    ResponseEntity<?> getBornById(Long bornId);
 }

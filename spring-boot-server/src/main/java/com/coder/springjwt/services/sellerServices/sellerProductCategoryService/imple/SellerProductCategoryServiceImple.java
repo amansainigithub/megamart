@@ -140,4 +140,36 @@ public class SellerProductCategoryServiceImple implements SellerProductCategoryS
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<?> getBornById(Long bornId) {
+        try {
+            Optional<BornCategoryModel> bornData = bornCategoryRepo.findById(Long.valueOf(bornId));
+
+            if(bornData.isPresent()) {
+
+                    BornCategoryModel bornNode = bornData.get();
+                    BornCategoryDto bornCategoryDto = new BornCategoryDto();
+                    bornCategoryDto.setCategoryName(bornNode.getCategoryName());
+                    bornCategoryDto.setId(bornNode.getId());
+                    bornCategoryDto.setCategoryFile(bornNode.getCategoryFile());
+                    bornCategoryDto.setBabyCategoryId(String.valueOf(bornNode.getBabyCategoryModel().getId()));
+
+                log.info("Born Category Data Fetched Success");
+                return ResponseGenerator.generateSuccessResponse(bornNode,SellerMessageResponse.SUCCESS);
+            }else{
+                log.info("Born Category Data Fetched Failed");
+                return ResponseGenerator.generateBadRequestResponse(bornData,SellerMessageResponse.FAILED);
+            }
+
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            log.info("Something went Wrong ::=> "  + SellerProductCategoryService.class.getName());
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+    }
 }

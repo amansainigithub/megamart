@@ -92,9 +92,14 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 							auth.requestMatchers("/api/auth/**").permitAll()
 									.requestMatchers("/api/test/**").permitAll()
 									.requestMatchers("/shopping/api/admin/auth/**").permitAll()
-									.requestMatchers("/shopping/api/seller/v1/**").permitAll()
 									.requestMatchers("/customer/api/v1/**").permitAll()
 									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
+
+
+									//Seller Authorize API URI START
+									.requestMatchers("/shopping/api/seller/v1/**").permitAll()
+									.requestMatchers("/shopping/api/seller/fly/v1/**").permitAll()
+									//Seller Authorize API URI ENDING
 
 									.requestMatchers("/admin/checkDelete/iAmPost/**").permitAll()
 
