@@ -148,6 +148,8 @@ public class SellerProductCategoryServiceImple implements SellerProductCategoryS
 
             if(bornData.isPresent()) {
 
+                Map<Object , Object> node = new HashMap<>();
+
                     BornCategoryModel bornNode = bornData.get();
                     BornCategoryDto bornCategoryDto = new BornCategoryDto();
                     bornCategoryDto.setCategoryName(bornNode.getCategoryName());
@@ -155,15 +157,18 @@ public class SellerProductCategoryServiceImple implements SellerProductCategoryS
                     bornCategoryDto.setCategoryFile(bornNode.getCategoryFile());
                     bornCategoryDto.setBabyCategoryId(String.valueOf(bornNode.getBabyCategoryModel().getId()));
 
+                    node.put("node",bornNode);
+                    node.put("categoryBreadCrumb" , bornNode.getCategoryName() + "/"
+                            + bornNode.getBabyCategoryModel().getCategoryName() + "/"
+                            +bornNode.getBabyCategoryModel().getChildCategoryModel().getCategoryName() + "/"
+                            +bornNode.getBabyCategoryModel().getChildCategoryModel().getParentCategory().getCategoryName());
+
                 log.info("Born Category Data Fetched Success");
-                return ResponseGenerator.generateSuccessResponse(bornNode,SellerMessageResponse.SUCCESS);
+                return ResponseGenerator.generateSuccessResponse(node,SellerMessageResponse.SUCCESS);
             }else{
                 log.info("Born Category Data Fetched Failed");
                 return ResponseGenerator.generateBadRequestResponse(bornData,SellerMessageResponse.FAILED);
             }
-
-
-
         }
         catch (Exception e)
         {
