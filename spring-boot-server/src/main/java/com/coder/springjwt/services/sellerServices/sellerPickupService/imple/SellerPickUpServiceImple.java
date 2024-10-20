@@ -2,6 +2,7 @@ package com.coder.springjwt.services.sellerServices.sellerPickupService.imple;
 
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.sellerPickup.SellerPickup;
@@ -30,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -98,11 +100,12 @@ public class SellerPickUpServiceImple implements SellerPickUpService {
                 log.info("sellerData Present:: " + sellerData.isPresent());
                 if(sellerData.isPresent())
                 {
+                    Map<String, String> currentUser = UserHelper.getCurrentUser();
                     User user = sellerData.get();
                     //Save Pick Up data
 
                     SellerPickup sp = modelMapper.map(sellerPickUpPayload, SellerPickup.class);
-                    sp.setUsername(user.getUsername());
+                    sp.setUsername(currentUser.get("username") + " OR " + user.getUsername());
                     sp.setCountry("india");
 
                     this.sellerPickUpRepository.save(sp);

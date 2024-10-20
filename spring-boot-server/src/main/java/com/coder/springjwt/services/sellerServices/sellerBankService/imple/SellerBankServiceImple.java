@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerBankService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.sellerBank.SellerBank;
@@ -30,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -99,11 +101,13 @@ public class SellerBankServiceImple implements SellerBankService {
                 log.info("sellerData Present:: " + sellerData.isPresent());
                 if(sellerData.isPresent())
                 {
-                    User user = sellerData.get();
+
                     //Save Pick Up data
+                    User user = sellerData.get();
+                    Map<String, String> currentUser = UserHelper.getCurrentUser();
 
                     SellerBank sellerBank = modelMapper.map(sellerBankPayload, SellerBank.class);
-                    sellerBank.setUsername(user.getUsername());
+                    sellerBank.setUsername(currentUser.get("username") + " OR " + user.getUsername() );
 
                     this.sellerBankRepository.save(sellerBank);
 

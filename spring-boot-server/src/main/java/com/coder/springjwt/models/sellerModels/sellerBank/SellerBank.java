@@ -17,9 +17,6 @@ public class SellerBank extends BaseEntity {
     private String username;
 
     @NotBlank
-    private String password;
-
-    @NotBlank
     private String bankName;
 
     @NotBlank

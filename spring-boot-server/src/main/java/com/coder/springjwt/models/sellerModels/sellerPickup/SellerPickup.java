@@ -16,9 +16,6 @@ public class SellerPickup extends BaseEntity {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String password;
-
     private String addressLineOne;
 
     private String addressLineTwo;

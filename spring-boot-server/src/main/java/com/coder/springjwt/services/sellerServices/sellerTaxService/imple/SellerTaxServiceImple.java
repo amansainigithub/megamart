@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerTaxService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.helpers.validateGstRegex.ValidateGstRegex;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.User;
@@ -30,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -114,11 +116,18 @@ public class SellerTaxServiceImple implements SellerTaxService {
                             {
                                 log.info("Seller Data not Present in Database");
                                 log.info("GST Verified Success");
+
+                                //get UserName By UserHelper
+                                Map<String, String> currentUser = UserHelper.getCurrentUser();
+                                User user = sellerData.get();
+
                                 //set payload to seller Object
                                 SellerTax sellerTax = new SellerTax();
-                                sellerTax.setSeller_key(toString().valueOf(Math.random()));
-                                sellerTax.setSellerUsername(sellerTaxPayload.getUsername());
+                                //Set Current Username
+                                sellerTax.setSellerUsername(currentUser.get("username") + " OR " + user.getUsername() );
+
                                 sellerTax.setGstNumber(sellerTaxPayload.getGstNumber());
+                                sellerTax.setSeller_key(toString().valueOf(Math.random()));
                                 sellerTax.setSellerId(String.valueOf(sellerData.get().getId()));
                                 sellerTax.setIsValidate("Y");
 

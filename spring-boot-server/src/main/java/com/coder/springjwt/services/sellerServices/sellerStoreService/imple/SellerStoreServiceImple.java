@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
@@ -29,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -69,11 +71,13 @@ public class SellerStoreServiceImple implements SellerStoreService {
                 log.info("sellerData Present:: " + sellerData.isPresent());
                 if(sellerData.isPresent())
                 {
+
+                    //get UserName By UserHelper
+                    Map<String, String> currentUser = UserHelper.getCurrentUser();
                     User user = sellerData.get();
-                    //Save Pick Up data
 
                     SellerStore sellerStore = modelMapper.map(sellerStorePayload, SellerStore.class);
-                    sellerStore.setUsername(user.getUsername());
+                    sellerStore.setUsername(currentUser.get("username") + " OR " + user.getUsername() );
 
                     this.sellerStoreRepository.save(sellerStore);
 
