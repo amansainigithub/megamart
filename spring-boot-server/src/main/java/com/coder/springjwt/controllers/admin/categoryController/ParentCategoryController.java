@@ -4,6 +4,7 @@ import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMap
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.parentDtos.ParentCategoryDto;
 import com.coder.springjwt.services.adminServices.categories.ParentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ public class ParentCategoryController {
     public ResponseEntity<?> createParentCategory(@Validated @RequestBody ParentCategoryDto parentCategoryDto) {
         return this.parentCategoryimple.saveParentCategory(parentCategoryDto);
     }
+
 
     @GetMapping(AdminUrlMappings.GET_PARENT_CATEGORY_LIST)
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,5 +58,8 @@ public class ParentCategoryController {
     {
         return parentCategoryimple.updateParentCategoryFile(file,parentCategoryId);
     }
+
+
+
 
 }
