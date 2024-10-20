@@ -1,7 +1,5 @@
 package com.coder.springjwt.repository.sellerRepository.sellerMobileRepository;
 
-import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.adminModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.SellerMobile.SellerMobile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

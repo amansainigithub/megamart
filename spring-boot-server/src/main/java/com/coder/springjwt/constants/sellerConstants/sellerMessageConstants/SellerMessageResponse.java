@@ -12,6 +12,8 @@ public class SellerMessageResponse {
     public static final String ALREADY_VERIFIED = "Already Verified";
     public static final String DATA_NOT_FOUND = "Data Not Found";
 
+    public static final String DATA_NOT_SAVED = "Data Not Saved";
+
     public static final String USER_NOT_FOUND = "User Not Found";
     public static final String DATA_SAVED_SUCCESS = "OTP SEND ";
 

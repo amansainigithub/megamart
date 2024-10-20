@@ -98,7 +98,7 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 
 									//Seller Authorize API URI START
 									.requestMatchers("/shopping/api/seller/v1/**").permitAll()
-									.requestMatchers("/shopping/api/seller/fly/v1/**").permitAll()
+									.requestMatchers("/shopping/api/seller/fly/**").permitAll()
 									//Seller Authorize API URI ENDING
 
 									.requestMatchers("/admin/checkDelete/iAmPost/**").permitAll()

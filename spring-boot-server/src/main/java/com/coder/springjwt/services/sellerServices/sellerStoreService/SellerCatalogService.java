@@ -1,14 +1,13 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService;
 
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerStorePayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface SellerStoreService {
+public interface SellerCatalogService {
 
-    ResponseEntity<?> sellerStore(SellerStorePayload sellerStorePayload);
+    ResponseEntity<?> sellerSaveCatalogService(SellerCatalogPayload sellerCatalogPayload);
 
-
+    ResponseEntity<?> getSellerCatalog(Long catalogId);
 }

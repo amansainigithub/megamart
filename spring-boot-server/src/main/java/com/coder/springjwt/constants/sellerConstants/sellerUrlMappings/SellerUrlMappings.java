@@ -52,6 +52,12 @@ public class SellerUrlMappings {
 
     public static final String SELLER_STORE = "/sellerStore";
 
+    public static final String SELLER_SAVE_CATALOG = "/sellerSaveCatalog";
+
+    public static final String SELLER_GET_CATALOG = "/getSellerCatalog/{catalogId}";
+
+
+
 
 
 //    =========================================CAtegory Controller======================================
@@ -63,5 +69,9 @@ public class SellerUrlMappings {
     public static final String GET_BORN_CATEGORY_LIST_BY_BABY_ID = "/getBornCategoryListByBabyId/{babyId}";
 
     public static final String GET_BORN_BY_ID = "/getBornById/{bornId}";
+
+
+    public static final String SELLER_CATALOG_CONTROLLER = SELLER_AUTH_URL + "/sellerCatalogController";
+
 
 }

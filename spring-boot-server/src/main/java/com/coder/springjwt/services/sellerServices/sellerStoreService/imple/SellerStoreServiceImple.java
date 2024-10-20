@@ -38,42 +38,11 @@ public class SellerStoreServiceImple implements SellerStoreService {
 
 
     @Autowired
-    private SellerMobileRepository sellerMobileRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    private EmailService simpleEmailService;
-
-    @Autowired
-    private SellerTaxRepository sellerTaxRepository;
-
-    @Autowired
-    private MobileOtpService mobileOtpService;
-
-    private static final long OTP_VALIDITY_DURATION = 1;
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private SellerPickUpRepository sellerPickUpRepository;
-
-    @Autowired
-    private SellerBankRepository sellerBankRepository;
 
     @Autowired
     private SellerStoreRepository sellerStoreRepository;
@@ -125,5 +94,6 @@ public class SellerStoreServiceImple implements SellerStoreService {
             return ResponseGenerator.generateBadRequestResponse(response,SellerMessageResponse.SOMETHING_WENT_WRONG);
         }
     }
+
 
 }
