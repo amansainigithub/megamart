@@ -59,18 +59,5 @@ public class AdminAuthController {
         return adminAuthService.adminSignUp(signUpRequest);
     }
 
-//@Autowired
-//OtpServiceImple otpServiceImple;
-//    @PostMapping("sendsms")
-//    public ResponseEntity<?> sendsms() {
-//        try {
-//             otpServiceImple.sendSMS("9818644140","New Number Send to OTP" ,"SELLER");
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return null;
-//    }
-//
-
 
 }

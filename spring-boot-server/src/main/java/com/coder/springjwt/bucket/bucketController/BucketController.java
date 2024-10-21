@@ -46,4 +46,9 @@ public class BucketController {
         return new ResponseEntity<>(serviceBucket.deleteFile(fileName), HttpStatus.OK);
     }
 
+
+
+
+
+
 }

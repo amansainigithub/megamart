@@ -151,6 +151,16 @@
 		</dependency>
 
 
+<!--		Redis Server Automatically Start From Spring boot Apllication-->
+<!--		<dependency>-->
+<!--			<groupId>com.github.kstyrc</groupId>-->
+<!--			<artifactId>embedded-redis</artifactId>-->
+<!--			<version>0.6</version>-->
+<!--		</dependency>-->
+
+
+
+
 	</dependencies>
 
 	<build>
