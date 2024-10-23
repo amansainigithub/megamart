@@ -2,12 +2,15 @@ package com.coder.springjwt.services.adminServices.categories.ParentCategory;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
+import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
+import com.coder.springjwt.constants.redisKeys.RedisKey;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.parentDtos.ParentCategoryDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.categories.ParentCategoryModel;
 import com.coder.springjwt.repository.adminRepository.categories.ParentCategoryRepo;
+import com.coder.springjwt.services.redisService.RedisService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,12 +34,15 @@ public class ParentCategoryServiceImple implements com.coder.springjwt.services.
 
     @Autowired
     ParentCategoryRepo parentCategoryRepo;
-
     @Autowired
     BucketService bucketService;
-
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private RedisService redisService;
 
 
     Logger logger =  LoggerFactory.getLogger(ParentCategoryServiceImple.class);
@@ -76,34 +81,22 @@ public class ParentCategoryServiceImple implements com.coder.springjwt.services.
 
     }
 
-
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-
-
     @Override
     public ResponseEntity<?> getParentCategoryList() {
 
-        String listJson = (String) this.getValue("parentData");
-
         try {
-           if (listJson == null) {
+            String redisData = redisService.getValue(RedisKey.PARENT_DATA);
+
+           if (redisData == null) {
                System.out.println("First To Get From Database");
                // Fetch data from the database
                List<ParentCategoryModel> parentList = this.parentCategoryRepo.findAll();
-               // Serialize the list to JSON and store it in Redis
-               this.setValue("parentData", objectMapper.writeValueAsString(parentList));
-
-               return ResponseGenerator.generateSuccessResponse(parentList, "Success");
+                return ResponseGenerator.generateSuccessResponse(parentList, AdminMessageResponse.SUCCESS);
 
            } else {
-               System.out.print("====================Redis Server=================");
                // Deserialize the JSON string to a List<ParentCategoryModel>
-               List<ParentCategoryModel> parentList = objectMapper.readValue(listJson, new TypeReference<List<ParentCategoryModel>>() {});
-               return ResponseGenerator.generateSuccessResponse(parentList, "Success");
-
+               List<ParentCategoryModel> parentList = objectMapper.readValue(redisData, new TypeReference<List<ParentCategoryModel>>() {});
+               return ResponseGenerator.generateSuccessResponse(parentList, AdminMessageResponse.SUCCESS);
            }
        }
        catch (Exception e)
@@ -113,20 +106,7 @@ public class ParentCategoryServiceImple implements com.coder.springjwt.services.
        }
     }
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
-    public void setValue(String key, String value) {
-        redisTemplate.opsForValue().set(key, value);
-    }
-
-    public String getValue(String key) {
-        return (String) redisTemplate.opsForValue().get(key);
-    }
-
-    public void deleteKey(String key) {
-        redisTemplate.delete(key);
-    }
 
     @Override
     public ResponseEntity<?> deleteCategoryById(long categoryId) {

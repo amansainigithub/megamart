@@ -136,10 +136,8 @@ public class BucketService {
             String cloudinaryResponse = objectMapper.writeValueAsString(cloudinaryUpload);
             Map<String,String > node = objectMapper.readValue(cloudinaryResponse, Map.class);
 
-
-
-            System.out.println("===================Final Node As Json Format");
-            System.out.println(node );
+            System.out.println("======= Final Node As Json Format ============");
+            System.out.println( node );
 
             //Creating Bucket Models
             return new BucketModel(node.get("url") ,file.getOriginalFilename().toString());

@@ -1,13 +1,10 @@
 package com.coder.springjwt.config.redisConfig;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.embedded.RedisServer;
 
 import java.io.IOException;
 @Configuration
