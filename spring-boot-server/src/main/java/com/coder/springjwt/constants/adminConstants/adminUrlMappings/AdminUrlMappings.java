@@ -9,8 +9,15 @@ public class AdminUrlMappings {
 
     //############## AUTH BASE URL #####################
     //Publically Allow
-    public static final String AUTH_BASE_URL = APPLICATION_CONTEXT_PATH + "/api/admin/auth";
-    //SignIn
+    public static final String ADMIN_PUBLIC_URL = APPLICATION_CONTEXT_PATH + "/api/admin/auth";
+    //Protected URL's
+    public static final String ADMIN_AUTHORIZE_URL = APPLICATION_CONTEXT_PATH + "/api/admin/flying/v1";
+
+
+
+    //SignIn Public URL's
+
+    public static final String ADMIN_AUTH_CONTROLLER = ADMIN_PUBLIC_URL +"/adminAuthController";
     public static final String ADMIN_SIGN_IN = "/adminSignin";
     public static final String  ADMIN_PASS_KEY= "/adminPassKey";
     public static final String  ADMIN_SIGN_UP= "/adminSignUp";
@@ -18,11 +25,9 @@ public class AdminUrlMappings {
     //ADMIN MAPPING ENDING
 
 
-    //Protected URL's
-    public static final String BASE_PROTECTED_URL = APPLICATION_CONTEXT_PATH + "/api/flying/v1";
 
 
-
+    public static final String PARENT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/parentController";
     public static final String  CREATE_PARENT_CATEGORY= "/createParentCategory";
 
     public static final String  GET_PARENT_CATEGORY_LIST= "/getParentCategoryList";
@@ -38,6 +43,7 @@ public class AdminUrlMappings {
 
 
     //CHILD URL's
+    public static final String CHILD_CONTROLLER = ADMIN_AUTHORIZE_URL +"/childController";
 
     public static final String  SAVE_CHILD_CATEGORY= "/saveChildCategory";
     public static final String  GET_CHILD_CATEGORY_LIST= "/getChildCategoryList";
@@ -48,8 +54,8 @@ public class AdminUrlMappings {
 
 
 
-    //CHILD URL's
-
+    //BABY URL's
+    public static final String BABY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/babyController";
     public static final String  SAVE_BABY_CATEGORY= "/saveBabyCategory";
     public static final String  GET_BABY_CATEGORY_LIST= "/getBabyCategoryList";
     public static final String  DELETE_BABY_CATEGORY_BY_ID= "/deleteBabyCategoryById/{categoryId}";
@@ -62,7 +68,7 @@ public class AdminUrlMappings {
 
 
     //BORN URL's
-
+    public static final String BORN_CONTROLLER = ADMIN_AUTHORIZE_URL +"/bornController";
     public static final String  SAVE_BORN_CATEGORY= "/saveBornCategory";
     public static final String  GET_BORN_CATEGORY_LIST= "/getBornCategoryList";
     public static final String  DELETE_BORN_CATEGORY_BY_ID= "/deleteBornCategoryById/{categoryId}";
@@ -73,7 +79,8 @@ public class AdminUrlMappings {
 
 
 
-    //FETCH CUSTOMER USER
+    //FETCH USER's
+    public static final String USERS_CONTROLLER = ADMIN_AUTHORIZE_URL +"/usersController";
     public static final String GET_CUSTOMER_BY_PAGINATION="/getCustomerByPagination";
 
     public static final String GET_SELLER_BY_PAGINATION="/getSellerByPagination";

@@ -91,10 +91,12 @@ public class WebSecurityConfig  { //extends WebSecurityConfigurerAdapter
 					.authorizeHttpRequests(auth ->
 							auth.requestMatchers("/api/auth/**").permitAll()
 									.requestMatchers("/api/test/**").permitAll()
+
 									.requestMatchers("/shopping/api/admin/auth/**").permitAll()
 									.requestMatchers("/customer/api/v1/**").permitAll()
-									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
 
+									.requestMatchers("/shopping/api/flying/v1/**").permitAll()
+									.requestMatchers("/shopping/api/admin/flying/v1/**").permitAll()
 
 									//Seller Authorize API URI START
 									.requestMatchers("/shopping/api/seller/v1/**").permitAll()

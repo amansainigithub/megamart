@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(AdminUrlMappings.BASE_PROTECTED_URL)
+@RequestMapping(AdminUrlMappings.USERS_CONTROLLER)
 public class UserControllerByAdmin {
     @Autowired
     private UserService userService;

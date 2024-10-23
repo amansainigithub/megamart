@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(AdminUrlMappings.AUTH_BASE_URL)
+@RequestMapping(AdminUrlMappings.ADMIN_AUTH_CONTROLLER)
 public class AdminAuthController {
 
     @Autowired

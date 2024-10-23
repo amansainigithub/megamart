@@ -4,10 +4,22 @@ import org.springframework.stereotype.Component;
 
 public class RedisKey {
 
-
-//    #########################ADMIN##########################
-
+//#########################ADMIN##########################
     public static final String PARENT_DATA = "parentData";
+
+
+
+//#########################SELLER##########################
+
+
+
+
+
+
+//#########################CUSTOMER##########################
+
+
+
 
 
 }

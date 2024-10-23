@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
         origins = {"http://localhost:8080","http://localhost:4200"},
         maxAge = 3600,allowCredentials="true")
 @RestController
-@RequestMapping(AdminUrlMappings.BASE_PROTECTED_URL)
+@RequestMapping(AdminUrlMappings.BABY_CONTROLLER)
 public class BabyCategoryController {
 
     @Autowired

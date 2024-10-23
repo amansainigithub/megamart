@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(AdminUrlMappings.BASE_PROTECTED_URL)
+@RequestMapping(AdminUrlMappings.ADMIN_AUTHORIZE_URL)
 @Slf4j
 public class BucketController {
 
