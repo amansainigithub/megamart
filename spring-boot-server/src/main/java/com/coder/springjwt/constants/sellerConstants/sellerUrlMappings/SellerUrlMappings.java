@@ -7,7 +7,7 @@ public class SellerUrlMappings {
     public static final String APPLICATION_CONTEXT_PATH = "/shopping";
 
     //############## NOT-AUTH BASE URL #####################
-    public static final String SELLER_BASE_URL = APPLICATION_CONTEXT_PATH + "/api/seller/v1";
+    public static final String SELLER_PUBLIC_URL = APPLICATION_CONTEXT_PATH + "/api/seller/v1";
 
     public static final String SELLER_AUTH_URL = APPLICATION_CONTEXT_PATH + "/api/seller/fly/v1";
 
@@ -15,17 +15,17 @@ public class SellerUrlMappings {
 
     //=======================================CONTROLLER=========================================================
 
-    public static final String SELLER_AUTH_CONTROLLER = SELLER_BASE_URL + "/sellerAuthController";
+    public static final String SELLER_AUTH_CONTROLLER = SELLER_PUBLIC_URL + "/sellerAuthController";
 
-    public static final String STATE_CITY_PINCODE_CONTROLLER = SELLER_BASE_URL + "/stateCityPincodeController";
+    public static final String STATE_CITY_PINCODE_CONTROLLER = SELLER_PUBLIC_URL + "/stateCityPincodeController";
 
-    public static final String SELLER_TAX_CONTROLLER = SELLER_BASE_URL + "/sellerTaxController";
+    public static final String SELLER_TAX_CONTROLLER = SELLER_PUBLIC_URL + "/sellerTaxController";
 
-    public static final String SELLER_PICKUP_CONTROLLER = SELLER_BASE_URL + "/sellerPickupController";
+    public static final String SELLER_PICKUP_CONTROLLER = SELLER_PUBLIC_URL + "/sellerPickupController";
 
-    public static final String SELLER_BANK_CONTROLLER = SELLER_BASE_URL + "/sellerBankController";
+    public static final String SELLER_BANK_CONTROLLER = SELLER_PUBLIC_URL + "/sellerBankController";
 
-    public static final String SELLER_STORE_CONTROLLER = SELLER_BASE_URL + "/sellerStoreController";
+    public static final String SELLER_STORE_CONTROLLER = SELLER_PUBLIC_URL + "/sellerStoreController";
 
 
 
