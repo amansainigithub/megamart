@@ -87,4 +87,20 @@ public class AdminUrlMappings {
     public static final String GET_ADMIN_BY_PAGINATION="/getAdminByPagination";
 
 
+
+    //HSL URL's and Controller
+    public static final String HSN_CONTROLLER = ADMIN_AUTHORIZE_URL +"/hsnController";
+
+    public static final String  SAVE_HSN= "/saveHsn";
+
+    public static final String  DELETE_HSN= "/deleteHsnCode/{hsnCodeId}";
+
+    public static final String  GET_HSN_CODE_BY_ID= "/getHsnCodeById/{hsnCodeId}";
+
+    public static final String  UPDATE_HSN_CODE= "/updateHsnCode";
+
+    public static final String GET_HSN_LIST_BY_PAGINATION="/getHsnListByPagination";
+
+
+
 }
