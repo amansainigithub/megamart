@@ -2,7 +2,7 @@ package com.coder.springjwt.services.adminServices.catalogMaterialService.imple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogMaterialDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogMaterialDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.CatalogMaterial;

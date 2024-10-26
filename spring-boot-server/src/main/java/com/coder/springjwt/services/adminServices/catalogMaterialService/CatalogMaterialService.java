@@ -1,6 +1,6 @@
 package com.coder.springjwt.services.adminServices.catalogMaterialService;
 
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogMaterialDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogMaterialDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 

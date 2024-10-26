@@ -1,4 +1,4 @@
-package com.coder.springjwt.models.adminModels.hsn;
+package com.coder.springjwt.models.adminModels.catalog.hsn;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;

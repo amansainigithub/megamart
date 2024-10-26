@@ -2,15 +2,11 @@ package com.coder.springjwt.services.adminServices.hsnService.hsnServiceImple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
-import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
-import com.coder.springjwt.models.adminModels.categories.ChildCategoryModel;
-import com.coder.springjwt.models.adminModels.hsn.HsnCodes;
-import com.coder.springjwt.repository.adminRepository.hsnRepository.HsnRepository;
+import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.repository.adminRepository.catalogRepos.HsnRepository;
 import com.coder.springjwt.services.adminServices.hsnService.HsnCodeService;
 import com.coder.springjwt.services.adminServices.userService.userServiceImple.UserServiceImple;
 import com.coder.springjwt.util.MessageResponse;

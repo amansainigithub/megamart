@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos.adminDtos.catalogSizeDto;
+package com.coder.springjwt.dtos.adminDtos.catalogDtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,13 +11,13 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatalogTypeDto {
+public class CatalogMaterialDto {
 
     private long id;
 
     @Size(min=4, max=100)
-    @NotBlank(message = "Type must Not be Blank")
-    private String catalogType;
+    @NotBlank(message = "Catalog Material must Not be Blank")
+    private String material;
 
     private String defaultName;
 

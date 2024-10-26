@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos.adminDtos.catalogSizeDto;
+package com.coder.springjwt.dtos.adminDtos.catalogDtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

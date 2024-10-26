@@ -1,10 +1,8 @@
 package com.coder.springjwt.controllers.admin.catalogMetaData;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogSizeDto;
-import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogSizeDto;
 import com.coder.springjwt.services.adminServices.catalogSizeService.CatalogSizeService;
-import com.coder.springjwt.services.adminServices.hsnService.HsnCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -2,13 +2,12 @@ package com.coder.springjwt.services.adminServices.catalogSizeService.imple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogSizeDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogSizeDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.catalog.catalogSize.CatalogSizeModel;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogSizeRepo;
 import com.coder.springjwt.services.adminServices.catalogSizeService.CatalogSizeService;
-import com.coder.springjwt.services.adminServices.hsnService.hsnServiceImple.HsnServiceImple;
 import com.coder.springjwt.services.adminServices.userService.userServiceImple.UserServiceImple;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;

@@ -2,17 +2,12 @@ package com.coder.springjwt.services.adminServices.catalogBrandService.imple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogBrandDto;
-import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogBrandDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.catalog.catalogBrand.CatalogBrandModel;
-import com.coder.springjwt.models.adminModels.hsn.HsnCodes;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogBrandRepo;
-import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogMaterialRepo;
 import com.coder.springjwt.services.adminServices.catalogBrandService.CatalogBrandService;
-import com.coder.springjwt.services.adminServices.catalogMaterialService.imple.CatalogMaterialServiceImple;
-import com.coder.springjwt.services.adminServices.userService.userServiceImple.UserServiceImple;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

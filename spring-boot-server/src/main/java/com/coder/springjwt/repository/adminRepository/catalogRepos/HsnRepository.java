@@ -1,6 +1,6 @@
-package com.coder.springjwt.repository.adminRepository.hsnRepository;
+package com.coder.springjwt.repository.adminRepository.catalogRepos;
 
-import com.coder.springjwt.models.adminModels.hsn.HsnCodes;
+import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
