@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.admin.hsnController;
+package com.coder.springjwt.controllers.admin.catalogMetaData;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
