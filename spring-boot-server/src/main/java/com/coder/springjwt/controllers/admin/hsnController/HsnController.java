@@ -1,6 +1,7 @@
 package com.coder.springjwt.controllers.admin.hsnController;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
+import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
 import com.coder.springjwt.services.adminServices.hsnService.HsnCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,9 @@ public class HsnController {
         return this.hsnCodeService.updateHsnCode(hsnCodesDto);
     }
 
+
+
     @PostMapping(AdminUrlMappings.GET_HSN_LIST_BY_PAGINATION)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getHsnListByPagination(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.hsnCodeService.getHsnCodesPagination(page,size);
     }

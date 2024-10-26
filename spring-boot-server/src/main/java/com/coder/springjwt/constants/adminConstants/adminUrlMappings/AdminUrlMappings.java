@@ -103,4 +103,21 @@ public class AdminUrlMappings {
 
 
 
+    //HSL URL's and Controller
+    public static final String CATALOG_SIZE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogSizeController";
+    public static final String  SAVE_CATALOG_SIZE= "/saveCatalogSize";
+    public static final String  DELETE_CATALOG_SIZE= "/deleteCatalogSize/{sizeId}";
+    public static final String  GET_CATALOG_SIZE_BY_ID= "/getCatalogSizeById/{sizeId}";
+    public static final String  UPDATE_CATALOG_SIZE= "/updateCatalogSize";
+    public static final String GET_CATALOG_SIZE="/getCatalogSize";
+
+
+    //CATALOG MATERIAL URL's and Controller
+    public static final String CATALOG_MATERIAL_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogMaterial";
+    public static final String  SAVE_CATALOG_MATERIAL= "/saveCatalogMaterial";
+    public static final String  DELETE_CATALOG_MATERIAL= "/deleteCatalogMaterial/{materialId}";
+
+    public static final String  GET_CATALOG_MATERIAL_BY_ID= "/getCatalogMaterialById/{materialId}";
+    public static final String  UPDATE_CATALOG_MATERIAL= "/updateCatalogMaterial";
+    public static final String GET_CATALOG_MATERIAL="/getCatalogMaterial";
 }
