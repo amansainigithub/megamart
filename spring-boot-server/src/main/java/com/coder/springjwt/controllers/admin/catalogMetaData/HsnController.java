@@ -45,8 +45,6 @@ public class HsnController {
         return this.hsnCodeService.updateHsnCode(hsnCodesDto);
     }
 
-
-
     @PostMapping(AdminUrlMappings.GET_HSN_LIST_BY_PAGINATION)
     public ResponseEntity<?> getHsnListByPagination(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.hsnCodeService.getHsnCodesPagination(page,size);

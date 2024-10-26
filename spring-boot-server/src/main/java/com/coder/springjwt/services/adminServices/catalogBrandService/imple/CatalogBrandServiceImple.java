@@ -1,13 +1,17 @@
-package com.coder.springjwt.services.adminServices.catalogMaterialService.imple;
+package com.coder.springjwt.services.adminServices.catalogBrandService.imple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogMaterialDto;
+import com.coder.springjwt.dtos.adminDtos.catalogSizeDto.CatalogBrandDto;
+import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
-import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.CatalogMaterial;
+import com.coder.springjwt.models.adminModels.catalog.catalogBrand.CatalogBrandModel;
+import com.coder.springjwt.models.adminModels.hsn.HsnCodes;
+import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogBrandRepo;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogMaterialRepo;
-import com.coder.springjwt.services.adminServices.catalogMaterialService.CatalogMaterialService;
+import com.coder.springjwt.services.adminServices.catalogBrandService.CatalogBrandService;
+import com.coder.springjwt.services.adminServices.catalogMaterialService.imple.CatalogMaterialServiceImple;
 import com.coder.springjwt.services.adminServices.userService.userServiceImple.UserServiceImple;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -26,27 +30,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class CatalogMaterialServiceImple implements CatalogMaterialService {
+public class CatalogBrandServiceImple implements CatalogBrandService {
 
     @Autowired
-    private CatalogMaterialRepo catalogMaterialRepo;
+    private CatalogBrandRepo catalogBrandRepo;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    Logger logger  = LoggerFactory.getLogger(CatalogMaterialServiceImple.class);
-
+    Logger logger  = LoggerFactory.getLogger(CatalogBrandServiceImple.class);
     @Override
-    public ResponseEntity<?> saveCatalogMaterial(CatalogMaterialDto catalogMaterialDto) {
+    public ResponseEntity<?> saveCatalogBrand(CatalogBrandDto catalogBrandDto) {
         MessageResponse response =new MessageResponse();
         try {
-            CatalogMaterial catalogMaterial=  modelMapper.map(catalogMaterialDto , CatalogMaterial.class);
+            CatalogBrandModel catalogBrandModel=  modelMapper.map(catalogBrandDto , CatalogBrandModel.class);
             logger.info("Object Mapper Convert Success");
 
-            this.catalogMaterialRepo.save(catalogMaterial);
-            logger.info("Material Saved Success");
+            this.catalogBrandRepo.save(catalogBrandModel);
+            logger.info("Brand Saved Success");
 
-            response.setMessage("Material Saved Success");
+            response.setMessage("Brand Saved Success");
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
 
@@ -66,51 +69,51 @@ public class CatalogMaterialServiceImple implements CatalogMaterialService {
     }
 
     @Override
-    public ResponseEntity<?> deleteCatalogMaterial(long materialId) {
+    public ResponseEntity<?> deleteBrand(long brandId) {
         try {
-            CatalogMaterial catalogMaterial = this.catalogMaterialRepo.findById(materialId).orElseThrow(
-                    () -> new CategoryNotFoundException("Material id not Found"));
+            CatalogBrandModel catalogBrandModel = this.catalogBrandRepo.findById(brandId).orElseThrow(
+                    () -> new CategoryNotFoundException("HSN Code id not Found"));
 
-            this.catalogMaterialRepo.deleteById(catalogMaterial.getId());
-            logger.info("Delete Success => Material id :: " + materialId );
+            this.catalogBrandRepo.deleteById(catalogBrandModel.getId());
+            logger.info("Delete Success => BRAND id :: " + brandId );
             return ResponseGenerator.generateSuccessResponse("Delete Success" , AdminMessageResponse.SUCCESS);
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("Material Could Not be deleted");
+            logger.error("BRAND Could Not be deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Material not deleted :: " + e.getMessage() , AdminMessageResponse.FAILED);
+                    ("BRAND Could not deleted :: " + e.getMessage() , AdminMessageResponse.FAILED);
         }
     }
 
     @Override
-    public ResponseEntity<?> getCatalogMaterialById(long materialId) {
+    public ResponseEntity<?> getCatalogBrandById(long brandId) {
         try {
-            CatalogMaterial  catalogMaterial= this.catalogMaterialRepo.findById(materialId).orElseThrow(
+            CatalogBrandModel  catalogBrandModel= this.catalogBrandRepo.findById(brandId).orElseThrow(
                     () -> new RuntimeException("Data not Found ! Error"));
-            CatalogMaterialDto catalogMaterialDto = modelMapper.map(catalogMaterial, CatalogMaterialDto.class);
-            logger.info("Material Fetch Success !");
-            return ResponseGenerator.generateSuccessResponse(catalogMaterialDto , AdminMessageResponse.SUCCESS);
+            CatalogBrandDto catalogBrandDto = modelMapper.map(catalogBrandModel, CatalogBrandDto.class);
+            logger.info("Brand Code Fetch Success !");
+            return ResponseGenerator.generateSuccessResponse(catalogBrandDto , AdminMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("Failed To fetch Material By Id");
+            logger.error("Failed To fetch Brand By Id");
             return ResponseGenerator.generateBadRequestResponse(e.getMessage() , AdminMessageResponse.FAILED);
         }
     }
 
     @Override
-    public ResponseEntity<?> updateCatalogMaterial(CatalogMaterialDto catalogMaterialDto) {
+    public ResponseEntity<?> updateCatalogBrand(CatalogBrandDto catalogBrandDto) {
         try {
-            logger.info("Update Child Process Starting....");
-            this.catalogMaterialRepo.findById(catalogMaterialDto.getId())
+            logger.info("Update Brand Process Starting....");
+            this.catalogBrandRepo.findById(catalogBrandDto.getId())
                     .orElseThrow(()->new DataNotFoundException("Data not Found"));
 
-            CatalogMaterial catalogMaterial =  modelMapper.map(catalogMaterialDto , CatalogMaterial.class);
-            this.catalogMaterialRepo.save(catalogMaterial);
+            CatalogBrandModel catalogBrandModel =  modelMapper.map(catalogBrandDto , CatalogBrandModel.class);
+            this.catalogBrandRepo.save(catalogBrandModel);
 
             logger.info("Data Updated Success");
             return ResponseGenerator.generateSuccessResponse(AdminMessageResponse.SUCCESS ,
@@ -122,23 +125,26 @@ public class CatalogMaterialServiceImple implements CatalogMaterialService {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(AdminMessageResponse.FAILED ,AdminMessageResponse.DATA_UPDATE_FAILED);
         }
+
     }
 
     @Override
-    public ResponseEntity<?> getCatalogMaterial(Integer page, Integer size) {
+    public ResponseEntity<?> getCatalogBrand(Integer page, Integer size) {
         MessageResponse response = new MessageResponse();
         try {
-            Page<CatalogMaterial> catalogMaterials = this.catalogMaterialRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
-            if(catalogMaterials.isEmpty())
+            Page<CatalogBrandModel> catalogBrandModels = this.catalogBrandRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
+            if(catalogBrandModels.isEmpty())
             {
-                log.info("Data Not found :::: {} " + CatalogMaterialServiceImple.class.getName());
+                log.info("Data Not found :::: {} " + CatalogBrandServiceImple.class.getName());
+
                 response.setStatus(HttpStatus.BAD_GATEWAY);
                 response.setMessage(AdminMessageResponse.DATA_NOT_FOUND);
                 return ResponseGenerator.generateBadRequestResponse(response, AdminMessageResponse.DATA_NOT_FOUND);
             }else{
-                log.info("Data fetch Success :::: {}" + UserServiceImple.class.getName());
+                log.info("Data fetch Success :::: {}" + CatalogBrandServiceImple.class.getName());
+
                 response.setStatus(HttpStatus.OK);
-                return ResponseGenerator.generateSuccessResponse(catalogMaterials, AdminMessageResponse.SUCCESS);
+                return ResponseGenerator.generateSuccessResponse(catalogBrandModels, AdminMessageResponse.SUCCESS);
             }
         }
         catch (Exception e)

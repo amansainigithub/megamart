@@ -120,4 +120,22 @@ public class AdminUrlMappings {
     public static final String  GET_CATALOG_MATERIAL_BY_ID= "/getCatalogMaterialById/{materialId}";
     public static final String  UPDATE_CATALOG_MATERIAL= "/updateCatalogMaterial";
     public static final String GET_CATALOG_MATERIAL="/getCatalogMaterial";
+
+
+    //CATALOG TYPE URL's and Controller
+    public static final String CATALOG_TYPE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogType";
+    public static final String  SAVE_CATALOG_TYPE= "/saveCatalogType";
+    public static final String  DELETE_CATALOG_TYPE= "/deleteCatalogType/{typeId}";
+    public static final String  GET_CATALOG_TYPE_BY_ID= "/getCatalogTypeById/{typeId}";
+    public static final String  UPDATE_CATALOG_TYPE= "/updateCatalogType";
+    public static final String GET_CATALOG_TYPE="/getCatalogType";
+
+
+    //CATALOG BRAND URL's and Controller
+    public static final String CATALOG_BRAND_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogBrand";
+    public static final String  SAVE_CATALOG_BRANDE= "/saveCatalogBrand";
+    public static final String  DELETE_BRAND= "/deleteBrand/{brandId}";
+    public static final String  GET_CATALOG_BRAND_ID= "/getCatalogBrandById/{brandId}";
+    public static final String  UPDATE_CATALOG_BRAND= "/updateCatalogBrand";
+    public static final String GET_CATALOG_BRAND="/getCatalogBrand";
 }
