@@ -29,15 +29,10 @@ public class AdminUrlMappings {
 
     public static final String PARENT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/parentController";
     public static final String  CREATE_PARENT_CATEGORY= "/createParentCategory";
-
     public static final String  GET_PARENT_CATEGORY_LIST= "/getParentCategoryList";
-
     public static final String  DELETE_CATEGORY_BY_ID= "/deleteCategoryById/{categoryId}";
-
     public static final String  GET_PARENT_CATEGORY_BY_ID= "/getParentCategoryById/{categoryId}";
-
     public static final String  UPDATE_PARENT_CATEGORY= "/updateParentCategory";
-
     public static final String UPDATE_PARENT_CATEGORY_FILE="/updateParentCategoryFile/{parentCategoryId}";
 
 
@@ -82,7 +77,6 @@ public class AdminUrlMappings {
     //FETCH USER's
     public static final String USERS_CONTROLLER = ADMIN_AUTHORIZE_URL +"/usersController";
     public static final String GET_CUSTOMER_BY_PAGINATION="/getCustomerByPagination";
-
     public static final String GET_SELLER_BY_PAGINATION="/getSellerByPagination";
     public static final String GET_ADMIN_BY_PAGINATION="/getAdminByPagination";
 
@@ -90,15 +84,10 @@ public class AdminUrlMappings {
 
     //HSL URL's and Controller
     public static final String HSN_CONTROLLER = ADMIN_AUTHORIZE_URL +"/hsnController";
-
     public static final String  SAVE_HSN= "/saveHsn";
-
     public static final String  DELETE_HSN= "/deleteHsnCode/{hsnCodeId}";
-
     public static final String  GET_HSN_CODE_BY_ID= "/getHsnCodeById/{hsnCodeId}";
-
     public static final String  UPDATE_HSN_CODE= "/updateHsnCode";
-
     public static final String GET_HSN_LIST_BY_PAGINATION="/getHsnListByPagination";
 
 
@@ -116,7 +105,6 @@ public class AdminUrlMappings {
     public static final String CATALOG_MATERIAL_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogMaterialController";
     public static final String  SAVE_CATALOG_MATERIAL= "/saveCatalogMaterial";
     public static final String  DELETE_CATALOG_MATERIAL= "/deleteCatalogMaterial/{materialId}";
-
     public static final String  GET_CATALOG_MATERIAL_BY_ID= "/getCatalogMaterialById/{materialId}";
     public static final String  UPDATE_CATALOG_MATERIAL= "/updateCatalogMaterial";
     public static final String GET_CATALOG_MATERIAL="/getCatalogMaterial";
@@ -138,4 +126,13 @@ public class AdminUrlMappings {
     public static final String  GET_CATALOG_BRAND_ID= "/getCatalogBrandById/{brandId}";
     public static final String  UPDATE_CATALOG_BRAND= "/updateCatalogBrand";
     public static final String GET_CATALOG_BRAND="/getCatalogBrand";
+
+
+    //CATALOG NET_QUANTITY URL's and Controller
+    public static final String CATALOG_NET_QUANTITY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogNetQuantityController";
+    public static final String  SAVE_CATALOG_NET_QUANTITY= "/saveCatalogNetQuantity";
+    public static final String  DELETE_NET_QUANTITY= "/deleteNetQuantity/{netQuantityId}";
+    public static final String  GET_CATALOG_NET_QUANTITY_ID= "/getCatalogNetQuantityById/{netQuantityId}";
+    public static final String  UPDATE_NET_QUANTITY= "/updateNetQuantity";
+    public static final String GET_NET_QUANTITY="/getNetQuantity";
 }
