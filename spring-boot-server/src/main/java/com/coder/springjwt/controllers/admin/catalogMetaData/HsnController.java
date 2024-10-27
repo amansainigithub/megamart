@@ -23,7 +23,7 @@ public class HsnController {
 
     @PostMapping(AdminUrlMappings.SAVE_HSN)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> saveBabyCategory(@Validated @RequestBody HsnCodesDto hsnCodesDto) {
+    public ResponseEntity<?> saveHsn(@Validated @RequestBody HsnCodesDto hsnCodesDto) {
         return this.hsnCodeService.saveHsn(hsnCodesDto);
     }
 
