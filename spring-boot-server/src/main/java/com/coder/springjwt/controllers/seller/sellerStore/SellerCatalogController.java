@@ -9,8 +9,6 @@ import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(SellerUrlMappings.SELLER_CATALOG_CONTROLLER)
@@ -71,21 +65,15 @@ public class SellerCatalogController {
 
     @PostMapping("/uploadMultiFiles/{categoryId}/{index}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> uploadMultiFiles(@RequestParam List<MultipartFile> files,
+    public ResponseEntity<?> uploadMultiFiles(@RequestParam("file") MultipartFile file,
                                               @PathVariable Long categoryId ,
                                               @PathVariable String index) {
 
 
-        try {
-            for (MultipartFile file : files) {
-                // Process the file (save it, etc.)
-                System.out.println("Uploaded file: " + file.getOriginalFilename());
-            }
-            return ResponseEntity.ok("Files uploaded successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
-        }
-
+        System.out.println("Category Id  :: " + categoryId);
+        System.out.println("Index :: " + index);
+        System.out.println("Data :: " + file.getOriginalFilename());
+        return ResponseEntity.ok("message");
     }
 
 
