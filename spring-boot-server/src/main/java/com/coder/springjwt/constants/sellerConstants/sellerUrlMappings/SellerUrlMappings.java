@@ -74,4 +74,13 @@ public class SellerUrlMappings {
     public static final String SELLER_CATALOG_CONTROLLER = SELLER_AUTH_URL + "/sellerCatalogController";
 
 
+
+
+//    =====================================CATALOG CONTROLLER===================================
+
+    public static final String GET_GST_LIST = "/getGstList";
+
+    public static final String GET_CATALOG_MASTERS = "/getCatalogMasters";
+
+
 }

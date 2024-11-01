@@ -1,7 +1,6 @@
 package com.coder.springjwt.controllers.admin.catalogMetaData;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
-import com.coder.springjwt.dtos.adminDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.dtos.adminDtos.hsn.HsnCodesDto;
 import com.coder.springjwt.services.adminServices.hsnService.HsnCodeService;
 import org.springframework.beans.factory.annotation.Autowired;

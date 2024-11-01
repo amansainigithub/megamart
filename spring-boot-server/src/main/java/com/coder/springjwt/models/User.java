@@ -111,6 +111,8 @@ public class User extends BaseEntity {
 	@Column(length = 255)
 	private String browserName;
 
+	private String sellerStoreName;
+
 	public User() {
 	}
 
@@ -339,6 +341,22 @@ public class User extends BaseEntity {
 		this.sellerRegisterComplete = sellerRegisterComplete;
 	}
 
+	public String getSellerMobile() {
+		return sellerMobile;
+	}
+
+	public void setSellerMobile(String sellerMobile) {
+		this.sellerMobile = sellerMobile;
+	}
+
+	public String getSellerStoreName() {
+		return sellerStoreName;
+	}
+
+	public void setSellerStoreName(String sellerStoreName) {
+		this.sellerStoreName = sellerStoreName;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -369,14 +387,7 @@ public class User extends BaseEntity {
 				", userAgentVersion='" + userAgentVersion + '\'' +
 				", operatingSystem='" + operatingSystem + '\'' +
 				", browserName='" + browserName + '\'' +
+				", sellerStoreName='" + sellerStoreName + '\'' +
 				'}';
-	}
-
-	public String getSellerMobile() {
-		return sellerMobile;
-	}
-
-	public void setSellerMobile(String sellerMobile) {
-		this.sellerMobile = sellerMobile;
 	}
 }

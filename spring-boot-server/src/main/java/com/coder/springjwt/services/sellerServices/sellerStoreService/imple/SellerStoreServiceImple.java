@@ -77,9 +77,18 @@ public class SellerStoreServiceImple implements SellerStoreService {
                     User user = sellerData.get();
 
                     SellerStore sellerStore = modelMapper.map(sellerStorePayload, SellerStore.class);
-                    sellerStore.setUsername(currentUser.get("username") + " OR " + user.getUsername() );
+                    sellerStore.setUsername(user.getUsername());
 
+                    //Set First Time UserName
+                    sellerStore.setFt_username(currentUser.get("username") + " OR " + user.getUsername() );
+
+                    //save Seller Store
                     this.sellerStoreRepository.save(sellerStore);
+
+                    //Set Store Name to User Table
+                    user.setSellerStoreName(sellerStore.getStoreName());
+                    //save User
+                    this.userRepository.save(user);
 
                     response.setMessage("Seller Store Saved Success");
                     response.setStatus(HttpStatus.OK);

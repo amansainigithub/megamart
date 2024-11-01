@@ -1,6 +1,7 @@
 package com.coder.springjwt.models.sellerModels.sellerStore;
 
 
+import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class SellerCatalog {
+public class SellerCatalog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +24,60 @@ public class SellerCatalog {
 
     private String sellerStoreName;
 
-    private String catalogTitle;
+    private String catalogName;
 
     private String catalogSubTitle;
 
     private String catalogFrontFile;
 
+    private String catalogThumbnail;
+
+    private String file_1;
+
+    private String file_2;
+
+    private String file_3;
+
+    private String file_4;
+
     private String catalogStatus;
+
+    private String gst;
+
+    private String hsnCode;
+
+    private String size;
+
+    private String weight;
+
+    private String styleCode;
+
+    private String netQuantity;
+
+    private String catalogLength;
+
+    private String catalogBreath;
+
+    private String catalogHeight;
+
+    private String material;
+
+    private String catalogType;
+
+    private String color;
+
+    private String manufactureDetails;
+
+    private String packerDetails;
+
+    private String tags;
+
+    private String description;
+
+    private String sku;
+
+    private String identifier;
+
+    private String searchKey;
 
 }

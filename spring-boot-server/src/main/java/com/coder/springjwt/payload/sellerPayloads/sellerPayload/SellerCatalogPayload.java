@@ -1,11 +1,12 @@
 package com.coder.springjwt.payload.sellerPayloads.sellerPayload;
 
+import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-public class SellerCatalogPayload {
+public class SellerCatalogPayload{
 
     private  String id;
 
@@ -17,13 +18,65 @@ public class SellerCatalogPayload {
 
     private String sellerStoreName;
 
-    private String catalogTitle;
+    private String catalogName;
 
     private String catalogSubTitle;
 
     private String catalogFrontFile;
 
+    private String catalogThumbnail;
+
+    private String file_1;
+
+    private String file_2;
+
+    private String file_3;
+
+    private String file_4;
+
     private String catalogStatus;
+
+    private String gst;
+
+    private String hsnCode;
+
+    private String size;
+
+    private String weight;
+
+    private String styleCode;
+
+    private String netQuantity;
+
+    private String catalogLength;
+
+    private String catalogBreath;
+
+    private String catalogHeight;
+
+    private String material;
+
+    private String catalogType;
+
+    private String color;
+
+    private String manufactureDetails;
+
+    private String packerDetails;
+
+    private String tags;
+
+    private String description;
+
+    private String sku;
+
+    private String identifier;
+
+    private String searchKey;
+
+
+
+
 
 
 

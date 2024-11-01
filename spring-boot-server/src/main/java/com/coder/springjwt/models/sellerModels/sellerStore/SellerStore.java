@@ -23,4 +23,8 @@ public class SellerStore extends BaseEntity {
     @Column(nullable = false)
     private String username;
 
+    @NotBlank
+    @Column(nullable = false)
+    private String ft_username;
+
 }
