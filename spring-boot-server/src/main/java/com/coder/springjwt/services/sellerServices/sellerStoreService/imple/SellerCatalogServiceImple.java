@@ -18,6 +18,7 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,8 +249,19 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
 
     @Override
-    public ResponseEntity<?> sellerSaveCatalogService(SellerCatalogPayload sellerCatalogPayload) {
+    public ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
+                                                      String index,
+                                                      String sellerCatalogPayload,
+                                                      List<MultipartFile> files) {
+
+
         try {
+            System.out.println("Catalog Data :: " + sellerCatalogPayload );
+            SellerCatalogPayload catalogJsonNode = new Gson().fromJson(sellerCatalogPayload, SellerCatalogPayload.class);
+            System.out.println("Catalog Data :: " + catalogJsonNode.getNetQuantity() );
+            System.out.println("Json Catalog Data :: " + catalogJsonNode);
+
+
 
             // GET Current Username
             Map<String, String> currentUser = UserHelper.getCurrentUser();
@@ -263,34 +275,48 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
                 SellerStore sellerStore = optional.get();
 
                 //convert Payload To Modal class
-                SellerCatalog sellerCatalog = modelMapper.map(sellerCatalogPayload, SellerCatalog.class);
+                SellerCatalog sellerCatalog = modelMapper.map(catalogJsonNode, SellerCatalog.class);
+
+                //save Catalog Files
+                this.catalogFileStore(files);
 
                 //set Status
                 sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.DRAFT));
 
                 //set Current User
-                sellerCatalog.setUsername(currentUser.get("username"));
+                sellerCatalog.setUsername(sellerStore.getUsername());
 
                 //set Store Name
                 sellerCatalog.setSellerStoreName(sellerStore.getStoreName());
 
                 this.sellerCatalogRepository.save(sellerCatalog);
 
-                SellerCatalogPayload catalogPayload = new SellerCatalogPayload();
-                catalogPayload.setId(String.valueOf(sellerCatalog.getId()));
-                return ResponseGenerator.generateSuccessResponse(catalogPayload ,SellerMessageResponse.SUCCESS);
+                return ResponseGenerator.generateSuccessResponse("DATA SAVED SUCCESS" ,SellerMessageResponse.SUCCESS);
 
             }else{
                 return ResponseGenerator.generateBadRequestResponse("Failed" ,SellerMessageResponse.FAILED);
             }
-
-
         }
         catch (Exception e)
         {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
         }
+
     }
+
+
+    public boolean catalogFileStore(List<MultipartFile> files)
+    {
+        try {
+            for (MultipartFile file : files) {
+                System.out.println("File Name :: " + file.getOriginalFilename());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Boolean.TRUE;
+    }
+
 
 }

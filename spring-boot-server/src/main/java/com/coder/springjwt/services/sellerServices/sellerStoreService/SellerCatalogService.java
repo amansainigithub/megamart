@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Component
 public interface SellerCatalogService {
     ResponseEntity<?> getSellerCatalog(Long catalogId);
@@ -17,5 +19,9 @@ public interface SellerCatalogService {
 
     ResponseEntity<?> getCatalogMasters();
 
-    ResponseEntity<?> sellerSaveCatalogService(SellerCatalogPayload sellerCatalogPayload);
+
+    ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
+                                               String index,
+                                               String catalogData,
+                                               List<MultipartFile> files);
 }
