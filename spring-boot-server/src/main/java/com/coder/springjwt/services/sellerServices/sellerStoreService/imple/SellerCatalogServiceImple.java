@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
+import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
@@ -8,11 +9,13 @@ import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.Catalog
 import com.coder.springjwt.models.adminModels.catalog.catalogSize.CatalogSizeModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogType.CatalogTypeModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
+import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
@@ -27,14 +30,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class SellerCatalogServiceImple implements SellerCatalogService {
+    @Autowired
+    private BornCategoryRepo bornCategoryRepo;
 
 
     @Autowired
@@ -63,6 +71,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
     @Autowired
     private SellerStoreRepository sellerStoreRepository;
+
+
+    @Autowired
+    private BucketService bucketService;
 
 
 
@@ -248,53 +260,90 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
 
+    private static final long MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
+    private static final int MAX_FILE_COUNT = 5; // Maximum number of files
+    private static final int MIN_FILE_COUNT = 1; // Minimum number of files
+
     @Override
     public ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
-                                                      String index,
-                                                      String sellerCatalogPayload,
+                                                      SellerCatalogPayload sellerCatalogPayload,
                                                       List<MultipartFile> files) {
 
 
         try {
-            System.out.println("Catalog Data :: " + sellerCatalogPayload );
-            SellerCatalogPayload catalogJsonNode = new Gson().fromJson(sellerCatalogPayload, SellerCatalogPayload.class);
-            System.out.println("Catalog Data :: " + catalogJsonNode.getNetQuantity() );
-            System.out.println("Json Catalog Data :: " + catalogJsonNode);
+            BornCategoryModel bornData = bornCategoryRepo.findById(categoryId).orElseThrow(
+                                                ()->new RuntimeException("Category Id not Found"));
 
+            // Check for minimum and maximum file count
+            if (files.size() < MIN_FILE_COUNT || files.size() > MAX_FILE_COUNT) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(SellerMessageResponse.YOU_MUST_UPLOAD_1_TO_5_FILES);
+            }
 
+            // File upload To Check each file for type and size validity
+            List<String> invalidFiles = files.stream()
+                    .filter(file -> !isValidImageFormat(file.getContentType()) || !isValidFileSize(file.getSize()))
+                    .map(MultipartFile::getOriginalFilename)
+                    .collect(Collectors.toList());
 
-            // GET Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
+            if (!invalidFiles.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                        .body(SellerMessageResponse.THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB
+                                + String.join(", ", invalidFiles));
+            }
+            else if  (invalidFiles.isEmpty()){
 
-            //Get Seller Store Data
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+                // GET Current Username
+                Map<String, String> currentUser = UserHelper.getCurrentUser();
+                //Get Seller Store Data
+                Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
 
-            if(optional.isPresent())
-            {
-                //Get seller Store Data
-                SellerStore sellerStore = optional.get();
+                System.out.println("CatalogJsonData :: " + sellerCatalogPayload);
 
-                //convert Payload To Modal class
-                SellerCatalog sellerCatalog = modelMapper.map(catalogJsonNode, SellerCatalog.class);
+                if (optional.isPresent()) {
+                    //Get seller Store Data
+                    SellerStore sellerStore = optional.get();
 
-                //save Catalog Files
-                this.catalogFileStore(files);
+                    //convert Payload To Modal class
+                    SellerCatalog sellerCatalog = modelMapper.map(sellerCatalogPayload, SellerCatalog.class);
 
-                //set Status
-                sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.DRAFT));
+                    //file Upload Progress Starting
+                    catalogFileStore(files, sellerCatalog);
 
-                //set Current User
-                sellerCatalog.setUsername(sellerStore.getUsername());
+                    //Discount Catalog
+                    String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
+                    sellerCatalog.setDiscount(discountPercentage);
 
-                //set Store Name
-                sellerCatalog.setSellerStoreName(sellerStore.getStoreName());
+                    //Set sub-title
+                    sellerCatalog.setCatalogSubTitle(sellerCatalog.getCatalogName());
 
-                this.sellerCatalogRepository.save(sellerCatalog);
+                    //Set CategoryName and Category Id's
+                    sellerCatalog.setCategoryName(bornData.getCategoryName());
+                    sellerCatalog.setCategoryId(String.valueOf(bornData.getId()));
 
-                return ResponseGenerator.generateSuccessResponse("DATA SAVED SUCCESS" ,SellerMessageResponse.SUCCESS);
+                    //set Status
+                    sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.DRAFT));
 
-            }else{
-                return ResponseGenerator.generateBadRequestResponse("Failed" ,SellerMessageResponse.FAILED);
+                    //set Current User
+                    sellerCatalog.setUsername(sellerStore.getUsername());
+
+                    //set Store Name
+                    sellerCatalog.setSellerStoreName(sellerStore.getStoreName());
+
+                    sellerCatalog.setSellerStore(sellerStore);
+
+                    this.sellerCatalogRepository.save(sellerCatalog);
+
+                    return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DATA_SAVED_SUCCESS,
+                                                                     SellerMessageResponse.SUCCESS);
+
+                } else {
+                    return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED,
+                                                                        SellerMessageResponse.FAILED);
+                }
+            }else {
+                return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.SOMETHING_WENT_WRONG,
+                        SellerMessageResponse.FAILED);
             }
         }
         catch (Exception e)
@@ -306,17 +355,79 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
 
-    public boolean catalogFileStore(List<MultipartFile> files)
+    // Helper method to validate file type
+    private boolean isValidImageFormat(String contentType) {
+        return contentType != null &&
+                (contentType.equals("image/png") || contentType.equals("image/jpeg"));
+    }
+
+    // Helper method to validate file size
+    private boolean isValidFileSize(long size) {
+        return size <= MAX_FILE_SIZE;
+    }
+
+
+    public boolean catalogFileStore(List<MultipartFile> files, SellerCatalog sellerCatalog)
     {
+        int counter = 0;
         try {
             for (MultipartFile file : files) {
                 System.out.println("File Name :: " + file.getOriginalFilename());
+                //BucketModel bucketModel = bucketService.uploadFile(file);
+
+                if(counter == 0)
+                {
+                    sellerCatalog.setCatalogFrontFile("https://images.unsplash.com/photo-1602810319250-a663f0af2f75?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    sellerCatalog.setCatalogThumbnail("https://images.unsplash.com/photo-1602810319250-a663f0af2f75?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    log.info("File 0 Upload Success");
+                }
+                else if(counter == 1)
+                {
+                    sellerCatalog.setFile_1("https://images.unsplash.com/photo-1602810320073-1230c46d89d4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    log.info("File 1 Upload Success");
+                }
+                else if(counter == 2 )
+                {
+                    sellerCatalog.setFile_2("https://images.unsplash.com/photo-1603251578711-3290ca1a0187?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    log.info("File 2 Upload Success");
+                }
+                else if(counter == 3 )
+                {
+                    sellerCatalog.setFile_3("https://images.unsplash.com/photo-1602810319250-a663f0af2f75?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    log.info("File 3 Upload Success");
+                }
+                else if(counter == 4)
+                {
+                    sellerCatalog.setFile_4("https://images.unsplash.com/photo-1685883518316-355533810d68?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                    log.info("File 4 Upload Success");
+                }
+                else{
+                    log.info("Else Executing===>");
+                }
+
+                counter++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Boolean.TRUE;
     }
+
+    public String calculateDiscount(double mrp, double sellingPrice) {
+        if (mrp <= 0) {
+            return "MRP should be greater than 0";
+        }
+        // Calculate discount percentage
+        double discountPercentage = ((mrp - sellingPrice) / mrp) * 100;
+
+        // Round to 2 decimal places
+        BigDecimal roundedDiscount = new BigDecimal(discountPercentage).setScale(2, RoundingMode.HALF_UP);
+
+        log.info("Discount Percentage: " + roundedDiscount + "%");
+
+        return String.valueOf(roundedDiscount);
+    }
+
 
 
 }

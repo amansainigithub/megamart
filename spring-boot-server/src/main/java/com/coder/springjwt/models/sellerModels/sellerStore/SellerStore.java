@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class SellerStore extends BaseEntity {
@@ -26,5 +28,9 @@ public class SellerStore extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
     private String ft_username;
+
+
+    @OneToMany(mappedBy = "sellerStore" , cascade = CascadeType.ALL)
+    private List<SellerCatalog> sellerCatalogList;
 
 }

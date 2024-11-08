@@ -21,7 +21,6 @@ public interface SellerCatalogService {
 
 
     ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
-                                               String index,
-                                               String catalogData,
+                                               SellerCatalogPayload sellerCatalogPayload,
                                                List<MultipartFile> files);
 }

@@ -38,6 +38,12 @@ public class SellerMessageResponse {
 
     public static final String GST_NUMBER_ALREADY_USED_ANOTHER_SELLER = "Gst Number already Used Another seller";
 
+    public static final String YOU_MUST_UPLOAD_1_TO_5_FILES = "You must upload between 1 and 5 files";
+
+    public static final String THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB = "The following files are unsupported or exceed 3MB:";
+
+
+
 
 
 

@@ -2,10 +2,7 @@ package com.coder.springjwt.models.sellerModels.sellerStore;
 
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -72,6 +69,7 @@ public class SellerCatalog extends BaseEntity {
 
     private String tags;
 
+    @Column(length = 5000)
     private String description;
 
     private String sku;
@@ -79,5 +77,21 @@ public class SellerCatalog extends BaseEntity {
     private String identifier;
 
     private String searchKey;
+
+    private String sellActualPrice;
+
+    private String defectiveReturnPrice;
+
+    private String mrp;
+
+    private String inventory;
+
+    private String fileId;
+
+    private String discount;
+
+    @ManyToOne
+    private SellerStore sellerStore;
+
 
 }

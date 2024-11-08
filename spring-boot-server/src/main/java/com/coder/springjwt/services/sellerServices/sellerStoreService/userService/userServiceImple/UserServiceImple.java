@@ -1,13 +1,11 @@
-package com.coder.springjwt.services.adminServices.userService.userServiceImple;
+package com.coder.springjwt.services.sellerServices.sellerStoreService.userService.userServiceImple;
 
 import com.coder.springjwt.bucket.bucketService.BucketService;
-import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
-import com.coder.springjwt.services.adminServices.userService.UserService;
+import com.coder.springjwt.services.sellerServices.sellerStoreService.userService.UserService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service

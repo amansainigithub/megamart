@@ -74,8 +74,15 @@ public class SellerCatalogPayload{
 
     private String searchKey;
 
+    private String sellActualPrice;
 
+    private String defectiveReturnPrice;
 
+    private String mrp;
+
+    private String inventory;
+
+    private String fileId;
 
 
 

@@ -74,13 +74,13 @@ public class SellerCatalogController {
 
     @Autowired
     private ModelMapper modelMapper;
-    @PostMapping("/uploadMultiFiles/{categoryId}/{index}/{catalogData}")
+    @PostMapping("/uploadMultiFiles/{categoryId}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> uploadMultiFiles(@PathVariable Long categoryId ,
-                                              @PathVariable String index,
-                                              @PathVariable String catalogData,
-                                              @RequestParam("files") List<MultipartFile> files) {
-        return sellerCatalogService.sellerSaveCatalogService(categoryId , index , catalogData , files );
+                                              @RequestPart("catalogData") SellerCatalogPayload sellerCatalogPayload,
+                                              @RequestParam(value = "files" , required = false) List<MultipartFile> files) {
+        System.out.println(sellerCatalogPayload);
+        return sellerCatalogService.sellerSaveCatalogService(categoryId , sellerCatalogPayload , files );
 
     }
 
