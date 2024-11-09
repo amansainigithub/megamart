@@ -9,6 +9,8 @@ public class SellerMessageResponse {
     public static final String SUCCESS = "Success";
 
     public static final String FAILED = "Failed";
+
+    public static final String ERROR = "Error";
     public static final String ALREADY_VERIFIED = "Already Verified";
     public static final String DATA_NOT_FOUND = "Data Not Found";
 

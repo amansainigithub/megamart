@@ -41,6 +41,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class SellerCatalogServiceImple implements SellerCatalogService {
+
+    private static final long MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
+    private static final int MAX_FILE_COUNT = 5; // Maximum number of files
+    private static final int MIN_FILE_COUNT = 1; // Minimum number of files
+
     @Autowired
     private BornCategoryRepo bornCategoryRepo;
 
@@ -75,6 +80,8 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
     @Autowired
     private BucketService bucketService;
+
+
 
 
 
@@ -259,11 +266,6 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-
-    private static final long MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
-    private static final int MAX_FILE_COUNT = 5; // Maximum number of files
-    private static final int MIN_FILE_COUNT = 1; // Minimum number of files
-
     @Override
     public ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
                                                       SellerCatalogPayload sellerCatalogPayload,
@@ -354,7 +356,6 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
     }
 
-
     // Helper method to validate file type
     private boolean isValidImageFormat(String contentType) {
         return contentType != null &&
@@ -428,6 +429,88 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         return String.valueOf(roundedDiscount);
     }
 
+
+
+
+    @Override
+    public ResponseEntity<?> getAllCatalogByUsernameService() {
+        try {
+            //Get Current Username
+            Map<String, String> currentUser = UserHelper.getCurrentUser();
+
+            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+
+            if(optional.isPresent())
+            {
+                List<SellerCatalog> catalogList =
+                        this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername());
+                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                                                                 SellerMessageResponse.USER_NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCatalogByQcProgressService() {
+        try {
+            //Get Current Username
+            Map<String, String> currentUser = UserHelper.getCurrentUser();
+
+            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+
+            if(optional.isPresent())
+            {
+                //Fetch the Progress Catalog List
+                List<SellerCatalog> catalogList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() , "PROGRESS");
+                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                        SellerMessageResponse.USER_NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCatalogByDraft() {
+        try {
+            //Get Current Username
+            Map<String, String> currentUser = UserHelper.getCurrentUser();
+
+            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+
+            if(optional.isPresent())
+            {
+                //Fetch the Progress Catalog List
+                List<SellerCatalog> catalogList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() , "DRAFT");
+                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                        SellerMessageResponse.USER_NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
 
 
 }

@@ -23,4 +23,10 @@ public interface SellerCatalogService {
     ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
                                                SellerCatalogPayload sellerCatalogPayload,
                                                List<MultipartFile> files);
+
+    ResponseEntity<?> getAllCatalogByUsernameService();
+
+    ResponseEntity<?> getAllCatalogByQcProgressService();
+
+    ResponseEntity<?> getAllCatalogByDraft();
 }

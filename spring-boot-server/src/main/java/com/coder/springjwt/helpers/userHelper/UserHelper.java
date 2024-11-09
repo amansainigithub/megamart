@@ -28,7 +28,6 @@ public class UserHelper {
         for (GrantedAuthority authority : authorities) {
             roles.append(authority.getAuthority()).append(" ");
         }
-
         currentUser.put("username",username);
         currentUser.put("roles",roles.toString().trim());
 

@@ -72,8 +72,6 @@ public class SellerCatalogController {
     }
 
 
-    @Autowired
-    private ModelMapper modelMapper;
     @PostMapping("/uploadMultiFiles/{categoryId}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> uploadMultiFiles(@PathVariable Long categoryId ,
@@ -83,6 +81,28 @@ public class SellerCatalogController {
         return sellerCatalogService.sellerSaveCatalogService(categoryId , sellerCatalogPayload , files );
 
     }
+
+    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllCatalogByUsername() {
+        return sellerCatalogService.getAllCatalogByUsernameService();
+
+    }
+
+    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllCatalogByQcProgress() {
+        return sellerCatalogService.getAllCatalogByQcProgressService();
+    }
+
+    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllCatalogByDraft() {
+        return sellerCatalogService.getAllCatalogByDraft();
+
+    }
+
+
 
 
 

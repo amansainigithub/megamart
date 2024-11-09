@@ -2,6 +2,7 @@ package com.coder.springjwt.models.sellerModels.sellerStore;
 
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -91,6 +92,7 @@ public class SellerCatalog extends BaseEntity {
     private String discount;
 
     @ManyToOne
+    @JsonIgnore
     private SellerStore sellerStore;
 
 

@@ -81,6 +81,15 @@ public class SellerUrlMappings {
     public static final String GET_GST_LIST = "/getGstList";
 
     public static final String GET_CATALOG_MASTERS = "/getCatalogMasters";
+    public static final String GET_ALL_CATALOG_BY_USERNAME = "/getAllCatalogByUsername";
+
+    public static final String GET_ALL_CATALOG_BY_QC_PROGRESS = "/getAllCatalogByQcProgress";
+
+    public static final String GET_ALL_CATALOG_BY_DRAFT = "/getAllCatalogByDraft";
+
+
+
+
 
 
 }
