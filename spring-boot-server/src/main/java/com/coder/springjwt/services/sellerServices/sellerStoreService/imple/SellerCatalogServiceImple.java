@@ -4,10 +4,15 @@ import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
+import com.coder.springjwt.models.adminModels.catalog.catalogBreath.CatalogBreathModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogHeight.CatalogHeightModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogLength.CatalogLengthModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.CatalogMaterial;
 import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.CatalogNetQuantityModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogSize.CatalogSizeModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogType.CatalogTypeModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogWeight.CatalogWeightModel;
+import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
@@ -54,7 +59,6 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     @Autowired
     private BornCategoryRepo bornCategoryRepo;
 
-
     @Autowired
     private HsnRepository hsnRepository;
 
@@ -86,7 +90,20 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     @Autowired
     private BucketService bucketService;
 
+    @Autowired
+    private CatalogLengthRepo catalogLengthRepo;
 
+    @Autowired
+    private GstPercentageRepo gstPercentageRepo;
+
+    @Autowired
+    private CatalogWeightRepo catalogWeightRepo;
+
+    @Autowired
+    private CatalogBreathRepo catalogBreathRepo;
+
+    @Autowired
+    private CatalogHeightRepo catalogHeightRepo;
     @Override
     public ResponseEntity<?> getSellerCatalog(Long catalogId) {
         try {
@@ -155,6 +172,26 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             List<CatalogTypeModel> typeList = this.getTypeList();
             dataResponse.put("typeList" , typeList);
 
+            //catalog Length List
+            List<GstPercentageModel> gstPercentageList = this.getGstPercentageList();
+            dataResponse.put("gstPercentageList" , gstPercentageList);
+
+            //catalog Weight List
+            List<CatalogWeightModel> catalogWeightList = this.getWeightList();
+            dataResponse.put("catalogWeightList" , catalogWeightList);
+
+            //catalog Weight List
+            List<CatalogBreathModel> catalogBreathList = this.getBreathList();
+            dataResponse.put("catalogBreathList" , catalogBreathList);
+
+            //catalog Length List
+            List<CatalogLengthModel> lengthList = this.getLengthList();
+            dataResponse.put("lengthList" , lengthList);
+
+            //catalog Length List
+            List<CatalogHeightModel> heightLists = this.getHeightList();
+            dataResponse.put("heightLists" , heightLists);
+
             return ResponseGenerator.generateSuccessResponse(dataResponse ,SellerMessageResponse.SUCCESS );
         }
         catch (Exception e)
@@ -167,6 +204,107 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
 
+
+    public List<CatalogHeightModel> getHeightList()
+    {
+        try {
+            List<CatalogHeightModel> catalogHeightLists = this.catalogHeightRepo.findAll();
+            if(catalogHeightLists.isEmpty())
+            {
+                log.info("Data Not found :::: {} ");
+                return null;
+            }else{
+                log.info("Data fetch Success");
+                return catalogHeightLists;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<CatalogBreathModel> getBreathList()
+    {
+        try {
+            List<CatalogBreathModel> catalogBreathList = this.catalogBreathRepo.findAll();
+            if(catalogBreathList.isEmpty())
+            {
+                log.info("Data Not found :::: {} ");
+                return null;
+            }else{
+                log.info("Data fetch Success");
+                return catalogBreathList;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<CatalogWeightModel> getWeightList()
+    {
+        try {
+            List<CatalogWeightModel> catalogWeightLists = this.catalogWeightRepo.findAll();
+            if(catalogWeightLists.isEmpty())
+            {
+                log.info("Data Not found :::: {} ");
+                return null;
+            }else{
+                log.info("Data fetch Success");
+                return catalogWeightLists;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<GstPercentageModel> getGstPercentageList()
+    {
+        try {
+            List<GstPercentageModel> gstPercentageList = this.gstPercentageRepo.findAll();
+            if(gstPercentageList.isEmpty())
+            {
+                log.info("Data Not found :::: {} ");
+                return null;
+            }else{
+                log.info("Data fetch Success");
+                return gstPercentageList;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public List<CatalogLengthModel> getLengthList()
+    {
+        try {
+            List<CatalogLengthModel> lengthList = this.catalogLengthRepo.findAll();
+            if(lengthList.isEmpty())
+            {
+                log.info("Data Not found :::: {} ");
+                return null;
+            }else{
+                log.info("Data fetch Success");
+                return lengthList;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public List<HsnCodes> getHsnList()
     {

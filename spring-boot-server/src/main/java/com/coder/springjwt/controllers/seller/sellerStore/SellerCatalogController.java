@@ -66,7 +66,7 @@ public class SellerCatalogController {
     }
 
     @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
-    @PreAuthorize("hasRole('SELLER')"  )
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> getCatalogMasters() {
         return sellerCatalogService.getCatalogMasters();
     }
