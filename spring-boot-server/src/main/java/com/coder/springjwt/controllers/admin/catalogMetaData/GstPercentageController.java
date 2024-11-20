@@ -20,13 +20,13 @@ public class GstPercentageController {
     private GstPercentageService gstPercentageService ;
 
     @PostMapping(AdminUrlMappings.SAVE_GST_PERCENTAGE)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER') ")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveGstPercentage(@Validated @RequestBody GstPercentageDto gstPercentageDto) {
         return this.gstPercentageService.saveGstPercentage(gstPercentageDto);
     }
 
     @PostMapping(AdminUrlMappings.GET_GST_PERCENTAGE)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER') ")
+    @PreAuthorize("hasRole('ADMIN') ")
     public ResponseEntity<?> getGstPercentage(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.gstPercentageService.getGstPercentage(page,size);
     }

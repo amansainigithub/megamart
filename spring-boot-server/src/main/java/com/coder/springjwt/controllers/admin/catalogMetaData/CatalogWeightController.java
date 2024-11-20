@@ -20,13 +20,13 @@ public class CatalogWeightController {
     private CatalogWeightService catalogWeightService;
 
     @PostMapping(AdminUrlMappings.SAVE_CATALOG_WEIGHT)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveCatalogWeight(@Validated @RequestBody CatalogWeightDto catalogWeightDto) {
         return this.catalogWeightService.saveCatalogWeight(catalogWeightDto);
     }
 
     @PostMapping(AdminUrlMappings.GET_CATALOG_WEIGHT)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER') ")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCatalogWeight(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.catalogWeightService.getCatalogWeight(page,size);
     }

@@ -2,9 +2,7 @@ package com.coder.springjwt.controllers.admin.catalogMetaData;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
 import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogLengthDto;
-import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogWeightDto;
 import com.coder.springjwt.services.adminServices.catalogLengthService.CatalogLengthService;
-import com.coder.springjwt.services.adminServices.catalogWeightService.CatalogWeightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +20,7 @@ public class CatalogLengthController {
     private CatalogLengthService catalogLengthService;
 
     @PostMapping(AdminUrlMappings.SAVE_CATALOG_LENGTH)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveCatalogLength(@Validated @RequestBody CatalogLengthDto catalogLengthDto) {
         return this.catalogLengthService.saveCatalogLength(catalogLengthDto);
     }

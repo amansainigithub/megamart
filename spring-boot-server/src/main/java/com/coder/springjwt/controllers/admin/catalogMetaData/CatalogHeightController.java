@@ -20,13 +20,13 @@ public class CatalogHeightController {
     private CatalogHeightService catalogHeightService;
 
     @PostMapping(AdminUrlMappings.SAVE_CATALOG_HEIGHT)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveCatalogHeight(@Validated @RequestBody CatalogHeightDto catalogHeightDto) {
         return this.catalogHeightService.saveCatalogHeight(catalogHeightDto);
     }
 
     @PostMapping(AdminUrlMappings.GET_CATALOG_HEIGHT)
-    @PreAuthorize("hasRole('ADMIN') OR hasRole('SELLER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCatalogHeight(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.catalogHeightService.getCatalogHeight(page,size);
     }
