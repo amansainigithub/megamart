@@ -2,16 +2,13 @@ package com.coder.springjwt.controllers.admin.catalog_CBI_Controller;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
+import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadInvestigation;
 import com.coder.springjwt.services.adminServices.catalogCbiService.CatalogCbiService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @CrossOrigin(
         origins = {"http://localhost:8080","http://localhost:4200"},
@@ -43,11 +40,13 @@ public class CatalogCbiController {
     @PostMapping("/catalogInvestigation/{catalogId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> catalogInvestigation(@PathVariable Long catalogId ,
-                                              @RequestPart("catalogData") SellerCatalogPayload sellerCatalogPayload,
-                                              @RequestParam(value = "files" , required = false) List<MultipartFile> files) {
-        System.out.println(sellerCatalogPayload);
-        return catalogCbiService.catalogInvestigationService(catalogId , sellerCatalogPayload , files );
+                                                  @RequestBody CatalogPayloadInvestigation catalogInvestigationPayload) {
+        System.out.println(catalogInvestigationPayload.getActionStatus());
+        System.out.println(catalogInvestigationPayload.getErrorMarked());
+        System.out.println(catalogInvestigationPayload.getOtherSuggestion());
 
+
+        return catalogCbiService.catalogInvestigationService(catalogId , catalogInvestigationPayload );
     }
 
 

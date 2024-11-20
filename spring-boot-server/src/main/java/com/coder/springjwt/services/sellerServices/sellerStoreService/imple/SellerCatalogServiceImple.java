@@ -34,6 +34,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -314,6 +317,13 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
                     //file Upload Progress Starting
                     catalogFileStore(files, sellerCatalog);
 
+                    //set Current Date
+                    sellerCatalog.setCatalogDate(getCurrentDate());
+
+                    //get Current Time
+                    sellerCatalog.setCatalogTime(getCurrentTime());
+
+
                     //Discount Catalog
                     String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
                     sellerCatalog.setDiscount(discountPercentage);
@@ -355,7 +365,29 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
         }
+    }
 
+
+    public String getCurrentDate() // d MMM yyyy
+    {
+        //Set Catalog Date
+        LocalDate currentDate = LocalDate.now();
+        // Define the formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
+        //Set Catalog Time
+        // Format the date
+        return currentDate.format(formatter);
+    }
+
+
+    public String getCurrentTime()
+    {
+        //Set Currect Time
+        LocalTime currentTime = LocalTime.now();
+        // Define the formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        // Format the time
+        return currentTime.format(formatter);
     }
 
     // Helper method to validate file type

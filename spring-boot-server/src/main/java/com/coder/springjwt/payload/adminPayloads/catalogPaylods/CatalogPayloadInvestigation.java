@@ -1,18 +1,13 @@
-package com.coder.springjwt.models.sellerModels.sellerStore;
+package com.coder.springjwt.payload.adminPayloads.catalogPaylods;
 
-
-import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
-@Entity
-public class SellerCatalog extends BaseEntity {
+@ToString
+public class CatalogPayloadInvestigation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private  String id;
 
     private String username;
 
@@ -70,7 +65,6 @@ public class SellerCatalog extends BaseEntity {
 
     private String tags;
 
-    @Column(length = 5000)
     private String description;
 
     private String sku;
@@ -85,21 +79,15 @@ public class SellerCatalog extends BaseEntity {
 
     private String inventory;
 
-    private String discount;
-
     private String catalogDate;
 
     private String catalogTime;
 
 
     //Action Status Data for submit Catalog
+    private String actionStatus;
+
     private String errorMarked;
 
     private String otherSuggestion;
-
-    @ManyToOne
-    @JsonIgnore
-    private SellerStore sellerStore;
-
-
 }

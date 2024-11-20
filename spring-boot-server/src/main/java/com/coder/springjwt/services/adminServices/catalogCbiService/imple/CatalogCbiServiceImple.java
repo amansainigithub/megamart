@@ -3,10 +3,8 @@ package com.coder.springjwt.services.adminServices.catalogCbiService.imple;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
+import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadInvestigation;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.adminServices.catalogCbiService.CatalogCbiService;
@@ -16,17 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -69,16 +61,16 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     }
 
     @Override
-    public ResponseEntity<?> catalogInvestigationService(Long catalogId, SellerCatalogPayload sellerCatalogPayload, List<MultipartFile> files) {
+    public ResponseEntity<?> catalogInvestigationService(Long catalogId,
+                                                         CatalogPayloadInvestigation catalogInvestigationPayload) {
 
         try {
-
             log.info("Catalog Id :: " + catalogId);
 
                 // GET Current Username
                 Map<String, String> currentUser = UserHelper.getCurrentUser();
 
-                System.out.println("CatalogJsonData :: " + sellerCatalogPayload);
+                System.out.println("CatalogJsonData :: " + catalogInvestigationPayload);
 
                 Optional<SellerCatalog> currentCatalog = sellerCatalogRepository.findById(catalogId);
 
@@ -87,7 +79,7 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
                     //Get seller Store Data
                     SellerCatalog catalogNode = currentCatalog.get();
                     //convert Payload To Modal class
-                    SellerCatalog sellerCatalog = modelMapper.map(sellerCatalogPayload, SellerCatalog.class);
+                    SellerCatalog sellerCatalog = modelMapper.map(catalogInvestigationPayload, SellerCatalog.class);
                     sellerCatalog.setId(currentCatalog.get().getId());
 
                     //Set Seller Store
@@ -97,9 +89,19 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
                     String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
                     sellerCatalog.setDiscount(discountPercentage);
 
-                    this.sellerCatalogRepository.save(sellerCatalog);
+                    //Set Catalog Investigation Status
+                    if(catalogInvestigationPayload.getActionStatus().equals(String.valueOf(CatalogRole.QC_PASS)))
+                    {
+                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_PASS));
+                    }else{
+                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_ERROR));
+                    }
 
-                    return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DATA_SAVED_SUCCESS,
+                    SellerCatalog save = this.sellerCatalogRepository.save(sellerCatalog);
+                    log.info("========================================================");
+                    log.info("Data Updated Success ID :: " + catalogId);
+
+                    return ResponseGenerator.generateSuccessResponse(save,
                             SellerMessageResponse.SUCCESS);
 
                 } else {

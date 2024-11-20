@@ -70,8 +70,6 @@ public class SellerCatalogPayload{
 
     private String sku;
 
-    private String identifier;
-
     private String searchKey;
 
     private String sellActualPrice;
@@ -82,9 +80,16 @@ public class SellerCatalogPayload{
 
     private String inventory;
 
-    private String fileId;
+    private String catalogDate;
+
+    private String catalogTime;
 
 
+    //Action Status Data for submit Catalog
+    private String actionStatus;
 
+    private String actionDebug;
+
+    private String other;
 
 }
