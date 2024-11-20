@@ -137,6 +137,41 @@ public class AdminUrlMappings {
     public static final String GET_NET_QUANTITY="/getNetQuantity";
 
 
+
+    //GSTPercentage Controller
+    public static final String GST_PERCENTAGE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/gstPercentageController";
+    public static final String  SAVE_GST_PERCENTAGE= "/saveGstPercentage";
+    public static final String GET_GST_PERCENTAGE="/getGstPercentage";
+
+
+
+
+    //Catalog Weight Controller
+    public static final String CATALOG_WEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogWeightController";
+
+    public static final String  SAVE_CATALOG_WEIGHT= "/saveCatalogWeight";
+    public static final String GET_CATALOG_WEIGHT="/getCatalogWeight";
+
+
+    //Catalog Weight Controller
+    public static final String CATALOG_LENGTH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogLengthController";
+    public static final String  SAVE_CATALOG_LENGTH= "/saveCatalogLength";
+    public static final String GET_CATALOG_LENGTH="/getCatalogLength";
+
+
+    //Catalog Weight Controller
+    public static final String CATALOG_BREATH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogBreathController";
+    public static final String  SAVE_CATALOG_BREATH= "/saveCatalogBreath";
+    public static final String GET_CATALOG_BREATH="/getCatalogBreath";
+
+
+    //Catalog Weight Controller
+    public static final String CATALOG_HEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogHeightController";
+    public static final String  SAVE_CATALOG_HEIGHT= "/saveCatalogHeight";
+    public static final String GET_CATALOG_HEIGHT="/getCatalogHeight";
+
+
+
     //CATALOG BRAND URL's and Controller
     public static final String CATALOG_CBI_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogCbiController";
 

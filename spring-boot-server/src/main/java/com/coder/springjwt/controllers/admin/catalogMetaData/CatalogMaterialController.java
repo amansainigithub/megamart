@@ -45,6 +45,7 @@ public class CatalogMaterialController {
     }
 
     @PostMapping(AdminUrlMappings.GET_CATALOG_MATERIAL)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCatalogMaterial(@RequestParam Integer page , @RequestParam  Integer size) {
         return this.catalogMaterialService.getCatalogMaterial(page,size);
     }

@@ -91,6 +91,7 @@ public class SellerCatalog extends BaseEntity {
 
     private String catalogTime;
 
+    private String spaceId;
 
     //Action Status Data for submit Catalog
     private String errorMarked;
