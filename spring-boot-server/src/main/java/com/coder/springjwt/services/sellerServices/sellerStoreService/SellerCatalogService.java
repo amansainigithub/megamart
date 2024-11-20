@@ -24,9 +24,13 @@ public interface SellerCatalogService {
                                                SellerCatalogPayload sellerCatalogPayload,
                                                List<MultipartFile> files);
 
-    ResponseEntity<?> getAllCatalogByUsernameService();
+    ResponseEntity<?> getAllCatalogByUsernameService(int page , int size);
 
-    ResponseEntity<?> getAllCatalogByQcProgressService();
+    ResponseEntity<?> getAllCatalogByQcProgressService(int page , int size);
 
-    ResponseEntity<?> getAllCatalogByDraft();
+    ResponseEntity<?> getAllCatalogByDraft(int page , int size);
+
+    ResponseEntity<?> getAllCatalogByError(int page , int size);
+
+    ResponseEntity<?> getAllCatalogByQcPass(int page , int size);
 }

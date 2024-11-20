@@ -19,6 +19,9 @@ public class SellerMessageResponse {
     public static final String USER_NOT_FOUND = "User Not Found";
     public static final String DATA_SAVED_SUCCESS = "OTP SEND ";
 
+    public static final String DATA_UPDATE_SUCCESS = "Data Update Success ";
+
+
     public static final String OTP_SEND_SUCCESS = "Otp Send Success";
     public static final String OTP_VERIFIED_SUCCESS = "Otp Verified Success";
 

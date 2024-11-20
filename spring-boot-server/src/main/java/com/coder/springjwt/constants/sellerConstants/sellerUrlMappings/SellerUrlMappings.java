@@ -87,6 +87,9 @@ public class SellerUrlMappings {
 
     public static final String GET_ALL_CATALOG_BY_DRAFT = "/getAllCatalogByDraft";
 
+    public static final String GET_ALL_CATALOG_BY_ERROR = "/getAllCatalogByError";
+
+    public static final String GET_ALL_CATALOG_BY_QC_PASS = "/getAllCatalogByQcPass";
 
 
 

@@ -135,4 +135,12 @@ public class AdminUrlMappings {
     public static final String  GET_CATALOG_NET_QUANTITY_ID= "/getCatalogNetQuantityById/{netQuantityId}";
     public static final String  UPDATE_NET_QUANTITY= "/updateNetQuantity";
     public static final String GET_NET_QUANTITY="/getNetQuantity";
+
+
+    //CATALOG BRAND URL's and Controller
+    public static final String CATALOG_CBI_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogCbiController";
+
+    public static final String  GET_CATALOG_PROGRESS_LIST= "/getCatalogInProgressList";
+
+
 }

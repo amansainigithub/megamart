@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -80,9 +82,6 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
     @Autowired
     private BucketService bucketService;
-
-
-
 
 
     @Override
@@ -289,6 +288,9 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
                     .collect(Collectors.toList());
 
             if (!invalidFiles.isEmpty()) {
+                log.error("List of invalidFiles :: " + invalidFiles);
+                log.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE + " :: "+
+                        SellerMessageResponse.THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB);
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                         .body(SellerMessageResponse.THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB
                                 + String.join(", ", invalidFiles));
@@ -324,7 +326,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
                     sellerCatalog.setCategoryId(String.valueOf(bornData.getId()));
 
                     //set Status
-                    sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.DRAFT));
+                    sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_PROGRESS));
 
                     //set Current User
                     sellerCatalog.setUsername(sellerStore.getUsername());
@@ -433,7 +435,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
 
     @Override
-    public ResponseEntity<?> getAllCatalogByUsernameService() {
+    public ResponseEntity<?> getAllCatalogByUsernameService(int page , int size) {
         try {
             //Get Current Username
             Map<String, String> currentUser = UserHelper.getCurrentUser();
@@ -442,9 +444,35 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
             if(optional.isPresent())
             {
-                List<SellerCatalog> catalogList =
-                        this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername());
-                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+                Page<SellerCatalog> catalogPage =
+                        this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername(), PageRequest.of(page, size));
+
+                //Catalog's Divided Counts
+                List<SellerCatalog> catalogDivided = this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername());
+                Map<String, Long> catalogCounts = catalogDivided.stream()
+                        .collect(Collectors.groupingBy(SellerCatalog::getCatalogStatus, Collectors.counting()));
+
+                // Retrieve counts for each status individually
+                long errorCount = catalogCounts.getOrDefault("QC_ERROR", 0L);
+                long qcPassCount = catalogCounts.getOrDefault("QC_PASS", 0L);
+                long progressCount = catalogCounts.getOrDefault("QC_PROGRESS", 0L);
+                long draftCount = catalogCounts.getOrDefault("QC_DRAFT", 0L);
+
+                // Print or store the counts as needed
+                System.out.println("Error Count: " + errorCount);
+                System.out.println("QC Pass Count: " + qcPassCount);
+                System.out.println("Progress Count: " + progressCount);
+                System.out.println("Draft Count: " + draftCount);
+
+                HashMap<String,Object> catalogData =new HashMap<>();
+                catalogData.put("catalogPage",catalogPage);
+                catalogData.put("errorCount",errorCount);
+                catalogData.put("qcPassCount",qcPassCount);
+                catalogData.put("progressCount",progressCount);
+                catalogData.put("draftCount",draftCount);
+
+
+                return ResponseGenerator.generateSuccessResponse(catalogData,SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
                                                                  SellerMessageResponse.USER_NOT_FOUND);
@@ -459,7 +487,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
     @Override
-    public ResponseEntity<?> getAllCatalogByQcProgressService() {
+    public ResponseEntity<?> getAllCatalogByQcProgressService(int page , int size) {
         try {
             //Get Current Username
             Map<String, String> currentUser = UserHelper.getCurrentUser();
@@ -469,9 +497,13 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             if(optional.isPresent())
             {
                 //Fetch the Progress Catalog List
-                List<SellerCatalog> catalogList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() , "PROGRESS");
-                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+                Page<SellerCatalog> catalogProgressList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+                                    String.valueOf(CatalogRole.QC_PROGRESS) , PageRequest.of(page, size));
+
+                log.info("Catalog Progress List Fetch Success");
+
+                return ResponseGenerator.generateSuccessResponse(catalogProgressList,SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
                         SellerMessageResponse.USER_NOT_FOUND);
@@ -486,7 +518,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
     @Override
-    public ResponseEntity<?> getAllCatalogByDraft() {
+    public ResponseEntity<?> getAllCatalogByDraft(int page , int size) {
         try {
             //Get Current Username
             Map<String, String> currentUser = UserHelper.getCurrentUser();
@@ -496,9 +528,75 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             if(optional.isPresent())
             {
                 //Fetch the Progress Catalog List
-                List<SellerCatalog> catalogList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() , "DRAFT");
-                return ResponseGenerator.generateSuccessResponse(catalogList,SellerMessageResponse.SUCCESS);
+                Page<SellerCatalog> catalogDraftList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+                                String.valueOf(CatalogRole.QC_DRAFT) , PageRequest.of(page, size));
+
+                log.info("Catalog Draft List Fetch Success");
+
+                return ResponseGenerator.generateSuccessResponse(catalogDraftList,SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                        SellerMessageResponse.USER_NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCatalogByError(int page , int size) {
+        try {
+            //Get Current Username
+            Map<String, String> currentUser = UserHelper.getCurrentUser();
+
+            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+
+            if(optional.isPresent())
+            {
+                //Fetch the Progress Catalog List
+                Page<SellerCatalog> catalogSellerList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername()
+                                , String.valueOf(CatalogRole.QC_ERROR) , PageRequest.of(page, size));
+
+                log.info("Catalog Error List Fetch Success");
+
+                return ResponseGenerator.generateSuccessResponse(catalogSellerList,SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                        SellerMessageResponse.USER_NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCatalogByQcPass(int page , int size) {
+        try {
+            //Get Current Username
+            Map<String, String> currentUser = UserHelper.getCurrentUser();
+
+            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+
+            if(optional.isPresent())
+            {
+                //Fetch the Progress Catalog List
+                Page<SellerCatalog> catalogPassList =
+                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+                                                            String.valueOf(CatalogRole.QC_PASS) , PageRequest.of(page, size));
+
+                log.info("Catalog Pass List Fetch Success");
+
+                return ResponseGenerator.generateSuccessResponse(catalogPassList,SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
                         SellerMessageResponse.USER_NOT_FOUND);

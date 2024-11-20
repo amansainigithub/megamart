@@ -66,7 +66,7 @@ public class SellerCatalogController {
     }
 
     @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
-    @PreAuthorize("hasRole('SELLER')")
+    @PreAuthorize("hasRole('SELLER')"  )
     public ResponseEntity<?> getCatalogMasters() {
         return sellerCatalogService.getCatalogMasters();
     }
@@ -82,26 +82,39 @@ public class SellerCatalogController {
 
     }
 
-    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
+    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByUsername() {
-        return sellerCatalogService.getAllCatalogByUsernameService();
+    public ResponseEntity<?> getAllCatalogByUsername(@RequestParam Integer page , @RequestParam  Integer size) {
+        return sellerCatalogService.getAllCatalogByUsernameService(page,size);
 
     }
 
-    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
+    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByQcProgress() {
-        return sellerCatalogService.getAllCatalogByQcProgressService();
+    public ResponseEntity<?> getAllCatalogByQcProgress(@RequestParam Integer page , @RequestParam  Integer size) {
+        return sellerCatalogService.getAllCatalogByQcProgressService(page,size);
     }
 
-    @GetMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
+    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByDraft() {
-        return sellerCatalogService.getAllCatalogByDraft();
+    public ResponseEntity<?> getAllCatalogByDraft(@RequestParam Integer page , @RequestParam  Integer size) {
+        return sellerCatalogService.getAllCatalogByDraft(page,size);
 
     }
 
+
+    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_ERROR)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllCatalogByError(@RequestParam Integer page , @RequestParam  Integer size) {
+        return sellerCatalogService.getAllCatalogByError(page,size);
+
+    }
+
+    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PASS)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllCatalogByQcPass(@RequestParam Integer page , @RequestParam  Integer size) {
+        return sellerCatalogService.getAllCatalogByQcPass(page,size);
+    }
 
 
 

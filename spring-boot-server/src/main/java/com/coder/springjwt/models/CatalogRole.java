@@ -6,12 +6,9 @@ import jakarta.persistence.Enumerated;
 public enum CatalogRole {
 
     ALL ,
-    DRAFT ,
-
-    QC_IN_PROGRESS ,
-
+    QC_DRAFT ,
+    QC_PROGRESS ,
     QC_ERROR ,
-
     QC_PASS ,
 
 
