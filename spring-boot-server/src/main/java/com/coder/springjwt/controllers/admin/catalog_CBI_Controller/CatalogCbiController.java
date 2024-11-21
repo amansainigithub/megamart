@@ -6,13 +6,14 @@ import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadIn
 import com.coder.springjwt.services.adminServices.catalogCbiService.CatalogCbiService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(
-        origins = {"http://localhost:8080","http://localhost:4200"},
-        maxAge = 3600,allowCredentials="true")
+import java.time.LocalDate;
+
+
 @RestController
 @RequestMapping(AdminUrlMappings.CATALOG_CBI_CONTROLLER)
 public class CatalogCbiController {
@@ -20,13 +21,13 @@ public class CatalogCbiController {
     @Autowired
     SellerCatalogService sellerCatalogService;
 
-
     @Autowired
     private CatalogCbiService catalogCbiService;
 
     @GetMapping(AdminUrlMappings.GET_CATALOG_PROGRESS_LIST)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getCatalogInProgressList(@RequestParam Integer page , @RequestParam  Integer size) {
+    public ResponseEntity<?> getCatalogInProgressList(@RequestParam Integer page ,
+                                                      @RequestParam  Integer size) {
         return this.catalogCbiService.getCatalogInProgressListService(page,size);
     }
 
@@ -37,16 +38,25 @@ public class CatalogCbiController {
     }
 
 
-    @PostMapping("/catalogInvestigation/{catalogId}")
+    @PostMapping(AdminUrlMappings.CATALOG_INVESTIGATION)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> catalogInvestigation(@PathVariable Long catalogId ,
                                                   @RequestBody CatalogPayloadInvestigation catalogInvestigationPayload) {
-        System.out.println(catalogInvestigationPayload.getActionStatus());
-        System.out.println(catalogInvestigationPayload.getErrorMarked());
-        System.out.println(catalogInvestigationPayload.getOtherSuggestion());
-
-
         return catalogCbiService.catalogInvestigationService(catalogId , catalogInvestigationPayload );
+    }
+
+    @GetMapping(AdminUrlMappings.SEARCH_CATALOGS_BY_DATES)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> searchCatalogByDate(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate endDate) {
+
+        // Adjust endDate to include the entire day
+        LocalDate adjustedEndDate = endDate.plusDays(1);
+
+        return catalogCbiService.searchCatalogByDateService(page, size, startDate, adjustedEndDate);
     }
 
 

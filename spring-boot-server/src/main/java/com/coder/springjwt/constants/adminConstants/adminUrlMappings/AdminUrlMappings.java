@@ -177,5 +177,7 @@ public class AdminUrlMappings {
 
     public static final String  GET_CATALOG_PROGRESS_LIST= "/getCatalogInProgressList";
 
+    public static final String CATALOG_INVESTIGATION = "/catalogInvestigation/{catalogId}";
 
+    public static final String SEARCH_CATALOGS_BY_DATES = "/searchCatalogByDates";
 }

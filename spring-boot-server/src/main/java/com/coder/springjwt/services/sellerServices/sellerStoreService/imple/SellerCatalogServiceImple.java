@@ -2,6 +2,7 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
 import com.coder.springjwt.models.adminModels.catalog.catalogBreath.CatalogBreathModel;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -485,6 +487,9 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
                     //set Store Name
                     sellerCatalog.setSellerStoreName(sellerStore.getStoreName());
 
+                    //Set Space Id
+                    setSpaceId(sellerCatalog);
+
                     sellerCatalog.setSellerStore(sellerStore);
 
                     this.sellerCatalogRepository.save(sellerCatalog);
@@ -507,6 +512,66 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
         }
     }
+
+
+
+
+    public void setSpaceId(SellerCatalog sellerCatalog){
+
+        //For Space
+        SellerCatalog lastRow = sellerCatalogRepository.findTopByOrderByIdDesc();
+
+        if(lastRow == null)
+        {
+            String spaceId = "100000000000000000000000";
+            sellerCatalog.setSpaceId(spaceId);
+
+            String catalogId = GenerateRandomNumber.generateRandomNumber(20)
+                    + "-" + "1000000000000000";
+            sellerCatalog.setCatalogId(catalogId);
+            return;
+        }
+
+        if(lastRow.getSpaceId() == "0" || lastRow.getSpaceId() == null){
+            //Space id Starting
+            String spaceId = "100000000000000000000000";
+            sellerCatalog.setSpaceId(spaceId);
+        }else{
+            // Use BigInteger to handle the large spaceId
+            BigInteger lastSpaceId = new BigInteger(lastRow.getSpaceId());
+            BigInteger incrementedSpaceId = lastSpaceId.add(BigInteger.ONE);
+            sellerCatalog.setSpaceId(incrementedSpaceId.toString());
+        }
+
+
+        //For catalogId
+        if(lastRow.getCatalogId() == "0" || lastRow.getCatalogId() == null){
+            //Space id Starting
+            String catalogId = GenerateRandomNumber.generateRandomNumber(20)
+                                + "-" + "1000000000000000";
+            sellerCatalog.setCatalogId(catalogId);
+        }else{
+            // Extract last numeric portion
+            String lastCatalogId = lastRow.getCatalogId();
+            String[] parts = lastCatalogId.split("-");
+
+            // Handle invalid format gracefully
+            if (parts.length < 2) {
+                throw new IllegalArgumentException("Invalid catalogId format: " + lastCatalogId);
+            }
+
+            // Increment the numeric part (last part)
+            BigInteger lastNumber = new BigInteger(parts[1]);
+            BigInteger incrementedNumber = lastNumber.add(BigInteger.ONE);
+
+            // Reassemble the catalogId
+            parts[0] = GenerateRandomNumber.generateRandomNumber(20);
+            String newCatalogId = parts[0] + "-" + incrementedNumber.toString();
+            sellerCatalog.setCatalogId(newCatalogId);
+        }
+    }
+
+
 
 
     public String getCurrentDate() // d MMM yyyy

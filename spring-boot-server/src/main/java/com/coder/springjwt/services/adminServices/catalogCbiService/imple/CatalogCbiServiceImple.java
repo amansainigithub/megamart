@@ -33,6 +33,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -115,6 +117,7 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
 
                     //Get seller Store Data
                     SellerCatalog catalogNode = currentCatalog.get();
+
                     //convert Payload To Modal class
                     SellerCatalog sellerCatalog = modelMapper.map(catalogInvestigationPayload, SellerCatalog.class);
                     sellerCatalog.setId(currentCatalog.get().getId());
@@ -125,6 +128,12 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
                     //Discount Catalog
                     String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
                     sellerCatalog.setDiscount(discountPercentage);
+
+                    //Set Catalog Id
+                    sellerCatalog.setCatalogId(catalogNode.getCatalogId());
+
+                    //Set SpaceId
+                    sellerCatalog.setSpaceId(catalogNode.getSpaceId());
 
                     //Set Catalog Investigation Status
                     if(catalogInvestigationPayload.getActionStatus().equals(String.valueOf(CatalogRole.QC_PASS)))
@@ -234,6 +243,34 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate endDate) {
+        try {
+            // Convert LocalDate to LocalDateTime for querying
+            LocalDateTime startDateTime = startDate.atStartOfDay();
+            LocalDateTime endDateTime = endDate.atStartOfDay();
+
+            // Fetch the catalog list with pagination and date range filter
+            Page<SellerCatalog> catalogProgressList = sellerCatalogRepository.findAllByCatalogStatusAndCreationDateBetween(
+                    String.valueOf(CatalogRole.QC_PROGRESS),
+                    startDateTime,
+                    endDateTime,
+                    PageRequest.of(page, size)
+            );
+
+            if (!catalogProgressList.isEmpty()) {
+                return ResponseGenerator.generateSuccessResponse(catalogProgressList, SellerMessageResponse.SUCCESS);
+            } else {
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+                        SellerMessageResponse.DATA_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+        }
+
+    }
 
 
     public List<CatalogHeightModel> getHeightList()

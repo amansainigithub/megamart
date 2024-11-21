@@ -10,9 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin(
-        origins = {"http://localhost:8080","http://localhost:4200"},
-        maxAge = 3600,allowCredentials="true")
+
 @RestController
 @RequestMapping(AdminUrlMappings.BORN_CONTROLLER)
 public class BornCategoryController {

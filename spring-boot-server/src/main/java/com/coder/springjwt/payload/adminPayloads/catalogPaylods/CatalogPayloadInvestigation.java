@@ -90,4 +90,6 @@ public class CatalogPayloadInvestigation {
     private String errorMarked;
 
     private String otherSuggestion;
+
+
 }

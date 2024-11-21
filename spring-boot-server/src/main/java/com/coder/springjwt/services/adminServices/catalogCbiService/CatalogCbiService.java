@@ -4,6 +4,7 @@ import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadIn
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -13,4 +14,6 @@ public interface CatalogCbiService  {
     ResponseEntity<?> catalogInvestigationService(Long catalogId, CatalogPayloadInvestigation catalogInvestigationPayload);
 
     ResponseEntity<?> getCatalogMasters();
+
+    ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate adjustedEndDate);
 }

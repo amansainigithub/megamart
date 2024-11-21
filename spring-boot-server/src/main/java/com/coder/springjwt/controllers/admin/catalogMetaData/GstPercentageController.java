@@ -9,9 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(
-        origins = {"http://localhost:8080","http://localhost:4200"},
-        maxAge = 3600,allowCredentials="true")
 @RestController
 @RequestMapping(AdminUrlMappings.GST_PERCENTAGE_CONTROLLER)
 public class GstPercentageController {

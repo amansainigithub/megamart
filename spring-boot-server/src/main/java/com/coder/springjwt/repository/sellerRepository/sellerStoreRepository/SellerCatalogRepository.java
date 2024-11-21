@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -26,5 +28,15 @@ public interface SellerCatalogRepository extends JpaRepository<SellerCatalog, Lo
     @Query(value = "SELECT * FROM seller_catalog WHERE catalog_status = :catalog_status",
             nativeQuery = true)
     Page<SellerCatalog> findAllByCatalogStatusAndPageable(@Param("catalog_status") String catalog_status ,  Pageable pageable);
+
+    SellerCatalog findTopByOrderByIdDesc();
+
+    Page<SellerCatalog> findAllByCatalogStatusAndCreationDateBetween(String catalogStatus,
+                                                                  LocalDateTime startDate,
+                                                                  LocalDateTime endDate,
+                                                                  Pageable pageable
+                                                                    );
+
+
 
 }
