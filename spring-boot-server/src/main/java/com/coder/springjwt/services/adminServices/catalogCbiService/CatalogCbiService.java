@@ -11,4 +11,6 @@ public interface CatalogCbiService  {
     ResponseEntity<?> getCatalogInProgressListService(int page , int size);
 
     ResponseEntity<?> catalogInvestigationService(Long catalogId, CatalogPayloadInvestigation catalogInvestigationPayload);
+
+    ResponseEntity<?> getCatalogMasters();
 }

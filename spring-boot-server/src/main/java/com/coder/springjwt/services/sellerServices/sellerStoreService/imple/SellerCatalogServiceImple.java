@@ -445,6 +445,9 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
                 System.out.println("CatalogJsonData :: " + sellerCatalogPayload);
 
+                System.out.println("==============================");
+                System.out.println("Current-user :: " + currentUser.get("username"));
+
                 if (optional.isPresent()) {
                     //Get seller Store Data
                     SellerStore sellerStore = optional.get();

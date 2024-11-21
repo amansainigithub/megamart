@@ -33,7 +33,7 @@ public class CatalogCbiController {
     @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
     @PreAuthorize("hasRole('ADMIN')"  )
     public ResponseEntity<?> getCatalogMasters() {
-        return sellerCatalogService.getCatalogMasters();
+        return catalogCbiService.getCatalogMasters();
     }
 
 
