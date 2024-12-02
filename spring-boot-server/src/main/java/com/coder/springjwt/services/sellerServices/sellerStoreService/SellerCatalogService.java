@@ -33,4 +33,6 @@ public interface SellerCatalogService {
     ResponseEntity<?> getAllCatalogByError(int page , int size);
 
     ResponseEntity<?> getAllCatalogByQcPass(int page , int size);
+
+    ResponseEntity<?> TestClassGroupServ();
 }

@@ -34,8 +34,17 @@ public interface SellerCatalogRepository extends JpaRepository<SellerCatalog, Lo
     Page<SellerCatalog> findAllByCatalogStatusAndCreationDateBetween(String catalogStatus,
                                                                   LocalDateTime startDate,
                                                                   LocalDateTime endDate,
-                                                                  Pageable pageable
-                                                                    );
+                                                                  Pageable pageable);
+
+
+
+    @Query(value = "SELECT DATE(creation_date) AS date, COUNT(*) AS count " +
+            "FROM seller_catalog " +
+            "GROUP BY DATE(creation_date) " +
+            "ORDER BY DATE(creation_date)", nativeQuery = true)
+    List<Object[]> getDateWiseData();
+
+
 
 
 

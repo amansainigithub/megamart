@@ -27,7 +27,6 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +36,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -556,7 +551,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             String[] parts = lastCatalogId.split("-");
 
             // Handle invalid format gracefully
-            if (parts.length < 2) {
+            if (parts.length < 1) {
                 throw new IllegalArgumentException("Invalid catalogId format: " + lastCatalogId);
             }
 
@@ -848,5 +843,25 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> TestClassGroupServ() {
+        List<Object[]> dateWiseData = sellerCatalogRepository.getDateWiseData();
+        System.out.print(dateWiseData);
+        log.info(dateWiseData.toString());
+
+        // Iterate through the list
+        List<HashMap<String,String>>  list =new ArrayList<>();
+        for (Object[] row : dateWiseData) {
+            System.out.println("Date: " + row[0] + ", Value: " + row[1]);
+            HashMap<String,String> map = new HashMap<>();
+            map.put("Date",String.valueOf(row[0]));
+            map.put("count",String.valueOf(row[1]));
+            list.add(map);
+        }
+
+        System.out.println(list);
+
+        return null;
+    }
 
 }

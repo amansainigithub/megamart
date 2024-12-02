@@ -116,6 +116,12 @@ public class SellerCatalogController {
         return sellerCatalogService.getAllCatalogByQcPass(page,size);
     }
 
+    @GetMapping("TestClassGroup")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> TestClassGroup() {
+        return sellerCatalogService.TestClassGroupServ();
+    }
+
 
 
 
