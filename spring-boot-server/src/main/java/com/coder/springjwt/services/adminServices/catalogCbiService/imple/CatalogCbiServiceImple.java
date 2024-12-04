@@ -4,14 +4,14 @@ import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
-import com.coder.springjwt.models.adminModels.catalog.catalogBreath.CatalogBreathModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogHeight.CatalogHeightModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogLength.CatalogLengthModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.CatalogMaterial;
-import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.CatalogNetQuantityModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogSize.CatalogSizeModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogType.CatalogTypeModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogWeight.CatalogWeightModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogLength.ProductLengthModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.ProductMaterial;
+import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.ProductNetQuantityModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogSize.ProductSizeVariantModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogType.ProductTypeModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
@@ -50,27 +50,27 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     @Autowired
     private SellerStoreRepository sellerStoreRepository;
     @Autowired
-    private CatalogNetQuantityRepo catalogNetQuantityRepo;
+    private ProductNetQuantityRepo productNetQuantityRepo;
     @Autowired
-    private CatalogMaterialRepo catalogMaterialRepo;
+    private ProductMaterialRepo productMaterialRepo;
     @Autowired
-    private CatalogSizeRepo catalogSizeRepo;
+    private ProductSizeRepo productSizeRepo;
     @Autowired
-    private CatalogTypeRepo catalogTypeRepo;
+    private ProductTypeRepo productTypeRepo;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private BucketService bucketService;
     @Autowired
-    private CatalogLengthRepo catalogLengthRepo;
+    private ProductLengthRepo productLengthRepo;
     @Autowired
     private GstPercentageRepo gstPercentageRepo;
     @Autowired
-    private CatalogWeightRepo catalogWeightRepo;
+    private ProductWeightRepo productWeightRepo;
     @Autowired
-    private CatalogBreathRepo catalogBreathRepo;
+    private ProductBreathRepo productBreathRepo;
     @Autowired
-    private CatalogHeightRepo catalogHeightRepo;
+    private ProductHeightRepo productHeightRepo;
 
 
     @Override
@@ -197,19 +197,19 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
             dataResponse.put("hsn" , hsnCodes);
 
             //Size List
-            List<CatalogSizeModel> sizeList = this.getSizeList();
+            List<ProductSizeVariantModel> sizeList = this.getSizeList();
             dataResponse.put("catalogSize" , sizeList);
 
             //Size List
-            List<CatalogNetQuantityModel> netQuantityList = this.getNetQuantityList();
+            List<ProductNetQuantityModel> netQuantityList = this.getNetQuantityList();
             dataResponse.put("netQuantityList" , netQuantityList);
 
             //material List
-            List<CatalogMaterial> materialList = this.getMaterialList();
+            List<ProductMaterial> materialList = this.getMaterialList();
             dataResponse.put("materialList" , materialList);
 
             //material List
-            List<CatalogTypeModel> typeList = this.getTypeList();
+            List<ProductTypeModel> typeList = this.getTypeList();
             dataResponse.put("typeList" , typeList);
 
             //catalog Length List
@@ -217,19 +217,19 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
             dataResponse.put("gstPercentageList" , gstPercentageList);
 
             //catalog Weight List
-            List<CatalogWeightModel> catalogWeightList = this.getWeightList();
+            List<ProductWeightModel> catalogWeightList = this.getWeightList();
             dataResponse.put("catalogWeightList" , catalogWeightList);
 
             //catalog Weight List
-            List<CatalogBreathModel> catalogBreathList = this.getBreathList();
+            List<BreathModel> catalogBreathList = this.getBreathList();
             dataResponse.put("catalogBreathList" , catalogBreathList);
 
             //catalog Length List
-            List<CatalogLengthModel> lengthList = this.getLengthList();
+            List<ProductLengthModel> lengthList = this.getLengthList();
             dataResponse.put("lengthList" , lengthList);
 
             //catalog Length List
-            List<CatalogHeightModel> heightLists = this.getHeightList();
+            List<ProductHeightModel> heightLists = this.getHeightList();
             dataResponse.put("heightLists" , heightLists);
 
             return ResponseGenerator.generateSuccessResponse(dataResponse ,SellerMessageResponse.SUCCESS );
@@ -273,10 +273,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     }
 
 
-    public List<CatalogHeightModel> getHeightList()
+    public List<ProductHeightModel> getHeightList()
     {
         try {
-            List<CatalogHeightModel> catalogHeightLists = this.catalogHeightRepo.findAll();
+            List<ProductHeightModel> catalogHeightLists = this.productHeightRepo.findAll();
             if(catalogHeightLists.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -293,10 +293,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogBreathModel> getBreathList()
+    public List<BreathModel> getBreathList()
     {
         try {
-            List<CatalogBreathModel> catalogBreathList = this.catalogBreathRepo.findAll();
+            List<BreathModel> catalogBreathList = this.productBreathRepo.findAll();
             if(catalogBreathList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -313,10 +313,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogWeightModel> getWeightList()
+    public List<ProductWeightModel> getWeightList()
     {
         try {
-            List<CatalogWeightModel> catalogWeightLists = this.catalogWeightRepo.findAll();
+            List<ProductWeightModel> catalogWeightLists = this.productWeightRepo.findAll();
             if(catalogWeightLists.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -354,10 +354,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     }
 
 
-    public List<CatalogLengthModel> getLengthList()
+    public List<ProductLengthModel> getLengthList()
     {
         try {
-            List<CatalogLengthModel> lengthList = this.catalogLengthRepo.findAll();
+            List<ProductLengthModel> lengthList = this.productLengthRepo.findAll();
             if(lengthList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -394,10 +394,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogSizeModel> getSizeList()
+    public List<ProductSizeVariantModel> getSizeList()
     {
         try {
-            List<CatalogSizeModel> catalogSizeList = this.catalogSizeRepo.findAll();
+            List<ProductSizeVariantModel> catalogSizeList = this.productSizeRepo.findAll();
             if(catalogSizeList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -414,10 +414,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogNetQuantityModel> getNetQuantityList()
+    public List<ProductNetQuantityModel> getNetQuantityList()
     {
         try {
-            List<CatalogNetQuantityModel> netQuantityList = this.catalogNetQuantityRepo.findAll();
+            List<ProductNetQuantityModel> netQuantityList = this.productNetQuantityRepo.findAll();
             if(netQuantityList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -434,17 +434,17 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogMaterial> getMaterialList()
+    public List<ProductMaterial> getMaterialList()
     {
         try {
-            List<CatalogMaterial> catalogMaterialList = this.catalogMaterialRepo.findAll();
-            if(catalogMaterialList.isEmpty())
+            List<ProductMaterial> productMaterialList = this.productMaterialRepo.findAll();
+            if(productMaterialList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
                 return null;
             }else{
                 log.info("Data fetch Success");
-                return catalogMaterialList;
+                return productMaterialList;
             }
         }
         catch (Exception e)
@@ -454,10 +454,10 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    public List<CatalogTypeModel> getTypeList()
+    public List<ProductTypeModel> getTypeList()
     {
         try {
-            List<CatalogTypeModel> catalogTypeList = this.catalogTypeRepo.findAll();
+            List<ProductTypeModel> catalogTypeList = this.productTypeRepo.findAll();
             if(catalogTypeList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");

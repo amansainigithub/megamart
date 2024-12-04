@@ -1,12 +1,12 @@
-package com.coder.springjwt.services.adminServices.catalogHeightService.imple;
+package com.coder.springjwt.services.adminServices.catalogWeightService.imple;
 
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.adminDtos.catalogDtos.ProductHeightDto;
-import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
-import com.coder.springjwt.repository.adminRepository.catalogRepos.ProductHeightRepo;
-import com.coder.springjwt.services.adminServices.catalogHeightService.CatalogHeightService;
-import com.coder.springjwt.services.sellerServices.sellerStoreService.userService.userServiceImple.UserServiceImple;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.ProductWeightDto;
+import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeightModel;
+import com.coder.springjwt.repository.adminRepository.catalogRepos.ProductWeightRepo;
+import com.coder.springjwt.services.adminServices.catalogBrandService.imple.ProductBrandServiceImple;
+import com.coder.springjwt.services.adminServices.catalogWeightService.ProductWeightService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -22,25 +22,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class CatalogHeightServiceimple implements CatalogHeightService {
+public class ProductWeightServiceImple implements ProductWeightService {
 
     @Autowired
-    private ProductHeightRepo productHeightRepo;
+    private ProductWeightRepo productWeightRepo;
 
     @Autowired
     private ModelMapper modelMapper;
-
     @Override
-    public ResponseEntity<?> saveHeight(ProductHeightDto productHeightDto) {
+    public ResponseEntity<?> saveWeight(ProductWeightDto productWeightDto) {
         MessageResponse response =new MessageResponse();
         try {
-            ProductHeightModel productHeightModel =  modelMapper.map(productHeightDto, ProductHeightModel.class);
+            ProductWeightModel productWeightModel =  modelMapper.map(productWeightDto, ProductWeightModel.class);
             log.info("Object Mapper Convert Success");
 
-            this.productHeightRepo.save(productHeightModel);
-            log.info("Catalog height Saved Success");
+            this.productWeightRepo.save(productWeightModel);
+            log.info("Catalog Weight Saved Success");
 
-            response.setMessage("Catalog height Saved Success");
+            response.setMessage("Catalog Weight Saved Success");
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
 
@@ -60,20 +59,22 @@ public class CatalogHeightServiceimple implements CatalogHeightService {
     }
 
     @Override
-    public ResponseEntity<?> getHeight(Integer page, Integer size) {
+    public ResponseEntity<?> getWeight(Integer page, Integer size) {
         MessageResponse response = new MessageResponse();
         try {
-            Page<ProductHeightModel> catalogHeightModels = this.productHeightRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
-            if(catalogHeightModels.isEmpty())
+            Page<ProductWeightModel> catalogWeightModels = this.productWeightRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
+            if(catalogWeightModels.isEmpty())
             {
-                log.info("Data Not found :::: {} " + CatalogHeightServiceimple.class.getName());
+                log.info("Data Not found :::: {} " + ProductBrandServiceImple.class.getName());
+
                 response.setStatus(HttpStatus.BAD_GATEWAY);
                 response.setMessage(AdminMessageResponse.DATA_NOT_FOUND);
                 return ResponseGenerator.generateBadRequestResponse(response, AdminMessageResponse.DATA_NOT_FOUND);
             }else{
-                log.info("Data fetch Success :::: {}" + UserServiceImple.class.getName());
+                log.info("Data fetch Success :::: {}" + ProductBrandServiceImple.class.getName());
+
                 response.setStatus(HttpStatus.OK);
-                return ResponseGenerator.generateSuccessResponse(catalogHeightModels, AdminMessageResponse.SUCCESS);
+                return ResponseGenerator.generateSuccessResponse(catalogWeightModels, AdminMessageResponse.SUCCESS);
             }
         }
         catch (Exception e)
@@ -84,4 +85,5 @@ public class CatalogHeightServiceimple implements CatalogHeightService {
             return ResponseGenerator.generateBadRequestResponse(response, AdminMessageResponse.FAILED);
         }
     }
+
 }

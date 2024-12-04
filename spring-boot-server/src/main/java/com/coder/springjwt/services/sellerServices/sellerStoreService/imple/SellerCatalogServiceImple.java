@@ -5,24 +5,24 @@ import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.Sell
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
-import com.coder.springjwt.models.adminModels.catalog.catalogBreath.CatalogBreathModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogHeight.CatalogHeightModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogLength.CatalogLengthModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.CatalogMaterial;
-import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.CatalogNetQuantityModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogSize.CatalogSizeModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogType.CatalogTypeModel;
-import com.coder.springjwt.models.adminModels.catalog.catalogWeight.CatalogWeightModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogLength.ProductLengthModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogMaterial.ProductMaterial;
+import com.coder.springjwt.models.adminModels.catalog.catalogNetQuantity.ProductNetQuantityModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogSize.ProductSizeVariantModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogType.ProductTypeModel;
+import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
+import com.coder.springjwt.models.sellerModels.sellerStore.*;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
+import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerProductPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
 import com.coder.springjwt.util.MessageResponse;
@@ -66,16 +66,16 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     private SellerCatalogRepository sellerCatalogRepository;
 
     @Autowired
-    private CatalogNetQuantityRepo catalogNetQuantityRepo;
+    private ProductNetQuantityRepo productNetQuantityRepo;
 
     @Autowired
-    private CatalogMaterialRepo catalogMaterialRepo;
+    private ProductMaterialRepo productMaterialRepo;
 
     @Autowired
-    private CatalogSizeRepo catalogSizeRepo;
+    private ProductSizeRepo productSizeRepo;
 
     @Autowired
-    private CatalogTypeRepo catalogTypeRepo;
+    private ProductTypeRepo productTypeRepo;
 
     @Autowired
     private UserRepository userRepository;
@@ -88,19 +88,22 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     private BucketService bucketService;
 
     @Autowired
-    private CatalogLengthRepo catalogLengthRepo;
+    private ProductLengthRepo productLengthRepo;
 
     @Autowired
     private GstPercentageRepo gstPercentageRepo;
 
     @Autowired
-    private CatalogWeightRepo catalogWeightRepo;
+    private ProductWeightRepo productWeightRepo;
 
     @Autowired
-    private CatalogBreathRepo catalogBreathRepo;
+    private ProductBreathRepo productBreathRepo;
 
     @Autowired
-    private CatalogHeightRepo catalogHeightRepo;
+    private ProductHeightRepo productHeightRepo;
+
+    @Autowired
+    private SellerProductRepository sellerProductRepository;
     @Override
     public ResponseEntity<?> getSellerCatalog(Long catalogId) {
         try {
@@ -154,19 +157,19 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             dataResponse.put("hsn" , hsnCodes);
 
             //Size List
-            List<CatalogSizeModel> sizeList = this.getSizeList();
+            List<ProductSizeVariantModel> sizeList = this.getSizeList();
             dataResponse.put("catalogSize" , sizeList);
 
             //Size List
-            List<CatalogNetQuantityModel> netQuantityList = this.getNetQuantityList();
+            List<ProductNetQuantityModel> netQuantityList = this.getNetQuantityList();
             dataResponse.put("netQuantityList" , netQuantityList);
 
             //material List
-            List<CatalogMaterial> materialList = this.getMaterialList();
+            List<ProductMaterial> materialList = this.getMaterialList();
             dataResponse.put("materialList" , materialList);
 
             //material List
-            List<CatalogTypeModel> typeList = this.getTypeList();
+            List<ProductTypeModel> typeList = this.getTypeList();
             dataResponse.put("typeList" , typeList);
 
             //catalog Length List
@@ -174,19 +177,19 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
             dataResponse.put("gstPercentageList" , gstPercentageList);
 
             //catalog Weight List
-            List<CatalogWeightModel> catalogWeightList = this.getWeightList();
+            List<ProductWeightModel> catalogWeightList = this.getWeightList();
             dataResponse.put("catalogWeightList" , catalogWeightList);
 
             //catalog Weight List
-            List<CatalogBreathModel> catalogBreathList = this.getBreathList();
+            List<BreathModel> catalogBreathList = this.getBreathList();
             dataResponse.put("catalogBreathList" , catalogBreathList);
 
             //catalog Length List
-            List<CatalogLengthModel> lengthList = this.getLengthList();
+            List<ProductLengthModel> lengthList = this.getLengthList();
             dataResponse.put("lengthList" , lengthList);
 
             //catalog Length List
-            List<CatalogHeightModel> heightLists = this.getHeightList();
+            List<ProductHeightModel> heightLists = this.getHeightList();
             dataResponse.put("heightLists" , heightLists);
 
             return ResponseGenerator.generateSuccessResponse(dataResponse ,SellerMessageResponse.SUCCESS );
@@ -202,10 +205,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
 
 
-    public List<CatalogHeightModel> getHeightList()
+    public List<ProductHeightModel> getHeightList()
     {
         try {
-            List<CatalogHeightModel> catalogHeightLists = this.catalogHeightRepo.findAll();
+            List<ProductHeightModel> catalogHeightLists = this.productHeightRepo.findAll();
             if(catalogHeightLists.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -222,10 +225,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogBreathModel> getBreathList()
+    public List<BreathModel> getBreathList()
     {
         try {
-            List<CatalogBreathModel> catalogBreathList = this.catalogBreathRepo.findAll();
+            List<BreathModel> catalogBreathList = this.productBreathRepo.findAll();
             if(catalogBreathList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -242,10 +245,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogWeightModel> getWeightList()
+    public List<ProductWeightModel> getWeightList()
     {
         try {
-            List<CatalogWeightModel> catalogWeightLists = this.catalogWeightRepo.findAll();
+            List<ProductWeightModel> catalogWeightLists = this.productWeightRepo.findAll();
             if(catalogWeightLists.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -283,10 +286,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
 
-    public List<CatalogLengthModel> getLengthList()
+    public List<ProductLengthModel> getLengthList()
     {
         try {
-            List<CatalogLengthModel> lengthList = this.catalogLengthRepo.findAll();
+            List<ProductLengthModel> lengthList = this.productLengthRepo.findAll();
             if(lengthList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -323,10 +326,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogSizeModel> getSizeList()
+    public List<ProductSizeVariantModel> getSizeList()
     {
         try {
-            List<CatalogSizeModel> catalogSizeList = this.catalogSizeRepo.findAll();
+            List<ProductSizeVariantModel> catalogSizeList = this.productSizeRepo.findAll();
             if(catalogSizeList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -343,10 +346,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogNetQuantityModel> getNetQuantityList()
+    public List<ProductNetQuantityModel> getNetQuantityList()
     {
         try {
-            List<CatalogNetQuantityModel> netQuantityList = this.catalogNetQuantityRepo.findAll();
+            List<ProductNetQuantityModel> netQuantityList = this.productNetQuantityRepo.findAll();
             if(netQuantityList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -363,17 +366,17 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogMaterial> getMaterialList()
+    public List<ProductMaterial> getMaterialList()
     {
         try {
-            List<CatalogMaterial> catalogMaterialList = this.catalogMaterialRepo.findAll();
-            if(catalogMaterialList.isEmpty())
+            List<ProductMaterial> productMaterialList = this.productMaterialRepo.findAll();
+            if(productMaterialList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
                 return null;
             }else{
                 log.info("Data fetch Success");
-                return catalogMaterialList;
+                return productMaterialList;
             }
         }
         catch (Exception e)
@@ -383,10 +386,10 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    public List<CatalogTypeModel> getTypeList()
+    public List<ProductTypeModel> getTypeList()
     {
         try {
-            List<CatalogTypeModel> catalogTypeList = this.catalogTypeRepo.findAll();
+            List<ProductTypeModel> catalogTypeList = this.productTypeRepo.findAll();
             if(catalogTypeList.isEmpty())
             {
                 log.info("Data Not found :::: {} ");
@@ -403,110 +406,8 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
-    @Override
-    public ResponseEntity<?> sellerSaveCatalogService(Long categoryId,
-                                                      SellerCatalogPayload sellerCatalogPayload,
-                                                      List<MultipartFile> files) {
 
 
-        try {
-            BornCategoryModel bornData = bornCategoryRepo.findById(categoryId).orElseThrow(
-                                                ()->new RuntimeException("Category Id not Found"));
-
-            // Check for minimum and maximum file count
-            if (files.size() < MIN_FILE_COUNT || files.size() > MAX_FILE_COUNT) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(SellerMessageResponse.YOU_MUST_UPLOAD_1_TO_5_FILES);
-            }
-
-            // File upload To Check each file for type and size validity
-            List<String> invalidFiles = files.stream()
-                    .filter(file -> !isValidImageFormat(file.getContentType()) || !isValidFileSize(file.getSize()))
-                    .map(MultipartFile::getOriginalFilename)
-                    .collect(Collectors.toList());
-
-            if (!invalidFiles.isEmpty()) {
-                log.error("List of invalidFiles :: " + invalidFiles);
-                log.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE + " :: "+
-                        SellerMessageResponse.THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB);
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                        .body(SellerMessageResponse.THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB
-                                + String.join(", ", invalidFiles));
-            }
-            else if  (invalidFiles.isEmpty()){
-
-                // GET Current Username
-                Map<String, String> currentUser = UserHelper.getCurrentUser();
-                //Get Seller Store Data
-                Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-                System.out.println("CatalogJsonData :: " + sellerCatalogPayload);
-
-                System.out.println("==============================");
-                System.out.println("Current-user :: " + currentUser.get("username"));
-
-                if (optional.isPresent()) {
-                    //Get seller Store Data
-                    SellerStore sellerStore = optional.get();
-
-                    //convert Payload To Modal class
-                    SellerCatalog sellerCatalog = modelMapper.map(sellerCatalogPayload, SellerCatalog.class);
-
-                    //file Upload Progress Starting
-                    catalogFileStore(files, sellerCatalog);
-
-                    //set Current Date
-                    sellerCatalog.setCatalogDate(getCurrentDate());
-
-                    //get Current Time
-                    sellerCatalog.setCatalogTime(getCurrentTime());
-
-
-                    //Discount Catalog
-                    String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
-                    sellerCatalog.setDiscount(discountPercentage);
-
-                    //Set sub-title
-                    sellerCatalog.setCatalogSubTitle(sellerCatalog.getCatalogName());
-
-                    //Set CategoryName and Category Id's
-                    sellerCatalog.setCategoryName(bornData.getCategoryName());
-                    sellerCatalog.setCategoryId(String.valueOf(bornData.getId()));
-
-                    //set Status
-                    sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_PROGRESS));
-
-                    //set Current User
-                    sellerCatalog.setUsername(sellerStore.getUsername());
-
-                    //set Store Name
-                    sellerCatalog.setSellerStoreName(sellerStore.getStoreName());
-
-                    //Set Space Id
-                    setSpaceId(sellerCatalog);
-
-                    sellerCatalog.setSellerStore(sellerStore);
-
-                    this.sellerCatalogRepository.save(sellerCatalog);
-
-                    return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DATA_SAVED_SUCCESS,
-                                                                     SellerMessageResponse.SUCCESS);
-
-                } else {
-                    return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED,
-                                                                        SellerMessageResponse.FAILED);
-                }
-            }else {
-                return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.SOMETHING_WENT_WRONG,
-                        SellerMessageResponse.FAILED);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
-        }
-    }
 
 
 
@@ -843,24 +744,25 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
         }
     }
 
+
     @Override
-    public ResponseEntity<?> TestClassGroupServ() {
-        List<Object[]> dateWiseData = sellerCatalogRepository.getDateWiseData();
-        System.out.print(dateWiseData);
-        log.info(dateWiseData.toString());
+    public ResponseEntity<?> productFlyService(Long categoryId, SellerProductPayload sellerProductPayload) {
 
-        // Iterate through the list
-        List<HashMap<String,String>>  list =new ArrayList<>();
-        for (Object[] row : dateWiseData) {
-            System.out.println("Date: " + row[0] + ", Value: " + row[1]);
-            HashMap<String,String> map = new HashMap<>();
-            map.put("Date",String.valueOf(row[0]));
-            map.put("count",String.valueOf(row[1]));
-            list.add(map);
-        }
+        //System.out.println("Data :: " + sellerProductPayload);
 
-        System.out.println(list);
+        SellerProduct sellerData = modelMapper.map(sellerProductPayload, SellerProduct.class);
 
+
+
+
+        // Map productVariantPayloads (if needed for special handling)
+        List<ProductVariant> variantEntities = sellerProductPayload.getProductVariantPayloads()
+                .stream()
+                .map(variantPayload -> modelMapper.map(variantPayload, ProductVariant.class))
+                .toList();
+
+
+//        this.sellerProductRepository.save(sellerData);
         return null;
     }
 

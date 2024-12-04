@@ -1,12 +1,12 @@
 package com.coder.springjwt.services.adminServices.catalogHeightService;
 
-import com.coder.springjwt.dtos.adminDtos.catalogDtos.CatalogHeightDto;
+import com.coder.springjwt.dtos.adminDtos.catalogDtos.ProductHeightDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface CatalogHeightService {
-    ResponseEntity<?> saveCatalogHeight(CatalogHeightDto saveCatalogHeight);
+    ResponseEntity<?> saveHeight(ProductHeightDto saveCatalogHeight);
 
-    ResponseEntity<?> getCatalogHeight(Integer page, Integer size);
+    ResponseEntity<?> getHeight(Integer page, Integer size);
 }

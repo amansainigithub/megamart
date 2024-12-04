@@ -83,7 +83,7 @@ public class AdminUrlMappings {
 
 
     //HSL URL's and Controller
-    public static final String HSN_CONTROLLER = ADMIN_AUTHORIZE_URL +"/hsnController";
+    public static final String PRODUCT_HSN_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productHsnController";
     public static final String  SAVE_HSN= "/saveHsn";
     public static final String  DELETE_HSN= "/deleteHsnCode/{hsnCodeId}";
     public static final String  GET_HSN_CODE_BY_ID= "/getHsnCodeById/{hsnCodeId}";
@@ -92,47 +92,47 @@ public class AdminUrlMappings {
 
 
 
-    //HSL URL's and Controller
-    public static final String CATALOG_SIZE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogSizeController";
-    public static final String  SAVE_CATALOG_SIZE= "/saveCatalogSize";
-    public static final String  DELETE_CATALOG_SIZE= "/deleteCatalogSize/{sizeId}";
-    public static final String  GET_CATALOG_SIZE_BY_ID= "/getCatalogSizeById/{sizeId}";
-    public static final String  UPDATE_CATALOG_SIZE= "/updateCatalogSize";
-    public static final String GET_CATALOG_SIZE="/getCatalogSize";
+    //Size URL's and Controller
+    public static final String PRODUCT_SIZE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productSizeVariantController";
+    public static final String  SAVE_SIZE= "/saveSize";
+    public static final String  DELETE_SIZE= "/deleteSize/{sizeId}";
+    public static final String  GET_SIZE_BY_ID= "/getSizeById/{sizeId}";
+    public static final String  UPDATE_SIZE= "/updateSize";
+    public static final String GET_SIZE="/getSize";
 
 
-    //CATALOG MATERIAL URL's and Controller
-    public static final String CATALOG_MATERIAL_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogMaterialController";
-    public static final String  SAVE_CATALOG_MATERIAL= "/saveCatalogMaterial";
-    public static final String  DELETE_CATALOG_MATERIAL= "/deleteCatalogMaterial/{materialId}";
-    public static final String  GET_CATALOG_MATERIAL_BY_ID= "/getCatalogMaterialById/{materialId}";
-    public static final String  UPDATE_CATALOG_MATERIAL= "/updateCatalogMaterial";
-    public static final String GET_CATALOG_MATERIAL="/getCatalogMaterial";
+    //PRODUCT MATERIAL URL's and Controller
+    public static final String PRODUCT_MATERIAL_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productMaterialController";
+    public static final String  SAVE_MATERIAL= "/saveMaterial";
+    public static final String  DELETE_MATERIAL= "/deleteMaterial/{materialId}";
+    public static final String  GET_MATERIAL_BY_ID= "/getMaterialById/{materialId}";
+    public static final String  UPDATE_MATERIAL= "/updateMaterial";
+    public static final String GET_MATERIAL="/getMaterial";
 
 
-    //CATALOG TYPE URL's and Controller
-    public static final String CATALOG_TYPE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogTypeController";
-    public static final String  SAVE_CATALOG_TYPE= "/saveCatalogType";
-    public static final String  DELETE_CATALOG_TYPE= "/deleteCatalogType/{typeId}";
-    public static final String  GET_CATALOG_TYPE_BY_ID= "/getCatalogTypeById/{typeId}";
-    public static final String  UPDATE_CATALOG_TYPE= "/updateCatalogType";
-    public static final String GET_CATALOG_TYPE="/getCatalogType";
+    //PRODUCT TYPE URL's and Controller
+    public static final String PRODUCT_TYPE_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productTypeController";
+    public static final String  SAVE_TYPE= "/saveType";
+    public static final String  DELETE_TYPE= "/deleteType/{typeId}";
+    public static final String  GET_TYPE_BY_ID= "/getTypeById/{typeId}";
+    public static final String  UPDATE_TYPE= "/updateType";
+    public static final String GET_TYPE="/getType";
 
 
-    //CATALOG BRAND URL's and Controller
-    public static final String CATALOG_BRAND_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogBrandController";
-    public static final String  SAVE_CATALOG_BRANDE= "/saveCatalogBrand";
+    //PRODUCT BRAND URL's and Controller
+    public static final String PRODUCT_BRAND_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productBrandController";
+    public static final String  SAVE_BRAND= "/saveBrand";
     public static final String  DELETE_BRAND= "/deleteBrand/{brandId}";
-    public static final String  GET_CATALOG_BRAND_ID= "/getCatalogBrandById/{brandId}";
-    public static final String  UPDATE_CATALOG_BRAND= "/updateCatalogBrand";
-    public static final String GET_CATALOG_BRAND="/getCatalogBrand";
+    public static final String  GET_BRAND_BY_ID= "/getBrandById/{brandId}";
+    public static final String  UPDATE_BRAND= "/updateBrand";
+    public static final String  GET_BRAND="/getBrand";
 
 
     //CATALOG NET_QUANTITY URL's and Controller
-    public static final String CATALOG_NET_QUANTITY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogNetQuantityController";
-    public static final String  SAVE_CATALOG_NET_QUANTITY= "/saveCatalogNetQuantity";
+    public static final String PRODUCT_NET_QUANTITY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productNetQuantityController";
+    public static final String  SAVE_NET_QUANTITY= "/saveNetQuantity";
     public static final String  DELETE_NET_QUANTITY= "/deleteNetQuantity/{netQuantityId}";
-    public static final String  GET_CATALOG_NET_QUANTITY_ID= "/getCatalogNetQuantityById/{netQuantityId}";
+    public static final String  GET_NET_QUANTITY_ID= "/getNetQuantityById/{netQuantityId}";
     public static final String  UPDATE_NET_QUANTITY= "/updateNetQuantity";
     public static final String GET_NET_QUANTITY="/getNetQuantity";
 
@@ -147,28 +147,28 @@ public class AdminUrlMappings {
 
 
     //Catalog Weight Controller
-    public static final String CATALOG_WEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogWeightController";
+    public static final String PRODUCT_WEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productWeightController";
 
-    public static final String  SAVE_CATALOG_WEIGHT= "/saveCatalogWeight";
-    public static final String GET_CATALOG_WEIGHT="/getCatalogWeight";
-
-
-    //Catalog Weight Controller
-    public static final String CATALOG_LENGTH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogLengthController";
-    public static final String  SAVE_CATALOG_LENGTH= "/saveCatalogLength";
-    public static final String GET_CATALOG_LENGTH="/getCatalogLength";
+    public static final String  SAVE_WEIGHT= "/saveWeight";
+    public static final String GET_WEIGHT="/getWeight";
 
 
     //Catalog Weight Controller
-    public static final String CATALOG_BREATH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogBreathController";
-    public static final String  SAVE_CATALOG_BREATH= "/saveCatalogBreath";
-    public static final String GET_CATALOG_BREATH="/getCatalogBreath";
+    public static final String PRODUCT_LENGTH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productLengthController";
+    public static final String  SAVE_LENGTH= "/saveLength";
+    public static final String GET_LENGTH="/getLength";
 
 
     //Catalog Weight Controller
-    public static final String CATALOG_HEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogHeightController";
-    public static final String  SAVE_CATALOG_HEIGHT= "/saveCatalogHeight";
-    public static final String GET_CATALOG_HEIGHT="/getCatalogHeight";
+    public static final String PRODUCT_BREATH_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productBreathController";
+    public static final String  SAVE_BREATH= "/saveBreath";
+    public static final String GET_BREATH="/getBreath";
+
+
+    //Catalog Weight Controller
+    public static final String PRODUCT_HEIGHT_CONTROLLER = ADMIN_AUTHORIZE_URL +"/productHeightController";
+    public static final String  SAVE_HEIGHT= "/saveHeight";
+    public static final String GET_HEIGHT="/getHeight";
 
 
 

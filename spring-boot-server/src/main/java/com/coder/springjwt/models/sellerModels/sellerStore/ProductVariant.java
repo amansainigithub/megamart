@@ -5,31 +5,28 @@ import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@ToString
 @Entity
-@Table(name = "SellerCatalog")
-public class SellerCatalog extends BaseEntity {
+@Table(name = "productVariant")
+public class ProductVariant  extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private String username;
+    private String productName;
 
-    private String categoryId;
+    private String productSubTitle;
 
-    private String categoryName;
+    private String productFrontFile;
 
-    private String sellerStoreName;
-
-    private String catalogName;
-
-    private String catalogSubTitle;
-
-    private String catalogFrontFile;
-
-    private String catalogThumbnail;
+    private String productThumbnail;
 
     private String file_1;
 
@@ -39,13 +36,11 @@ public class SellerCatalog extends BaseEntity {
 
     private String file_4;
 
-    private String catalogStatus;
+    private String productStatus;
 
     private String gst;
 
     private String hsnCode;
-
-    private String size;
 
     private String weight;
 
@@ -53,15 +48,15 @@ public class SellerCatalog extends BaseEntity {
 
     private String netQuantity;
 
-    private String catalogLength;
+    private String productLength;
 
-    private String catalogBreath;
+    private String productBreath;
 
-    private String catalogHeight;
+    private String productHeight;
 
     private String material;
 
-    private String catalogType;
+    private String productType;
 
     private String color;
 
@@ -71,7 +66,6 @@ public class SellerCatalog extends BaseEntity {
 
     private String tags;
 
-    @Column(length = 5000)
     private String description;
 
     private String sku;
@@ -86,24 +80,23 @@ public class SellerCatalog extends BaseEntity {
 
     private String inventory;
 
-    private String discount;
+    private String productDate;
 
-    private String catalogDate;
-
-    private String catalogTime;
-
-    private String spaceId;
-
-    private String catalogId;
+    private String productTime;
 
     //Action Status Data for submit Catalog
-    private String errorMarked;
+    private String actionStatus;
 
-    private String otherSuggestion;
+    private String actionDebug;
+
+    private String other;
+
+
+    @OneToMany(mappedBy = "productVariant", cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<ProductSizes> productSizes = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     @JsonIgnore
-    private SellerStore sellerStore;
-
-
+    private SellerProduct sellerProduct;
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(AdminUrlMappings.HSN_CONTROLLER)
+@RequestMapping(AdminUrlMappings.PRODUCT_HSN_CONTROLLER)
 public class HsnController {
 
 

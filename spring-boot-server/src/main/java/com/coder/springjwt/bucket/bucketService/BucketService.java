@@ -44,7 +44,7 @@ public class BucketService {
 
     public BucketModel uploadFile(MultipartFile file) {
 
-        if(CLOUDINARY == "cloudinary")
+        if(CLOUDINARY == "cloudinary1")
         {
             return  this.uploadCloudinaryFile(file);
         }

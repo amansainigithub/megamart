@@ -3,11 +3,9 @@ package com.coder.springjwt.services.adminServices.gstPercentageService.imple;
 import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.adminDtos.catalogDtos.GstPercentageDto;
-import com.coder.springjwt.models.adminModels.catalog.catalogBrand.CatalogBrandModel;
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
-import com.coder.springjwt.repository.adminRepository.catalogRepos.CatalogBrandRepo;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.GstPercentageRepo;
-import com.coder.springjwt.services.adminServices.catalogBrandService.imple.CatalogBrandServiceImple;
+import com.coder.springjwt.services.adminServices.catalogBrandService.imple.ProductBrandServiceImple;
 import com.coder.springjwt.services.adminServices.gstPercentageService.GstPercentageService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -74,7 +72,7 @@ public class GstPercentageServiceImple implements GstPercentageService {
                 response.setMessage(AdminMessageResponse.DATA_NOT_FOUND);
                 return ResponseGenerator.generateBadRequestResponse(response, AdminMessageResponse.DATA_NOT_FOUND);
             }else{
-                log.info("Data fetch Success :::: {}" + CatalogBrandServiceImple.class.getName());
+                log.info("Data fetch Success :::: {}" + ProductBrandServiceImple.class.getName());
 
                 response.setStatus(HttpStatus.OK);
                 return ResponseGenerator.generateSuccessResponse(gstPercentageModels, AdminMessageResponse.SUCCESS);
