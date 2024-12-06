@@ -4,7 +4,7 @@ import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMap
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadInvestigation;
 import com.coder.springjwt.services.adminServices.catalogCbiService.CatalogCbiService;
-import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
+import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class CatalogCbiController {
 
     @Autowired
-    SellerCatalogService sellerCatalogService;
+    SellerProductService sellerProductService;
 
     @Autowired
     private CatalogCbiService catalogCbiService;
@@ -31,12 +31,12 @@ public class CatalogCbiController {
         return this.catalogCbiService.getCatalogInProgressListService(page,size);
     }
 
-    @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
-    @PreAuthorize("hasRole('ADMIN')"  )
-    public ResponseEntity<?> getCatalogMasters() {
-        return catalogCbiService.getCatalogMasters();
-    }
-
+//    @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
+//    @PreAuthorize("hasRole('ADMIN')"  )
+//    public ResponseEntity<?> getCatalogMasters() {
+//        return catalogCbiService.getCatalogMasters();
+//    }
+//
 
     @PostMapping(AdminUrlMappings.CATALOG_INVESTIGATION)
     @PreAuthorize("hasRole('ADMIN')")

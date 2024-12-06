@@ -24,7 +24,7 @@ import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRep
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
-import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerCatalogService;
+import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class SellerCatalogServiceImple implements SellerCatalogService {
+public class SellerProductServiceImple implements SellerProductService {
 
     private static final long MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
     private static final int MAX_FILE_COUNT = 5; // Maximum number of files
@@ -116,7 +116,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
 
                 SellerCatalogPayload catalogNode = modelMapper.map(sellerCatalog, SellerCatalogPayload.class);
 
-                log.info("Data Fetched Success :: Seller Catalog by Id" +SellerCatalogServiceImple.class.getName());
+                log.info("Data Fetched Success :: Seller Catalog by Id" + SellerProductServiceImple.class.getName());
 
                 return ResponseGenerator.generateSuccessResponse(catalogNode , SellerMessageResponse.SUCCESS);
 
@@ -143,7 +143,7 @@ public class SellerCatalogServiceImple implements SellerCatalogService {
     }
 
     @Override
-    public ResponseEntity<?> getCatalogMasters() {
+    public ResponseEntity<?> getProductMasters() {
 
         MessageResponse mRes = new MessageResponse();
 

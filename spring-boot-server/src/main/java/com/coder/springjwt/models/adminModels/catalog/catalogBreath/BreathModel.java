@@ -19,7 +19,7 @@ public class BreathModel {
     private long id;
 
     @Size(min=4, max=100)
-    @NotBlank(message = "Catalog Breath must Not be Blank" )
+    @NotBlank(message = "product Breath  must Not be Blank" )
     @Column(unique = true)
     private String productBreath;
 

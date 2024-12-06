@@ -71,7 +71,9 @@ public class SellerUrlMappings {
     public static final String GET_BORN_BY_ID = "/getBornById/{bornId}";
 
 
-    public static final String SELLER_CATALOG_CONTROLLER = SELLER_AUTH_URL + "/sellerCatalogController";
+
+
+    public static final String SELLER_PRODUCT_CONTROLLER = SELLER_AUTH_URL + "/sellerProductController";
 
 
 
@@ -80,7 +82,7 @@ public class SellerUrlMappings {
 
     public static final String GET_GST_LIST = "/getGstList";
 
-    public static final String GET_CATALOG_MASTERS = "/getCatalogMasters";
+    public static final String GET_PRODUCT_MASTERS = "/getProductMasters";
     public static final String GET_ALL_CATALOG_BY_USERNAME = "/getAllCatalogByUsername";
 
     public static final String GET_ALL_CATALOG_BY_QC_PROGRESS = "/getAllCatalogByQcProgress";
