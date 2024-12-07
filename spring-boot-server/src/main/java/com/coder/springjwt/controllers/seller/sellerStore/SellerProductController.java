@@ -303,6 +303,8 @@ public class SellerProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> productDataFormBuilder(@PathVariable String categoryId){
 
+        FormBuilderRoot  formBuilderRoot = new FormBuilderRoot();
+
         List<HsnCodes> hsnCodes = hsnRepository.findAll();
         if(categoryId.equals("1"))
         {
@@ -312,8 +314,8 @@ public class SellerProductController {
             nameField.setType("text");
             nameField.setRequired(true);
             nameField.setDescription("Product Name");
-            nameField.setMin("2");
-            nameField.setMax("10");
+            nameField.setMin("");
+            nameField.setMax("");
 
             ProductDataBuilder addressField = new ProductDataBuilder();
             addressField.setIdentifier("address");
@@ -321,8 +323,8 @@ public class SellerProductController {
             addressField.setType("text");
             addressField.setRequired(true);
             addressField.setDescription("Address");
-            addressField.setMin("2");
-            addressField.setMax("10");
+            addressField.setMin("");
+            addressField.setMax("");
 
             ProductDataBuilder gstField = new ProductDataBuilder();
             gstField.setIdentifier("gst");
@@ -350,8 +352,8 @@ public class SellerProductController {
             styleCodeField.setType("text");
             styleCodeField.setRequired(false);
             styleCodeField.setDescription("Style code");
-            styleCodeField.setMin("5");
-            styleCodeField.setMax("50");
+            styleCodeField.setMin("");
+            styleCodeField.setMax("");
 
             ProductDataBuilder netWeightField = new ProductDataBuilder();
             netWeightField.setIdentifier("netWight");
@@ -359,10 +361,35 @@ public class SellerProductController {
             netWeightField.setType("text");
             netWeightField.setRequired(true);
             netWeightField.setDescription("netWight");
-            netWeightField.setMin("2");
-            netWeightField.setMax("10");
+            netWeightField.setMin("");
+            netWeightField.setMax("");
 
-            ProductDataBuilder sizeField = new ProductDataBuilder();
+
+
+            List<ProductDataBuilder> productDataBuilderList = new ArrayList<>();
+            productDataBuilderList.add(nameField);
+            productDataBuilderList.add(addressField);
+            productDataBuilderList.add(gstField);
+            productDataBuilderList.add(hsnField);
+            productDataBuilderList.add(styleCodeField);
+            productDataBuilderList.add(netWeightField);
+
+
+
+            //Variation Data Builder
+            VariationsDataBuilder varFieldFirst = new VariationsDataBuilder();
+            varFieldFirst.setIdentifier("varFieldFirst");
+            varFieldFirst.setName("varFieldFirst varFieldFirst in gms");
+            varFieldFirst.setType("text");
+            varFieldFirst.setRequired(true);
+            varFieldFirst.setDescription("varFieldFirst");
+            varFieldFirst.setMin("");
+            varFieldFirst.setMax("");
+            List<VariationsDataBuilder> variationsDataBuilderList = new ArrayList<>();
+            variationsDataBuilderList.add(varFieldFirst);
+
+
+            SizeDataBuilder sizeField = new SizeDataBuilder();
             sizeField.setIdentifier("size");
             sizeField.setName("size");
             sizeField.setType("multi-select");
@@ -370,10 +397,62 @@ public class SellerProductController {
             sizeField.setDescription("Size");
             sizeField.setMin("");
             sizeField.setMax("");
-            sizeField.setValues(List.of("Reading", "Traveling", "Sports", "Music"));
+            sizeField.setValues(List.of("S","M", "L", "XXL","3XL"));
+            List<SizeDataBuilder> sizeDataBuilderList = new ArrayList<>();
+            sizeDataBuilderList.add(sizeField);
 
-            return  ResponseEntity.ok(List.of(nameField , addressField ,gstField ,hsnField , styleCodeField , netWeightField , sizeField));
-        } else if (categoryId.equals("2")) {
+            TableDataBuilder priceField = new TableDataBuilder();
+            priceField.setIdentifier("price");
+            priceField.setName("price");
+            priceField.setType("text");
+            priceField.setRequired(true);
+            priceField.setDescription("Please Fill Price");
+            priceField.setMin("");
+            priceField.setMax("");
+
+            TableDataBuilder lengthField = new TableDataBuilder();
+            lengthField.setIdentifier("length");
+            lengthField.setName("length");
+            lengthField.setType("text");
+            lengthField.setRequired(true);
+            lengthField.setDescription("Please Fill Length");
+            lengthField.setMin("");
+            lengthField.setMax("");
+
+            TableDataBuilder inventoryField = new TableDataBuilder();
+            inventoryField.setIdentifier("inventory");
+            inventoryField.setName("inventory");
+            inventoryField.setType("dropdown");
+            inventoryField.setRequired(true);
+            inventoryField.setDescription("Please Fill inventory");
+            inventoryField.setMin("");
+            inventoryField.setMax("");
+            inventoryField.setValues(List.of("5","15","25","300","100"));
+
+            TableDataBuilder categoryField = new TableDataBuilder();
+            categoryField.setIdentifier("category");
+            categoryField.setName("category");
+            categoryField.setType("text");
+            categoryField.setRequired(false);
+            categoryField.setDescription("category");
+            categoryField.setMin("");
+            categoryField.setMax("");
+            categoryField.setValues(null);
+
+            List<TableDataBuilder> tableDataBuilders = new ArrayList<>();
+            tableDataBuilders.add(priceField);
+            tableDataBuilders.add(lengthField);
+            tableDataBuilders.add(inventoryField);
+            tableDataBuilders.add(categoryField);
+
+            formBuilderRoot.setProductDataBuilderList(productDataBuilderList);
+            formBuilderRoot.setVariationsDataBuilderList(variationsDataBuilderList);
+            formBuilderRoot.setSizeDataBuilderList(sizeDataBuilderList);
+            formBuilderRoot.setTableDataBuilderList(tableDataBuilders);
+
+            return  ResponseEntity.ok(formBuilderRoot);
+        }
+        else if (categoryId.equals("2")) {
             ProductDataBuilder hsnField = new ProductDataBuilder();
             hsnField.setIdentifier("hsn");
             hsnField.setName("hsn");
@@ -410,12 +489,39 @@ public class SellerProductController {
     }
     @GetMapping("/getProductData")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Map<String, Object>> getProductData() {
+    public ResponseEntity<Map<String, Object>> getProductData10() {
         // Return the saved data
         System.out.println("Load Data " + savedData);
         return ResponseEntity.ok(savedData);
     }
 
+
+
+
+    private List<RowData> rows = new ArrayList<>();
+    @PostMapping("/saveRows")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<String> saveRows(@RequestBody List<RowData> rowDataList) {
+
+        rows.clear();
+
+        // Save data (you can replace this with database interaction)
+        rows.addAll(rowDataList);
+        System.out.println(rowDataList);
+
+        System.out.println(this.rows);
+        return ResponseEntity.ok("Data saved successfully!");
+    }
+
+
+    @GetMapping("/getRows")
+    @PreAuthorize("hasRole('SELLER')")
+    public List<RowData> getRows() {
+
+        System.out.println(this.rows);
+
+        return rows;
+    }
 
 
 }
