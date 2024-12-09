@@ -433,7 +433,7 @@ public class SellerProductController {
             categoryField.setIdentifier("category");
             categoryField.setName("category");
             categoryField.setType("text");
-            categoryField.setRequired(false);
+            categoryField.setRequired(true);
             categoryField.setDescription("category");
             categoryField.setMin("");
             categoryField.setMax("");
@@ -516,11 +516,21 @@ public class SellerProductController {
 
     @GetMapping("/getRows")
     @PreAuthorize("hasRole('SELLER')")
-    public List<RowData> getRows() {
+    public RootRenderData getRows() {
+
+        RootRenderData rootRenderData = new RootRenderData();
+        rootRenderData.setName("Aman Saini");
+        rootRenderData.setAddress("1234 Address");
+        rootRenderData.setGst("12 %");
+        rootRenderData.setHsn("145520");
+        rootRenderData.setStyleCode("12300");
+        rootRenderData.setNetWight("100 kg");
+
+        rootRenderData.setRowData(this.rows);
 
         System.out.println(this.rows);
 
-        return rows;
+        return rootRenderData;
     }
 
 
