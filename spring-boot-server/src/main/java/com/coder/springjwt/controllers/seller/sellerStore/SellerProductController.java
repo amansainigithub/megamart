@@ -308,30 +308,115 @@ public class SellerProductController {
         List<HsnCodes> hsnCodes = hsnRepository.findAll();
         if(categoryId.equals("1"))
         {
-            ProductDataBuilder nameField = new ProductDataBuilder();
-            nameField.setIdentifier("name");
-            nameField.setName("Product Name");
-            nameField.setType("text");
-            nameField.setRequired(true);
-            nameField.setDescription("Product Name");
-            nameField.setMin("");
-            nameField.setMax("");
+            SizeDataBuilder sizeField = new SizeDataBuilder();
+            sizeField.setIdentifier("productSize");
+            sizeField.setName("productSize");
+            sizeField.setType("multi-select");
+            sizeField.setRequired(true);
+            sizeField.setDescription("Size");
+            sizeField.setMin("");
+            sizeField.setMax("");
+            sizeField.setValues(List.of("Free Size" , "S" , "M" , "L" , "XXL" ,"3XL","SM","2M", "SSL", "PXL","5XLS"));
+            List<SizeDataBuilder> sizeDataBuilderList = new ArrayList<>();
+            sizeDataBuilderList.add(sizeField);
 
-            ProductDataBuilder addressField = new ProductDataBuilder();
-            addressField.setIdentifier("address");
-            addressField.setName("Address");
-            addressField.setType("text");
-            addressField.setRequired(true);
-            addressField.setDescription("Address");
-            addressField.setMin("");
-            addressField.setMax("");
+
+
+            //Table Data
+            TableDataBuilder variantSize = new TableDataBuilder();
+            variantSize.setIdentifier("variantSize");
+            variantSize.setName("Variant Size");
+            variantSize.setType("text");
+            variantSize.setRequired(false);
+            variantSize.setDescription("Variant Size");
+            variantSize.setMin("");
+            variantSize.setMax("");
+            variantSize.setValues(null);
+
+            TableDataBuilder priceField = new TableDataBuilder();
+            priceField.setIdentifier("price");
+            priceField.setName("price");
+            priceField.setType("text");
+            priceField.setRequired(true);
+            priceField.setDescription("Please Fill Price");
+            priceField.setMin("");
+            priceField.setMax("");
+
+            TableDataBuilder productMrp = new TableDataBuilder();
+            productMrp.setIdentifier("mrp");
+            productMrp.setName("Mrp Price");
+            productMrp.setType("text");
+            productMrp.setRequired(true);
+            productMrp.setDescription("Please Fill Mrp Price");
+            productMrp.setMin("10");
+            productMrp.setMax("10000");
+
+            TableDataBuilder skuId = new TableDataBuilder();
+            skuId.setIdentifier("skuId");
+            skuId.setName("SKU ID");
+            skuId.setType("text");
+            skuId.setRequired(true);
+            skuId.setDescription("Please Fill Sku Id (optional)");
+            skuId.setMin("0");
+            skuId.setMax("500");
+
+            TableDataBuilder lengthField = new TableDataBuilder();
+            lengthField.setIdentifier("productLength");
+            lengthField.setName("product length (inch)");
+            lengthField.setType("dropdown");
+            lengthField.setRequired(true);
+            lengthField.setDescription("Please Fill Product Length");
+            lengthField.setMin("2");
+            lengthField.setMax("12");
+            lengthField.setValues(List.of("5","15","25","300","100"));
+
+            TableDataBuilder  breathField= new TableDataBuilder();
+            breathField.setIdentifier("productBreath");
+            breathField.setName("product Breath");
+            breathField.setType("dropdown");
+            breathField.setRequired(true);
+            breathField.setDescription("Please Fill Breath");
+            breathField.setMin("");
+            breathField.setMax("");
+            breathField.setValues(List.of("45","50","55","60","65","70","75","80"));
+
+            TableDataBuilder  heightField= new TableDataBuilder();
+            heightField.setIdentifier("productHeight");
+            heightField.setName("product height");
+            heightField.setType("dropdown");
+            heightField.setRequired(true);
+            heightField.setDescription("Please Fill height");
+            heightField.setMin("");
+            heightField.setMax("");
+            heightField.setValues(List.of("100","101","102","103","106","109","145","1520"));
+
+            List<TableDataBuilder> tableDataBuilders = new ArrayList<>();
+            tableDataBuilders.add(variantSize);
+            tableDataBuilders.add(priceField);
+            tableDataBuilders.add(productMrp);
+            tableDataBuilders.add(skuId);
+            tableDataBuilders.add(lengthField);
+            tableDataBuilders.add(breathField);
+            tableDataBuilders.add(heightField);
+
+
+
+//            Product Data Form
+            ProductDataBuilder productNameField = new ProductDataBuilder();
+            productNameField.setIdentifier("productName");
+            productNameField.setName("Product Name");
+            productNameField.setType("text");
+            productNameField.setRequired(true);
+            productNameField.setDescription("Please EnterProduct Name");
+            productNameField.setMin("10");
+            productNameField.setMax("300");
 
             ProductDataBuilder gstField = new ProductDataBuilder();
             gstField.setIdentifier("gst");
-            gstField.setName("Gst");
+            gstField.setName("Gst %");
             gstField.setType("dropdown");
             gstField.setRequired(true);
-            gstField.setDescription("Gst");
+            gstField.setDescription("Gst Mandatory");
             gstField.setMin("");
             gstField.setMax("");
             gstField.setValues(List.of("5 %","10 %","12 %","15 %","18 %"));
@@ -346,109 +431,184 @@ public class SellerProductController {
             hsnField.setMax("");
             hsnField.setValues(hsnCodes.stream().map(HsnCodes::getHsn).collect(Collectors.toList()));
 
-            ProductDataBuilder styleCodeField = new ProductDataBuilder();
-            styleCodeField.setIdentifier("styleCode");
-            styleCodeField.setName("style Code");
-            styleCodeField.setType("text");
-            styleCodeField.setRequired(false);
-            styleCodeField.setDescription("Style code");
-            styleCodeField.setMin("");
-            styleCodeField.setMax("");
-
-            ProductDataBuilder netWeightField = new ProductDataBuilder();
-            netWeightField.setIdentifier("netWight");
-            netWeightField.setName("net Wight in gms");
-            netWeightField.setType("text");
-            netWeightField.setRequired(true);
-            netWeightField.setDescription("netWight");
-            netWeightField.setMin("");
-            netWeightField.setMax("");
-
-
+            ProductDataBuilder productCode = new ProductDataBuilder();
+            productCode.setIdentifier("productCode");
+            productCode.setName("Product Code(Optional)");
+            productCode.setType("text");
+            productCode.setRequired(false);
+            productCode.setDescription("product Code");
+            productCode.setMin("");
+            productCode.setMax("");
+            productCode.setValues(null);
 
             List<ProductDataBuilder> productDataBuilderList = new ArrayList<>();
-            productDataBuilderList.add(nameField);
-            productDataBuilderList.add(addressField);
+            productDataBuilderList.add(productNameField);
             productDataBuilderList.add(gstField);
             productDataBuilderList.add(hsnField);
-            productDataBuilderList.add(styleCodeField);
-            productDataBuilderList.add(netWeightField);
+            productDataBuilderList.add(productCode);
+
+
+            //Product Details
+            ProductDataBuilder productStyleField = new ProductDataBuilder();
+            productStyleField.setIdentifier("styleName");
+            productStyleField.setName("style Name");
+            productStyleField.setType("text");
+            productStyleField.setRequired(true);
+            productStyleField.setDescription("product Style");
+            productStyleField.setMin("");
+            productStyleField.setMax("");
+            productStyleField.setValues(null);
+
+            ProductDataBuilder sleeveTypeField = new ProductDataBuilder();
+            sleeveTypeField.setIdentifier("sleeveType");
+            sleeveTypeField.setName("Sleeve Type");
+            sleeveTypeField.setType("dropdown");
+            sleeveTypeField.setRequired(true);
+            sleeveTypeField.setDescription("Sleeve");
+            sleeveTypeField.setMin("");
+            sleeveTypeField.setMax("");
+            sleeveTypeField.setValues(List.of("Half Sleeve %","full Sleeve"));
+
+            ProductDataBuilder fitTypeField = new ProductDataBuilder();
+            fitTypeField.setIdentifier("fitType");
+            fitTypeField.setName("fitType Name");
+            fitTypeField.setType("dropdown");
+            fitTypeField.setRequired(true);
+            fitTypeField.setDescription("fitType please select");
+            fitTypeField.setMin("");
+            fitTypeField.setMax("");
+            fitTypeField.setValues(List.of("Regular Fit","Skin Fit"));
+
+            ProductDataBuilder genderField = new ProductDataBuilder();
+            genderField.setIdentifier("gender");
+            genderField.setName("gender Name");
+            genderField.setType("dropdown");
+            genderField.setRequired(true);
+            genderField.setDescription("Gender please select");
+            genderField.setMin("");
+            genderField.setMax("");
+            genderField.setValues(List.of("Male","Female","Other"));
+
+            ProductDataBuilder materialTypeField = new ProductDataBuilder();
+            materialTypeField.setIdentifier("materialType");
+            materialTypeField.setName("material Type");
+            materialTypeField.setType("dropdown");
+            materialTypeField.setRequired(true);
+            materialTypeField.setDescription("material Type please select");
+            materialTypeField.setMin("");
+            materialTypeField.setMax("");
+            materialTypeField.setValues(List.of("Cotton","Satin","Leather","Linen","Denim","Velvet","wool"));
+
+            ProductDataBuilder colorField = new ProductDataBuilder();
+            colorField.setIdentifier("productColor");
+            colorField.setName("productColor");
+            colorField.setType("dropdown");
+            colorField.setRequired(true);
+            colorField.setDescription("productColor please select");
+            colorField.setMin("");
+            colorField.setMax("");
+            colorField.setValues(List.of("Yellow","Green","Blue","Green","Orange","Velvet","Brown"));
+
+            ProductDataBuilder countryOriginField = new ProductDataBuilder();
+            countryOriginField.setIdentifier("country");
+            countryOriginField.setName("country");
+            countryOriginField.setType("dropdown");
+            countryOriginField.setRequired(true);
+            countryOriginField.setDescription("country please select");
+            countryOriginField.setMin("");
+            countryOriginField.setMax("");
+            countryOriginField.setValues(List.of("India"));
+
+            ProductDataBuilder patternField = new ProductDataBuilder();
+            patternField.setIdentifier("pattern");
+            patternField.setName("pattern");
+            patternField.setType("dropdown");
+            patternField.setRequired(true);
+            patternField.setDescription("pattern please select");
+            patternField.setMin("");
+            patternField.setMax("");
+            patternField.setValues(List.of("Line","Circle"));
+
+
+            ProductDataBuilder manufactureField = new ProductDataBuilder();
+            manufactureField.setIdentifier("manufactureName");
+            manufactureField.setName("manufactureName");
+            manufactureField.setType("text");
+            manufactureField.setRequired(false);
+            manufactureField.setDescription("country please select");
+            manufactureField.setMin("");
+            manufactureField.setMax("");
+            manufactureField.setValues(null);
+
+            List<ProductDataBuilder> productDetails = new ArrayList<>();
+            productDetails.add(productStyleField);
+            productDetails.add(sleeveTypeField);
+            productDetails.add(sleeveTypeField);
+            productDetails.add(fitTypeField);
+            productDetails.add(genderField);
+            productDetails.add(materialTypeField);
+            productDetails.add(colorField);
+            productDetails.add(countryOriginField);
+            productDetails.add(patternField);
+            productDetails.add(manufactureField);
+
+
+            //Product Description and Other Details
+            ProductDataBuilder numberOfItemsField = new ProductDataBuilder();
+            numberOfItemsField.setIdentifier("numberOfItems");
+            numberOfItemsField.setName("number Of Items");
+            numberOfItemsField.setType("dropdown");
+            numberOfItemsField.setRequired(true);
+            numberOfItemsField.setDescription("numberOfItems please select");
+            numberOfItemsField.setMin("");
+            numberOfItemsField.setMax("");
+            numberOfItemsField.setValues(List.of("1","2","3","4","5","6","7","8","9","10"));
+
+            ProductDataBuilder finishingType = new ProductDataBuilder();
+            finishingType.setIdentifier("finishingType");
+            finishingType.setName("finishing Type ");
+            finishingType.setType("dropdown");
+            finishingType.setRequired(true);
+            finishingType.setDescription("finishingType please select");
+            finishingType.setMin("");
+            finishingType.setMax("");
+            finishingType.setValues(List.of("Liner","Rarer","Printing","blur shade","shades","multiShades"));
+
+            ProductDataBuilder brandField = new ProductDataBuilder();
+            brandField.setIdentifier("brandField");
+            brandField.setName("brandField Type ");
+            brandField.setType("dropdown");
+            brandField.setRequired(false);
+            brandField.setDescription("brandField please select");
+            brandField.setMin("");
+            brandField.setMax("");
+            brandField.setValues(List.of("Jack & jones","Microman","Puma","Generic","lux cozi","spyker"));
+
+            ProductDataBuilder descriptionFiled = new ProductDataBuilder();
+            descriptionFiled.setIdentifier("description");
+            descriptionFiled.setName("description");
+            descriptionFiled.setType("textbox");
+            descriptionFiled.setRequired(true);
+            descriptionFiled.setDescription("please fill description");
+            descriptionFiled.setMin("10");
+            descriptionFiled.setMax("5000");
+            descriptionFiled.setValues(null);
+
+            List<ProductDataBuilder> productDescAndOtherDetails = new ArrayList<>();
+            productDescAndOtherDetails.add(numberOfItemsField);
+            productDescAndOtherDetails.add(finishingType);
+            productDescAndOtherDetails.add(brandField);
+            productDescAndOtherDetails.add(descriptionFiled);
 
 
 
-            //Variation Data Builder
-            VariationsDataBuilder varFieldFirst = new VariationsDataBuilder();
-            varFieldFirst.setIdentifier("varFieldFirst");
-            varFieldFirst.setName("varFieldFirst varFieldFirst in gms");
-            varFieldFirst.setType("text");
-            varFieldFirst.setRequired(true);
-            varFieldFirst.setDescription("varFieldFirst");
-            varFieldFirst.setMin("");
-            varFieldFirst.setMax("");
-            List<VariationsDataBuilder> variationsDataBuilderList = new ArrayList<>();
-            variationsDataBuilderList.add(varFieldFirst);
 
-
-            SizeDataBuilder sizeField = new SizeDataBuilder();
-            sizeField.setIdentifier("size");
-            sizeField.setName("size");
-            sizeField.setType("multi-select");
-            sizeField.setRequired(true);
-            sizeField.setDescription("Size");
-            sizeField.setMin("");
-            sizeField.setMax("");
-            sizeField.setValues(List.of("S","M", "L", "XXL","3XL"));
-            List<SizeDataBuilder> sizeDataBuilderList = new ArrayList<>();
-            sizeDataBuilderList.add(sizeField);
-
-            TableDataBuilder priceField = new TableDataBuilder();
-            priceField.setIdentifier("price");
-            priceField.setName("price");
-            priceField.setType("text");
-            priceField.setRequired(true);
-            priceField.setDescription("Please Fill Price");
-            priceField.setMin("");
-            priceField.setMax("");
-
-            TableDataBuilder lengthField = new TableDataBuilder();
-            lengthField.setIdentifier("length");
-            lengthField.setName("length");
-            lengthField.setType("text");
-            lengthField.setRequired(true);
-            lengthField.setDescription("Please Fill Length");
-            lengthField.setMin("");
-            lengthField.setMax("");
-
-            TableDataBuilder inventoryField = new TableDataBuilder();
-            inventoryField.setIdentifier("inventory");
-            inventoryField.setName("inventory");
-            inventoryField.setType("dropdown");
-            inventoryField.setRequired(true);
-            inventoryField.setDescription("Please Fill inventory");
-            inventoryField.setMin("");
-            inventoryField.setMax("");
-            inventoryField.setValues(List.of("5","15","25","300","100"));
-
-            TableDataBuilder categoryField = new TableDataBuilder();
-            categoryField.setIdentifier("category");
-            categoryField.setName("category");
-            categoryField.setType("text");
-            categoryField.setRequired(true);
-            categoryField.setDescription("category");
-            categoryField.setMin("");
-            categoryField.setMax("");
-            categoryField.setValues(null);
-
-            List<TableDataBuilder> tableDataBuilders = new ArrayList<>();
-            tableDataBuilders.add(priceField);
-            tableDataBuilders.add(lengthField);
-            tableDataBuilders.add(inventoryField);
-            tableDataBuilders.add(categoryField);
-
-            formBuilderRoot.setProductDataBuilderList(productDataBuilderList);
-            formBuilderRoot.setVariationsDataBuilderList(variationsDataBuilderList);
             formBuilderRoot.setSizeDataBuilderList(sizeDataBuilderList);
             formBuilderRoot.setTableDataBuilderList(tableDataBuilders);
+            formBuilderRoot.setProductDataBuilderList(productDataBuilderList);
+            formBuilderRoot.setProductDetailsBuilderList(productDetails);
+            formBuilderRoot.setProductDescAndOtherBuilderList(productDescAndOtherDetails);
+
 
             return  ResponseEntity.ok(formBuilderRoot);
         }
@@ -498,39 +658,21 @@ public class SellerProductController {
 
 
 
-    private List<RowData> rows = new ArrayList<>();
+    ProductRootData productRootData = new ProductRootData();
     @PostMapping("/saveRows")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<String> saveRows(@RequestBody List<RowData> rowDataList) {
-
-        rows.clear();
-
+    public ResponseEntity<String> saveRows(@RequestBody ProductRootData productRootData) {
         // Save data (you can replace this with database interaction)
-        rows.addAll(rowDataList);
-        System.out.println(rowDataList);
-
-        System.out.println(this.rows);
+        this.productRootData = productRootData;
+        System.out.println(this.productRootData);
         return ResponseEntity.ok("Data saved successfully!");
     }
 
 
     @GetMapping("/getRows")
     @PreAuthorize("hasRole('SELLER')")
-    public RootRenderData getRows() {
-
-        RootRenderData rootRenderData = new RootRenderData();
-        rootRenderData.setName("Aman Saini");
-        rootRenderData.setAddress("1234 Address");
-        rootRenderData.setGst("12 %");
-        rootRenderData.setHsn("145520");
-        rootRenderData.setStyleCode("12300");
-        rootRenderData.setNetWight("100 kg");
-
-        rootRenderData.setRowData(this.rows);
-
-        System.out.println(this.rows);
-
-        return rootRenderData;
+    public ProductRootData getRows() {
+        return this.productRootData;
     }
 
 

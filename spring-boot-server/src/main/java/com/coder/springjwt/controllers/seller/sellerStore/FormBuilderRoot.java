@@ -15,7 +15,9 @@ public class FormBuilderRoot {
 
     private List<ProductDataBuilder> productDataBuilderList;
 
-    private List<VariationsDataBuilder> variationsDataBuilderList;
+    private List<ProductDataBuilder> productDetailsBuilderList;
+
+    private List<ProductDataBuilder> productDescAndOtherBuilderList;
 
     private List<SizeDataBuilder> sizeDataBuilderList;
 
