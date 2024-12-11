@@ -48,4 +48,10 @@ public class BornCategoryModel extends BaseEntity {
     @JoinColumn( referencedColumnName = "id" )
     @JsonIgnore
     private BabyCategoryModel babyCategoryModel;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private FormBuilderModel formBuilderModel;
+
+
+
 }

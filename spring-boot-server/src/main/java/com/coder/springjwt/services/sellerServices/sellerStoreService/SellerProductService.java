@@ -25,5 +25,6 @@ public interface SellerProductService {
 
     ResponseEntity<?> getAllCatalogByQcPass(int page , int size);
 
-    ResponseEntity<?> productFlyService(Long categoryId, SellerProductPayload sellerProductPayload);
+
+    ResponseEntity<?> productDataFormBuilder(String categoryId);
 }
