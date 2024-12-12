@@ -1,5 +1,8 @@
-package com.coder.springjwt.controllers.seller.sellerStore;
+package com.coder.springjwt.formBuilderTools.formVariableKeys;
 
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.ProductDataBuilder;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.SizeDataBuilder;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.TableDataBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

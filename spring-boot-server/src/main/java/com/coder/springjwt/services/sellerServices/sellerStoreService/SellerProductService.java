@@ -1,6 +1,6 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService;
 
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerProductPayload;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,4 +27,6 @@ public interface SellerProductService {
 
 
     ResponseEntity<?> productDataFormBuilder(String categoryId);
+
+    ResponseEntity<?> saveSellerProduct(ProductRootData productRootData);
 }

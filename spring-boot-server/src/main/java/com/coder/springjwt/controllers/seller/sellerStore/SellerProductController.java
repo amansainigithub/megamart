@@ -1,9 +1,7 @@
 package com.coder.springjwt.controllers.seller.sellerStore;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerProductPayload;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootData;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.HsnRepository;
@@ -11,7 +9,6 @@ import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRep
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(SellerUrlMappings.SELLER_PRODUCT_CONTROLLER)
@@ -116,6 +110,12 @@ public class SellerProductController {
     }
 
     ProductRootData productRootData = new ProductRootData();
+    @GetMapping("/getRows")
+    @PreAuthorize("hasRole('SELLER')")
+    public ProductRootData getRows() {
+        return this.productRootData;
+    }
+
     @PostMapping("/saveRows")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> saveRows(@RequestBody ProductRootData productRootData) {
@@ -124,12 +124,10 @@ public class SellerProductController {
         System.out.println(this.productRootData);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
-
-    @GetMapping("/getRows")
+    @PostMapping("/saveSellerProduct")
     @PreAuthorize("hasRole('SELLER')")
-    public ProductRootData getRows() {
-        return this.productRootData;
+    public ResponseEntity<?> saveSellerProduct(@RequestBody ProductRootData productRootData) {
+        this.productRootData = productRootData;
+        return sellerProductService.saveSellerProduct(productRootData);
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.seller.sellerStore;
+package com.coder.springjwt.formBuilderTools.FormBuilderModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SizeDataBuilder {
+public class ProductDataBuilder {
 
     private String id;
     private String identifier;

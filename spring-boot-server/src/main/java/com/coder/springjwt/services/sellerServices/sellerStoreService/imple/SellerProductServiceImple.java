@@ -2,10 +2,11 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.controllers.seller.sellerStore.FormBuilderRoot;
-import com.coder.springjwt.controllers.seller.sellerStore.ProductDataBuilder;
-import com.coder.springjwt.controllers.seller.sellerStore.SizeDataBuilder;
-import com.coder.springjwt.controllers.seller.sellerStore.TableDataBuilder;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.ProductDataBuilder;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.SizeDataBuilder;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.TableDataBuilder;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootData;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
@@ -20,12 +21,14 @@ import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeigh
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductRows;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.models.sellerModels.sellerStore.*;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerProductPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductRowsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
@@ -49,6 +52,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -108,8 +112,7 @@ public class SellerProductServiceImple implements SellerProductService {
     @Autowired
     private ProductHeightRepo productHeightRepo;
 
-    @Autowired
-    private SellerProductRepository sellerProductRepository;
+
     @Override
     public ResponseEntity<?> getSellerCatalog(Long catalogId) {
         try {
@@ -1074,6 +1077,71 @@ public class SellerProductServiceImple implements SellerProductService {
             return  ResponseEntity.ok(formBuilderRoot);
         }
         return null;
+    }
+
+    @Autowired
+    private SellerProductRepository sellerProductRepository;
+    @Autowired
+    private ProductRowsRepository productRowsRepository;
+
+    @Override
+    public ResponseEntity<?> saveSellerProduct(ProductRootData productRootData) {
+
+        try {
+
+            System.out.println(productRootData);
+
+            System.out.println("]]]]]]]]]]]]]");
+
+            SellerProduct sellerproduct1 = modelMapper.map(productRootData, SellerProduct.class);
+
+//            ually map ProductRootData to SellerProduct
+            SellerProduct sellerProduct = new SellerProduct();
+            sellerProduct.setProductName(productRootData.getProductName());
+            sellerProduct.setGst(productRootData.getGst());
+            sellerProduct.setHsn(productRootData.getHsn());
+            sellerProduct.setProductCode(productRootData.getProductCode());
+            sellerProduct.setStyleName(productRootData.getStyleName());
+            sellerProduct.setSleeveType(productRootData.getSleeveType());
+            sellerProduct.setFitType(productRootData.getFitType());
+            sellerProduct.setGender(productRootData.getGender());
+            sellerProduct.setMaterialType(productRootData.getMaterialType());
+            sellerProduct.setProductColor(productRootData.getProductColor());
+            sellerProduct.setCountry(productRootData.getCountry());
+            sellerProduct.setPattern(productRootData.getPattern());
+            sellerProduct.setManufactureName(productRootData.getManufactureName());
+            sellerProduct.setDescription(productRootData.getDescription());
+            sellerProduct.setNumberOfItems(productRootData.getNumberOfItems());
+            sellerProduct.setFinishingType(productRootData.getFinishingType());
+            sellerProduct.setBrandField(productRootData.getBrandField());
+
+            // Handle ProductRows and set SellerProduct in each ProductRow
+            List<ProductRows> productRows = sellerproduct1.getProductRows();
+            if (productRows != null) {
+                for (ProductRows productRow : productRows) {
+                    // Set the SellerProduct reference in each ProductRow
+                    productRow.setSellerProduct(sellerProduct);
+                }
+                sellerProduct.setProductRows(productRows);
+            }
+
+            // Handle ProductSize, if available
+            sellerProduct.setProductSize(productRootData.getProductSize());
+
+            // Save the SellerProduct entity, which will cascade to ProductRows
+            SellerProduct savedSellerProduct = this.sellerProductRepository.save(sellerProduct);
+            System.out.println("Saved SellerProduct:");
+            log.info(savedSellerProduct.toString());
+
+            return ResponseGenerator.generateSuccessResponse(HttpStatus.CREATED,SellerMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("Something Went Wrong",
+                                                                SellerMessageResponse.DATA_NOT_SAVED);
+        }
+
     }
 
 

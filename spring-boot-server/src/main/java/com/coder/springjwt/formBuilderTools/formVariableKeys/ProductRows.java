@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.seller.sellerStore;
+package com.coder.springjwt.formBuilderTools.formVariableKeys;
 
 import lombok.Data;
 import lombok.ToString;
@@ -6,6 +6,8 @@ import lombok.ToString;
 @Data
 @ToString
 public class ProductRows {
+
+    private long id;
     private String variantSize;
     private String price;
     private String mrp;
