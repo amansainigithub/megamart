@@ -1,16 +1,16 @@
 package com.coder.springjwt.models.sellerModels.sellerProductModels;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "productRows")
+@Table(name = "productVariants")
 @ToString
-public class ProductRows {
+public class ProductVariants {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,7 @@ public class ProductRows {
     private String productHeight;
 
     @ManyToOne
-    @JsonIgnore
+    @JoinColumn(name = "product_variant_id")
+    @ToString.Exclude
     private SellerProduct sellerProduct;
 }

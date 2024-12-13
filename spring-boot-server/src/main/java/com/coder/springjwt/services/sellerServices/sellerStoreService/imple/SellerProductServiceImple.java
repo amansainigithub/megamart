@@ -1,7 +1,9 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
+import com.amazonaws.Response;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.ProductDataBuilder;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.SizeDataBuilder;
@@ -21,14 +23,15 @@ import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeigh
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
-import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductRows;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.models.sellerModels.sellerStore.*;
 import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerCatalogPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductRowsRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
@@ -52,7 +55,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -1082,67 +1084,93 @@ public class SellerProductServiceImple implements SellerProductService {
     @Autowired
     private SellerProductRepository sellerProductRepository;
     @Autowired
-    private ProductRowsRepository productRowsRepository;
+    private ProductVariantsRepository productVariantsRepository;
 
     @Override
     public ResponseEntity<?> saveSellerProduct(ProductRootData productRootData) {
 
         try {
-
             System.out.println(productRootData);
+            System.out.println("==================================");
 
-            System.out.println("]]]]]]]]]]]]]");
+            // Map incoming data to SellerProduct
+            SellerProduct sellerProduct = modelMapper.map(productRootData, SellerProduct.class);
 
-            SellerProduct sellerproduct1 = modelMapper.map(productRootData, SellerProduct.class);
-
-//            ually map ProductRootData to SellerProduct
-            SellerProduct sellerProduct = new SellerProduct();
-            sellerProduct.setProductName(productRootData.getProductName());
-            sellerProduct.setGst(productRootData.getGst());
-            sellerProduct.setHsn(productRootData.getHsn());
-            sellerProduct.setProductCode(productRootData.getProductCode());
-            sellerProduct.setStyleName(productRootData.getStyleName());
-            sellerProduct.setSleeveType(productRootData.getSleeveType());
-            sellerProduct.setFitType(productRootData.getFitType());
-            sellerProduct.setGender(productRootData.getGender());
-            sellerProduct.setMaterialType(productRootData.getMaterialType());
-            sellerProduct.setProductColor(productRootData.getProductColor());
-            sellerProduct.setCountry(productRootData.getCountry());
-            sellerProduct.setPattern(productRootData.getPattern());
-            sellerProduct.setManufactureName(productRootData.getManufactureName());
-            sellerProduct.setDescription(productRootData.getDescription());
-            sellerProduct.setNumberOfItems(productRootData.getNumberOfItems());
-            sellerProduct.setFinishingType(productRootData.getFinishingType());
-            sellerProduct.setBrandField(productRootData.getBrandField());
-
-            // Handle ProductRows and set SellerProduct in each ProductRow
-            List<ProductRows> productRows = sellerproduct1.getProductRows();
-            if (productRows != null) {
-                for (ProductRows productRow : productRows) {
-                    // Set the SellerProduct reference in each ProductRow
-                    productRow.setSellerProduct(sellerProduct);
+            // Explicitly set the relationship for ProductVariants
+            if (sellerProduct.getProductRows() != null) {
+                for (ProductVariants variant : sellerProduct.getProductRows()) {
+                    variant.setSellerProduct(sellerProduct);
                 }
-                sellerProduct.setProductRows(productRows);
             }
 
-            // Handle ProductSize, if available
-            sellerProduct.setProductSize(productRootData.getProductSize());
 
-            // Save the SellerProduct entity, which will cascade to ProductRows
+            // Save SellerProduct along with its ProductVariants
             SellerProduct savedSellerProduct = this.sellerProductRepository.save(sellerProduct);
-            System.out.println("Saved SellerProduct:");
-            log.info(savedSellerProduct.toString());
 
-            return ResponseGenerator.generateSuccessResponse(HttpStatus.CREATED,SellerMessageResponse.SUCCESS);
+            System.out.println("Save Success");
+            System.out.println(savedSellerProduct);
+            return ResponseGenerator.generateSuccessResponse(Map.of("productId",savedSellerProduct.getId()),
+                                                             SellerMessageResponse.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("Something Went Wrong",
+                    SellerMessageResponse.DATA_NOT_SAVED);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber) {
+
+        try {
+            SellerProduct sellerProduct = this.sellerProductRepository.findById(Long.parseLong(productLockerNumber)).orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+
+            System.out.println("Seller product Received" + sellerProduct.getId());
+
+            System.out.println(files.entrySet().size());
+            // Iterate over the received files
+            List<ProductFiles> productFilesList = new ArrayList<>();
+            for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
+
+                String key = entry.getKey();  // The key (e.g., file0, file1, etc.)
+                MultipartFile file = entry.getValue();
+
+                // You can now process each file
+                // For example, save the file or perform any operation
+                System.out.println("Received file: " + key);
+                System.out.println("File name: " + file.getOriginalFilename());
+                System.out.println("======================");
+                // Example of saving the file
+                // Path path = Paths.get("some/directory/" + file.getOriginalFilename());
+                // Files.copy(file.getInputStream(), path);
+
+                ProductFiles productFiles =new ProductFiles();
+                productFiles.setFileKey(entry.getKey());
+                productFiles.setFileName("File Url");
+                productFiles.setFileSize(String.valueOf(file.getSize()));
+                productFiles.setFileType(file.getContentType());
+                productFiles.setSellerProduct(sellerProduct);
+
+                productFilesList.add(productFiles);
+
+            }
+
+            sellerProduct.setProductFiles(productFilesList);
+
+            this.sellerProductRepository.save(sellerProduct);
+
+            System.out.println("Seller product Saved Success with Images");
+
+            return ResponseGenerator.generateSuccessResponse("Success",SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Something Went Wrong",
-                                                                SellerMessageResponse.DATA_NOT_SAVED);
+            return ResponseGenerator.generateDataNotFound(SellerMessageResponse.DATA_NOT_FOUND);
         }
 
-    }
+
+           }
 
 
 }

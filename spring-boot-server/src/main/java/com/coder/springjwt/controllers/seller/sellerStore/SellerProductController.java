@@ -16,6 +16,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(SellerUrlMappings.SELLER_PRODUCT_CONTROLLER)
@@ -129,5 +134,40 @@ public class SellerProductController {
     public ResponseEntity<?> saveSellerProduct(@RequestBody ProductRootData productRootData) {
         this.productRootData = productRootData;
         return sellerProductService.saveSellerProduct(productRootData);
+    }
+
+//    @PostMapping("/uploadFile")
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<String> uploadFile(@RequestParam("files") List<MultipartFile> files
+//                                             ) {
+//        try {
+//
+//            if (files.isEmpty()) {
+//                return new ResponseEntity<>("Please select a file to upload", HttpStatus.BAD_REQUEST);
+//            }
+////            String originalFilename = files.getOriginalFilename();
+//            System.out.println("Original File Names :: " + files.size());
+//
+//            return new ResponseEntity<>("File uploaded successfully: " + files.size(), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Failed to upload file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+
+    @PostMapping("/uploadProductFiles/{productLockerNumber}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> uploadProductFiles(@RequestParam Map<String, MultipartFile> files , @PathVariable String productLockerNumber) {
+         return sellerProductService.uploadProductFiles(files, productLockerNumber);
+    }
+
+
+    @GetMapping("/getImageFile")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getImageFile() {
+        Map<String,String> map =new HashMap<>();
+        map.put("fileName","https://images.unsplash.com/photo-1720048171731-15b3d9d5473f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        System.out.println(map);
+        return ResponseEntity.ok(map);
     }
 }
