@@ -4,6 +4,7 @@ import com.amazonaws.Response;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.FormBuilderTool;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.ProductDataBuilder;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.SizeDataBuilder;
@@ -757,20 +758,20 @@ public class SellerProductServiceImple implements SellerProductService {
 
     @Override
     public ResponseEntity<?> productDataFormBuilder(String categoryId) {
-        System.out.println("BornCategoryId :: " +  categoryId);
-
-        Optional<BornCategoryModel> bornCategory = this.bornCategoryRepo.findById(Long.valueOf(categoryId));
-        if(bornCategory.isPresent())
-        {
-            System.out.println("Form JSON Present in Database:: " +categoryId);
-            System.out.println(bornCategory.get().getFormBuilderModel().getFormBuilder());
-            return ResponseEntity.ok(bornCategory.get().getFormBuilderModel().getFormBuilder());
-        }
-        System.out.println("JSON Not Present in Database regards Category ID::  " +categoryId);
+//        System.out.println("BornCategoryId :: " +  categoryId);
+//
+//        Optional<BornCategoryModel> bornCategory = this.bornCategoryRepo.findById(Long.valueOf(categoryId));
+//        if(bornCategory.isPresent())
+//        {
+//            System.out.println("Form JSON Present in Database:: " +categoryId);
+//            System.out.println(bornCategory.get().getFormBuilderModel().getFormBuilder());
+//            return ResponseEntity.ok(bornCategory.get().getFormBuilderModel().getFormBuilder());
+//        }
+//        System.out.println("JSON Not Present in Database regards Category ID::  " +categoryId);
 
 
         List<HsnCodes> hsnCodes = hsnRepository.findAll();
-        if(categoryId.equals("1"))
+        if(categoryId.equals("2"))
         {
             SizeDataBuilder sizeField = new SizeDataBuilder();
             sizeField.setIdentifier("productSize");
@@ -1171,6 +1172,112 @@ public class SellerProductServiceImple implements SellerProductService {
 
 
            }
+
+    @Override
+    public ResponseEntity<?> formBuilderFlying(String categoryId) {
+
+        List<HsnCodes> hsnCodes = hsnRepository.findAll();
+
+
+        FormBuilderTool productIdentity = new FormBuilderTool();
+        productIdentity.setIdentifier("productName");
+        productIdentity.setName("Product Name");
+        productIdentity.setType("TEXT");
+        productIdentity.setRequired(true);
+        productIdentity.setDescription("Please EnterProduct Name");
+        productIdentity.setMinLength("2");
+        productIdentity.setMaxLength("500");
+        productIdentity.setExclamationDesc("exclamation Desc Generated");
+        productIdentity.setIsFiledDisabled("");
+
+        FormBuilderTool gstField = new FormBuilderTool();
+        gstField.setIdentifier("gst");
+        gstField.setName("Gst %");
+        gstField.setType("DROPDOWN");
+        gstField.setRequired(true);
+        gstField.setDescription("Gst Mandatory");
+        gstField.setExclamationDesc("exclamation Gst");
+        gstField.setIsFiledDisabled("");
+        gstField.setValues(List.of("5 %","10 %","12 %","15 %","18 %"));
+
+
+        FormBuilderTool hsnField = new FormBuilderTool();
+        hsnField.setIdentifier("hsn");
+        hsnField.setName("hsn");
+        hsnField.setType("DROPDOWN");
+        hsnField.setRequired(true);
+        hsnField.setDescription("hsn");
+        hsnField.setValues(hsnCodes.stream().map(HsnCodes::getHsn).collect(Collectors.toList()));
+
+        FormBuilderTool productCode = new FormBuilderTool();
+        productCode.setIdentifier("productCode");
+        productCode.setName("Product Code(Optional) *");
+        productCode.setType("TEXT");
+        productCode.setRequired(false);
+        productCode.setMinLength("5");
+        productCode.setMaxLength("20");
+        productCode.setDescription("product Code");
+        productCode.setValues(null);
+
+        List<FormBuilderTool> productIdentityList = new ArrayList<>();
+        productIdentityList.add(productIdentity);
+        productIdentityList.add(gstField);
+        productIdentityList.add(hsnField);
+        productIdentityList.add(productCode);
+
+//        =========================================
+
+        //Sizes
+        FormBuilderTool sizeField = new FormBuilderTool();
+        sizeField.setIdentifier("gst");
+        sizeField.setName("Gst %");
+        sizeField.setType("MULTISELECT");
+        sizeField.setRequired(false);
+        sizeField.setDescription("Gst Mandatory");
+        sizeField.setExclamationDesc("exclamation Gst");
+        sizeField.setIsFiledDisabled("");
+        sizeField.setValues(List.of("S","M","L","XL","XXL","3XL","4XL","5XL","6XL"));
+
+        List<FormBuilderTool> productSizeList = new ArrayList<>();
+        productSizeList.add(sizeField);
+
+
+//        ======================================
+        FormBuilderTool productPrice = new FormBuilderTool();
+        productPrice.setIdentifier("productPrice");
+        productPrice.setName("price");
+        productPrice.setType("TEXT");
+        productPrice.setRequired(true);
+        productPrice.setDescription("Please Enter Price");
+        productPrice.setMinLength("2");
+        productPrice.setMaxLength("50");
+        productPrice.setExclamationDesc("Price Alternatives");
+        productPrice.setIsFiledDisabled("");
+
+        FormBuilderTool sizeLabel = new FormBuilderTool();
+        sizeLabel.setIdentifier("productLabel");
+        sizeLabel.setName("size");
+        sizeLabel.setType("LABEL");
+        sizeLabel.setRequired(true);
+        sizeLabel.setDescription("product Size");
+        sizeLabel.setExclamationDesc("product Size");
+
+        List<FormBuilderTool> productVariants = new ArrayList<>();
+        productVariants.add(sizeLabel);
+        productVariants.add(productPrice);
+
+
+
+        FormBuilderRoot formBuilderRoot = new FormBuilderRoot();
+        formBuilderRoot.setProductIdentityList(productIdentityList);
+        formBuilderRoot.setProductSizes(productSizeList);
+        formBuilderRoot.setProductVariants(productVariants);
+
+        JSONObject jsonObject = new JSONObject(formBuilderRoot);
+        System.out.println(jsonObject);
+
+        return  ResponseEntity.ok(formBuilderRoot);
+    }
 
 
 }

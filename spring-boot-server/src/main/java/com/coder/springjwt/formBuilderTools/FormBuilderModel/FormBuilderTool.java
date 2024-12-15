@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SizeDataBuilder {
+public class FormBuilderTool {
 
     private String id;
     private String identifier;
@@ -18,9 +18,11 @@ public class SizeDataBuilder {
     private String type;
     private boolean required;
     private String description;
-    private String min;
-    private String max;
+    private String exclamationDesc;
     private String minLength;
     private String maxLength;
+    private String min;
+    private String max;
+    private String isFiledDisabled;
     private List<String> values;
 }

@@ -114,6 +114,13 @@ public class SellerProductController {
         return this.sellerProductService.productDataFormBuilder(categoryId);
     }
 
+
+    @GetMapping("/formBuilderFlying/{categoryId}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> formBuilderFlying(@PathVariable String categoryId){
+        return this.sellerProductService.formBuilderFlying(categoryId);
+    }
+
     ProductRootData productRootData = new ProductRootData();
     @GetMapping("/getRows")
     @PreAuthorize("hasRole('SELLER')")

@@ -21,5 +21,7 @@ public class ProductDataBuilder {
     private String description;
     private String min;
     private String max;
+    private String minLength;
+    private String maxLength;
     private List<String> values;
 }

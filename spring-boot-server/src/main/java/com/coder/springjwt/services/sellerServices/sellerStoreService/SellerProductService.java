@@ -33,4 +33,6 @@ public interface SellerProductService {
     ResponseEntity<?> saveSellerProduct(ProductRootData productRootData);
 
     ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber);
+
+    ResponseEntity<?> formBuilderFlying(String categoryId);
 }

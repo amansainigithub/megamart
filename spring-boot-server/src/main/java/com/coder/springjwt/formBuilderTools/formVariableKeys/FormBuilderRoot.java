@@ -1,5 +1,6 @@
 package com.coder.springjwt.formBuilderTools.formVariableKeys;
 
+import com.coder.springjwt.formBuilderTools.FormBuilderModel.FormBuilderTool;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.ProductDataBuilder;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.SizeDataBuilder;
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.TableDataBuilder;
@@ -26,5 +27,13 @@ public class FormBuilderRoot {
 
     private List<TableDataBuilder> tableDataBuilderList;
 
+
+//=======================================
+
+    private List<FormBuilderTool> productIdentityList;
+
+    private List<FormBuilderTool> productSizes;
+
+    private List<FormBuilderTool> productVariants;
 
 }
