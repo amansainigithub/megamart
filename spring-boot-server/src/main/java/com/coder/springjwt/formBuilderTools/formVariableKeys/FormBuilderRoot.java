@@ -36,4 +36,8 @@ public class FormBuilderRoot {
 
     private List<FormBuilderTool> productVariants;
 
+    private List<FormBuilderTool> productDetails;
+
+    private List<FormBuilderTool> productOtherDetails;
+
 }

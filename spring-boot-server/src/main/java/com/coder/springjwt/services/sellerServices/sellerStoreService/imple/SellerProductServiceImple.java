@@ -1243,6 +1243,14 @@ public class SellerProductServiceImple implements SellerProductService {
 
 
 //        ======================================
+        FormBuilderTool sizeLabel = new FormBuilderTool();
+        sizeLabel.setIdentifier("productLabel");
+        sizeLabel.setName("size");
+        sizeLabel.setType("LABEL");
+        sizeLabel.setRequired(true);
+        sizeLabel.setDescription("product Size");
+        sizeLabel.setExclamationDesc("product Size");
+
         FormBuilderTool productPrice = new FormBuilderTool();
         productPrice.setIdentifier("productPrice");
         productPrice.setName("price");
@@ -1254,24 +1262,206 @@ public class SellerProductServiceImple implements SellerProductService {
         productPrice.setExclamationDesc("Price Alternatives");
         productPrice.setIsFiledDisabled("");
 
-        FormBuilderTool sizeLabel = new FormBuilderTool();
-        sizeLabel.setIdentifier("productLabel");
-        sizeLabel.setName("size");
-        sizeLabel.setType("LABEL");
-        sizeLabel.setRequired(true);
-        sizeLabel.setDescription("product Size");
-        sizeLabel.setExclamationDesc("product Size");
+        FormBuilderTool productMrp = new FormBuilderTool();
+        productMrp.setIdentifier("productMrp");
+        productMrp.setName("productMrp");
+        productMrp.setType("TEXT");
+        productMrp.setRequired(true);
+        productMrp.setDescription("product Mrp");
+        productMrp.setMinLength("2");
+        productMrp.setMaxLength("4");
+        productMrp.setExclamationDesc("productMrp Alternatives");
+        productMrp.setIsFiledDisabled("");
+
+        FormBuilderTool productLength = new FormBuilderTool();
+        productLength.setIdentifier("productLength");
+        productLength.setName("product Length");
+        productLength.setType("DROPDOWN");
+        productLength.setRequired(true);
+        productLength.setDescription("Product Length");
+        productLength.setExclamationDesc("Product Length");
+        productLength.setIsFiledDisabled("");
+        productLength.setValues(List.of("10","20","40","80","200","300","400"));
+
+        FormBuilderTool skuId = new FormBuilderTool();
+        skuId.setIdentifier("skuId");
+        skuId.setName("skuId");
+        skuId.setType("TEXT");
+        skuId.setRequired(false);
+        skuId.setDescription("skuId skuId");
+        skuId.setMinLength("");
+        skuId.setMaxLength("100");
+        skuId.setExclamationDesc("skuId skuId");
+        skuId.setIsFiledDisabled("");
 
         List<FormBuilderTool> productVariants = new ArrayList<>();
         productVariants.add(sizeLabel);
         productVariants.add(productPrice);
+        productVariants.add(productLength);
+        productVariants.add(productMrp);
+        productVariants.add(skuId);
 
 
+
+        //////////////////Product Details///////////
+        FormBuilderTool styleName = new FormBuilderTool();
+        styleName.setIdentifier("styleName");
+        styleName.setName("styleName");
+        styleName.setType("TEXT");
+        styleName.setRequired(true);
+        styleName.setDescription("styleName");
+        styleName.setMinLength("2");
+        styleName.setMaxLength("100");
+        styleName.setExclamationDesc("styleName");
+        styleName.setIsFiledDisabled("");
+
+        FormBuilderTool sleeveTypeField = new FormBuilderTool();
+        sleeveTypeField.setIdentifier("sleeveType");
+        sleeveTypeField.setName("Sleeve Type");
+        sleeveTypeField.setType("DROPDOWN");
+        sleeveTypeField.setRequired(true);
+        sleeveTypeField.setDescription("Sleeve");
+        sleeveTypeField.setMinLength("");
+        sleeveTypeField.setMaxLength("");
+        sleeveTypeField.setValues(List.of("Half Sleeve %","full Sleeve"));
+
+        FormBuilderTool fitTypeField = new FormBuilderTool();
+        fitTypeField.setIdentifier("fitType");
+        fitTypeField.setName("fitType Name");
+        fitTypeField.setType("DROPDOWN");
+        fitTypeField.setRequired(true);
+        fitTypeField.setDescription("fitType please select");
+        fitTypeField.setMinLength("");
+        fitTypeField.setMaxLength("");
+        fitTypeField.setValues(List.of("Regular Fit","Skin Fit"));
+
+        FormBuilderTool genderField = new FormBuilderTool();
+        genderField.setIdentifier("gender");
+        genderField.setName("gender Name");
+        genderField.setType("DROPDOWN");
+        genderField.setRequired(true);
+        genderField.setDescription("Gender please select");
+        genderField.setMinLength("");
+        genderField.setMaxLength("");
+        genderField.setValues(List.of("Male","Female","Other"));
+
+        FormBuilderTool materialTypeField = new FormBuilderTool();
+        materialTypeField.setIdentifier("materialType");
+        materialTypeField.setName("material Type");
+        materialTypeField.setType("DROPDOWN");
+        materialTypeField.setRequired(true);
+        materialTypeField.setDescription("material Type please select");
+        materialTypeField.setMinLength("");
+        materialTypeField.setMaxLength("");
+        materialTypeField.setValues(List.of("Cotton","Satin","Leather","Linen","Denim","Velvet","wool"));
+
+        FormBuilderTool colorField = new FormBuilderTool();
+        colorField.setIdentifier("productColor");
+        colorField.setName("productColor");
+        colorField.setType("DROPDOWN");
+        colorField.setRequired(true);
+        colorField.setDescription("productColor please select");
+        colorField.setMinLength("");
+        colorField.setMaxLength("");
+        colorField.setValues(List.of("Yellow","Green","Blue","Green","Orange","Velvet","Brown"));
+
+        FormBuilderTool countryOriginField = new FormBuilderTool();
+        countryOriginField.setIdentifier("country");
+        countryOriginField.setName("country");
+        countryOriginField.setType("DROPDOWN");
+        countryOriginField.setRequired(true);
+        countryOriginField.setDescription("country please select");
+        countryOriginField.setMinLength("");
+        countryOriginField.setMaxLength("");
+        countryOriginField.setValues(List.of("India"));
+
+        FormBuilderTool patternField = new FormBuilderTool();
+        patternField.setIdentifier("pattern");
+        patternField.setName("pattern");
+        patternField.setType("DROPDOWN");
+        patternField.setRequired(true);
+        patternField.setDescription("pattern please select");
+        patternField.setMinLength("");
+        patternField.setMaxLength("");
+        patternField.setValues(List.of("Line","Circle"));
+
+
+        FormBuilderTool manufactureField = new FormBuilderTool();
+        manufactureField.setIdentifier("manufactureName");
+        manufactureField.setName("manufactureName");
+        manufactureField.setType("TEXT");
+        manufactureField.setRequired(false);
+        manufactureField.setDescription("country please select");
+        manufactureField.setMinLength("2");
+        manufactureField.setMaxLength("100");
+        manufactureField.setValues(null);
+
+
+        List<FormBuilderTool> productDetails = new ArrayList<>();
+        productDetails.add(styleName);
+        productDetails.add(sleeveTypeField);
+        productDetails.add(fitTypeField);
+        productDetails.add(genderField);
+        productDetails.add(materialTypeField);
+        productDetails.add(colorField);
+        productDetails.add(countryOriginField);
+        productDetails.add(patternField);
+        productDetails.add(manufactureField);
+
+
+        //Product Description and Other Details
+        FormBuilderTool numberOfItemsField = new FormBuilderTool();
+        numberOfItemsField.setIdentifier("numberOfItems");
+        numberOfItemsField.setName("number Of Items");
+        numberOfItemsField.setType("DROPDOWN");
+        numberOfItemsField.setRequired(true);
+        numberOfItemsField.setDescription("numberOfItems please select");
+        numberOfItemsField.setMinLength("");
+        numberOfItemsField.setMaxLength("");
+        numberOfItemsField.setValues(List.of("1","2","3","4","5","6","7","8","9","10"));
+
+        FormBuilderTool finishingType = new FormBuilderTool();
+        finishingType.setIdentifier("finishingType");
+        finishingType.setName("finishing Type ");
+        finishingType.setType("DROPDOWN");
+        finishingType.setRequired(true);
+        finishingType.setDescription("finishingType please select");
+        finishingType.setMinLength("");
+        finishingType.setMaxLength("");
+        finishingType.setValues(List.of("Liner","Rarer","Printing","blur shade","shades","multiShades"));
+
+        FormBuilderTool brandField = new FormBuilderTool();
+        brandField.setIdentifier("brandField");
+        brandField.setName("brandField Type ");
+        brandField.setType("DROPDOWN");
+        brandField.setRequired(false);
+        brandField.setDescription("brandField please select");
+        brandField.setMinLength("");
+        brandField.setMaxLength("");
+        brandField.setValues(List.of("Jack & jones","Microman","Puma","Generic","lux cozi","spyker"));
+
+        FormBuilderTool descriptionFiled = new FormBuilderTool();
+        descriptionFiled.setIdentifier("description");
+        descriptionFiled.setName("description");
+        descriptionFiled.setType("TEXTBOX");
+        descriptionFiled.setRequired(true);
+        descriptionFiled.setDescription("please fill description");
+        descriptionFiled.setMinLength("10");
+        descriptionFiled.setMaxLength("5000");
+        descriptionFiled.setValues(null);
+
+        List<FormBuilderTool> productOtherDetails = new ArrayList<>();
+        productOtherDetails.add(numberOfItemsField);
+        productOtherDetails.add(finishingType);
+        productOtherDetails.add(brandField);
+        productOtherDetails.add(descriptionFiled);
 
         FormBuilderRoot formBuilderRoot = new FormBuilderRoot();
         formBuilderRoot.setProductIdentityList(productIdentityList);
         formBuilderRoot.setProductSizes(productSizeList);
         formBuilderRoot.setProductVariants(productVariants);
+        formBuilderRoot.setProductDetails(productDetails);
+        formBuilderRoot.setProductOtherDetails(productOtherDetails);
 
         JSONObject jsonObject = new JSONObject(formBuilderRoot);
         System.out.println(jsonObject);
