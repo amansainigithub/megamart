@@ -8,12 +8,10 @@ import lombok.ToString;
 public class ProductRows {
 
     private long id;
-    private String variantSize;
-    private String price;
-    private String mrp;
-    private String skuId;
+    private String productLabel;
+    private String productPrice;
+    private String productMrp;
     private String productLength;
-    private String productBreath;
-    private String productHeight;
+    private String skuId;
 
 }

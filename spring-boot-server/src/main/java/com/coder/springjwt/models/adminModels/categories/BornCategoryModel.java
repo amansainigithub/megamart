@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -51,6 +53,11 @@ public class BornCategoryModel extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private FormBuilderModel formBuilderModel;
+
+
+    @OneToMany(mappedBy = "bornCategoryModel",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<BornCategorySampleFilesModel> bornCategorySampleFilesModels ;
 
 
 

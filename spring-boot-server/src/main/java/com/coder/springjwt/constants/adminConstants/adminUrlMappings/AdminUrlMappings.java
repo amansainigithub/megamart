@@ -72,7 +72,7 @@ public class AdminUrlMappings {
     public static final String UPDATE_BORN_CATEGORY_FILE="/updateBornCategoryFile/{bornCategoryId}";
     public static final String GET_BORN_CATEGORY_LIST_BY_PAGINATION="/getBornCategoryListByPagination";
 
-
+    public static final String PRODUCT_SAMPLE_FILES="/productSampleFiles/{bornCategoryId}";
 
     //FETCH USER's
     public static final String USERS_CONTROLLER = ADMIN_AUTHORIZE_URL +"/usersController";

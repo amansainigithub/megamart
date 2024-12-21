@@ -16,7 +16,7 @@ public class ProductFiles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String fileKey;
+    private String fileUrl;
 
     private String fileName;
 

@@ -2,17 +2,22 @@ package com.coder.springjwt.services.adminServices.categories.bornCategoryImple;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
+import com.coder.springjwt.constants.adminConstants.adminMessageConstants.AdminMessageResponse;
 import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
+import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.FileMetadata;
 import com.coder.springjwt.exception.adminException.CategoryNotFoundException;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.models.adminModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
+import com.coder.springjwt.models.adminModels.categories.BornCategorySampleFilesModel;
 import com.coder.springjwt.repository.adminRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
+import com.coder.springjwt.repository.adminRepository.categories.BornSampleFilesRepo;
 import com.coder.springjwt.services.adminServices.categories.BornCategoryService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -28,6 +33,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +48,9 @@ public class BornCategoryServiceImple implements BornCategoryService {
 
     @Autowired
     BornCategoryRepo bornCategoryRepo;
+
+    @Autowired
+    BornSampleFilesRepo bornSampleFilesRepo;
 
     @Autowired
     BucketService bucketService;
@@ -239,4 +249,62 @@ public class BornCategoryServiceImple implements BornCategoryService {
             return ResponseGenerator.generateDataNotFound(CustMessageResponse.DATA_NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<?> sampleFilesService(Long bornCategoryId, List<MultipartFile> files, List<String> metadataList) {
+
+       try {
+           if (files.size() != metadataList.size()) {
+               return ResponseEntity.badRequest().body("Mismatched input sizes.");
+           }
+
+           List<BornCategorySampleFilesModel> uploadedFiles = new ArrayList<>();
+           for (int i = 0; i < files.size(); i++) {
+               MultipartFile file = files.get(i);
+               String metadataJson = metadataList.get(i);
+
+               // Parse JSON metadata
+               FileMetadata fileMetadata = parseMetadata(metadataJson);
+               if (fileMetadata != null) {
+                   fileMetadata.setFileName(file.getOriginalFilename());
+                   // Convert FileMetadata to BornCategorySampleFilesModel
+                   BornCategorySampleFilesModel sampleFileModel = modelMapper.map(fileMetadata, BornCategorySampleFilesModel.class);
+                   // Add to list
+                   uploadedFiles.add(sampleFileModel);
+
+               }
+           }
+
+           Optional<BornCategoryModel> bornData = this.bornCategoryRepo.findById(bornCategoryId);
+           if(bornData.isPresent())
+           {
+               BornCategoryModel bornCategoryModel = bornData.get();
+
+               for(BornCategorySampleFilesModel dataInsider : uploadedFiles){
+                   dataInsider.setBornCategoryModel(bornCategoryModel);
+                   this.bornSampleFilesRepo.save(dataInsider);
+               }
+               System.out.println("Data Saved Success!!!!");
+           }
+
+           return ResponseGenerator.generateSuccessResponse(uploadedFiles, AdminMessageResponse.SUCCESS);
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           return ResponseGenerator.generateBadRequestResponse(AdminMessageResponse.FAILED);
+       }
+    }
+
+
+    private FileMetadata parseMetadata(String json) {
+        // Use a JSON parser (e.g., Jackson or Gson) to parse the metadata
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, FileMetadata.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

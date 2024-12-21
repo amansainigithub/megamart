@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Component
 public interface BornCategoryService {
 
@@ -24,4 +26,5 @@ public interface BornCategoryService {
     ResponseEntity<?> getBornCategoryListByPagination(Integer page,Integer size);
 
 
+    ResponseEntity<?> sampleFilesService(Long bornCategoryId, List<MultipartFile> files, List<String> metadataList);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @ToString
-public class ProductRootData {
+public class ProductRootBuilder {
 
     private long  id;
 
@@ -15,11 +15,10 @@ public class ProductRootData {
     private String  gst;
     private String  hsn;
     private String productCode;
-    //Product table Data
-    private List<ProductRows> productRows;
-    //product Size Data
-    private List<String> productSize;
+    private List<String> productSizes;
 
+    //Product table Data
+    private List<ProductRows> tableRows;
 
     //Product Details
     private String styleName;
@@ -32,13 +31,10 @@ public class ProductRootData {
     private String pattern;
     private String manufactureName;
 
-    //Other Details
-    private String description;
+    //Product Other Details
     private String numberOfItems;
     private String finishingType;
     private String brandField;
-
-
-
+    private String description;
 
 }

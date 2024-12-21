@@ -2,13 +2,19 @@ package com.coder.springjwt.controllers.admin.categoryController;
 
 import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
 import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.BornCategoryDto;
+import com.coder.springjwt.dtos.adminDtos.categoriesDtos.bornDtos.FileMetadata;
 import com.coder.springjwt.services.adminServices.categories.BornCategoryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -40,9 +46,10 @@ public class BornCategoryController {
 
     @PostMapping(AdminUrlMappings.UPDATE_BORN_CATEGORY)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateBornCategory(@Validated @RequestBody BornCategoryDto bornCategoryDto ) {
+    public ResponseEntity<?> updateBornCategory(@Validated  @RequestBody BornCategoryDto bornCategoryDto ) {
         return this.bornCategoryService.updateBornCategory(bornCategoryDto);
     }
+
 
     @GetMapping(AdminUrlMappings.GET_BORN_CATEGORY_BY_ID)
     @PreAuthorize("hasRole('ADMIN')")
@@ -59,11 +66,21 @@ public class BornCategoryController {
     }
 
 
+
     @GetMapping(AdminUrlMappings.GET_BORN_CATEGORY_LIST_BY_PAGINATION)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getBornCategoryListByPagination(@RequestParam  Integer page ,@RequestParam  Integer size)
     {
         return bornCategoryService.getBornCategoryListByPagination(page,size);
+    }
+
+
+    @PostMapping(AdminUrlMappings.PRODUCT_SAMPLE_FILES)
+    public ResponseEntity<?> productSampleFiles(
+            @PathVariable Long bornCategoryId ,
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("metadata") List<String> metadataList) {
+        return bornCategoryService.sampleFilesService(bornCategoryId ,files ,metadataList);
     }
 
 }

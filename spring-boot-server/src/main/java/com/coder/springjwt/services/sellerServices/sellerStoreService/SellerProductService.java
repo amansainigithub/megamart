@@ -1,6 +1,6 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService;
 
-import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootData;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,12 +27,12 @@ public interface SellerProductService {
 
     ResponseEntity<?> getAllCatalogByQcPass(int page , int size);
 
+    ResponseEntity<?> formBuilderFlying(String categoryId);
 
-    ResponseEntity<?> productDataFormBuilder(String categoryId);
-
-    ResponseEntity<?> saveSellerProduct(ProductRootData productRootData);
+    ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder);
 
     ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber);
 
-    ResponseEntity<?> formBuilderFlying(String categoryId);
+
+
 }

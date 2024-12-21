@@ -27,7 +27,7 @@ public class SellerProduct {
     private List<ProductVariants> productRows;
 
     //product Size Data
-    private List<String> productSize;
+    private List<String> productSizes;
 
     //Product Details
     private String styleName;
@@ -40,11 +40,12 @@ public class SellerProduct {
     private String pattern;
     private String manufactureName;
 
-    //Other Details
-    private String description;
+
+    //Product Other Details
     private String numberOfItems;
     private String finishingType;
     private String brandField;
+    private String description;
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;
