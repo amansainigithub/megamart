@@ -56,7 +56,6 @@ public class BornCategoryModel extends BaseEntity {
 
 
     @OneToMany(mappedBy = "bornCategoryModel",cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<BornCategorySampleFilesModel> bornCategorySampleFilesModels ;
 
 

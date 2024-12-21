@@ -20,6 +20,7 @@ import com.coder.springjwt.models.adminModels.catalog.catalogType.ProductTypeMod
 import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -35,6 +36,7 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
@@ -763,6 +765,18 @@ public class SellerProductServiceImple implements SellerProductService {
     @Override
     public ResponseEntity<?> formBuilderFlying(String categoryId) {
 
+        try {
+            BornCategoryModel bornData = this.bornCategoryRepo.findById(Long.parseLong(categoryId))
+                    .orElseThrow(() -> new DataNotFoundException("Data Not Found"));
+            System.out.println("Data present Success");
+            return ResponseGenerator.generateSuccessResponse(bornData,SellerMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+
         List<HsnCodes> hsnCodes = hsnRepository.findAll();
 
 
@@ -1051,6 +1065,7 @@ public class SellerProductServiceImple implements SellerProductService {
         formBuilderRoot.setProductOtherDetails(productOtherDetails);
 
         JSONObject jsonObject = new JSONObject(formBuilderRoot);
+        System.out.println(jsonObject);
         return  ResponseEntity.ok(formBuilderRoot);
     }
 
