@@ -47,11 +47,11 @@ public class SellerProductController {
     @Autowired
     SellerProductService sellerProductService;
 
-    @GetMapping(SellerUrlMappings.SELLER_GET_CATALOG)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getSellerCatalog(@PathVariable Long catalogId) {
-        return sellerProductService.getSellerCatalog(catalogId);
-    }
+//    @GetMapping(SellerUrlMappings.SELLER_GET_CATALOG)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getSellerCatalog(@PathVariable Long catalogId) {
+//        return sellerProductService.getSellerCatalog(catalogId);
+//    }
 
 
     @GetMapping(SellerUrlMappings.GET_GST_LIST)
@@ -114,6 +114,14 @@ public class SellerProductController {
     public ResponseEntity<?> saveSellerProductNew(@RequestBody ProductRootBuilder productRootBuilder) {
         return sellerProductService.saveSellerProductNew(productRootBuilder);
     }
+
+    @GetMapping("/getProductById/{productId}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getProductById(@PathVariable String productId) {
+        return sellerProductService.getProductBYId(productId);
+    }
+
+
 
     @PostMapping("/uploadProductFiles/{productLockerNumber}")
     @PreAuthorize("hasRole('SELLER')")

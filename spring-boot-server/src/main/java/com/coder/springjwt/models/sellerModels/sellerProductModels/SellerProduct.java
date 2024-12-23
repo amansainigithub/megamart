@@ -1,5 +1,6 @@
 package com.coder.springjwt.models.sellerModels.sellerProductModels;
 
+import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "sellerProduct")
 @ToString
-public class SellerProduct {
+public class SellerProduct extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,7 +21,8 @@ public class SellerProduct {
     private String  productName;
     private String  gst;
     private String  hsn;
-    private String productCode;
+    private String productWeight;
+
 
     //Product table Data
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sellerProduct", orphanRemoval = true)
@@ -30,7 +32,6 @@ public class SellerProduct {
     private List<String> productSizes;
 
     //Product Details
-    private String styleName;
     private String sleeveType;
     private String fitType;
     private String gender;
@@ -39,13 +40,19 @@ public class SellerProduct {
     private String country;
     private String pattern;
     private String manufactureName;
+    private String netQuantity;
+    private String productCode;
 
 
     //Product Other Details
-    private String numberOfItems;
     private String finishingType;
     private String brandField;
     private String description;
+
+
+    private String productCreationDate;
+    private String productCreationTime;
+
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;

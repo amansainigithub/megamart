@@ -14,4 +14,11 @@ public class ProductRows {
     private String productLength;
     private String skuId;
 
+
+    private String productInventory;
+    private String waistSize;
+    private String shoulderWidth;
+    private String chestBustSize;
+
+
 }

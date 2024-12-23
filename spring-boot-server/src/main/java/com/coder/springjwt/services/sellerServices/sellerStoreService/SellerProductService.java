@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Component
 public interface SellerProductService {
-    ResponseEntity<?> getSellerCatalog(Long catalogId);
+//    ResponseEntity<?> getSellerCatalog(Long catalogId);
 
     ResponseEntity<?> saveCatalogFiles(MultipartFile file);
 
@@ -34,5 +34,5 @@ public interface SellerProductService {
     ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber);
 
 
-
+    ResponseEntity<?> getProductBYId(String productId);
 }

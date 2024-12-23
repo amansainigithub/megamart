@@ -14,14 +14,15 @@ public class ProductRootBuilder {
     private String  productName;
     private String  gst;
     private String  hsn;
-    private String productCode;
+    private String productWeight;
+
+
     private List<String> productSizes;
 
     //Product table Data
     private List<ProductRows> tableRows;
 
     //Product Details
-    private String styleName;
     private String sleeveType;
     private String fitType;
     private String gender;
@@ -30,11 +31,14 @@ public class ProductRootBuilder {
     private String country;
     private String pattern;
     private String manufactureName;
+    private String netQuantity;
+    private String productCode;
 
     //Product Other Details
-    private String numberOfItems;
     private String finishingType;
     private String brandField;
     private String description;
+
+
 
 }
