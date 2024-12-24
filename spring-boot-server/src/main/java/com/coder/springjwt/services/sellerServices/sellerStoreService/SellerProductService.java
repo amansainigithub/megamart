@@ -9,9 +9,6 @@ import java.util.Map;
 
 @Component
 public interface SellerProductService {
-//    ResponseEntity<?> getSellerCatalog(Long catalogId);
-
-    ResponseEntity<?> saveCatalogFiles(MultipartFile file);
 
     ResponseEntity<?> getGstList(Long catalogId);
 

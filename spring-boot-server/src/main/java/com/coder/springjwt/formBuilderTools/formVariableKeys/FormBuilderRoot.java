@@ -24,6 +24,8 @@ public class FormBuilderRoot {
 
     private List<FormBuilderTool> productOtherDetails;
 
-    private List<FormBuilderTool> makerProductVariant;
+    private List<FormBuilderTool> makerColorAndSize;
+
+    private List<FormBuilderTool> makerAddVariantData;
 
 }

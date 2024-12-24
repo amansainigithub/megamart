@@ -47,7 +47,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -117,39 +116,6 @@ public class SellerProductServiceImple implements SellerProductService {
     @Autowired
     private ProductVariantsRepository productVariantsRepository;
 
-
-//    @Override
-//    public ResponseEntity<?> getSellerCatalog(Long catalogId) {
-//        try {
-//
-//            Optional<SellerCatalog> catalog = this.sellerCatalogRepository.findById(catalogId);
-//
-//            if(catalog.isPresent())
-//            {
-//                SellerCatalog sellerCatalog = catalog.get();
-//
-//                SellerCatalogPayload catalogNode = modelMapper.map(sellerCatalog, SellerCatalogPayload.class);
-//
-//                log.info("Data Fetched Success :: Seller Catalog by Id" + SellerProductServiceImple.class.getName());
-//
-//                return ResponseGenerator.generateSuccessResponse(catalogNode , SellerMessageResponse.SUCCESS);
-//
-//            }else {
-//
-//                return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
-//        }
-//    }
-
-    @Override
-    public ResponseEntity<?> saveCatalogFiles(MultipartFile file) {
-        return null;
-    }
 
     @Override
     public ResponseEntity<?> getGstList(Long catalogId) {
@@ -785,6 +751,7 @@ public class SellerProductServiceImple implements SellerProductService {
         productVariants.add(chestBustSize);
         productVariants.add(skuId);
 
+
         //////////////////Product Details///////////
 
         FormBuilderTool productCode = new FormBuilderTool();
@@ -941,12 +908,34 @@ public class SellerProductServiceImple implements SellerProductService {
         productOtherDetails.add(descriptionFiled);
 
 
-
+        //AddVariant Creation Product Data (Model)
         List<FormBuilderTool> makerProductVariant = new ArrayList<>();
         makerProductVariant.add(colorField);
         makerProductVariant.add(sizeField);
 
+        //Variant Creation Product Data (Model)
+        FormBuilderTool makerColorVariant = new FormBuilderTool();
+        makerColorVariant.setIdentifier("ColorVariant");
+        makerColorVariant.setName("Color");
+        makerColorVariant.setType("TEXT");
+        makerColorVariant.setRequired(true);
+        makerColorVariant.setDescription("Color Variant");
+        makerColorVariant.setMinLength("");
+        makerColorVariant.setMaxLength("0");
+        makerColorVariant.setExclamationDesc("Color Variant");
+        makerColorVariant.setIsFiledDisabled("");
 
+        List<FormBuilderTool> makerAddVariantData = new ArrayList<>();
+        makerAddVariantData.add(makerColorVariant);
+        makerAddVariantData.add(sizeLabel);
+        makerAddVariantData.add(productPrice);
+        makerAddVariantData.add(productMrp);
+        makerAddVariantData.add(productInventory);
+        makerAddVariantData.add(productLength);
+        makerAddVariantData.add(waistSize);
+        makerAddVariantData.add(shoulderWidth);
+        makerAddVariantData.add(chestBustSize);
+        makerAddVariantData.add(skuId);
 
         FormBuilderRoot formBuilderRoot = new FormBuilderRoot();
         formBuilderRoot.setProductIdentityList(productIdentityList);
@@ -956,7 +945,8 @@ public class SellerProductServiceImple implements SellerProductService {
         formBuilderRoot.setProductOtherDetails(productOtherDetails);
 
         //Maker Product Variant
-        formBuilderRoot.setMakerProductVariant(makerProductVariant);
+        formBuilderRoot.setMakerColorAndSize(makerProductVariant);
+        formBuilderRoot.setMakerAddVariantData(makerAddVariantData);
 
         JSONObject jsonObject = new JSONObject(formBuilderRoot);
         System.out.println(jsonObject);
