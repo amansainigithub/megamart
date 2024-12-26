@@ -20,5 +20,7 @@ public class ProductRows {
     private String shoulderWidth;
     private String chestBustSize;
 
+    private String colorVariant;
+
 
 }

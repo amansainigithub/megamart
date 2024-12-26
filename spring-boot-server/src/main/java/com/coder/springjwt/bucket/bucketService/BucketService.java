@@ -60,8 +60,8 @@ public class BucketService {
        }
        catch (Exception e)
        {
-           log.error("Exception : " , e);
-           log.error("AWS Configuration Problem :::::::::::::::: {}");
+           //log.error("Exception : " , e);
+           //log.error("AWS Configuration Problem :::::::::::::::: {}");
            return this.getRandomFile();
        }
     }

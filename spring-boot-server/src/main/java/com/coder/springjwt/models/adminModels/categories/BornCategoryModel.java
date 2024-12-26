@@ -46,6 +46,15 @@ public class BornCategoryModel extends BaseEntity {
 
     private boolean isActive = Boolean.FALSE;
 
+
+    private String commissionFeesCharge;
+
+    private String tcsCharge;
+
+    private String tdsCharge;
+
+    private String shippingCharge;
+
     @ManyToOne
     @JoinColumn( referencedColumnName = "id" )
     @JsonIgnore
@@ -57,6 +66,7 @@ public class BornCategoryModel extends BaseEntity {
 
     @OneToMany(mappedBy = "bornCategoryModel",cascade = CascadeType.ALL)
     private List<BornCategorySampleFilesModel> bornCategorySampleFilesModels ;
+
 
 
 

@@ -1,6 +1,7 @@
 package com.coder.springjwt.controllers.seller.sellerStore;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.FormProductVariantBuilder;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -109,11 +111,18 @@ public class SellerProductController {
     }
 
 
-    @PostMapping("/saveSellerProductNew")
+    @PostMapping("/saveSellerProductNew/{bornCategoryId}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> saveSellerProductNew(@RequestBody ProductRootBuilder productRootBuilder) {
-        return sellerProductService.saveSellerProductNew(productRootBuilder);
+    public ResponseEntity<?> saveSellerProductNew(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long bornCategoryId) {
+        return sellerProductService.saveSellerProductNew(productRootBuilder , bornCategoryId);
     }
+
+    @PostMapping("/uploadProductFiles/{productLockerNumber}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> uploadProductFiles(@RequestParam Map<String, MultipartFile> files , @PathVariable String productLockerNumber) {
+        return sellerProductService.uploadProductFiles(files, productLockerNumber);
+    }
+
 
     @GetMapping("/getProductById/{productId}")
     @PreAuthorize("hasRole('SELLER')")
@@ -121,23 +130,6 @@ public class SellerProductController {
         return sellerProductService.getProductBYId(productId);
     }
 
-
-
-    @PostMapping("/uploadProductFiles/{productLockerNumber}")
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> uploadProductFiles(@RequestParam Map<String, MultipartFile> files , @PathVariable String productLockerNumber) {
-         return sellerProductService.uploadProductFiles(files, productLockerNumber);
-    }
-
-
-//    @GetMapping("/getImageFile")
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getImageFile() {
-//        Map<String,String> map =new HashMap<>();
-//        map.put("fileName","https://images.unsplash.com/photo-1720048171731-15b3d9d5473f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-//        System.out.println(map);
-//        return ResponseEntity.ok(map);
-//    }
 
 
 

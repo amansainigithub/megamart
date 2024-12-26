@@ -26,10 +26,9 @@ public interface SellerProductService {
 
     ResponseEntity<?> formBuilderFlying(String categoryId);
 
-    ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder);
+    ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder, Long bornCategoryId);
 
     ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber);
-
 
     ResponseEntity<?> getProductBYId(String productId);
 }

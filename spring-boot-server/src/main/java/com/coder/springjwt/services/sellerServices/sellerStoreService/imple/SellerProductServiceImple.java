@@ -4,11 +4,7 @@ import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
-import com.coder.springjwt.formBuilderTools.FormBuilderModel.FormBuilderTool;
-import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
-import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
-import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRows;
-import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.*;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.CatalogRole;
 import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
@@ -22,6 +18,7 @@ import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeigh
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
+import com.coder.springjwt.models.sellerModels.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -37,7 +34,6 @@ import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProd
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,11 +42,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -116,6 +108,11 @@ public class SellerProductServiceImple implements SellerProductService {
     @Autowired
     private ProductVariantsRepository productVariantsRepository;
 
+    @Autowired
+    private ProductCalculationService productCalculationService;
+
+    @Autowired
+    private FormBuilderService formBuilderService;
 
     @Override
     public ResponseEntity<?> getGstList(Long catalogId) {
@@ -573,419 +570,76 @@ public class SellerProductServiceImple implements SellerProductService {
             BornCategoryModel bornData = this.bornCategoryRepo.findById(Long.parseLong(categoryId))
                     .orElseThrow(() -> new DataNotFoundException("Data Not Found"));
             System.out.println("Data present Success");
-            return ResponseGenerator.generateSuccessResponse(bornData,SellerMessageResponse.SUCCESS);
+          return ResponseGenerator.generateSuccessResponse(bornData,SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        List<HsnCodes> hsnCodes = hsnRepository.findAll();
-
-        FormBuilderTool productIdentity = new FormBuilderTool();
-        productIdentity.setIdentifier("productName");
-        productIdentity.setName("Product Name");
-        productIdentity.setType("TEXT");
-        productIdentity.setRequired(true);
-        productIdentity.setDescription("Please Enter Product Name");
-        productIdentity.setMinLength("10");
-        productIdentity.setMaxLength("200");
-        productIdentity.setExclamationDesc("Please Enter Product Name");
-        productIdentity.setIsFiledDisabled("");
-
-        FormBuilderTool gstField = new FormBuilderTool();
-        gstField.setIdentifier("gst");
-        gstField.setName("GST");
-        gstField.setType("DROPDOWN");
-        gstField.setRequired(true);
-        gstField.setDescription("Gst Mandatory");
-        gstField.setExclamationDesc("Gst Mandatory");
-        gstField.setIsFiledDisabled("");
-        gstField.setValues(List.of("5 %","10","12 %","15 %","18 %"));
-
-
-        FormBuilderTool hsnField = new FormBuilderTool();
-        hsnField.setIdentifier("hsn");
-        hsnField.setName("HSN");
-        hsnField.setType("DROPDOWN");
-        hsnField.setRequired(true);
-        hsnField.setDescription("hsn");
-        hsnField.setValues(hsnCodes.stream().map(HsnCodes::getHsn).collect(Collectors.toList()));
-
-        FormBuilderTool productWeight = new FormBuilderTool();
-        productWeight.setIdentifier("productWeight");
-        productWeight.setName("Weight(g)");
-        productWeight.setType("TEXT");
-        productWeight.setRequired(true);
-        productWeight.setDescription("Please Enter Net Weight");
-        productWeight.setMinLength("1");
-        productWeight.setMaxLength("5");
-        productWeight.setExclamationDesc("Please Enter Net Weight");
-        productWeight.setIsFiledDisabled("");
-
-        List<FormBuilderTool> productIdentityList = new ArrayList<>();
-        productIdentityList.add(productIdentity);
-        productIdentityList.add(gstField);
-        productIdentityList.add(hsnField);
-        productIdentityList.add(productWeight);
-
-//        =========================================
-
-        //Sizes
-        FormBuilderTool sizeField = new FormBuilderTool();
-        sizeField.setIdentifier("productSize");
-        sizeField.setName("Product Size");
-        sizeField.setType("MULTISELECT");
-        sizeField.setRequired(true);
-        sizeField.setDescription("Product Size Mandatory");
-        sizeField.setExclamationDesc("Product Size");
-        sizeField.setIsFiledDisabled("");
-        sizeField.setValues(List.of("S","M","L","XL","XXL","3XL","4XL","5XL","6XL"));
-
-        List<FormBuilderTool> productSizeList = new ArrayList<>();
-        productSizeList.add(sizeField);
-
-
-//        =======================TABLE ROWS===============
-        FormBuilderTool sizeLabel = new FormBuilderTool();
-        sizeLabel.setIdentifier("productLabel");
-        sizeLabel.setName("size");
-        sizeLabel.setType("LABEL");
-        sizeLabel.setRequired(true);
-        sizeLabel.setDescription("product Size");
-        sizeLabel.setExclamationDesc("product Size");
-
-
-        FormBuilderTool productPrice = new FormBuilderTool();
-        productPrice.setIdentifier("productPrice");
-        productPrice.setName("Price");
-        productPrice.setType("TEXT");
-        productPrice.setRequired(true);
-        productPrice.setDescription("Please Enter Price");
-        productPrice.setMinLength("2");
-        productPrice.setMaxLength("5");
-        productPrice.setExclamationDesc("Price Alternatives");
-        productPrice.setIsFiledDisabled("");
-
-        FormBuilderTool productMrp = new FormBuilderTool();
-        productMrp.setIdentifier("productMrp");
-        productMrp.setName("Mrp");
-        productMrp.setType("TEXT");
-        productMrp.setRequired(true);
-        productMrp.setDescription("product Mrp");
-        productMrp.setMinLength("2");
-        productMrp.setMaxLength("4");
-        productMrp.setExclamationDesc("productMrp Alternatives");
-        productMrp.setIsFiledDisabled("");
-
-        FormBuilderTool productInventory = new FormBuilderTool();
-        productInventory.setIdentifier("productInventory");
-        productInventory.setName("Product Inventory");
-        productInventory.setType("TEXT");
-        productInventory.setRequired(true);
-        productInventory.setDescription("Enter Product Inventory");
-        productInventory.setMinLength("1");
-        productInventory.setMaxLength("5");
-        productInventory.setExclamationDesc("Product Inventory");
-        productInventory.setIsFiledDisabled("");
-
-        FormBuilderTool productLength = new FormBuilderTool();
-        productLength.setIdentifier("productLength");
-        productLength.setName("Product Length(cm)");
-        productLength.setType("DROPDOWN");
-        productLength.setRequired(true);
-        productLength.setDescription("Enter Product Length");
-        productLength.setExclamationDesc("Product Length");
-        productLength.setIsFiledDisabled("");
-        productLength.setValues(List.of("5","10","15","20","25","30","35","40","45","50"));
-
-        FormBuilderTool waistSize = new FormBuilderTool();
-        waistSize.setIdentifier("waistSize");
-        waistSize.setName("Waist Size(cm)");
-        waistSize.setType("DROPDOWN");
-        waistSize.setRequired(true);
-        waistSize.setDescription("Enter Waist Size");
-        waistSize.setExclamationDesc("Waist Size");
-        waistSize.setIsFiledDisabled("");
-        waistSize.setValues(List.of("5","10","15","20","25","30","35","40","45","50"));
-
-        FormBuilderTool shoulderWidth = new FormBuilderTool();
-        shoulderWidth.setIdentifier("shoulderWidth");
-        shoulderWidth.setName("Shoulder Width(cm)");
-        shoulderWidth.setType("DROPDOWN");
-        shoulderWidth.setRequired(true);
-        shoulderWidth.setDescription("Enter Shoulder Width");
-        shoulderWidth.setExclamationDesc("Shoulder Width");
-        shoulderWidth.setIsFiledDisabled("");
-        shoulderWidth.setValues(List.of("5","10","15","20","25","30","35","40","45","50"));
-
-        FormBuilderTool chestBustSize = new FormBuilderTool();
-        chestBustSize.setIdentifier("chestBustSize");
-        chestBustSize.setName("Chest/Bust Size(cm)");
-        chestBustSize.setType("DROPDOWN");
-        chestBustSize.setRequired(true);
-        chestBustSize.setDescription("Enter Chest/Bust Size");
-        chestBustSize.setExclamationDesc("Chest/Bust Size");
-        chestBustSize.setIsFiledDisabled("");
-        chestBustSize.setValues(List.of("5","10","15","20","25","30","35","40","45","50"));
-
-        FormBuilderTool skuId = new FormBuilderTool();
-        skuId.setIdentifier("skuId");
-        skuId.setName("SKU Code");
-        skuId.setType("TEXT");
-        skuId.setRequired(false);
-        skuId.setDescription("skuId skuId");
-        skuId.setMinLength("");
-        skuId.setMaxLength("100");
-        skuId.setExclamationDesc("skuId skuId");
-        skuId.setIsFiledDisabled("");
-
-        List<FormBuilderTool> productVariants = new ArrayList<>();
-        productVariants.add(sizeLabel);
-        productVariants.add(productPrice);
-        productVariants.add(productMrp);
-        productVariants.add(productInventory);
-        productVariants.add(productLength);
-        productVariants.add(waistSize);
-        productVariants.add(shoulderWidth);
-        productVariants.add(chestBustSize);
-        productVariants.add(skuId);
-
-
-        //////////////////Product Details///////////
-
-        FormBuilderTool productCode = new FormBuilderTool();
-        productCode.setIdentifier("productCode");
-        productCode.setName("product code(optional)");
-        productCode.setType("TEXT");
-        productCode.setRequired(false);
-        productCode.setDescription("Enter Product Code");
-        productCode.setMinLength("10");
-        productCode.setMaxLength("50");
-        productCode.setExclamationDesc("productCode Verification");
-        productCode.setIsFiledDisabled("");
-
-        FormBuilderTool sleeveTypeField = new FormBuilderTool();
-        sleeveTypeField.setIdentifier("sleeveType");
-        sleeveTypeField.setName("Sleeve Type");
-        sleeveTypeField.setType("DROPDOWN");
-        sleeveTypeField.setRequired(true);
-        sleeveTypeField.setDescription("Sleeve");
-        sleeveTypeField.setMinLength("");
-        sleeveTypeField.setMaxLength("");
-        sleeveTypeField.setValues(List.of("Half Sleeve %","full Sleeve"));
-
-        FormBuilderTool fitTypeField = new FormBuilderTool();
-        fitTypeField.setIdentifier("fitType");
-        fitTypeField.setName("fitType Name");
-        fitTypeField.setType("DROPDOWN");
-        fitTypeField.setRequired(true);
-        fitTypeField.setDescription("fitType please select");
-        fitTypeField.setMinLength("");
-        fitTypeField.setMaxLength("");
-        fitTypeField.setValues(List.of("Regular Fit","Skin Fit"));
-
-        FormBuilderTool genderField = new FormBuilderTool();
-        genderField.setIdentifier("gender");
-        genderField.setName("gender");
-        genderField.setType("DROPDOWN");
-        genderField.setRequired(true);
-        genderField.setDescription("Select Gender");
-        genderField.setMinLength("");
-        genderField.setMaxLength("");
-        genderField.setValues(List.of("Male","Female","Other"));
-
-        FormBuilderTool materialTypeField = new FormBuilderTool();
-        materialTypeField.setIdentifier("materialType");
-        materialTypeField.setName("material Type");
-        materialTypeField.setType("DROPDOWN");
-        materialTypeField.setRequired(true);
-        materialTypeField.setDescription("Select Material Type");
-        materialTypeField.setMinLength("");
-        materialTypeField.setMaxLength("");
-        materialTypeField.setValues(List.of("Cotton","Satin","Leather","Linen","Denim","Velvet","wool"));
-
-        FormBuilderTool colorField = new FormBuilderTool();
-        colorField.setIdentifier("productColor");
-        colorField.setName("productColor");
-        colorField.setType("DROPDOWN");
-        colorField.setRequired(true);
-        colorField.setDescription("Select Product Color");
-        colorField.setMinLength("");
-        colorField.setMaxLength("");
-        colorField.setValues(List.of("Yellow","Green","Blue","Green","Orange","Velvet","Brown"));
-
-        FormBuilderTool countryOriginField = new FormBuilderTool();
-        countryOriginField.setIdentifier("country");
-        countryOriginField.setName("country");
-        countryOriginField.setType("DROPDOWN");
-        countryOriginField.setRequired(true);
-        countryOriginField.setDescription("Select Country");
-        countryOriginField.setMinLength("");
-        countryOriginField.setMaxLength("");
-        countryOriginField.setValues(List.of("India"));
-
-        FormBuilderTool patternField = new FormBuilderTool();
-        patternField.setIdentifier("pattern");
-        patternField.setName("pattern");
-        patternField.setType("DROPDOWN");
-        patternField.setRequired(true);
-        patternField.setDescription("Select Pattern");
-        patternField.setMinLength("");
-        patternField.setMaxLength("");
-        patternField.setValues(List.of("Line","Circle","shades","circle","herosim"));
-
-        FormBuilderTool finishingType = new FormBuilderTool();
-        finishingType.setIdentifier("finishingType");
-        finishingType.setName("Finishing Type ");
-        finishingType.setType("DROPDOWN");
-        finishingType.setRequired(true);
-        finishingType.setDescription("finishingType please select");
-        finishingType.setMinLength("");
-        finishingType.setMaxLength("");
-        finishingType.setValues(List.of("Liner","Rarer","Printing","blur shade","shades","multiShades"));
-
-
-        FormBuilderTool netQuantity = new FormBuilderTool();
-        netQuantity.setIdentifier("netQuantity");
-        netQuantity.setName("Net Quantity");
-        netQuantity.setType("DROPDOWN");
-        netQuantity.setRequired(true);
-        netQuantity.setDescription("Select Net Quantity");
-        netQuantity.setMinLength("");
-        netQuantity.setMaxLength("");
-        netQuantity.setValues(List.of("1","2","3","4","5","6","7","8","9","10"));
-
-
-        List<FormBuilderTool> productDetails = new ArrayList<>();
-        productDetails.add(productCode);
-        productDetails.add(colorField);
-        productDetails.add(sleeveTypeField);
-        productDetails.add(fitTypeField);
-        productDetails.add(genderField);
-        productDetails.add(materialTypeField);
-        productDetails.add(countryOriginField);
-        productDetails.add(patternField);
-        productDetails.add(finishingType);
-        productDetails.add(netQuantity);
-
-
-        //Product Description and Other Details
-        FormBuilderTool manufactureField = new FormBuilderTool();
-        manufactureField.setIdentifier("manufactureName");
-        manufactureField.setName("manufactureName(Optional)");
-        manufactureField.setType("TEXT");
-        manufactureField.setRequired(false);
-        manufactureField.setDescription("Select Manufacturer Name");
-        manufactureField.setMinLength("10");
-        manufactureField.setMaxLength("50");
-        manufactureField.setValues(null);
-
-
-        FormBuilderTool brandField = new FormBuilderTool();
-        brandField.setIdentifier("brandField");
-        brandField.setName("Brand(Optional)");
-        brandField.setType("DROPDOWN");
-        brandField.setRequired(false);
-        brandField.setDescription("brandField please select");
-        brandField.setMinLength("");
-        brandField.setMaxLength("");
-        brandField.setValues(List.of("Jack & jones","Microman","Puma","Generic","lux cozi","spyker"));
-
-        FormBuilderTool descriptionFiled = new FormBuilderTool();
-        descriptionFiled.setIdentifier("description");
-        descriptionFiled.setName("Description");
-        descriptionFiled.setType("TEXTBOX");
-        descriptionFiled.setRequired(true);
-        descriptionFiled.setDescription("please fill description");
-        descriptionFiled.setMinLength("50");
-        descriptionFiled.setMaxLength("5000");
-        descriptionFiled.setValues(null);
-
-        List<FormBuilderTool> productOtherDetails = new ArrayList<>();
-        productOtherDetails.add(manufactureField);
-        productOtherDetails.add(brandField);
-        productOtherDetails.add(descriptionFiled);
-
-
-        //AddVariant Creation Product Data (Model)
-        List<FormBuilderTool> makerProductVariant = new ArrayList<>();
-        makerProductVariant.add(colorField);
-        makerProductVariant.add(sizeField);
-
-        //Variant Creation Product Data (Model)
-        FormBuilderTool makerColorVariant = new FormBuilderTool();
-        makerColorVariant.setIdentifier("ColorVariant");
-        makerColorVariant.setName("Color");
-        makerColorVariant.setType("TEXT");
-        makerColorVariant.setRequired(true);
-        makerColorVariant.setDescription("Color Variant");
-        makerColorVariant.setMinLength("");
-        makerColorVariant.setMaxLength("0");
-        makerColorVariant.setExclamationDesc("Color Variant");
-        makerColorVariant.setIsFiledDisabled("");
-
-        List<FormBuilderTool> makerAddVariantData = new ArrayList<>();
-        makerAddVariantData.add(makerColorVariant);
-        makerAddVariantData.add(sizeLabel);
-        makerAddVariantData.add(productPrice);
-        makerAddVariantData.add(productMrp);
-        makerAddVariantData.add(productInventory);
-        makerAddVariantData.add(productLength);
-        makerAddVariantData.add(waistSize);
-        makerAddVariantData.add(shoulderWidth);
-        makerAddVariantData.add(chestBustSize);
-        makerAddVariantData.add(skuId);
-
-        FormBuilderRoot formBuilderRoot = new FormBuilderRoot();
-        formBuilderRoot.setProductIdentityList(productIdentityList);
-        formBuilderRoot.setProductSizes(productSizeList);
-        formBuilderRoot.setProductVariants(productVariants);
-        formBuilderRoot.setProductDetails(productDetails);
-        formBuilderRoot.setProductOtherDetails(productOtherDetails);
-
-        //Maker Product Variant
-        formBuilderRoot.setMakerColorAndSize(makerProductVariant);
-        formBuilderRoot.setMakerAddVariantData(makerAddVariantData);
-
-        JSONObject jsonObject = new JSONObject(formBuilderRoot);
-        System.out.println(jsonObject);
-        return  ResponseEntity.ok(formBuilderRoot);
+        FormBuilderRoot formBuilder = this.formBuilderService.getFormBuilder();
+        return   ResponseEntity.ok(formBuilder);
     }
 
     @Override
-    public ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder) {
+    public ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder, Long bornCategoryId) {
         try {
-            System.out.println(productRootBuilder);
-            System.out.println("================---------------------------------------==================");
-
             if(productRootBuilder != null){
 
-            // Map incoming data to SellerProduct
+               BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
+                                                     .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
+
+
+                // Map incoming data to SellerProduct
             SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
 
+            //Set Rows Counter
+            sellerProduct.setRowsCounter(1l);
+
+            //Calculated GST ,TCS,TDS PERCENTAGE%
+            productCalculationService.calculateTaxes(productRootBuilder.getProductColor(), sellerProduct.getProductRows(),sellerProduct.getGst(),bornCategoryModel);
+
             //set current Date
-            sellerProduct.setProductCreationDate(getCurrentDate());
+            sellerProduct.setProductCreationDate(productCalculationService.getCurrentDate());
 
             //set Current Time
-            sellerProduct.setProductCreationTime(getCurrentTime());
+            sellerProduct.setProductCreationTime(productCalculationService.getCurrentTime());
 
-            //Calculated GST
-            this.calculateTaxes(sellerProduct.getProductRows(),sellerProduct.getGst());
+            //Set Product Id
+            sellerProduct.setProductId(productCalculationService.generateProductId());
+
+            //Set Shipping Charges
+            sellerProduct.setShippingCharges(bornCategoryModel.getShippingCharge());
+
+            //Set Product Status
+            if(productRootBuilder.getProductVariants().isEmpty()){
+                sellerProduct.setProductStatus(ProductStatus.PV_PROGRESS.toString());
+            }else{
+                sellerProduct.setProductStatus(ProductStatus.IN_COMPLETE.toString());
+            }
 
             // Explicitly set the relationship for ProductVariants
             if (sellerProduct.getProductRows() != null) {
                 for (ProductVariants variant : sellerProduct.getProductRows()) {
+                    if(variant.getSkuId() == "" || variant.getSkuId() == null)
+                    {
+                        variant.setSkuId(productCalculationService.getSkuCode());
+                    }
                     variant.setSellerProduct(sellerProduct);
                 }
             }
-                // Save SellerProduct along with its ProductVariants
-                SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
-                return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
+            // Save SellerProduct along with its ProductVariants
+            SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
+            productResponse.setParentKey(String.valueOf(productResponse.getId()));
+            this.sellerProductRepository.save(productResponse);
+
+            if(productResponse.getId() > 0 && productRootBuilder.getProductVariants().size() > 0){
+                this.saveProductVariants(productResponse, productRootBuilder, bornCategoryModel);
+            }
+
+            return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.SOMETHING_WENT_WRONG);
             }
-
         }
         catch (Exception e)
         {
@@ -995,127 +649,86 @@ public class SellerProductServiceImple implements SellerProductService {
     }
 
 
-    public String calculateTaxes(List<ProductVariants> productVariants, String gstWithPercent){
-            try {
-                String gst = gstWithPercent.replace("%", "");
-                for(ProductVariants pv : productVariants){
+    public void saveProductVariants(SellerProduct sellerProduct, ProductRootBuilder productRootBuilder, BornCategoryModel bornCategoryModel){
+        int rowsCounter = 2;
+        try {
 
-                    double grossServiceTax = this.calculateGST(Double.parseDouble(pv.getProductPrice()), Double.parseDouble(gst));
-                    System.out.println("grossServiceTax:: " + grossServiceTax);
+            Map<String, List<FormProductVariantBuilder>> managedVariants =
+                    productCalculationService.groupingProductVariats(productRootBuilder);
 
-                    double tcs = this.calculateTCS(Double.parseDouble(pv.getProductPrice()), Double.parseDouble(gst));
-                    System.out.println("tcs:: " + tcs);
+            for (Map.Entry<String, List<FormProductVariantBuilder>> entry : managedVariants.entrySet()) {
+                String color = entry.getKey(); // The color variant
+                List<FormProductVariantBuilder> variants = entry.getValue(); // The list of variants for this color
 
-                    double tds = this.calculateTDS(Double.parseDouble(pv.getProductPrice()));
-                    System.out.println("tds:: " + tds);
+                ArrayList<ProductRows> variantRowList = new ArrayList<>();
 
-                    double totalPrice = this.calculateTotalPrice(Double.parseDouble(pv.getProductPrice()), grossServiceTax , tcs);
-                    System.out.println("totalPrice:: " + totalPrice);
-
-                    System.out.println("-------------------------------------------------");
-                    pv.setCalculatedGst(String.valueOf(roundToTwoDecimalPlaces(grossServiceTax)));
-                    pv.setCalculatedTcs(String.valueOf(roundToTwoDecimalPlaces(tcs)));
-                    pv.setCalculatedTds(String.valueOf(roundToTwoDecimalPlaces(tds)));
-                    pv.setCalculatedTotalPrice(String.valueOf(roundToTwoDecimalPlaces(totalPrice)));
-
-                    String calculatedDiscount = calculateDiscount(Double.parseDouble(pv.getProductPrice()),
-                                                Double.parseDouble(pv.getProductMrp()));
-                    pv.setCalculatedDiscount(calculatedDiscount);
+                for (FormProductVariantBuilder variant : variants) {
+                    ProductRows variantRow = modelMapper.map(variant, ProductRows.class);
+                    //For New Creation Entry that is 0
+                    variantRow.setId(0);
+                    variantRowList.add(variantRow);
                 }
+                productRootBuilder.setTableRows(variantRowList);
+
+                // Map incoming data to SellerProduct
+                SellerProduct sellerProductVariant = modelMapper.map(productRootBuilder, SellerProduct.class);
+
+                //Set Rows Counter
+                sellerProductVariant.setRowsCounter(rowsCounter);
+
+                //Calculated GST
+                productCalculationService.calculateTaxes(color, sellerProductVariant.getProductRows(),sellerProductVariant.getGst(),bornCategoryModel);
+
+                //Set Color for Root Table
+                sellerProductVariant.setProductColor(color);
+
+                //set current Date
+                sellerProductVariant.setProductCreationDate(productCalculationService.getCurrentDate());
+
+                //set Current Time
+                sellerProductVariant.setProductCreationTime(productCalculationService.getCurrentTime());
+
+                //Set MapperId
+                sellerProductVariant.setParentKey(String.valueOf(sellerProduct.getId()));
+
+                //Set Product Id
+                sellerProductVariant.setProductId(productCalculationService.generateProductId());
+
+                //Set Product Status
+                sellerProductVariant.setProductStatus(ProductStatus.IN_COMPLETE.toString());
+
+                //Set Shipping Charges
+                sellerProductVariant.setShippingCharges(bornCategoryModel.getShippingCharge());
+
+                // Explicitly set the relationship for ProductVariants
+                if (sellerProductVariant.getProductRows() != null) {
+                    for (ProductVariants variant : sellerProductVariant.getProductRows()) {
+                        if(variant.getSkuId() == "" || variant.getSkuId() == null)
+                        {
+                            variant.setSkuId(productCalculationService.getSkuCode());
+                        }
+                        variant.setSellerProduct(sellerProductVariant);
+                    }
+                }
+                // Save SellerProduct along with its ProductVariants
+                this.sellerProductRepository.save(sellerProductVariant);
+
+                //Increment Rows-Count
+                rowsCounter++;
             }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-    }
-
-    // Method to calculate GST,TCS,TDS,TOTAL PRICE
-    public double calculateGST(double price, double gstRate) {
-        return price * gstRate / 100;
-    }
-
-    // Method to calculate TCS (assuming TCS is 1% of the price including GST)
-    public double calculateTCS(double price, double gst) {
-        double totalPrice = price + gst;
-        return totalPrice * 0.01; // 1% TCS
-    }
-
-    // Method to calculate TDS (assuming TDS is 1% of the product price excluding GST)
-    public double calculateTDS(double price) {
-        return price * 0.01; // 1% TDS
-    }
-
-    // Method to get the total price including GST, TCS, and TDS
-    public double calculateTotalPrice(double price, double gst, double tcs) {
-        return price + gst + tcs;
-    }
-
-    public Double roundToTwoDecimalPlaces(Double value) {
-        if (value == null) {
-            return null;
+            log.info("Variant Saved Success");
+            ResponseGenerator.generateSuccessResponse("Success",SellerMessageResponse.SUCCESS);
         }
-        return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
-    }
-
-    public String calculateDiscount(double mrp, double sellingPrice) {
-        if (mrp <= 0) {
-            return "MRP should be greater than 0";
-        }
-        // Calculate discount percentage
-        double discountPercentage = ((mrp - sellingPrice) / mrp) * 100;
-
-        // Round to 2 decimal places
-        BigDecimal roundedDiscount = new BigDecimal(discountPercentage).setScale(2, RoundingMode.HALF_UP);
-
-        log.info("Discount Percentage: " + roundedDiscount + "%");
-
-        return String.valueOf(roundedDiscount);
-    }
-    public String getCurrentDate() // d MMM yyyy
-    {
-        //Set Catalog Date
-        LocalDate currentDate = LocalDate.now();
-        // Define the formatter
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
-        //Set Catalog Time
-        // Format the date
-        return currentDate.format(formatter);
-    }
-    public String getCurrentTime()
-    {
-        //Set Currect Time
-        LocalTime currentTime = LocalTime.now();
-        // Define the formatter
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-        // Format the time
-        return currentTime.format(formatter);
-    }
-
-    // Helper method to validate file type
-    private boolean isValidImageFormat(String contentType) {
-        return contentType != null &&
-                (contentType.equals("image/png") || contentType.equals("image/jpeg"));
-    }
-
-
-
-    public void setSpaceId(SellerCatalog sellerCatalog){
-
-        //For Space
-        SellerCatalog lastRow = sellerCatalogRepository.findTopByOrderByIdDesc();
-
-        if(lastRow == null)
+        catch (Exception e)
         {
-            String spaceId = "100000000000000000000000";
-            sellerCatalog.setSpaceId(spaceId);
-
-            String catalogId = GenerateRandomNumber.generateRandomNumber(20)
-                    + "-" + "1000000000000000";
-            sellerCatalog.setCatalogId(catalogId);
-            return;
+            log.error("Variant Not Saved");
+            e.printStackTrace();
+            ResponseGenerator.generateBadRequestResponse("Failed",SellerMessageResponse.SOMETHING_WENT_WRONG);
         }
 
     }
+
+
     @Override
     public ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber) {
 
@@ -1185,5 +798,7 @@ public class SellerProductServiceImple implements SellerProductService {
             return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.FAILED);
         }
     }
+
+
 
 }

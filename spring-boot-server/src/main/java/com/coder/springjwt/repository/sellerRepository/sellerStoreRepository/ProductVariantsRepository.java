@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductVariantsRepository extends JpaRepository<ProductVariants,Long> {
+
+    boolean existsBySkuId(String skuId);
+
+
 }

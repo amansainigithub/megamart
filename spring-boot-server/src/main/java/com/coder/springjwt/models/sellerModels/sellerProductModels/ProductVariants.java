@@ -17,6 +17,7 @@ public class ProductVariants extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String colorVariant;
     private String productLabel;
     private String productPrice;
     private String productMrp;
@@ -34,6 +35,8 @@ public class ProductVariants extends BaseEntity {
     private String calculatedTcs;
     private String calculatedTotalPrice;
     private String calculatedDiscount;
+
+    private String bankSettlementAmount;
 
 
 
