@@ -24,12 +24,12 @@ public class CatalogCbiController {
     @Autowired
     private CatalogCbiService catalogCbiService;
 
-    @GetMapping(AdminUrlMappings.GET_CATALOG_PROGRESS_LIST)
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getCatalogInProgressList(@RequestParam Integer page ,
-                                                      @RequestParam  Integer size) {
-        return this.catalogCbiService.getCatalogInProgressListService(page,size);
-    }
+//    @GetMapping(AdminUrlMappings.GET_CATALOG_PROGRESS_LIST)
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<?> getCatalogInProgressList(@RequestParam Integer page ,
+//                                                      @RequestParam  Integer size) {
+//        //return this.catalogCbiService.getCatalogInProgressListService(page,size);
+//    }
 
 //    @GetMapping(SellerUrlMappings.GET_CATALOG_MASTERS)
 //    @PreAuthorize("hasRole('ADMIN')"  )
@@ -38,26 +38,26 @@ public class CatalogCbiController {
 //    }
 //
 
-    @PostMapping(AdminUrlMappings.CATALOG_INVESTIGATION)
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> catalogInvestigation(@PathVariable Long catalogId ,
-                                                  @RequestBody CatalogPayloadInvestigation catalogInvestigationPayload) {
-        return catalogCbiService.catalogInvestigationService(catalogId , catalogInvestigationPayload );
-    }
+//    @PostMapping(AdminUrlMappings.CATALOG_INVESTIGATION)
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<?> catalogInvestigation(@PathVariable Long catalogId ,
+//                                                  @RequestBody CatalogPayloadInvestigation catalogInvestigationPayload) {
+//        return catalogCbiService.catalogInvestigationService(catalogId , catalogInvestigationPayload );
+//    }
 
-    @GetMapping(AdminUrlMappings.SEARCH_CATALOGS_BY_DATES)
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> searchCatalogByDate(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate startDate,
-            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate endDate) {
-
-        // Adjust endDate to include the entire day
-        LocalDate adjustedEndDate = endDate.plusDays(1);
-
-        return catalogCbiService.searchCatalogByDateService(page, size, startDate, adjustedEndDate);
-    }
+//    @GetMapping(AdminUrlMappings.SEARCH_CATALOGS_BY_DATES)
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<?> searchCatalogByDate(
+//            @RequestParam int page,
+//            @RequestParam int size,
+//            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate startDate,
+//            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate endDate) {
+//
+//        // Adjust endDate to include the entire day
+//        LocalDate adjustedEndDate = endDate.plusDays(1);
+//
+//        return catalogCbiService.searchCatalogByDateService(page, size, startDate, adjustedEndDate);
+//    }
 
 
 }

@@ -44,5 +44,6 @@ public class ProductVariants extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_variant_id")
     @ToString.Exclude
+    @JsonIgnore
     private SellerProduct sellerProduct;
 }

@@ -6,4 +6,6 @@ public enum ProductStatus {
 
     IN_COMPLETE,  //NOT USED FOR PROJECT
 
+    COMPLETE,  //NOT USED FOR PROJECT
+
 }

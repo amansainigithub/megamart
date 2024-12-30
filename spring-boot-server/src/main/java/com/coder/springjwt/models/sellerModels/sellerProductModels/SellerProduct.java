@@ -67,6 +67,20 @@ public class SellerProduct extends BaseEntity {
 
     private String shippingCharges;
 
+    private String sellerUserName;
+
+    private String sellerUserId;
+
+    private String sellerStoreName;
+
+    private String sellerStoreId;
+
+    private String bornCategoryName;
+
+    private String bornCategoryId;
+
+    private String variant;
+
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;

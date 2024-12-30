@@ -14,11 +14,11 @@ import com.coder.springjwt.models.adminModels.catalog.catalogType.ProductTypeMod
 import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
+//import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
 import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadInvestigation;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
+//import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.adminServices.catalogCbiService.CatalogCbiService;
 import com.coder.springjwt.util.MessageResponse;
@@ -33,8 +33,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -45,8 +43,8 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     private ModelMapper modelMapper;
     @Autowired
     private HsnRepository hsnRepository;
-    @Autowired
-    private SellerCatalogRepository sellerCatalogRepository;
+//    @Autowired
+//    private SellerCatalogRepository sellerCatalogRepository;
     @Autowired
     private SellerStoreRepository sellerStoreRepository;
     @Autowired
@@ -73,96 +71,96 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
     private ProductHeightRepo productHeightRepo;
 
 
-    @Override
-    public ResponseEntity<?> getCatalogInProgressListService(int page , int size) {
-        try {
-            //Fetch the Progress Catalog List
-                Page<SellerCatalog> catalogProgressList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndPageable(
-                                String.valueOf(CatalogRole.QC_PROGRESS) , PageRequest.of(page, size));
+//    @Override
+//    public ResponseEntity<?> getCatalogInProgressListService(int page , int size) {
+//        try {
+//            //Fetch the Progress Catalog List
+//                Page<SellerCatalog> catalogProgressList =
+//                        this.sellerCatalogRepository.findAllByCatalogStatusAndPageable(
+//                                String.valueOf(CatalogRole.QC_PROGRESS) , PageRequest.of(page, size));
+//
+//                if(!catalogProgressList.isEmpty())
+//                {
+//                    log.info("Catalog Progress List Fetch Success");
+//
+//                    return ResponseGenerator.generateSuccessResponse(catalogProgressList, SellerMessageResponse.SUCCESS);
+//                }else{
+//                    return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                            SellerMessageResponse.DATA_NOT_FOUND);
+//                }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
 
-                if(!catalogProgressList.isEmpty())
-                {
-                    log.info("Catalog Progress List Fetch Success");
-
-                    return ResponseGenerator.generateSuccessResponse(catalogProgressList, SellerMessageResponse.SUCCESS);
-                }else{
-                    return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                            SellerMessageResponse.DATA_NOT_FOUND);
-                }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> catalogInvestigationService(Long catalogId,
-                                                         CatalogPayloadInvestigation catalogInvestigationPayload) {
-
-        try {
-            log.info("Catalog Id :: " + catalogId);
-
-                // GET Current Username
-                Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-                System.out.println("CatalogJsonData :: " + catalogInvestigationPayload);
-
-                Optional<SellerCatalog> currentCatalog = sellerCatalogRepository.findById(catalogId);
-
-                if ( currentCatalog.isPresent()) {
-
-                    //Get seller Store Data
-                    SellerCatalog catalogNode = currentCatalog.get();
-
-                    //convert Payload To Modal class
-                    SellerCatalog sellerCatalog = modelMapper.map(catalogInvestigationPayload, SellerCatalog.class);
-                    sellerCatalog.setId(currentCatalog.get().getId());
-
-                    //Set Seller Store
-                    sellerCatalog.setSellerStore(catalogNode.getSellerStore());
-
-                    //Discount Catalog
-                    String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
-                    sellerCatalog.setDiscount(discountPercentage);
-
-                    //Set Catalog Id
-                    sellerCatalog.setCatalogId(catalogNode.getCatalogId());
-
-                    //Set SpaceId
-                    sellerCatalog.setSpaceId(catalogNode.getSpaceId());
-
-                    //Set Catalog Investigation Status
-                    if(catalogInvestigationPayload.getActionStatus().equals(String.valueOf(CatalogRole.QC_PASS)))
-                    {
-                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_PASS));
-                    }else{
-                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_ERROR));
-                    }
-
-                    SellerCatalog save = this.sellerCatalogRepository.save(sellerCatalog);
-                    log.info("========================================================");
-                    log.info("Data Updated Success ID :: " + catalogId);
-
-                    return ResponseGenerator.generateSuccessResponse(save,
-                            SellerMessageResponse.SUCCESS);
-
-                } else {
-                    return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED,
-                            SellerMessageResponse.FAILED);
-                }
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
-        }
-
-    }
+//    @Override
+//    public ResponseEntity<?> catalogInvestigationService(Long catalogId,
+//                                                         CatalogPayloadInvestigation catalogInvestigationPayload) {
+//
+//        try {
+//            log.info("Catalog Id :: " + catalogId);
+//
+//                // GET Current Username
+//                Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//                System.out.println("CatalogJsonData :: " + catalogInvestigationPayload);
+//
+//                Optional<SellerCatalog> currentCatalog = sellerCatalogRepository.findById(catalogId);
+//
+//                if ( currentCatalog.isPresent()) {
+//
+//                    //Get seller Store Data
+//                    SellerCatalog catalogNode = currentCatalog.get();
+//
+//                    //convert Payload To Modal class
+//                    SellerCatalog sellerCatalog = modelMapper.map(catalogInvestigationPayload, SellerCatalog.class);
+//                    sellerCatalog.setId(currentCatalog.get().getId());
+//
+//                    //Set Seller Store
+//                    sellerCatalog.setSellerStore(catalogNode.getSellerStore());
+//
+//                    //Discount Catalog
+//                    String discountPercentage = calculateDiscount(Double.valueOf(sellerCatalog.getMrp()), Double.valueOf(sellerCatalog.getSellActualPrice()));
+//                    sellerCatalog.setDiscount(discountPercentage);
+//
+//                    //Set Catalog Id
+//                    sellerCatalog.setCatalogId(catalogNode.getCatalogId());
+//
+//                    //Set SpaceId
+//                    sellerCatalog.setSpaceId(catalogNode.getSpaceId());
+//
+//                    //Set Catalog Investigation Status
+//                    if(catalogInvestigationPayload.getActionStatus().equals(String.valueOf(CatalogRole.QC_PASS)))
+//                    {
+//                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_PASS));
+//                    }else{
+//                        sellerCatalog.setCatalogStatus(String.valueOf(CatalogRole.QC_ERROR));
+//                    }
+//
+//                    SellerCatalog save = this.sellerCatalogRepository.save(sellerCatalog);
+//                    log.info("========================================================");
+//                    log.info("Data Updated Success ID :: " + catalogId);
+//
+//                    return ResponseGenerator.generateSuccessResponse(save,
+//                            SellerMessageResponse.SUCCESS);
+//
+//                } else {
+//                    return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED,
+//                            SellerMessageResponse.FAILED);
+//                }
+//
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_SAVED);
+//        }
+//
+//    }
 
 
     public String calculateDiscount(double mrp, double sellingPrice) {
@@ -243,34 +241,34 @@ public class CatalogCbiServiceImple implements CatalogCbiService {
         }
     }
 
-    @Override
-    public ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate endDate) {
-        try {
-            // Convert LocalDate to LocalDateTime for querying
-            LocalDateTime startDateTime = startDate.atStartOfDay();
-            LocalDateTime endDateTime = endDate.atStartOfDay();
-
-            // Fetch the catalog list with pagination and date range filter
-            Page<SellerCatalog> catalogProgressList = sellerCatalogRepository.findAllByCatalogStatusAndCreationDateBetween(
-                    String.valueOf(CatalogRole.QC_PROGRESS),
-                    startDateTime,
-                    endDateTime,
-                    PageRequest.of(page, size)
-            );
-
-            if (!catalogProgressList.isEmpty()) {
-                return ResponseGenerator.generateSuccessResponse(catalogProgressList, SellerMessageResponse.SUCCESS);
-            } else {
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                        SellerMessageResponse.DATA_NOT_FOUND);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-
-    }
+//    @Override
+//    public ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate endDate) {
+//        try {
+//            // Convert LocalDate to LocalDateTime for querying
+//            LocalDateTime startDateTime = startDate.atStartOfDay();
+//            LocalDateTime endDateTime = endDate.atStartOfDay();
+//
+//            // Fetch the catalog list with pagination and date range filter
+//            Page<SellerCatalog> catalogProgressList = sellerCatalogRepository.findAllByCatalogStatusAndCreationDateBetween(
+//                    String.valueOf(CatalogRole.QC_PROGRESS),
+//                    startDateTime,
+//                    endDateTime,
+//                    PageRequest.of(page, size)
+//            );
+//
+//            if (!catalogProgressList.isEmpty()) {
+//                return ResponseGenerator.generateSuccessResponse(catalogProgressList, SellerMessageResponse.SUCCESS);
+//            } else {
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                        SellerMessageResponse.DATA_NOT_FOUND);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//
+//    }
 
 
     public List<ProductHeightModel> getHeightList()

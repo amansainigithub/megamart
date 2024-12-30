@@ -9,11 +9,11 @@ import java.util.List;
 
 @Component
 public interface CatalogCbiService  {
-    ResponseEntity<?> getCatalogInProgressListService(int page , int size);
+//    ResponseEntity<?> getCatalogInProgressListService(int page , int size);
 
-    ResponseEntity<?> catalogInvestigationService(Long catalogId, CatalogPayloadInvestigation catalogInvestigationPayload);
+//    ResponseEntity<?> catalogInvestigationService(Long catalogId, CatalogPayloadInvestigation catalogInvestigationPayload);
 
     ResponseEntity<?> getCatalogMasters();
 
-    ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate adjustedEndDate);
+//    ResponseEntity<?> searchCatalogByDateService(int page, int size, LocalDate startDate, LocalDate adjustedEndDate);
 }

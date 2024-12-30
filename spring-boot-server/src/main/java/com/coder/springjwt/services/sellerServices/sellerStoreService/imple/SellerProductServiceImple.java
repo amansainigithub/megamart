@@ -6,7 +6,6 @@ import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.Sell
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.*;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
-import com.coder.springjwt.models.CatalogRole;
 import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogLength.ProductLengthModel;
@@ -22,12 +21,13 @@ import com.coder.springjwt.models.sellerModels.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.models.sellerModels.sellerStore.*;
+import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
+import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductPayloads;
+import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductVariants;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
@@ -40,6 +40,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,8 +64,6 @@ public class SellerProductServiceImple implements SellerProductService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private SellerCatalogRepository sellerCatalogRepository;
 
     @Autowired
     private ProductNetQuantityRepo productNetQuantityRepo;
@@ -383,182 +382,182 @@ public class SellerProductServiceImple implements SellerProductService {
         }
     }
 
-
-    @Override
-    public ResponseEntity<?> getAllCatalogByUsernameService(int page , int size) {
-        try {
-            //Get Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-            if(optional.isPresent())
-            {
-                Page<SellerCatalog> catalogPage =
-                        this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername(), PageRequest.of(page, size));
-
-                //Catalog's Divided Counts
-                List<SellerCatalog> catalogDivided = this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername());
-                Map<String, Long> catalogCounts = catalogDivided.stream()
-                        .collect(Collectors.groupingBy(SellerCatalog::getCatalogStatus, Collectors.counting()));
-
-                // Retrieve counts for each status individually
-                long errorCount = catalogCounts.getOrDefault("QC_ERROR", 0L);
-                long qcPassCount = catalogCounts.getOrDefault("QC_PASS", 0L);
-                long progressCount = catalogCounts.getOrDefault("QC_PROGRESS", 0L);
-                long draftCount = catalogCounts.getOrDefault("QC_DRAFT", 0L);
-
-                // Print or store the counts as needed
-                System.out.println("Error Count: " + errorCount);
-                System.out.println("QC Pass Count: " + qcPassCount);
-                System.out.println("Progress Count: " + progressCount);
-                System.out.println("Draft Count: " + draftCount);
-
-                HashMap<String,Object> catalogData =new HashMap<>();
-                catalogData.put("catalogPage",catalogPage);
-                catalogData.put("errorCount",errorCount);
-                catalogData.put("qcPassCount",qcPassCount);
-                catalogData.put("progressCount",progressCount);
-                catalogData.put("draftCount",draftCount);
-
-
-                return ResponseGenerator.generateSuccessResponse(catalogData,SellerMessageResponse.SUCCESS);
-            }else{
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                                                                 SellerMessageResponse.USER_NOT_FOUND);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getAllCatalogByQcProgressService(int page , int size) {
-        try {
-            //Get Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-            if(optional.isPresent())
-            {
-                //Fetch the Progress Catalog List
-                Page<SellerCatalog> catalogProgressList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
-                                    String.valueOf(CatalogRole.QC_PROGRESS) , PageRequest.of(page, size));
-
-                log.info("Catalog Progress List Fetch Success");
-
-                return ResponseGenerator.generateSuccessResponse(catalogProgressList,SellerMessageResponse.SUCCESS);
-            }else{
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                        SellerMessageResponse.USER_NOT_FOUND);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getAllCatalogByDraft(int page , int size) {
-        try {
-            //Get Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-            if(optional.isPresent())
-            {
-                //Fetch the Progress Catalog List
-                Page<SellerCatalog> catalogDraftList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
-                                String.valueOf(CatalogRole.QC_DRAFT) , PageRequest.of(page, size));
-
-                log.info("Catalog Draft List Fetch Success");
-
-                return ResponseGenerator.generateSuccessResponse(catalogDraftList,SellerMessageResponse.SUCCESS);
-            }else{
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                        SellerMessageResponse.USER_NOT_FOUND);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getAllCatalogByError(int page , int size) {
-        try {
-            //Get Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-            if(optional.isPresent())
-            {
-                //Fetch the Progress Catalog List
-                Page<SellerCatalog> catalogSellerList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername()
-                                , String.valueOf(CatalogRole.QC_ERROR) , PageRequest.of(page, size));
-
-                log.info("Catalog Error List Fetch Success");
-
-                return ResponseGenerator.generateSuccessResponse(catalogSellerList,SellerMessageResponse.SUCCESS);
-            }else{
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                        SellerMessageResponse.USER_NOT_FOUND);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getAllCatalogByQcPass(int page , int size) {
-        try {
-            //Get Current Username
-            Map<String, String> currentUser = UserHelper.getCurrentUser();
-
-            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
-
-            if(optional.isPresent())
-            {
-                //Fetch the Progress Catalog List
-                Page<SellerCatalog> catalogPassList =
-                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
-                                                            String.valueOf(CatalogRole.QC_PASS) , PageRequest.of(page, size));
-
-                log.info("Catalog Pass List Fetch Success");
-
-                return ResponseGenerator.generateSuccessResponse(catalogPassList,SellerMessageResponse.SUCCESS);
-            }else{
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
-                        SellerMessageResponse.USER_NOT_FOUND);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
-                    SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
+//
+//    @Override
+//    public ResponseEntity<?> getAllCatalogByUsernameService(int page , int size) {
+//        try {
+//            //Get Current Username
+//            Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+//
+//            if(optional.isPresent())
+//            {
+//                Page<SellerCatalog> catalogPage =
+//                        this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername(), PageRequest.of(page, size));
+//
+//                //Catalog's Divided Counts
+//                List<SellerCatalog> catalogDivided = this.sellerCatalogRepository.findAllByUsername(optional.get().getUsername());
+//                Map<String, Long> catalogCounts = catalogDivided.stream()
+//                        .collect(Collectors.groupingBy(SellerCatalog::getCatalogStatus, Collectors.counting()));
+//
+//                // Retrieve counts for each status individually
+//                long errorCount = catalogCounts.getOrDefault("QC_ERROR", 0L);
+//                long qcPassCount = catalogCounts.getOrDefault("QC_PASS", 0L);
+//                long progressCount = catalogCounts.getOrDefault("QC_PROGRESS", 0L);
+//                long draftCount = catalogCounts.getOrDefault("QC_DRAFT", 0L);
+//
+//                // Print or store the counts as needed
+//                System.out.println("Error Count: " + errorCount);
+//                System.out.println("QC Pass Count: " + qcPassCount);
+//                System.out.println("Progress Count: " + progressCount);
+//                System.out.println("Draft Count: " + draftCount);
+//
+//                HashMap<String,Object> catalogData =new HashMap<>();
+//                catalogData.put("catalogPage",catalogPage);
+//                catalogData.put("errorCount",errorCount);
+//                catalogData.put("qcPassCount",qcPassCount);
+//                catalogData.put("progressCount",progressCount);
+//                catalogData.put("draftCount",draftCount);
+//
+//
+//                return ResponseGenerator.generateSuccessResponse(catalogData,SellerMessageResponse.SUCCESS);
+//            }else{
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                                                                 SellerMessageResponse.USER_NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
+//
+//    @Override
+//    public ResponseEntity<?> getAllCatalogByQcProgressService(int page , int size) {
+//        try {
+//            //Get Current Username
+//            Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+//
+//            if(optional.isPresent())
+//            {
+//                //Fetch the Progress Catalog List
+//                Page<SellerCatalog> catalogProgressList =
+//                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+//                                    String.valueOf(CatalogRole.QC_PROGRESS) , PageRequest.of(page, size));
+//
+//                log.info("Catalog Progress List Fetch Success");
+//
+//                return ResponseGenerator.generateSuccessResponse(catalogProgressList,SellerMessageResponse.SUCCESS);
+//            }else{
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                        SellerMessageResponse.USER_NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
+//
+//    @Override
+//    public ResponseEntity<?> getAllCatalogByDraft(int page , int size) {
+//        try {
+//            //Get Current Username
+//            Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+//
+//            if(optional.isPresent())
+//            {
+//                //Fetch the Progress Catalog List
+//                Page<SellerCatalog> catalogDraftList =
+//                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+//                                String.valueOf(CatalogRole.QC_DRAFT) , PageRequest.of(page, size));
+//
+//                log.info("Catalog Draft List Fetch Success");
+//
+//                return ResponseGenerator.generateSuccessResponse(catalogDraftList,SellerMessageResponse.SUCCESS);
+//            }else{
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                        SellerMessageResponse.USER_NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
+//
+//    @Override
+//    public ResponseEntity<?> getAllCatalogByError(int page , int size) {
+//        try {
+//            //Get Current Username
+//            Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+//
+//            if(optional.isPresent())
+//            {
+//                //Fetch the Progress Catalog List
+//                Page<SellerCatalog> catalogSellerList =
+//                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername()
+//                                , String.valueOf(CatalogRole.QC_ERROR) , PageRequest.of(page, size));
+//
+//                log.info("Catalog Error List Fetch Success");
+//
+//                return ResponseGenerator.generateSuccessResponse(catalogSellerList,SellerMessageResponse.SUCCESS);
+//            }else{
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                        SellerMessageResponse.USER_NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
+//
+//    @Override
+//    public ResponseEntity<?> getAllCatalogByQcPass(int page , int size) {
+//        try {
+//            //Get Current Username
+//            Map<String, String> currentUser = UserHelper.getCurrentUser();
+//
+//            Optional<SellerStore> optional = sellerStoreRepository.findByUsername(currentUser.get("username"));
+//
+//            if(optional.isPresent())
+//            {
+//                //Fetch the Progress Catalog List
+//                Page<SellerCatalog> catalogPassList =
+//                        this.sellerCatalogRepository.findAllByCatalogStatusAndCatalogStatus(optional.get().getUsername() ,
+//                                                            String.valueOf(CatalogRole.QC_PASS) , PageRequest.of(page, size));
+//
+//                log.info("Catalog Pass List Fetch Success");
+//
+//                return ResponseGenerator.generateSuccessResponse(catalogPassList,SellerMessageResponse.SUCCESS);
+//            }else{
+//                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.FAILED,
+//                        SellerMessageResponse.USER_NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.ERROR,
+//                    SellerMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
 
 
 
@@ -610,14 +609,27 @@ public class SellerProductServiceImple implements SellerProductService {
             //Set Shipping Charges
             sellerProduct.setShippingCharges(bornCategoryModel.getShippingCharge());
 
+            //save UserName and sellerUserId
+            productCalculationService.setSellerUsernameAndUserId(sellerProduct);
+
+            //Seller Store Name and SellerStoreId
+            productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProduct);
+
+            //set Born Category Name
+            sellerProduct.setBornCategoryName(bornCategoryModel.getCategoryName());
+
+            //set Born Category Name
+            sellerProduct.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
+
             //Set Product Status
             if(productRootBuilder.getProductVariants().isEmpty()){
                 sellerProduct.setProductStatus(ProductStatus.PV_PROGRESS.toString());
             }else{
-                sellerProduct.setProductStatus(ProductStatus.IN_COMPLETE.toString());
+                sellerProduct.setVariant("YES");
+                sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
             }
 
-            // Explicitly set the relationship for ProductVariants
+            //Set SKUID and Generate SKU ID
             if (sellerProduct.getProductRows() != null) {
                 for (ProductVariants variant : sellerProduct.getProductRows()) {
                     if(variant.getSkuId() == "" || variant.getSkuId() == null)
@@ -699,6 +711,21 @@ public class SellerProductServiceImple implements SellerProductService {
 
                 //Set Shipping Charges
                 sellerProductVariant.setShippingCharges(bornCategoryModel.getShippingCharge());
+
+                //save UserName and sellerUserId
+                productCalculationService.setSellerUsernameAndUserId(sellerProductVariant);
+
+                //Seller Store Name and SellerStoreId
+                productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProductVariant);
+
+                //set Born Category Name
+                sellerProductVariant.setBornCategoryName(bornCategoryModel.getCategoryName());
+
+                //set Born Category Name
+                sellerProductVariant.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
+
+                //set Born Category Name
+                sellerProductVariant.setVariant(String.valueOf(sellerProduct.getId()));
 
                 // Explicitly set the relationship for ProductVariants
                 if (sellerProductVariant.getProductRows() != null) {
@@ -799,6 +826,89 @@ public class SellerProductServiceImple implements SellerProductService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> getAllPendingProduct() {
+       try {
+
+           //Get Current Username
+           String currentUser = UserHelper.getOnlyCurrentUser();
+
+           SellerStore sellerStore = this.sellerStoreRepository.findByUsername(currentUser)
+                   .orElseThrow(() -> new UsernameNotFoundException(SellerMessageResponse.USER_NOT_FOUND));
+
+           Page<SellerProduct> sellerPendingProductList = null;
+
+           if (!currentUser.isEmpty()) {
+               // Fetch pending products
+               sellerPendingProductList = this.sellerProductRepository.findAllByProductWithPendingStatus(
+                       sellerStore.getStoreName(),
+                       ProductStatus.COMPLETE.toString(),
+                       ProductStatus.IN_COMPLETE.toString(),
+                       PageRequest.of(0, 10)
+               );
+               List<SellerProduct> productList = sellerPendingProductList.getContent();
+
+
+               ArrayList<SellerProductPayloads> sellerProductPayloads = new ArrayList<>();
+
+               for(SellerProduct spOuterNode : productList ){
+                   if(spOuterNode.getVariant() != null){
+
+                       if(spOuterNode.getVariant().equals("YES") ){
+                           SellerProductPayloads spp =new SellerProductPayloads();
+                           spp.setId(spOuterNode.getId());
+                           spp.setProductName((spOuterNode.getProductName()));
+                           spp.setCreationDate(spOuterNode.getProductCreationDate());
+                           spp.setCreationTime(spOuterNode.getProductCreationTime());
+                           spp.setProductStatus(spOuterNode.getProductStatus());
+
+                           ArrayList<SellerProductVariants> productVariants = new ArrayList<>();
+                           for(SellerProduct pVInnerLoop : productList ){
+
+                               if(!pVInnerLoop.getVariant().equals("YES")) {
+                                   if(String.valueOf(spOuterNode.getId()).equals(String.valueOf(pVInnerLoop.getVariant()))){
+                                       SellerProductVariants spVariants = new SellerProductVariants();
+                                       spVariants.setId(pVInnerLoop.getId());
+                                       spVariants.setProductName(pVInnerLoop.getVariant());
+                                       spVariants.setProductStatus(pVInnerLoop.getProductStatus());
+                                       spVariants.setCreationDate(pVInnerLoop.getProductCreationDate());
+                                       spVariants.setCreationTime(pVInnerLoop.getProductCreationTime());
+
+                                       List<ProductVariants> productRows = pVInnerLoop.getProductRows();
+                                       for (ProductVariants pv: productRows){
+                                           spVariants.setSkuId(pv.getSkuId());
+                                           spVariants.setProductSize(pv.getProductLabel());
+                                           spVariants.setProductColor(pv.getColorVariant());
+                                           spVariants.setActualPrice(pv.getProductPrice());
+
+                                       }
+                                       productVariants.add(spVariants);
+                                   }
+                               }else{
+                                   List<ProductVariants> productRows = pVInnerLoop.getProductRows();
+                                   for (ProductVariants pv: productRows){
+                                       spp.setSkuId(pv.getSkuId());
+                                       spp.setProductSize(pv.getProductLabel());
+                                       spp.setProductColor(pv.getColorVariant());
+                                       spp.setActualPrice(pv.getProductPrice());
+                                   }
+                               }
+                           }
+                           //Set Variant List to Seller Product
+                           spp.setSellerProductVariants(productVariants);
+                           sellerProductPayloads.add(spp);
+                       }
+                   }
+               }
+             return ResponseGenerator.generateSuccessResponse(sellerProductPayloads, SellerMessageResponse.SUCCESS);
+           }
+           return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED, SellerMessageResponse.SOMETHING_WENT_WRONG);
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
+       }
+    }
 
 
 }

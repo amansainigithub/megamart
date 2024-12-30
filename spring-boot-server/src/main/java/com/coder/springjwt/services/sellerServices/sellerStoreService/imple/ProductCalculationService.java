@@ -4,13 +4,20 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormProductVariantBuilder;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
+import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
+import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
+import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,6 +34,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProductCalculationService {
+    @Autowired
+    private SellerStoreRepository sellerStoreRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ProductVariantsRepository productVariantsRepository;
@@ -193,6 +204,38 @@ public class ProductCalculationService {
                 +"-"+GenerateRandomNumber.generateRandomNumber(5)
                 + "-" + "100000000" +"-"+GenerateRandomNumber.generateRandomNumber(2);
         return productId.toUpperCase();
+    }
+
+
+    public  void setSellerUsernameAndUserId(SellerProduct sellerProduct){
+        try {
+
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = userRepository.findByUsername(currentUser).orElseThrow(() ->
+                        new UsernameNotFoundException("UserName Not Found"));
+
+            sellerProduct.setSellerUserName(user.getUsername());
+            sellerProduct.setSellerUserId(String.valueOf(user.getId()));
+            log.info("Seller SellerUsername and SellerUserId Saved Success in Object");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public  void setSellerStoreNameAndSellerStoreId(SellerProduct sellerProduct){
+        try {
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            SellerStore sellerStore = sellerStoreRepository.findByUsername(currentUser).orElseThrow(() ->
+                                        new UsernameNotFoundException("Seller Store UserName and Store Id Not Found"));
+
+            sellerProduct.setSellerStoreName(sellerStore.getStoreName());
+            sellerProduct.setSellerStoreId(String.valueOf(sellerStore.getId()));
+            log.info("Seller SellerStoreName and SellerStoreId Saved Success in Object");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -30,7 +30,7 @@ public class SellerStore extends BaseEntity {
     private String ft_username;
 
 
-    @OneToMany(mappedBy = "sellerStore" , cascade = CascadeType.ALL)
-    private List<SellerCatalog> sellerCatalogList;
+//    @OneToMany(mappedBy = "sellerStore" , cascade = CascadeType.ALL)
+//    private List<SellerCatalog> sellerCatalogList;
 
 }

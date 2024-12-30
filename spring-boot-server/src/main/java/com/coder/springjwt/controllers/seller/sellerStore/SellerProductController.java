@@ -69,39 +69,39 @@ public class SellerProductController {
     }
 
 
-    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByUsername(@RequestParam Integer page , @RequestParam  Integer size) {
-        return sellerProductService.getAllCatalogByUsernameService(page,size);
-
-    }
-
-    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByQcProgress(@RequestParam Integer page , @RequestParam  Integer size) {
-        return sellerProductService.getAllCatalogByQcProgressService(page,size);
-    }
-
-    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByDraft(@RequestParam Integer page , @RequestParam  Integer size) {
-        return sellerProductService.getAllCatalogByDraft(page,size);
-
-    }
-
-
-    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_ERROR)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByError(@RequestParam Integer page , @RequestParam  Integer size) {
-        return sellerProductService.getAllCatalogByError(page,size);
-
-    }
-
-    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PASS)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllCatalogByQcPass(@RequestParam Integer page , @RequestParam  Integer size) {
-        return sellerProductService.getAllCatalogByQcPass(page,size);
-    }
+//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getAllCatalogByUsername(@RequestParam Integer page , @RequestParam  Integer size) {
+//        return sellerProductService.getAllCatalogByUsernameService(page,size);
+//
+//    }
+//
+//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getAllCatalogByQcProgress(@RequestParam Integer page , @RequestParam  Integer size) {
+//        return sellerProductService.getAllCatalogByQcProgressService(page,size);
+//    }
+//
+//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getAllCatalogByDraft(@RequestParam Integer page , @RequestParam  Integer size) {
+//        return sellerProductService.getAllCatalogByDraft(page,size);
+//
+//    }
+//
+//
+//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_ERROR)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getAllCatalogByError(@RequestParam Integer page , @RequestParam  Integer size) {
+//        return sellerProductService.getAllCatalogByError(page,size);
+//
+//    }
+//
+//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PASS)
+//    @PreAuthorize("hasRole('SELLER')")
+//    public ResponseEntity<?> getAllCatalogByQcPass(@RequestParam Integer page , @RequestParam  Integer size) {
+//        return sellerProductService.getAllCatalogByQcPass(page,size);
+//    }
 
 
     @GetMapping("/formBuilderFlying/{categoryId}")
@@ -128,6 +128,12 @@ public class SellerProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
         return sellerProductService.getProductBYId(productId);
+    }
+
+    @GetMapping("/getAllPendingProduct")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getAllPendingProduct() {
+        return sellerProductService.getAllPendingProduct();
     }
 
 
