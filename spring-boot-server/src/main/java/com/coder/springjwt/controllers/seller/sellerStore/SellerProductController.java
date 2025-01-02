@@ -130,10 +130,10 @@ public class SellerProductController {
         return sellerProductService.getProductBYId(productId);
     }
 
-    @GetMapping("/getAllPendingProduct")
+    @GetMapping("/getAllIncompleteProduct")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllPendingProduct() {
-        return sellerProductService.getAllPendingProduct();
+    public ResponseEntity<?> getAllIncompleteProduct() {
+        return sellerProductService.getAllIncompleteProduct();
     }
 
 

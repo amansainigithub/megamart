@@ -32,5 +32,5 @@ public interface SellerProductService {
 
     ResponseEntity<?> getProductBYId(String productId);
 
-    ResponseEntity<?> getAllPendingProduct();
+    ResponseEntity<?> getAllIncompleteProduct();
 }

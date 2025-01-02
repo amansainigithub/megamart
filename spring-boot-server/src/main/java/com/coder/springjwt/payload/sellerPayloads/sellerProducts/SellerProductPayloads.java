@@ -17,16 +17,10 @@ public class SellerProductPayloads {
 
     private String creationTime;
 
-    private String skuId;
-
     private String fileName;
-
-    private String productSize;
 
     private String productColor;
 
-    private String actualPrice;
-
-    private List<SellerProductVariants> sellerProductVariants;
+    private List<SellerProductVariantsPayloads> sellerProductVariantPayloads;
 
 }

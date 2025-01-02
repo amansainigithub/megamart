@@ -3,7 +3,7 @@ package com.coder.springjwt.payload.sellerPayloads.sellerProducts;
 import lombok.Data;
 
 @Data
-public class SellerProductVariants {
+public class SellerProductVariantsPayloads {
 
     private long id;
 
@@ -15,15 +15,9 @@ public class SellerProductVariants {
 
     private String creationTime;
 
-    private String skuId;
-
     private String fileName;
 
-    private String productSize;
-
     private String productColor;
-
-    private String actualPrice;
 
 
 

@@ -23,7 +23,7 @@ import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVarian
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductPayloads;
-import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductVariants;
+import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductVariantsPayloads;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
@@ -624,6 +624,7 @@ public class SellerProductServiceImple implements SellerProductService {
             //Set Product Status
             if(productRootBuilder.getProductVariants().isEmpty()){
                 sellerProduct.setProductStatus(ProductStatus.PV_PROGRESS.toString());
+                sellerProduct.setVariant("NO");
             }else{
                 sellerProduct.setVariant("YES");
                 sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
@@ -641,7 +642,6 @@ public class SellerProductServiceImple implements SellerProductService {
             }
             // Save SellerProduct along with its ProductVariants
             SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
-            productResponse.setParentKey(String.valueOf(productResponse.getId()));
             this.sellerProductRepository.save(productResponse);
 
             if(productResponse.getId() > 0 && productRootBuilder.getProductVariants().size() > 0){
@@ -827,7 +827,7 @@ public class SellerProductServiceImple implements SellerProductService {
     }
 
     @Override
-    public ResponseEntity<?> getAllPendingProduct() {
+    public ResponseEntity<?> getAllIncompleteProduct() {
        try {
 
            //Get Current Username
@@ -836,79 +836,56 @@ public class SellerProductServiceImple implements SellerProductService {
            SellerStore sellerStore = this.sellerStoreRepository.findByUsername(currentUser)
                    .orElseThrow(() -> new UsernameNotFoundException(SellerMessageResponse.USER_NOT_FOUND));
 
-           Page<SellerProduct> sellerPendingProductList = null;
-
-           if (!currentUser.isEmpty()) {
                // Fetch pending products
-               sellerPendingProductList = this.sellerProductRepository.findAllByProductWithPendingStatus(
-                       sellerStore.getStoreName(),
-                       ProductStatus.COMPLETE.toString(),
-                       ProductStatus.IN_COMPLETE.toString(),
-                       PageRequest.of(0, 10)
-               );
+           Page<SellerProduct> sellerPendingProductList = this.sellerProductRepository.findAllByProductWithPendingStatus(
+                                           sellerStore.getStoreName(),
+                                           ProductStatus.COMPLETE.toString(),
+                                           ProductStatus.IN_COMPLETE.toString(),
+                                           PageRequest.of(0, 10));
+
                List<SellerProduct> productList = sellerPendingProductList.getContent();
 
-
                ArrayList<SellerProductPayloads> sellerProductPayloads = new ArrayList<>();
+               for(SellerProduct sellerProduct : productList ) {
 
-               for(SellerProduct spOuterNode : productList ){
-                   if(spOuterNode.getVariant() != null){
+                   if (sellerProduct.getVariant().equals("YES")) {
+                       SellerProductPayloads productPayloads = new SellerProductPayloads();
+                       productPayloads.setId(sellerProduct.getId());
+                       productPayloads.setProductName(sellerProduct.getProductName());
+                       productPayloads.setProductStatus(sellerProduct.getProductStatus());
+                       productPayloads.setCreationDate(sellerProduct.getProductCreationDate());
+                       productPayloads.setCreationTime(sellerProduct.getProductCreationTime());
+                       productPayloads.setProductColor(sellerProduct.getProductColor());
+                       productPayloads.setFileName(sellerProduct.getProductFiles().get(0).getFileUrl());
 
-                       if(spOuterNode.getVariant().equals("YES") ){
-                           SellerProductPayloads spp =new SellerProductPayloads();
-                           spp.setId(spOuterNode.getId());
-                           spp.setProductName((spOuterNode.getProductName()));
-                           spp.setCreationDate(spOuterNode.getProductCreationDate());
-                           spp.setCreationTime(spOuterNode.getProductCreationTime());
-                           spp.setProductStatus(spOuterNode.getProductStatus());
+                       List<SellerProductVariantsPayloads> sellerProductVariantPayloads = new ArrayList<>();
 
-                           ArrayList<SellerProductVariants> productVariants = new ArrayList<>();
-                           for(SellerProduct pVInnerLoop : productList ){
 
-                               if(!pVInnerLoop.getVariant().equals("YES")) {
-                                   if(String.valueOf(spOuterNode.getId()).equals(String.valueOf(pVInnerLoop.getVariant()))){
-                                       SellerProductVariants spVariants = new SellerProductVariants();
-                                       spVariants.setId(pVInnerLoop.getId());
-                                       spVariants.setProductName(pVInnerLoop.getVariant());
-                                       spVariants.setProductStatus(pVInnerLoop.getProductStatus());
-                                       spVariants.setCreationDate(pVInnerLoop.getProductCreationDate());
-                                       spVariants.setCreationTime(pVInnerLoop.getProductCreationTime());
+                       List<SellerProduct> variantList = this.sellerProductRepository.findByVariant(sellerProduct.getId());
+                           for (SellerProduct variantData : variantList) {
+                               SellerProductVariantsPayloads sellerProductVariantsPayloads = new SellerProductVariantsPayloads();
+                               sellerProductVariantsPayloads.setId(variantData.getId());
+                               sellerProductVariantsPayloads.setProductName(variantData.getProductName());
+                               sellerProductVariantsPayloads.setProductStatus(variantData.getProductStatus());
+                               sellerProductVariantsPayloads.setCreationDate(variantData.getProductCreationDate());
+                               sellerProductVariantsPayloads.setCreationTime(variantData.getProductCreationTime());
+                               sellerProductVariantsPayloads.setProductColor(variantData.getProductColor());
 
-                                       List<ProductVariants> productRows = pVInnerLoop.getProductRows();
-                                       for (ProductVariants pv: productRows){
-                                           spVariants.setSkuId(pv.getSkuId());
-                                           spVariants.setProductSize(pv.getProductLabel());
-                                           spVariants.setProductColor(pv.getColorVariant());
-                                           spVariants.setActualPrice(pv.getProductPrice());
-
-                                       }
-                                       productVariants.add(spVariants);
-                                   }
-                               }else{
-                                   List<ProductVariants> productRows = pVInnerLoop.getProductRows();
-                                   for (ProductVariants pv: productRows){
-                                       spp.setSkuId(pv.getSkuId());
-                                       spp.setProductSize(pv.getProductLabel());
-                                       spp.setProductColor(pv.getColorVariant());
-                                       spp.setActualPrice(pv.getProductPrice());
-                                   }
-                               }
+                               sellerProductVariantPayloads.add(sellerProductVariantsPayloads);
                            }
-                           //Set Variant List to Seller Product
-                           spp.setSellerProductVariants(productVariants);
-                           sellerProductPayloads.add(spp);
+                           productPayloads.setSellerProductVariantPayloads(sellerProductVariantPayloads);
+                           sellerProductPayloads.add(productPayloads);
                        }
                    }
-               }
-             return ResponseGenerator.generateSuccessResponse(sellerProductPayloads, SellerMessageResponse.SUCCESS);
-           }
-           return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED, SellerMessageResponse.SOMETHING_WENT_WRONG);
-       }
+                 return ResponseGenerator.generateSuccessResponse(sellerProductPayloads, SellerMessageResponse.SUCCESS);
+          }
        catch (Exception e){
            e.printStackTrace();
            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
        }
     }
+
+
 
 
 }
