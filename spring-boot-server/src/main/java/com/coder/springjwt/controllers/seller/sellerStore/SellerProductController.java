@@ -1,5 +1,6 @@
 package com.coder.springjwt.controllers.seller.sellerStore;
 
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormProductVariantBuilder;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
@@ -24,37 +25,8 @@ import java.util.Map;
 @RequestMapping(SellerUrlMappings.SELLER_PRODUCT_CONTROLLER)
 public class SellerProductController {
 
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private BornCategoryRepo bornCategoryRepo;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    private EmailService simpleEmailService;
-
     @Autowired
     SellerProductService sellerProductService;
-
-//    @GetMapping(SellerUrlMappings.SELLER_GET_CATALOG)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getSellerCatalog(@PathVariable Long catalogId) {
-//        return sellerProductService.getSellerCatalog(catalogId);
-//    }
-
 
     @GetMapping(SellerUrlMappings.GET_GST_LIST)
     @PreAuthorize("hasRole('SELLER')")
@@ -68,56 +40,19 @@ public class SellerProductController {
         return sellerProductService.getProductMasters();
     }
 
-
-//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_USERNAME)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getAllCatalogByUsername(@RequestParam Integer page , @RequestParam  Integer size) {
-//        return sellerProductService.getAllCatalogByUsernameService(page,size);
-//
-//    }
-//
-//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PROGRESS)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getAllCatalogByQcProgress(@RequestParam Integer page , @RequestParam  Integer size) {
-//        return sellerProductService.getAllCatalogByQcProgressService(page,size);
-//    }
-//
-//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_DRAFT)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getAllCatalogByDraft(@RequestParam Integer page , @RequestParam  Integer size) {
-//        return sellerProductService.getAllCatalogByDraft(page,size);
-//
-//    }
-//
-//
-//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_ERROR)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getAllCatalogByError(@RequestParam Integer page , @RequestParam  Integer size) {
-//        return sellerProductService.getAllCatalogByError(page,size);
-//
-//    }
-//
-//    @PostMapping(SellerUrlMappings.GET_ALL_CATALOG_BY_QC_PASS)
-//    @PreAuthorize("hasRole('SELLER')")
-//    public ResponseEntity<?> getAllCatalogByQcPass(@RequestParam Integer page , @RequestParam  Integer size) {
-//        return sellerProductService.getAllCatalogByQcPass(page,size);
-//    }
-
-
-    @GetMapping("/formBuilderFlying/{categoryId}")
+    @GetMapping(SellerUrlMappings.FORM_BUILDER_FLYING)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> formBuilderFlying(@PathVariable String categoryId){
         return this.sellerProductService.formBuilderFlying(categoryId);
     }
 
-
-    @PostMapping("/saveSellerProductNew/{bornCategoryId}")
+    @PostMapping(SellerUrlMappings.SAVE_SELLER_PRODUCT)
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> saveSellerProductNew(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long bornCategoryId) {
-        return sellerProductService.saveSellerProductNew(productRootBuilder , bornCategoryId);
+    public ResponseEntity<?> saveSellerProduct(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long bornCategoryId) {
+        return sellerProductService.saveSellerProduct(productRootBuilder , bornCategoryId);
     }
 
-    @PostMapping("/uploadProductFiles/{productLockerNumber}")
+    @PostMapping(SellerUrlMappings.UPLOAD_PRODUCT_FILES)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> uploadProductFiles(@RequestParam Map<String, MultipartFile> files , @PathVariable String productLockerNumber) {
         return sellerProductService.uploadProductFiles(files, productLockerNumber);
@@ -130,11 +65,7 @@ public class SellerProductController {
         return sellerProductService.getProductBYId(productId);
     }
 
-    @GetMapping("/getAllIncompleteProduct")
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllIncompleteProduct() {
-        return sellerProductService.getAllIncompleteProduct();
-    }
+
 
 
 

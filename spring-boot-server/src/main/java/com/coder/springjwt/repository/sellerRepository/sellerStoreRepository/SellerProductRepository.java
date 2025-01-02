@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SellerProductRepository extends JpaRepository<SellerProduct, Long> {
@@ -25,5 +26,8 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
                                                                  @Param("completed") String completed ,
                                                                  @Param("inCompleted") String inCompleted ,
                                                                  Pageable pageable);
+
+    @Query(value = "SELECT * FROM seller_product WHERE id = :id and product_status = :productStatus", nativeQuery = true)
+    Optional<SellerProduct> findByProductWithProductStatus(@Param("id") Long id , @Param("productStatus") String productStatus);
 
 }

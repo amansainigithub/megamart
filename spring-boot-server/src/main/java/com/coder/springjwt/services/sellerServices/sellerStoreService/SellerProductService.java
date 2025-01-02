@@ -14,23 +14,14 @@ public interface SellerProductService {
 
     ResponseEntity<?> getProductMasters();
 
-//    ResponseEntity<?> getAllCatalogByUsernameService(int page , int size);
-
-//    ResponseEntity<?> getAllCatalogByQcProgressService(int page , int size);
-
-//    ResponseEntity<?> getAllCatalogByDraft(int page , int size);
-
-//    ResponseEntity<?> getAllCatalogByError(int page , int size);
-
-//    ResponseEntity<?> getAllCatalogByQcPass(int page , int size);
-
     ResponseEntity<?> formBuilderFlying(String categoryId);
 
-    ResponseEntity<?> saveSellerProductNew(ProductRootBuilder productRootBuilder, Long bornCategoryId);
+    ResponseEntity<?> saveSellerProduct(ProductRootBuilder productRootBuilder, Long bornCategoryId);
 
     ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber);
 
     ResponseEntity<?> getProductBYId(String productId);
 
-    ResponseEntity<?> getAllIncompleteProduct();
+
+
 }

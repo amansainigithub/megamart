@@ -26,22 +26,16 @@ public class SellerStoreController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private PasswordEncoder encoder;
-
     @Autowired
     private JwtUtils jwtUtils;
-
     @Autowired
     private EmailService simpleEmailService;
-
     @Autowired
     SellerStoreService sellerStoreService;
 

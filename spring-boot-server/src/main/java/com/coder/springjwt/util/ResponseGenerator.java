@@ -13,6 +13,12 @@ public class ResponseGenerator {
      *
      * @return {@link ResponseEntity} of {@link ResponseDto}
      */
+
+    public static <T> ResponseEntity<ResponseDto<T>> generateSuccessResponse(String message) {
+        ResponseDto<T> responseDTO = new ResponseDto(message);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     public static <T> ResponseEntity<ResponseDto<T>> generateSuccessResponse(
             T data,String message) {
         ResponseDto<T> responseDTO = new ResponseDto(data, message, true,

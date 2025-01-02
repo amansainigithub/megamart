@@ -11,9 +11,7 @@ import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVarian
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.repository.UserRepository;
-import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -38,16 +35,8 @@ public class ProductCalculationService {
     private SellerStoreRepository sellerStoreRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ProductVariantsRepository productVariantsRepository;
-
-    @Autowired
-    private SellerProductRepository sellerProductRepository;
-
-    @Autowired
-    private BornCategoryRepo bornCategoryRepo;
-
 
 
     public Map<String, List<FormProductVariantBuilder>> groupingProductVariats(ProductRootBuilder productRootBuilder){
@@ -237,9 +226,5 @@ public class ProductCalculationService {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 }
