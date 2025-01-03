@@ -43,7 +43,7 @@ public class SellerProductController {
     @GetMapping(SellerUrlMappings.FORM_BUILDER_FLYING)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> formBuilderFlying(@PathVariable String categoryId){
-        return this.sellerProductService.formBuilderFlying(categoryId);
+            return this.sellerProductService.formBuilderFlying(categoryId);
     }
 
     @PostMapping(SellerUrlMappings.SAVE_SELLER_PRODUCT)
@@ -56,6 +56,12 @@ public class SellerProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> uploadProductFiles(@RequestParam Map<String, MultipartFile> files , @PathVariable String productLockerNumber) {
         return sellerProductService.uploadProductFiles(files, productLockerNumber);
+    }
+
+    @PostMapping(SellerUrlMappings.UPDATE_SELLER_PRODUCT)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> updateSellerProduct(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long productId) {
+        return sellerProductService.updateSellerProduct(productRootBuilder , productId);
     }
 
 

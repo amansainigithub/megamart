@@ -17,6 +17,8 @@ public class SellerProductVariantsPayloads {
 
     private String fileName;
 
+    private String fileUrl;
+
     private String productColor;
 
 

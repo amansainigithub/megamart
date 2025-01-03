@@ -49,14 +49,12 @@ public class ProductCalculationService {
 
     public void calculateTaxes(String productColor, List<ProductVariants> productVariants, String gstWithPercent, BornCategoryModel bornCategoryModel){
         try {
-
             double tcsCharge = Double.parseDouble(bornCategoryModel.getTcsCharge());
             double tdsCharge = Double.parseDouble(bornCategoryModel.getTdsCharge());
             double commissionFeeCharge = Double.parseDouble(bornCategoryModel.getCommissionFeesCharge());
             String gst = gstWithPercent.replace("%", "");
 
             for(ProductVariants pv : productVariants){
-
                 double productPrice = Double.parseDouble(pv.getProductPrice());
                 double productMrp = Double.parseDouble(pv.getProductMrp());
 

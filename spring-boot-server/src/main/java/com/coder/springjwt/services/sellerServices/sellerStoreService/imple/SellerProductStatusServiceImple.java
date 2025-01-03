@@ -70,7 +70,8 @@ public class SellerProductStatusServiceImple implements SellerProductStatusServi
                     productPayloads.setCreationDate(sellerProduct.getProductCreationDate());
                     productPayloads.setCreationTime(sellerProduct.getProductCreationTime());
                     productPayloads.setProductColor(sellerProduct.getProductColor());
-                    productPayloads.setFileName(sellerProduct.getProductFiles().get(0).getFileUrl());
+                    productPayloads.setFileName(sellerProduct.getProductFiles().get(0).getFileName());
+                    productPayloads.setFileUrl(sellerProduct.getProductFiles().get(0).getFileUrl());
 
                     List<SellerProductVariantsPayloads> sellerProductVariantPayloads = new ArrayList<>();
 
@@ -84,6 +85,11 @@ public class SellerProductStatusServiceImple implements SellerProductStatusServi
                         sellerProductVariantsPayloads.setCreationDate(variantData.getProductCreationDate());
                         sellerProductVariantsPayloads.setCreationTime(variantData.getProductCreationTime());
                         sellerProductVariantsPayloads.setProductColor(variantData.getProductColor());
+
+                        if(variantData.getProductFiles().size() > 0 ){
+                            sellerProductVariantsPayloads.setFileName(variantData.getProductFiles().get(0).getFileName());
+                            sellerProductVariantsPayloads.setFileUrl(variantData.getProductFiles().get(0).getFileUrl());
+                        }
 
                         sellerProductVariantPayloads.add(sellerProductVariantsPayloads);
                     }

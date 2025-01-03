@@ -25,7 +25,7 @@ public class SellerProduct extends BaseEntity {
 
 
     //Product table Data
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sellerProduct")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sellerProduct",orphanRemoval = true)
     private List<ProductVariants> productRows;
 
     //product Size Data

@@ -30,4 +30,7 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     @Query(value = "SELECT * FROM seller_product WHERE id = :id and product_status = :productStatus", nativeQuery = true)
     Optional<SellerProduct> findByProductWithProductStatus(@Param("id") Long id , @Param("productStatus") String productStatus);
 
+    @Query(value = "SELECT * FROM seller_product WHERE parent_key = :parent_key" , nativeQuery = true)
+    List<SellerProduct> findByParentKey(@Param("parent_key") String parent_key);
+
 }

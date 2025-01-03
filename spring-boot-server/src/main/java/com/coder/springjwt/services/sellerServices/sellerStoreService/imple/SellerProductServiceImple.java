@@ -29,6 +29,7 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -392,11 +393,10 @@ public class SellerProductServiceImple implements SellerProductService {
         try {
             if(productRootBuilder != null){
 
-               BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
-                                                     .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
+                                                  .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
 
-
-                // Map incoming data to SellerProduct
+            // Map incoming data to SellerProduct
             SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
 
             //Set Rows Counter
@@ -450,6 +450,8 @@ public class SellerProductServiceImple implements SellerProductService {
             }
             // Save SellerProduct along with its ProductVariants
             SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
+            System.out.println("DATAAA " + productResponse.getId());
+            productResponse.setParentKey(String.valueOf(productResponse.getId()));
             this.sellerProductRepository.save(productResponse);
 
             if(productResponse.getId() > 0 && productRootBuilder.getProductVariants().size() > 0){
@@ -545,6 +547,10 @@ public class SellerProductServiceImple implements SellerProductService {
                         variant.setSellerProduct(sellerProductVariant);
                     }
                 }
+
+                //Set Primary Key
+                sellerProductVariant.setParentKey(sellerProduct.getParentKey());
+
                 // Save SellerProduct along with its ProductVariants
                 this.sellerProductRepository.save(sellerProductVariant);
 
@@ -597,21 +603,20 @@ public class SellerProductServiceImple implements SellerProductService {
             e.printStackTrace();
             return ResponseGenerator.generateDataNotFound(SellerMessageResponse.DATA_NOT_FOUND);
         }
-
-
     }
 
     @Override
     public ResponseEntity<?> getProductBYId(String productId) {
         try {
-              SellerProduct sellerProduct =  this.sellerProductRepository.findById(Long.parseLong(productId)).orElseThrow(()->
+
+            SellerProduct sellerProduct =  this.sellerProductRepository.findById(Long.parseLong(productId)).orElseThrow(()->
                                              new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
             ProductRootBuilder productBuilder = modelMapper.map(sellerProduct, ProductRootBuilder.class);
 
             //Table Variant OR Sizes
             List<ProductVariants> productRows = sellerProduct.getProductRows();
-            List<ProductRows> productData = productRows.stream()
+            List<ProductRows> productData =  productRows.stream()
                                             .map(singleProductRow -> modelMapper.map(singleProductRow, ProductRows.class))
                                             .collect(Collectors.toList());
             productBuilder.setTableRows(productData);
@@ -629,8 +634,118 @@ public class SellerProductServiceImple implements SellerProductService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> updateSellerProduct(ProductRootBuilder productRootBuilder, Long productId) {
+        try {
+            if(productRootBuilder != null && productId != null ){
+
+            SellerProduct checkProductIsExists = this.sellerProductRepository.
+                                                 findByProductWithProductStatus(productId,ProductStatus.IN_COMPLETE.toString())
+                                                 .orElseThrow(() ->
+                                                 new DataNotFoundException("Data not found Exception"));
+
+              //Delete Product Variants Rows
+              this.deleteProductRows(checkProductIsExists.getProductRows());
+
+              BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(Long.valueOf(checkProductIsExists.getBornCategoryId()))
+                                                    .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
+
+                // Map incoming data to SellerProduct
+                SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
+
+                sellerProduct.setId(productId);
+
+                //Set Rows Counter
+                sellerProduct.setRowsCounter(1l);
+
+                //Calculated GST ,TCS,TDS PERCENTAGE %
+                productCalculationService.calculateTaxes(productRootBuilder.getProductColor(), sellerProduct.getProductRows(),sellerProduct.getGst(),bornCategoryModel);
+
+                //set current Date
+                sellerProduct.setProductCreationDate(productCalculationService.getCurrentDate());
+
+                //set Current Time
+                sellerProduct.setProductCreationTime(productCalculationService.getCurrentTime());
+
+                //Set Product Id's
+                sellerProduct.setProductId(productCalculationService.generateProductId());
+
+                //Set Shipping Charges
+                sellerProduct.setShippingCharges(bornCategoryModel.getShippingCharge());
+
+                //save UserName and sellerUserId
+                productCalculationService.setSellerUsernameAndUserId(sellerProduct);
+
+                //Seller Store Name and SellerStoreId
+                productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProduct);
+
+                //set Born Category Name
+                sellerProduct.setBornCategoryName(bornCategoryModel.getCategoryName());
+
+                //set Born Category Name
+                sellerProduct.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
+
+                sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
+
+                sellerProduct.setVariant(checkProductIsExists.getVariant());
+
+                //Set SKU ID and Generate SKU ID
+                if (sellerProduct.getProductRows() != null) {
+                    for (ProductVariants variant : sellerProduct.getProductRows()) {
+                        if(variant.getSkuId() == "" || variant.getSkuId() == null)
+                        {
+                            variant.setSkuId(productCalculationService.getSkuCode());
+                        }
+                        variant.setSellerProduct(sellerProduct);
+                    }
+                }
+                //Set Parent Key
+                sellerProduct.setParentKey(checkProductIsExists.getParentKey());
+
+                // Save SellerProduct along with its ProductVariants
+                SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
+
+                //Check all the Product Status (only for Variants Products)
+                this.checkVariantStatusIsCompletedOrNot(productResponse);
+
+                return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
+            }else{
+                return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.SOMETHING_WENT_WRONG);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("FAILED",HttpStatus.BAD_REQUEST.toString());
+        }
+    }
 
 
+    public void deleteProductRows( List<ProductVariants>  productVariants) {
+        List<Long> variantIds = productVariants.stream().map(ProductVariants::getId).collect(Collectors.toList());
+        this.productVariantsRepository.deleteAllById(variantIds);
+        System.out.println("Variant List Delete Success :: " +variantIds);
+    }
+
+
+    public Boolean checkVariantStatusIsCompletedOrNot(SellerProduct sellerProduct){
+        boolean productStatus =true;
+        List<SellerProduct> statusData = this.sellerProductRepository
+                                                            .findByParentKey(sellerProduct.getVariant());
+        for(SellerProduct data : statusData ){
+
+            if(data.getProductStatus().equals(ProductStatus.IN_COMPLETE.toString())){
+                productStatus  = Boolean.FALSE;
+            }
+        }
+        if(productStatus){
+            for(SellerProduct data : statusData ){
+                data.setProductStatus(ProductStatus.PV_PROGRESS.toString());
+                this.sellerProductRepository.save(data);
+            }
+        }
+        return productStatus;
+    }
 
 
 }

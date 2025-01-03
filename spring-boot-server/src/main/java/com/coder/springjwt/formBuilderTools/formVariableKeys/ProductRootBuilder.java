@@ -39,6 +39,8 @@ public class ProductRootBuilder {
     private String brandField;
     private String description;
 
+    private String variant;
+
     //Variant Data
     private List<FormProductVariantBuilder> productVariants;
 

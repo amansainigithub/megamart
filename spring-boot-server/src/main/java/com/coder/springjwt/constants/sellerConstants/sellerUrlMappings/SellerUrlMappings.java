@@ -59,6 +59,8 @@ public class SellerUrlMappings {
     public static final String GET_PRODUCT_MASTERS = "/getProductMasters";
     public static final String FORM_BUILDER_FLYING = "/formBuilderFlying/{categoryId}";
     public static final String SAVE_SELLER_PRODUCT = "/saveSellerProduct/{bornCategoryId}";
+
+    public static final String UPDATE_SELLER_PRODUCT = "/updateSellerProduct/{productId}";
     public static final String UPLOAD_PRODUCT_FILES = "/uploadProductFiles/{productLockerNumber}";
 
 

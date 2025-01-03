@@ -20,7 +20,7 @@ public class SellerProductStatusController {
     @GetMapping(SellerUrlMappings.GET_ALL_INCOMPLETE_PRODUCT)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> getAllIncompleteProduct() {
-        return sellerProductStatusService.getAllIncompleteProduct();
+            return sellerProductStatusService.getAllIncompleteProduct();
     }
 
 
