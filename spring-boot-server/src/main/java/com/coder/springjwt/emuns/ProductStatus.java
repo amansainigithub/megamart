@@ -1,8 +1,8 @@
-package com.coder.springjwt.models.sellerModels;
+package com.coder.springjwt.emuns;
 
 public enum ProductStatus {
 
-    PV_PROGRESS, //NOT USED FOR PROJECT
+    PV_PENDING, //NOT USED FOR PROJECT
 
     IN_COMPLETE,  //NOT USED FOR PROJECT
 

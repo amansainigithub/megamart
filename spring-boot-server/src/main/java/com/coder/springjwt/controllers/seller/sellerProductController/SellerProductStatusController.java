@@ -1,14 +1,11 @@
-package com.coder.springjwt.controllers.seller.sellerStore;
+package com.coder.springjwt.controllers.seller.sellerProductController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(SellerUrlMappings.SELLER_PRODUCT_STATUS_CONTROLLER)
@@ -28,6 +25,14 @@ public class SellerProductStatusController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> getProductVariantByVariantId(@PathVariable Long variantId) {
         return sellerProductStatusService.getProductVariantByVariantId(variantId);
+    }
+
+    @GetMapping(SellerUrlMappings.GET_PENDING_PRODUCT_LIST)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getPendingProductList(@PathVariable String username ,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size) {
+        return sellerProductStatusService.getPendingProductList(username,page,size);
     }
 
 }

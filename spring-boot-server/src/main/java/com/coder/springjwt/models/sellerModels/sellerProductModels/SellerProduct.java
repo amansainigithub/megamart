@@ -1,7 +1,10 @@
 package com.coder.springjwt.models.sellerModels.sellerProductModels;
 
+import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -81,8 +84,15 @@ public class SellerProduct extends BaseEntity {
 
     private String variant;
 
+    private int howManyVariants;
+
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_mapping_store_id")
+    @JsonIgnore
+    private SellerStore sellerStore;
 
 }

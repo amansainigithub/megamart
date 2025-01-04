@@ -1,6 +1,7 @@
 package com.coder.springjwt.models.sellerModels.sellerStore;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,8 +30,7 @@ public class SellerStore extends BaseEntity {
     @Column(nullable = false)
     private String ft_username;
 
-
-//    @OneToMany(mappedBy = "sellerStore" , cascade = CascadeType.ALL)
-//    private List<SellerCatalog> sellerCatalogList;
+    @OneToMany(mappedBy = "sellerStore" , cascade = CascadeType.ALL)
+    private List<SellerProduct> sellerProducts;
 
 }

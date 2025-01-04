@@ -2,8 +2,6 @@ package com.coder.springjwt.services.adminServices.catalogCbiService.imple;
 
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.helpers.userHelper.UserHelper;
-import com.coder.springjwt.models.CatalogRole;
 import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogLength.ProductLengthModel;
@@ -15,7 +13,6 @@ import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeigh
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 //import com.coder.springjwt.models.sellerModels.sellerStore.SellerCatalog;
-import com.coder.springjwt.payload.adminPayloads.catalogPaylods.CatalogPayloadInvestigation;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 //import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerCatalogRepository;
@@ -26,8 +23,6 @@ import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

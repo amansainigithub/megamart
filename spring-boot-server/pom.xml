@@ -151,6 +151,19 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>com.cashfree.pg.java</groupId>
+			<artifactId>cashfree_pg</artifactId>
+			<version>4.3.6</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.10.0</version>
+		</dependency>
+
+
 <!--		Redis Server Automatically Start From Spring boot Apllication-->
 <!--		<dependency>-->
 <!--			<groupId>com.github.kstyrc</groupId>-->

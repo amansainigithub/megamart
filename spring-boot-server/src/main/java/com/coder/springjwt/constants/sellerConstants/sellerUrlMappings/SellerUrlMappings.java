@@ -70,6 +70,7 @@ public class SellerUrlMappings {
     public static final String GET_ALL_INCOMPLETE_PRODUCT = "/getAllIncompleteProduct";
     public static final String GET_PRODUCT_VARIANT_BY_VARIANT_ID = "/getProductVariantByVariantId/{variantId}";
 
+    public static final String GET_PENDING_PRODUCT_LIST = "/getPendingProductList/{username}";
 
 
 

@@ -1,10 +1,18 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
+import com.cashfree.ApiException;
+import com.cashfree.ApiResponse;
+import com.cashfree.Cashfree;
+import com.cashfree.model.CreateOrderRequest;
+import com.cashfree.model.CustomerDetails;
+import com.cashfree.model.OrderEntity;
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.exception.adminException.DataNotFoundException;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.*;
+import com.coder.springjwt.helpers.userHelper.UserHelper;
+import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.adminModels.catalog.catalogBreath.BreathModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogHeight.ProductHeightModel;
 import com.coder.springjwt.models.adminModels.catalog.catalogLength.ProductLengthModel;
@@ -16,10 +24,11 @@ import com.coder.springjwt.models.adminModels.catalog.catalogWeight.ProductWeigh
 import com.coder.springjwt.models.adminModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
-import com.coder.springjwt.models.sellerModels.ProductStatus;
+import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
+import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.adminRepository.catalogRepos.*;
 import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
@@ -29,7 +38,6 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -393,11 +401,18 @@ public class SellerProductServiceImple implements SellerProductService {
         try {
             if(productRootBuilder != null){
 
-            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
+                String currentUser = UserHelper.getOnlyCurrentUser();
+
+                SellerStore sellerStore = this.sellerStoreRepository.findByUsername(currentUser)
+                                          .orElseThrow(() -> new DataNotFoundException("Seller Store Not Found !!"));
+                BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
                                                   .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
 
             // Map incoming data to SellerProduct
             SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
+
+            //Set Seller Store
+            sellerProduct.setSellerStore(sellerStore);
 
             //Set Rows Counter
             sellerProduct.setRowsCounter(1l);
@@ -431,14 +446,17 @@ public class SellerProductServiceImple implements SellerProductService {
 
             //Set Product Status
             if(productRootBuilder.getProductVariants().isEmpty()){
-                sellerProduct.setProductStatus(ProductStatus.PV_PROGRESS.toString());
+                sellerProduct.setProductStatus(ProductStatus.PV_PENDING.toString());
                 sellerProduct.setVariant("NO");
             }else{
                 sellerProduct.setVariant("YES");
                 sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
+
+                //Set how Many Variants
+                sellerProduct.setHowManyVariants(productRootBuilder.getProductVariants().size());
             }
 
-            //Set SKUID and Generate SKU ID
+            //if SKU-ID is null or blank then Generate otherwise set SKU-ID
             if (sellerProduct.getProductRows() != null) {
                 for (ProductVariants variant : sellerProduct.getProductRows()) {
                     if(variant.getSkuId() == "" || variant.getSkuId() == null)
@@ -450,12 +468,11 @@ public class SellerProductServiceImple implements SellerProductService {
             }
             // Save SellerProduct along with its ProductVariants
             SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
-            System.out.println("DATAAA " + productResponse.getId());
             productResponse.setParentKey(String.valueOf(productResponse.getId()));
             this.sellerProductRepository.save(productResponse);
 
             if(productResponse.getId() > 0 && productRootBuilder.getProductVariants().size() > 0){
-                this.saveProductVariants(productResponse, productRootBuilder, bornCategoryModel);
+                this.saveProductVariants(productResponse, productRootBuilder, bornCategoryModel , sellerStore);
             }
 
             return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
@@ -471,7 +488,7 @@ public class SellerProductServiceImple implements SellerProductService {
     }
 
 
-    public void saveProductVariants(SellerProduct sellerProduct, ProductRootBuilder productRootBuilder, BornCategoryModel bornCategoryModel){
+    public void saveProductVariants(SellerProduct sellerProduct, ProductRootBuilder productRootBuilder, BornCategoryModel bornCategoryModel, SellerStore sellerStore){
         int rowsCounter = 2;
         try {
 
@@ -550,6 +567,9 @@ public class SellerProductServiceImple implements SellerProductService {
 
                 //Set Primary Key
                 sellerProductVariant.setParentKey(sellerProduct.getParentKey());
+
+                //Set Seller Store
+                sellerProductVariant.setSellerStore(sellerStore);
 
                 // Save SellerProduct along with its ProductVariants
                 this.sellerProductRepository.save(sellerProductVariant);
@@ -740,11 +760,67 @@ public class SellerProductServiceImple implements SellerProductService {
         }
         if(productStatus){
             for(SellerProduct data : statusData ){
-                data.setProductStatus(ProductStatus.PV_PROGRESS.toString());
+                data.setProductStatus(ProductStatus.PV_PENDING.toString());
                 this.sellerProductRepository.save(data);
             }
         }
         return productStatus;
+    }
+
+
+
+    @Override
+    public ResponseEntity<?> createOrderCashFreePayments() {
+       try {
+           Cashfree.XClientId = "TEST10273801f926777210256c1f133b10837201";
+           Cashfree.XClientSecret = "cfsk_ma_test_6d8f486cc954082eac55bea32889fb97_be734858";
+           Cashfree.XEnvironment = Cashfree.SANDBOX;
+
+           Cashfree cashfree = new Cashfree();
+           String xApiVersion = "2022-09-01";
+
+
+           CustomerDetails customerDetails = new CustomerDetails();
+           customerDetails.setCustomerId("walterwNrcMi");
+           customerDetails.setCustomerName("MOHAN SINGH");
+           customerDetails.setCustomerPhone("9999999999");
+
+           CreateOrderRequest request = new CreateOrderRequest();
+           request.setOrderAmount(1.0);
+           request.setOrderCurrency("INR");
+           request.setCustomerDetails(customerDetails);
+           try {
+               ApiResponse<OrderEntity> response = cashfree.PGCreateOrder(xApiVersion, request, null, null, null);
+               System.out.println(response.getData().getOrderId());
+               System.out.println("=========================");
+               System.out.println(response.getData().toString());
+           } catch (ApiException e) {
+               throw new RuntimeException(e);
+           }
+       }
+       catch (Exception e){
+           e.printStackTrace();
+       }
+       return ResponseEntity.ok("OK");
+    }
+
+    @Override
+    public ResponseEntity<?> getCashFreePayments(String orderId) {
+        try {
+            Cashfree.XClientId = "TEST10273801f926777210256c1f133b10837201";
+            Cashfree.XClientSecret = "cfsk_ma_test_6d8f486cc954082eac55bea32889fb97_be734858";
+            Cashfree.XEnvironment = Cashfree.SANDBOX;
+
+            Cashfree cashfree = new Cashfree();
+            String xApiVersion = "2022-09-01";
+
+            ApiResponse<OrderEntity> responseFetchOrder = cashfree.PGFetchOrder(xApiVersion, orderId, null, null, null);
+            System.out.println(responseFetchOrder.getData());
+
+            return ResponseEntity.ok(responseFetchOrder);
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
