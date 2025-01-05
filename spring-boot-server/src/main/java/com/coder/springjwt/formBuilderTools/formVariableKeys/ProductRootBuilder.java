@@ -32,7 +32,9 @@ public class ProductRootBuilder {
     private String pattern;
     private String manufactureName;
     private String netQuantity;
+    private String productId;
     private String productCode;
+
 
     //Product Other Details
     private String finishingType;

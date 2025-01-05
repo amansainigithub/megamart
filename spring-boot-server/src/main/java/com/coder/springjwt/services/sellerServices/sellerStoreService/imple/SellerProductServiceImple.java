@@ -380,8 +380,6 @@ public class SellerProductServiceImple implements SellerProductService {
         }
     }
 
-
-
     @Override
     public ResponseEntity<?> formBuilderFlying(String categoryId) {
 
@@ -444,9 +442,14 @@ public class SellerProductServiceImple implements SellerProductService {
             //set Born Category Name
             sellerProduct.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
 
+            if(sellerProduct.getProductCode() == null)
+            {
+                sellerProduct.setProductCode(ProductCalculationService.generateProductCode(10));
+            }
+
             //Set Product Status
             if(productRootBuilder.getProductVariants().isEmpty()){
-                sellerProduct.setProductStatus(ProductStatus.PV_PENDING.toString());
+                sellerProduct.setProductStatus(ProductStatus.PV_UNDER_REVIEW.toString());
                 sellerProduct.setVariant("NO");
             }else{
                 sellerProduct.setVariant("YES");
@@ -532,6 +535,12 @@ public class SellerProductServiceImple implements SellerProductService {
 
                 //Set Product Id
                 sellerProductVariant.setProductId(productCalculationService.generateProductId());
+
+                //Set Product Code
+                if(sellerProduct.getProductCode() == null)
+                {
+                    sellerProduct.setProductCode(ProductCalculationService.generateProductCode(10));
+                }
 
                 //Set Product Status
                 sellerProductVariant.setProductStatus(ProductStatus.IN_COMPLETE.toString());
@@ -760,7 +769,7 @@ public class SellerProductServiceImple implements SellerProductService {
         }
         if(productStatus){
             for(SellerProduct data : statusData ){
-                data.setProductStatus(ProductStatus.PV_PENDING.toString());
+                data.setProductStatus(ProductStatus.PV_UNDER_REVIEW.toString());
                 this.sellerProductRepository.save(data);
             }
         }

@@ -35,4 +35,15 @@ public class SellerProductStatusController {
         return sellerProductStatusService.getPendingProductList(username,page,size);
     }
 
+
+    @GetMapping(SellerUrlMappings.GET_APPROVED_PRODUCT_LIST)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getApprovedProductList(@PathVariable String username ,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size) {
+        return sellerProductStatusService.getApprovedProductList(username,page,size);
+    }
+
+
+
 }

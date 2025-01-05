@@ -63,7 +63,6 @@ public class SellerProduct extends BaseEntity {
     //RowsCounter
     private long rowsCounter;
 
-    //RowsCounter
     private String productId;
 
     private String productStatus;

@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -224,5 +225,20 @@ public class ProductCalculationService {
             e.printStackTrace();
         }
     }
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static String generateProductCode(int length){
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be greater than 0");
+        }
+        SecureRandom random = new SecureRandom();
+        StringBuilder builder = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            builder.append(CHARACTERS.charAt(randomIndex));
+        }
+        return "PR-CODE-" + builder.toString();
+    }
+
 
 }
