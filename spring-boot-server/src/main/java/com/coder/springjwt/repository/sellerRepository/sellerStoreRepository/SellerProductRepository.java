@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +39,18 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
             "variant IN (:variants)", nativeQuery = true)
     Page<SellerProduct> findByVariantIn(@Param("productStatus") String productStatus ,
                                         @Param("sellerUsername") String sellerUsername ,
+                                        @Param("variants") List<String> variants,
+                                        Pageable pageable);
+
+
+    @Query(value = "SELECT * FROM seller_product WHERE product_status = :completed  OR product_status = :inCompleted",
+            nativeQuery = true)
+    Page<SellerProduct> findProductListForVerificationByAdmin( @Param("completed") String completed ,
+                                                           @Param("inCompleted") String inCompleted ,
+                                                           Pageable pageable);
+
+    @Query(value = "SELECT * FROM seller_product WHERE product_status = :productStatus and " + "variant IN (:variants)", nativeQuery = true)
+    Page<SellerProduct> findByProductUnderReviewByAdmin(@Param("productStatus") String productStatus ,
                                         @Param("variants") List<String> variants,
                                         Pageable pageable);
 

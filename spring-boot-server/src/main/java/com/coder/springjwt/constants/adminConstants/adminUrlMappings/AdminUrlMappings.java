@@ -173,11 +173,9 @@ public class AdminUrlMappings {
 
 
     //CATALOG BRAND URL's and Controller
-    public static final String CATALOG_CBI_CONTROLLER = ADMIN_AUTHORIZE_URL +"/catalogCbiController";
+    public static final String ADMIN_SELLER_PRODUCT_VERIFY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/adminSellerProductVerifyController";
 
-    public static final String  GET_CATALOG_PROGRESS_LIST= "/getCatalogInProgressList";
+    public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList";
 
-    public static final String CATALOG_INVESTIGATION = "/catalogInvestigation/{catalogId}";
-
-    public static final String SEARCH_CATALOGS_BY_DATES = "/searchCatalogByDates";
+    public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_LIST= "/getSellerProductUnderReviewList/{username}";
 }
