@@ -94,4 +94,5 @@ public class SellerProduct extends BaseEntity {
     @JsonIgnore
     private SellerStore sellerStore;
 
+
 }

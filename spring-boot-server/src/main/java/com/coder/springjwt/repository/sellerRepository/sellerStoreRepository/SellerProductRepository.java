@@ -32,6 +32,9 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     @Query(value = "SELECT * FROM seller_product WHERE parent_key = :parent_key" , nativeQuery = true)
     List<SellerProduct> findByParentKey(@Param("parent_key") String parent_key);
 
+
+
+//    =============ADMIN==============
     Page<SellerProduct> findByProductStatusAndSellerUserNameAndVariant(String productStatus , String sellerUserName , String variant , Pageable pageable);
 
     // Native SQL query

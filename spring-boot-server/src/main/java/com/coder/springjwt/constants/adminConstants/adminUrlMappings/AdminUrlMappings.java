@@ -175,7 +175,13 @@ public class AdminUrlMappings {
     //CATALOG BRAND URL's and Controller
     public static final String ADMIN_SELLER_PRODUCT_VERIFY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/adminSellerProductVerifyController";
 
-    public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList";
+    public static final String  FORM_BUILDER_FLYING_BY_ADMIN= "/formBuilderFlyingByAdmin/{categoryId}";
+
+    public static final String  GET_SELLER_PRODUCT_BY_ID_ADMIN= "/getSellerProductByIdAdmin/{productId}";
+
+    public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList/{username}";
 
     public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_LIST= "/getSellerProductUnderReviewList/{username}";
+
+
 }
