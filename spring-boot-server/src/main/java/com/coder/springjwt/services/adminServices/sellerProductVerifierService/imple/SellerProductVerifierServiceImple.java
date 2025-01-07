@@ -18,6 +18,7 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.adminServices.sellerProductVerifierService.SellerProductVerifierService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.imple.FormBuilderService;
 import com.coder.springjwt.util.ResponseGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class SellerProductVerifierServiceImple implements SellerProductVerifierService {
 
     @Autowired
@@ -68,14 +70,12 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
     @Override
     public ResponseEntity<?> getSellerProductByIdAdmin(String productId) {
         try {
-            //Get Current Username
-            String currentUser = UserHelper.getOnlyCurrentUser();
-
             SellerProduct  sellerData= this.sellerProductRepository
-                    .findByProductWithProductStatus(Long.parseLong(productId), ProductStatus.IN_COMPLETE.toString()).orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+                    .findByProductWithProductStatus(Long.parseLong(productId), ProductStatus.PV_UNDER_REVIEW.toString()).orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
-            if (sellerData.getProductStatus().equals(ProductStatus.IN_COMPLETE.toString())) {
-                System.out.println("Product Verified Success :: " + productId);
+            if (sellerData.getProductStatus().equals(ProductStatus.PV_UNDER_REVIEW.toString())) {
+                log.info("Product Data By Id Successfully Fetch PRODUCT-ID ->:: " + sellerData.getId() +
+                            " :: STATUS -> " + sellerData.getProductStatus());
                 return ResponseGenerator.generateSuccessResponse(sellerData, SellerMessageResponse.SUCCESS);
             }
             throw new UsernameNotFoundException(SellerMessageResponse.USER_NOT_FOUND + " : OR : " + SellerMessageResponse.SOMETHING_WENT_WRONG);
@@ -85,6 +85,8 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
         }
     }
+
+
 
 
     @Override
@@ -181,6 +183,35 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
         }
     }
 
+
+    @Override
+    public ResponseEntity<?> getSellerProductUnderReviewNoVariantList(String username, int page, int size) {
+
+        try {
+            Page<SellerProduct> productPendingList = this.sellerProductRepository.findByProductUnderReviewByAdmin(ProductStatus.PV_UNDER_REVIEW.toString(),
+                    List.of("NO") ,PageRequest.of(page, size));
+
+            // Map the SellerProduct list to a custom DTO with id and productName
+            Page<Map<String, Object>> dataCrunching = productPendingList.map(product -> {
+                Map<String, Object> productData = new HashMap<>();
+                productData.put("id", product.getId());
+                productData.put("productName", product.getProductName());
+                productData.put("productCode", product.getProductCode());
+                productData.put("creationDate", product.getProductCreationDate());
+                productData.put("creationTime", product.getProductCreationTime());
+                productData.put("fileName", product.getProductFiles().get(0).getFileName());
+                productData.put("fileUrl", product.getProductFiles().get(0).getFileUrl());
+                productData.put("productStatus", product.getProductStatus());
+                productData.put("howManyVariants",product.getHowManyVariants());
+                return productData;
+            });
+            return ResponseGenerator.generateSuccessResponse(dataCrunching,SellerMessageResponse.SUCCESS);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

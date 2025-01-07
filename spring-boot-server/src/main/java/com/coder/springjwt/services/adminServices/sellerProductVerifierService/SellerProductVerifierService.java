@@ -13,4 +13,6 @@ public interface SellerProductVerifierService {
     ResponseEntity<?> getFormBuilderFlyingByAdmin(String categoryId);
 
     ResponseEntity<?> getSellerProductByIdAdmin(String productId);
+
+    ResponseEntity<?> getSellerProductUnderReviewNoVariantList(String username, int page, int size);
 }

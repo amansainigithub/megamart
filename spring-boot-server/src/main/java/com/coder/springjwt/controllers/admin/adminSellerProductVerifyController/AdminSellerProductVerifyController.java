@@ -16,13 +16,11 @@ public class AdminSellerProductVerifyController {
     @Autowired
     private SellerProductVerifierService sellerProductVerifierService;
 
-
     @GetMapping(AdminUrlMappings.FORM_BUILDER_FLYING_BY_ADMIN)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> formBuilderFlyingByAdmin(@PathVariable String categoryId){
         return this.sellerProductVerifierService.getFormBuilderFlyingByAdmin(categoryId);
     }
-
 
     @GetMapping(AdminUrlMappings.GET_SELLER_PRODUCT_VERIFY_LIST)
     @PreAuthorize("hasRole('ADMIN')")
@@ -40,12 +38,20 @@ public class AdminSellerProductVerifyController {
         return sellerProductVerifierService.getSellerProductUnderReviewList(username,page,size);
     }
 
+    @GetMapping(AdminUrlMappings.GET_SELLER_PRODUCT_UNDER_REVIEW_NO_VARIANT_LIST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getSellerProductUnderReviewNoVariantList(@PathVariable String username ,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) {
+        return sellerProductVerifierService.getSellerProductUnderReviewNoVariantList(username,page,size);
+    }
 
     @GetMapping(AdminUrlMappings.GET_SELLER_PRODUCT_BY_ID_ADMIN)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getSellerProductByIdAdmin(@PathVariable String productId) {
         return sellerProductVerifierService.getSellerProductByIdAdmin(productId);
     }
+
 
 
 
