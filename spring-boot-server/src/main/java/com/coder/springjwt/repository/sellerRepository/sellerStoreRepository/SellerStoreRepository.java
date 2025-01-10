@@ -14,6 +14,6 @@ public interface SellerStoreRepository extends JpaRepository<SellerStore, Long> 
 
     Optional<SellerStore> findByUsername(String username);
 
-    // Method 2: Custom Query (Optional)
+    Boolean existsByUsername(String username);
 
 }

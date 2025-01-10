@@ -53,6 +53,24 @@ public class AdminSellerProductVerifyController {
     }
 
 
+    @GetMapping(AdminUrlMappings.GET_SELLER_PRODUCT_APPROVED_LIST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getSellerProductApprovedList(@PathVariable String username ,
+                                                          @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size) {
+        return sellerProductVerifierService.getSellerProductApprovedList(username,page,size);
+    }
+
+
+    @GetMapping(AdminUrlMappings.GET_SELLER_VARIANT_PRODUCT_APPROVED_LIST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getSellerVariantProductApprovedList(@PathVariable String username ,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) {
+        return sellerProductVerifierService.getSellerVariantProductApprovedList(username,page,size);
+    }
+
+
 
 
 

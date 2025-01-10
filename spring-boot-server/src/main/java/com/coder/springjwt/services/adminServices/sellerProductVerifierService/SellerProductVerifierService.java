@@ -15,4 +15,8 @@ public interface SellerProductVerifierService {
     ResponseEntity<?> getSellerProductByIdAdmin(String productId);
 
     ResponseEntity<?> getSellerProductUnderReviewNoVariantList(String username, int page, int size);
+
+    ResponseEntity<?> getSellerProductApprovedList(String username, int page, int size);
+
+    ResponseEntity<?> getSellerVariantProductApprovedList(String username, int page, int size);
 }

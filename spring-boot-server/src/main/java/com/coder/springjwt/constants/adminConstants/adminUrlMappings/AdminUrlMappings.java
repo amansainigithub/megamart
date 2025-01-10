@@ -174,15 +174,30 @@ public class AdminUrlMappings {
 
     //CATALOG BRAND URL's and Controller
     public static final String ADMIN_SELLER_PRODUCT_VERIFY_CONTROLLER = ADMIN_AUTHORIZE_URL +"/adminSellerProductVerifyController";
-
     public static final String  FORM_BUILDER_FLYING_BY_ADMIN= "/formBuilderFlyingByAdmin/{categoryId}";
-
     public static final String  GET_SELLER_PRODUCT_BY_ID_ADMIN= "/getSellerProductByIdAdmin/{productId}";
-
     public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList/{username}";
-
     public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_LIST= "/getSellerProductUnderReviewList/{username}";
-
     public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_NO_VARIANT_LIST= "/getSellerProductUnderReviewNoVariantList/{username}";
+
+
+    //Product Reviews Status Controller
+    public static final String ADMIN_PRODUCT_STATUS_REVIEW_CONTROLLER = ADMIN_AUTHORIZE_URL +"/adminProductReviewStatusController";
+    public static final String  SAVE_PRODUCT_REVIEW_STATUS= "/saveProductReviewStatus";
+    public static final String  DELETE_PRODUCT_REVIEW_STATUS= "/deleteProductReviewStatus/{id}";
+    public static final String  GET_PRODUCT_REVIEWS= "/getProductReviews";
+    public static final String  GET_PRODUCT_REVIEW_STATUS_BY_ID= "/getProductReviewStatusById/{id}";
+    public static final String  UPDATE_PRODUCT_REVIEW_STATUS= "/updateProductReviewStatus";
+    public static final String  GET_PRODUCT_REVIEWS_STATUS_LIST= "/getProductReviewsStatusList";
+    public static final String  GET_SELLER_PRODUCT_APPROVED_LIST= "/getSellerProductApprovedList/{username}";
+
+    public static final String  GET_SELLER_VARIANT_PRODUCT_APPROVED_LIST= "/getSellerVariantProductApprovedList/{username}";
+
+
+
+
+    public static final String ADMIN_PRODUCT_REVIEW_DECISION_CONTROLLER = ADMIN_AUTHORIZE_URL +"/adminProductReviewDecisionController";
+    public static final String  SAVE_PRODUCT_REVIEW_DECISION= "/saveProductReviewDecision";
+
 
 }

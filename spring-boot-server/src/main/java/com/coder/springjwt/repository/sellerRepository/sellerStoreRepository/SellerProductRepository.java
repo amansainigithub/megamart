@@ -33,6 +33,9 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     List<SellerProduct> findByParentKey(@Param("parent_key") String parent_key);
 
 
+    @Query(value = "SELECT * FROM seller_product WHERE variant = :variant and product_status = :product_status", nativeQuery = true)
+    List<SellerProduct> findByVariantAndProductStatus(@Param("variant") Long variant , @Param("product_status") String product_status);
+
 
 //    =============ADMIN==============
     Page<SellerProduct> findByProductStatusAndSellerUserNameAndVariant(String productStatus , String sellerUserName , String variant , Pageable pageable);
@@ -56,5 +59,10 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     Page<SellerProduct> findByProductUnderReviewByAdmin(@Param("productStatus") String productStatus ,
                                         @Param("variants") List<String> variants,
                                         Pageable pageable);
+
+
+    Boolean existsByProductLauncherId( String productLauncherId);
+
+
 
 }
