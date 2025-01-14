@@ -68,6 +68,77 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
     }
 
     @Override
+    public ResponseEntity<?> getSellerProductVerifierList(String username , int page, int size) {
+        try{
+            // Fetch pending products
+            Page<SellerProduct> sellerPendingProductList = this.sellerProductRepository.findByProductUnderReviewByAdmin(
+                                            List.of( ProductStatus.PV_UNDER_REVIEW.toString(),  ProductStatus.PV_APPROVED.toString()),
+                                            List.of("YES"),
+                                            PageRequest.of(page, size));
+
+            List<SellerProduct> productList = sellerPendingProductList.getContent();
+            System.out.println(productList.size());
+            ArrayList<SellerProductPayloads> sellerProductPayloads = new ArrayList<>();
+            for(SellerProduct sellerProduct : productList ) {
+
+                    boolean productUnderReview = Boolean.FALSE;
+
+                    SellerProductPayloads productPayloads = new SellerProductPayloads();
+                    productPayloads.setId(sellerProduct.getId());
+                    productPayloads.setProductName(sellerProduct.getProductName());
+                    productPayloads.setProductStatus(sellerProduct.getProductStatus());
+                    productPayloads.setCreationDate(sellerProduct.getProductCreationDate());
+                    productPayloads.setCreationTime(sellerProduct.getProductCreationTime());
+                    productPayloads.setProductColor(sellerProduct.getProductColor());
+                    productPayloads.setFileName(sellerProduct.getProductFiles().get(0).getFileName());
+                    productPayloads.setFileUrl(sellerProduct.getProductFiles().get(0).getFileUrl());
+
+                    if(productPayloads.getProductStatus().equals(ProductStatus.PV_UNDER_REVIEW.toString())){
+                        productUnderReview = Boolean.TRUE;
+                    }
+
+                    List<SellerProductVariantsPayloads> sellerProductVariantPayloads = new ArrayList<>();
+
+                    List<SellerProduct> variantList = this.sellerProductRepository.findByVariant(sellerProduct.getId());
+                    for (SellerProduct variantData : variantList) {
+                        SellerProductVariantsPayloads sellerProductVariantsPayloads = new SellerProductVariantsPayloads();
+                        sellerProductVariantsPayloads.setId(variantData.getId());
+                        sellerProductVariantsPayloads.setProductName(variantData.getProductName());
+                        sellerProductVariantsPayloads.setProductStatus(variantData.getProductStatus());
+                        sellerProductVariantsPayloads.setCreationDate(variantData.getProductCreationDate());
+                        sellerProductVariantsPayloads.setCreationTime(variantData.getProductCreationTime());
+                        sellerProductVariantsPayloads.setProductColor(variantData.getProductColor());
+
+                        if(variantData.getProductFiles().size() > 0 ){
+                            sellerProductVariantsPayloads.setFileName(variantData.getProductFiles().get(0).getFileName());
+                            sellerProductVariantsPayloads.setFileUrl(variantData.getProductFiles().get(0).getFileUrl());
+                        }
+                        sellerProductVariantPayloads.add(sellerProductVariantsPayloads);
+
+                        if(variantData.getProductStatus().equals(ProductStatus.PV_UNDER_REVIEW.toString())){
+                            productUnderReview = Boolean.TRUE;
+                        }
+                    }
+                    if(productUnderReview) {
+                        productPayloads.setSellerProductVariantPayloads(sellerProductVariantPayloads);
+                        sellerProductPayloads.add(productPayloads);
+                    }
+            }
+            // Paginate the custom payload
+            Page<SellerProductPayloads> paginatedPayloads = new PageImpl<>(
+                    sellerProductPayloads,
+                    PageRequest.of(page, size),
+                    sellerPendingProductList.getTotalElements()
+            );
+            return ResponseGenerator.generateSuccessResponse(paginatedPayloads, SellerMessageResponse.SUCCESS);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
+        }
+    }
+
+    @Override
     public ResponseEntity<?> getSellerProductByIdAdmin(String productId) {
         try {
             SellerProduct  sellerData= this.sellerProductRepository
@@ -86,73 +157,6 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
         }
     }
 
-
-
-
-    @Override
-    public ResponseEntity<?> getSellerProductVerifierList(String username , int page, int size) {
-        try{
-            // Fetch pending products
-            Page<SellerProduct> sellerPendingProductList = this.sellerProductRepository.findByProductUnderReviewByAdmin(
-                                                            ProductStatus.PV_UNDER_REVIEW.toString(),
-                                                            List.of("YES","NO"),
-                                                            PageRequest.of(page, size));
-
-            List<SellerProduct> productList = sellerPendingProductList.getContent();
-
-            ArrayList<SellerProductPayloads> sellerProductPayloads = new ArrayList<>();
-            for(SellerProduct sellerProduct : productList ) {
-
-                if (sellerProduct.getVariant().equals("YES")) {
-                    SellerProductPayloads productPayloads = new SellerProductPayloads();
-                    productPayloads.setId(sellerProduct.getId());
-                    productPayloads.setProductName(sellerProduct.getProductName());
-                    productPayloads.setProductStatus(sellerProduct.getProductStatus());
-                    productPayloads.setCreationDate(sellerProduct.getProductCreationDate());
-                    productPayloads.setCreationTime(sellerProduct.getProductCreationTime());
-                    productPayloads.setProductColor(sellerProduct.getProductColor());
-                    productPayloads.setFileName(sellerProduct.getProductFiles().get(0).getFileName());
-                    productPayloads.setFileUrl(sellerProduct.getProductFiles().get(0).getFileUrl());
-
-                    List<SellerProductVariantsPayloads> sellerProductVariantPayloads = new ArrayList<>();
-
-
-                    List<SellerProduct> variantList = this.sellerProductRepository.findByVariant(sellerProduct.getId());
-                    for (SellerProduct variantData : variantList) {
-                        SellerProductVariantsPayloads sellerProductVariantsPayloads = new SellerProductVariantsPayloads();
-                        sellerProductVariantsPayloads.setId(variantData.getId());
-                        sellerProductVariantsPayloads.setProductName(variantData.getProductName());
-                        sellerProductVariantsPayloads.setProductStatus(variantData.getProductStatus());
-                        sellerProductVariantsPayloads.setCreationDate(variantData.getProductCreationDate());
-                        sellerProductVariantsPayloads.setCreationTime(variantData.getProductCreationTime());
-                        sellerProductVariantsPayloads.setProductColor(variantData.getProductColor());
-
-                        if(variantData.getProductFiles().size() > 0 ){
-                            sellerProductVariantsPayloads.setFileName(variantData.getProductFiles().get(0).getFileName());
-                            sellerProductVariantsPayloads.setFileUrl(variantData.getProductFiles().get(0).getFileUrl());
-                        }
-
-                        sellerProductVariantPayloads.add(sellerProductVariantsPayloads);
-                    }
-                    productPayloads.setSellerProductVariantPayloads(sellerProductVariantPayloads);
-                    sellerProductPayloads.add(productPayloads);
-                }
-            }
-
-            // Paginate the custom payload
-            Page<SellerProductPayloads> paginatedPayloads = new PageImpl<>(
-                    sellerProductPayloads,
-                    PageRequest.of(page, size),
-                    sellerPendingProductList.getTotalElements()
-            );
-
-            return ResponseGenerator.generateSuccessResponse(paginatedPayloads, SellerMessageResponse.SUCCESS);
-        }
-            catch (Exception e){
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
-        }
-    }
 
     @Override
     public ResponseEntity<?> getSellerProductUnderReviewList(String username , int page, int size) {
@@ -245,7 +249,7 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
     public ResponseEntity<?> getSellerVariantProductApprovedList(String username, int page, int size) {
         try {
             Page<SellerProduct> productApprovedList = this.sellerProductRepository.findByProductUnderReviewByAdmin(ProductStatus.PV_APPROVED.toString(),
-                    List.of("YES") ,PageRequest.of(page, size));
+                                                       List.of("YES") ,PageRequest.of(page, size));
 
             // Map the SellerProduct list to a custom DTO with id and productName
             Page<Map<String, Object>> dataCrunching = productApprovedList.map(product -> {
@@ -260,8 +264,16 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
                 productData.put("productStatus", product.getProductStatus());
                 productData.put("howManyVariants",product.getHowManyVariants());
 
-                List<SellerProduct> sellerProductList =  this.sellerProductRepository.findByVariantAndProductStatus(product.getId(),ProductStatus.PV_APPROVED.toString());
-                if(sellerProductList != null || sellerProductList.size() > 0)
+                List<SellerProduct> sellerProductList =  this.sellerProductRepository.findByVariant(product.getId());
+
+                int variantSize = sellerProductList.size();
+                int variantCounter = 0;
+                for(SellerProduct sellerProduct : sellerProductList){
+                    if(sellerProduct.getProductStatus().equals(ProductStatus.PV_APPROVED.toString())){
+                        variantCounter++;
+                    }
+                }
+                if(variantSize == variantCounter)
                 {
                     return productData;
                 }else{
