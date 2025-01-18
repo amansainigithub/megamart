@@ -49,7 +49,12 @@ public class SellerProductController {
     @PostMapping(SellerUrlMappings.SAVE_SELLER_PRODUCT)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> saveSellerProduct(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long bornCategoryId) {
-        return sellerProductService.saveSellerProduct(productRootBuilder , bornCategoryId);
+        try {
+            Thread.sleep(3000);
+            return sellerProductService.saveSellerProduct(productRootBuilder , bornCategoryId);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping(SellerUrlMappings.UPLOAD_PRODUCT_FILES)
@@ -61,7 +66,12 @@ public class SellerProductController {
     @PostMapping(SellerUrlMappings.UPDATE_SELLER_PRODUCT)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> updateSellerProduct(@RequestBody ProductRootBuilder productRootBuilder , @PathVariable Long productId) {
+        try {
+            Thread.sleep(3000);
         return sellerProductService.updateSellerProduct(productRootBuilder , productId);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
