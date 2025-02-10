@@ -1,6 +1,5 @@
 package com.coder.springjwt.services.sellerServices.sellerProductCategoryService;
 
-import com.coder.springjwt.payload.sellerPayloads.sellerPayload.SellerPickUpPayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
