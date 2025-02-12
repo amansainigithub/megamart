@@ -2,7 +2,7 @@ package com.coder.springjwt.bucket.bucketController;
 
 import com.coder.springjwt.bucket.BucketUrlMappings;
 import com.coder.springjwt.bucket.bucketService.BucketService;
-import com.coder.springjwt.constants.adminConstants.adminUrlMappings.AdminUrlMappings;
+import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(AdminUrlMappings.ADMIN_AUTHORIZE_URL)
+@RequestMapping(SellerUrlMappings.SELLER_AUTH_URL)
 @Slf4j
 public class BucketController {
 

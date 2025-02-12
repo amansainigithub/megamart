@@ -6,7 +6,7 @@ import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.adminModels.categories.BornCategoryModel;
+import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;

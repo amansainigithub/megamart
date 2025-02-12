@@ -1,24 +1,14 @@
 package com.coder.springjwt.controllers.seller.sellerProductController;
 
-import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.formBuilderTools.formVariableKeys.FormProductVariantBuilder;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
-import com.coder.springjwt.repository.RoleRepository;
-import com.coder.springjwt.repository.UserRepository;
-import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
-import com.coder.springjwt.security.jwt.JwtUtils;
-import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController

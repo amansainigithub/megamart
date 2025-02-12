@@ -2,13 +2,11 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 import com.coder.springjwt.formBuilderTools.FormBuilderModel.FormBuilderTool;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
-import com.coder.springjwt.models.adminModels.catalog.hsn.HsnCodes;
-import com.coder.springjwt.repository.adminRepository.catalogRepos.HsnRepository;
+import com.coder.springjwt.models.sellerModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.repository.sellerRepository.catalogRepos.HsnRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

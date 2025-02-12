@@ -3,8 +3,8 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.userServi
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.repository.UserRepository;
-import com.coder.springjwt.repository.adminRepository.categories.BabyCategoryRepo;
-import com.coder.springjwt.repository.adminRepository.categories.BornCategoryRepo;
+import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
+import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.userService.UserService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;

@@ -1,7 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.exception.adminException.DataNotFoundException;
+import com.coder.springjwt.exception.customerException.DataNotFoundException;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -9,7 +9,7 @@ import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductPayloads;
 import com.coder.springjwt.payload.sellerPayloads.sellerProducts.SellerProductVariantsPayloads;
 import com.coder.springjwt.repository.UserRepository;
-import com.coder.springjwt.repository.adminRepository.catalogRepos.ProductBreathRepo;
+import com.coder.springjwt.repository.sellerRepository.catalogRepos.ProductBreathRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductStatusService;
