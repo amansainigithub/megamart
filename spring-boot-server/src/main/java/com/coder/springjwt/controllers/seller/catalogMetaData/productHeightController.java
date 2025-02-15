@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller.catalogMetaData;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.dtos.sellerDtos.productMetaDtos.ProductHeightDto;
-import com.coder.springjwt.services.sellerServices.catalogHeightService.CatalogHeightService;
+import com.coder.springjwt.exception.services.sellerServices.catalogHeightService.CatalogHeightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

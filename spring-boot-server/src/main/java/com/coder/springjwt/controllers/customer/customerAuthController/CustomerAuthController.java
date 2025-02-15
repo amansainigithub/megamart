@@ -6,27 +6,15 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLogi
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
-import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
-import com.coder.springjwt.util.MessageResponse;
-import com.coder.springjwt.util.ResponseGenerator;
-import com.google.gson.Gson;
+import com.coder.springjwt.exception.services.customerServices.customerAuthService.CustomerAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.CUSTOMER_BASE_URL)

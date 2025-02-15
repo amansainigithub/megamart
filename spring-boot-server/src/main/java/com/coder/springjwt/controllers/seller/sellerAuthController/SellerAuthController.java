@@ -10,7 +10,7 @@ import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
-import com.coder.springjwt.services.emailServices.EmailService.EmailService;
+import com.coder.springjwt.exception.services.emailServices.EmailService.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,20 +47,16 @@ public class SellerAuthController {
     @Autowired
     private EmailService simpleEmailService;
 
-
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
+        System.out.println(loginRequest + ":: " );
             Authentication authentication = authenticationManager.authenticate(
                                             new UsernamePasswordAuthenticationToken(
-                                                    loginRequest.getUsername()+ SellerMessageResponse.SLR,
+                                                    loginRequest.getUsername(),
                                                     loginRequest.getPassword()));
 
-        Optional<User> userData  = this.userRepository.findBySellerMobileAndSellerRegisterComplete
-                                     ("9818644140", "Y");
 
-        if(userData.isPresent())
-        {
             SecurityContextHolder.getContext().setAuthentication(authentication);
                 String jwt = jwtUtils.generateJwtToken(authentication);
 
@@ -77,11 +73,9 @@ public class SellerAuthController {
                                 userDetails.getUsername(),
                                 userDetails.getEmail(),
                                 roles));
-
                     }
                 }
 
-        }
         return ResponseEntity.badRequest().body("Error: Unauthorized");
     }
 

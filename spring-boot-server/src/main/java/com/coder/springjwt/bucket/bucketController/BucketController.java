@@ -21,14 +21,14 @@ public class BucketController {
     private BucketService serviceBucket;
 
     @PostMapping(BucketUrlMappings.UPLOAD_FILE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> uploadFile(@RequestParam(value = "file" ) MultipartFile file) {
         log.info(file.getOriginalFilename());
         return ResponseEntity.ok(this.serviceBucket.uploadFile(file));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(BucketUrlMappings.DOWNLOAD_FILE)
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = serviceBucket.downloadFile(fileName);
         ByteArrayResource resource = new ByteArrayResource(data);
@@ -40,7 +40,7 @@ public class BucketController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SELLER')")
     @DeleteMapping(BucketUrlMappings.DELETE_BUCKET_FILE)
     public ResponseEntity<String> deleteBucketFile(@PathVariable String fileName) {
         return new ResponseEntity<>(serviceBucket.deleteFile(fileName), HttpStatus.OK);

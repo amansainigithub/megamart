@@ -1,6 +1,5 @@
 package com.coder.springjwt.payload.customerPayloads.customerPayload;
 
-import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
