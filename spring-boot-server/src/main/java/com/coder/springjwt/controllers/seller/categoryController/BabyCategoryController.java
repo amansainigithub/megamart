@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller.categoryController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.babyDto.BabyCategoryDto;
-import com.coder.springjwt.exception.services.sellerServices.categories.BabyCategoryService;
+import com.coder.springjwt.services.sellerServices.categories.BabyCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

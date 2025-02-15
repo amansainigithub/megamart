@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller.sellerProductController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
-import com.coder.springjwt.exception.services.sellerServices.sellerStoreService.SellerProductService;
+import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -6,7 +6,7 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLogi
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
-import com.coder.springjwt.exception.services.customerServices.customerAuthService.CustomerAuthService;
+import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;

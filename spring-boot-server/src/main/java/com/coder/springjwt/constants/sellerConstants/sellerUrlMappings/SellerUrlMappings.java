@@ -201,4 +201,30 @@ public class SellerUrlMappings {
     public static final String PRODUCT_HEIGHT_CONTROLLER = SELLER_AUTH_URL +"/productHeightController";
     public static final String  SAVE_HEIGHT= "/saveHeight";
     public static final String GET_HEIGHT="/getHeight";
+
+
+
+    //CATALOG BRAND URL's and Controller
+    public static final String SELLER_PRODUCT_VERIFY_CONTROLLER = SELLER_AUTH_URL +"/sellerProductVerifyController";
+    public static final String  FORM_BUILDER_FLYING_BY_ADMIN= "/formBuilderFlyingByAdmin/{categoryId}";
+    public static final String  GET_SELLER_PRODUCT_BY_ID_ADMIN= "/getSellerProductByIdAdmin/{productId}";
+    public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList/{username}";
+    public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_LIST= "/getSellerProductUnderReviewList/{username}";
+    public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_NO_VARIANT_LIST= "/getSellerProductUnderReviewNoVariantList/{username}";
+    public static final String  GET_SELLER_PRODUCT_APPROVED_LIST= "/getSellerProductApprovedList/{username}";
+    public static final String  GET_SELLER_VARIANT_PRODUCT_APPROVED_LIST= "/getSellerVariantProductApprovedList/{username}";
+
+
+
+
+    public static final String  SAVE_PRODUCT_REVIEW_STATUS= "/saveProductReviewStatus";
+    public static final String  DELETE_PRODUCT_REVIEW_STATUS= "/deleteProductReviewStatus/{id}";
+    public static final String  GET_PRODUCT_REVIEWS= "/getProductReviews";
+    public static final String  GET_PRODUCT_REVIEW_STATUS_BY_ID= "/getProductReviewStatusById/{id}";
+    public static final String  UPDATE_PRODUCT_REVIEW_STATUS= "/updateProductReviewStatus";
+    public static final String  GET_PRODUCT_REVIEWS_STATUS_LIST= "/getProductReviewsStatusList";
+
+
+    public static final String PRODUCT_REVIEW_DECISION_CONTROLLER = SELLER_AUTH_URL +"/productReviewDecisionController";
+    public static final String  SAVE_PRODUCT_REVIEW_DECISION= "/saveProductReviewDecision";
 }
