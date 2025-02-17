@@ -19,12 +19,6 @@ public class SellerUrlMappings {
 
     public static final String STATE_CITY_PINCODE_CONTROLLER = SELLER_PUBLIC_URL + "/stateCityPincodeController";
 
-    public static final String SELLER_TAX_CONTROLLER = SELLER_PUBLIC_URL + "/sellerTaxController";
-
-    public static final String SELLER_PICKUP_CONTROLLER = SELLER_PUBLIC_URL + "/sellerPickupController";
-
-    public static final String SELLER_BANK_CONTROLLER = SELLER_PUBLIC_URL + "/sellerBankController";
-
     public static final String SELLER_STORE_CONTROLLER = SELLER_PUBLIC_URL + "/sellerStoreController";
 
 
@@ -32,14 +26,7 @@ public class SellerUrlMappings {
     //=======================================API's=========================================================
     //SignIn API's
     public static final String SELLER_SIGN_IN = "/sellerSignIn";
-    public static final String SELLER_SEND_OTP = "/sellerSendOtp";
-    public static final String VALIDATE_SELLER_OTP = "/validateSellerOtp";
-    public static final String SELLER_SIGN_UP = "/sellerSignup";
     public static final String STATE_CITY_PINCODE = "/stateCityPincode/{pincode}";
-    public static final String SELLER_TAX = "/sellerTax";
-    //Seller pickup Data
-    public static final String SELLER_PICKUP = "/sellerPickup";
-    public static final String SELLER_BANK = "/sellerBank";
     public static final String SELLER_STORE = "/sellerStore";
 
 
@@ -67,10 +54,6 @@ public class SellerUrlMappings {
 
 //=====================================sellerProductStatusController===============================================
     public static final String SELLER_PRODUCT_STATUS_CONTROLLER = SELLER_AUTH_URL + "/sellerProductStatusController";
-    public static final String GET_ALL_INCOMPLETE_PRODUCT = "/getAllIncompleteProduct";
-    public static final String GET_PRODUCT_VARIANT_BY_VARIANT_ID = "/getProductVariantByVariantId/{variantId}";
-    public static final String GET_PENDING_PRODUCT_LIST = "/getPendingProductList/{username}";
-
     public static final String GET_APPROVED_PRODUCT_LIST = "/getApprovedProductList/{username}";
 
 
@@ -176,8 +159,6 @@ public class SellerUrlMappings {
 
 
 
-
-
     //Catalog Weight Controller
     public static final String PRODUCT_WEIGHT_CONTROLLER = SELLER_AUTH_URL +"/productWeightController";
 
@@ -208,11 +189,7 @@ public class SellerUrlMappings {
     public static final String SELLER_PRODUCT_VERIFY_CONTROLLER = SELLER_AUTH_URL +"/sellerProductVerifyController";
     public static final String  FORM_BUILDER_FLYING_BY_ADMIN= "/formBuilderFlyingByAdmin/{categoryId}";
     public static final String  GET_SELLER_PRODUCT_BY_ID_ADMIN= "/getSellerProductByIdAdmin/{productId}";
-    public static final String  GET_SELLER_PRODUCT_VERIFY_LIST= "/getSellerProductVerifyList/{username}";
-    public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_LIST= "/getSellerProductUnderReviewList/{username}";
     public static final String  GET_SELLER_PRODUCT_UNDER_REVIEW_NO_VARIANT_LIST= "/getSellerProductUnderReviewNoVariantList/{username}";
-    public static final String  GET_SELLER_PRODUCT_APPROVED_LIST= "/getSellerProductApprovedList/{username}";
-    public static final String  GET_SELLER_VARIANT_PRODUCT_APPROVED_LIST= "/getSellerVariantProductApprovedList/{username}";
 
 
 

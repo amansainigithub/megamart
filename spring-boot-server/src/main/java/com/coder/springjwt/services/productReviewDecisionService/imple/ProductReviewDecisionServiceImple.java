@@ -9,7 +9,6 @@ import com.coder.springjwt.payload.sellerPayloads.ProductReviewPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.productStatusRepo.ProductReviewStatusRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.productReviewDecisionService.ProductReviewDecisionService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +30,6 @@ public class ProductReviewDecisionServiceImple implements ProductReviewDecisionS
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private SellerStoreRepository sellerStoreRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;

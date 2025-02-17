@@ -14,27 +14,6 @@ public class SellerProductStatusController {
     @Autowired
     private SellerProductStatusService sellerProductStatusService;
 
-    @GetMapping(SellerUrlMappings.GET_ALL_INCOMPLETE_PRODUCT)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getAllIncompleteProduct() {
-            return sellerProductStatusService.getAllIncompleteProduct();
-    }
-
-
-    @GetMapping(SellerUrlMappings.GET_PRODUCT_VARIANT_BY_VARIANT_ID)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getProductVariantByVariantId(@PathVariable Long variantId) {
-        return sellerProductStatusService.getProductVariantByVariantId(variantId);
-    }
-
-    @GetMapping(SellerUrlMappings.GET_PENDING_PRODUCT_LIST)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getPendingProductList(@PathVariable String username ,
-                                                   @RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "10") int size) {
-        return sellerProductStatusService.getPendingProductList(username,page,size);
-    }
-
 
     @GetMapping(SellerUrlMappings.GET_APPROVED_PRODUCT_LIST)
     @PreAuthorize("hasRole('SELLER')")

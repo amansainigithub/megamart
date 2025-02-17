@@ -27,13 +27,11 @@ import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.catalogRepos.*;
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import com.coder.springjwt.services.sellerServices.sellerStoreService.SellerProductService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -76,9 +74,6 @@ public class SellerProductServiceImple implements SellerProductService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private SellerStoreRepository sellerStoreRepository;
 
 
     @Autowired
@@ -400,16 +395,15 @@ public class SellerProductServiceImple implements SellerProductService {
 
                 String currentUser = UserHelper.getOnlyCurrentUser();
 
-                SellerStore sellerStore = this.sellerStoreRepository.findByUsername(currentUser)
-                                          .orElseThrow(() -> new DataNotFoundException("Seller Store Not Found !!"));
+
                 BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
                                                   .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
 
             // Map incoming data to SellerProduct
             SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
 
-            //Set Seller Store
-            sellerProduct.setSellerStore(sellerStore);
+//            //Set Seller Store
+//            sellerProduct.setSellerStore(sellerStore);
 
             //Set Rows Counter
             sellerProduct.setRowsCounter(1l);
@@ -432,9 +426,6 @@ public class SellerProductServiceImple implements SellerProductService {
             //save UserName and sellerUserId
             productCalculationService.setSellerUsernameAndUserId(sellerProduct);
 
-            //Seller Store Name and SellerStoreId
-            productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProduct);
-
             //set Born Category Name
             sellerProduct.setBornCategoryName(bornCategoryModel.getCategoryName());
 
@@ -453,9 +444,6 @@ public class SellerProductServiceImple implements SellerProductService {
             }else{
                 sellerProduct.setVariant("YES");
                 sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
-
-                //Set how Many Variants
-                sellerProduct.setHowManyVariants(productRootBuilder.getProductVariants().size());
             }
 
             //if SKU-ID is null or blank then Generate otherwise set SKU-ID
@@ -473,10 +461,6 @@ public class SellerProductServiceImple implements SellerProductService {
             productResponse.setParentKey(String.valueOf(productResponse.getId()));
             this.sellerProductRepository.save(productResponse);
 
-            if(productResponse.getId() > 0 && productRootBuilder.getProductVariants().size() > 0){
-                this.saveProductVariants(productResponse, productRootBuilder, bornCategoryModel , sellerStore);
-            }
-
             return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.SOMETHING_WENT_WRONG);
@@ -490,111 +474,6 @@ public class SellerProductServiceImple implements SellerProductService {
     }
 
 
-    public void saveProductVariants(SellerProduct sellerProduct, ProductRootBuilder productRootBuilder, BornCategoryModel bornCategoryModel, SellerStore sellerStore){
-        int rowsCounter = 2;
-        try {
-
-            Map<String, List<FormProductVariantBuilder>> managedVariants =
-                    productCalculationService.groupingProductVariats(productRootBuilder);
-
-            for (Map.Entry<String, List<FormProductVariantBuilder>> entry : managedVariants.entrySet()) {
-                String color = entry.getKey(); // The color variant
-                List<FormProductVariantBuilder> variants = entry.getValue(); // The list of variants for this color
-
-                ArrayList<ProductRows> variantRowList = new ArrayList<>();
-
-                for (FormProductVariantBuilder variant : variants) {
-                    ProductRows variantRow = modelMapper.map(variant, ProductRows.class);
-                    //For New Creation Entry that is 0
-                    variantRow.setId(0);
-                    variantRowList.add(variantRow);
-                }
-                productRootBuilder.setTableRows(variantRowList);
-
-                // Map incoming data to SellerProduct
-                SellerProduct sellerProductVariant = modelMapper.map(productRootBuilder, SellerProduct.class);
-
-                //Set Rows Counter
-                sellerProductVariant.setRowsCounter(rowsCounter);
-
-                //Calculated GST
-                productCalculationService.calculateTaxes(color, sellerProductVariant.getProductRows(),sellerProductVariant.getGst(),bornCategoryModel);
-
-                //Set Color for Root Table
-                sellerProductVariant.setProductColor(color);
-
-                //set current Date
-                sellerProductVariant.setProductCreationDate(productCalculationService.getCurrentDate());
-
-                //set Current Time
-                sellerProductVariant.setProductCreationTime(productCalculationService.getCurrentTime());
-
-                //Set MapperId
-                sellerProductVariant.setParentKey(String.valueOf(sellerProduct.getId()));
-
-                //Set Product Id
-                sellerProductVariant.setProductId(productCalculationService.generateProductId());
-
-                //Set Product Code
-                if(sellerProduct.getProductCode() == null)
-                {
-                    sellerProduct.setProductCode(ProductCalculationService.generateProductCode(10));
-                }
-
-                //Set Product Status
-                sellerProductVariant.setProductStatus(ProductStatus.IN_COMPLETE.toString());
-
-                //Set Shipping Charges
-                sellerProductVariant.setShippingCharges(bornCategoryModel.getShippingCharge());
-
-                //save UserName and sellerUserId
-                productCalculationService.setSellerUsernameAndUserId(sellerProductVariant);
-
-                //Seller Store Name and SellerStoreId
-                productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProductVariant);
-
-                //set Born Category Name
-                sellerProductVariant.setBornCategoryName(bornCategoryModel.getCategoryName());
-
-                //set Born Category Name
-                sellerProductVariant.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
-
-                //set Born Category Name
-                sellerProductVariant.setVariant(String.valueOf(sellerProduct.getId()));
-
-                // Explicitly set the relationship for ProductVariants
-                if (sellerProductVariant.getProductRows() != null) {
-                    for (ProductVariants variant : sellerProductVariant.getProductRows()) {
-                        if(variant.getSkuId() == "" || variant.getSkuId() == null)
-                        {
-                            variant.setSkuId(productCalculationService.getSkuCode());
-                        }
-                        variant.setSellerProduct(sellerProductVariant);
-                    }
-                }
-
-                //Set Primary Key
-                sellerProductVariant.setParentKey(sellerProduct.getParentKey());
-
-                //Set Seller Store
-                sellerProductVariant.setSellerStore(sellerStore);
-
-                // Save SellerProduct along with its ProductVariants
-                this.sellerProductRepository.save(sellerProductVariant);
-
-                //Increment Rows-Count
-                rowsCounter++;
-            }
-            log.info("Variant Saved Success");
-            ResponseGenerator.generateSuccessResponse("Success",SellerMessageResponse.SUCCESS);
-        }
-        catch (Exception e)
-        {
-            log.error("Variant Not Saved");
-            e.printStackTrace();
-            ResponseGenerator.generateBadRequestResponse("Failed",SellerMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
 
 
     @Override
@@ -704,8 +583,6 @@ public class SellerProductServiceImple implements SellerProductService {
                 //save UserName and sellerUserId
                 productCalculationService.setSellerUsernameAndUserId(sellerProduct);
 
-                //Seller Store Name and SellerStoreId
-                productCalculationService.setSellerStoreNameAndSellerStoreId(sellerProduct);
 
                 //set Born Category Name
                 sellerProduct.setBornCategoryName(bornCategoryModel.getCategoryName());

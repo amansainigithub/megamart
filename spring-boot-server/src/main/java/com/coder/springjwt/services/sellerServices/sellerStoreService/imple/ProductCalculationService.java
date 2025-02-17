@@ -9,10 +9,8 @@ import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.models.sellerModels.sellerStore.SellerStore;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
-import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerStoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,8 +30,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProductCalculationService {
-    @Autowired
-    private SellerStoreRepository sellerStoreRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -211,20 +207,6 @@ public class ProductCalculationService {
         }
     }
 
-    public  void setSellerStoreNameAndSellerStoreId(SellerProduct sellerProduct){
-        try {
-            String currentUser = UserHelper.getOnlyCurrentUser();
-            SellerStore sellerStore = sellerStoreRepository.findByUsername(currentUser).orElseThrow(() ->
-                                        new UsernameNotFoundException("Seller Store UserName and Store Id Not Found"));
-
-            sellerProduct.setSellerStoreName(sellerStore.getStoreName());
-            sellerProduct.setSellerStoreId(String.valueOf(sellerStore.getId()));
-            log.info("Seller SellerStoreName and SellerStoreId Saved Success in Object");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     public static String generateProductCode(int length){
         if (length <= 0) {

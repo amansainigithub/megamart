@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.seller.AdminProductStatusController;
+package com.coder.springjwt.controllers.seller.productStatusController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.payload.sellerPayloads.ProductReviewPayload;
