@@ -654,59 +654,9 @@ public class SellerProductServiceImple implements SellerProductService {
 
 
 
-    @Override
-    public ResponseEntity<?> createOrderCashFreePayments() {
-       try {
-           Cashfree.XClientId = "TEST10273801f926777210256c1f133b10837201";
-           Cashfree.XClientSecret = "cfsk_ma_test_6d8f486cc954082eac55bea32889fb97_be734858";
-           Cashfree.XEnvironment = Cashfree.SANDBOX;
-
-           Cashfree cashfree = new Cashfree();
-           String xApiVersion = "2022-09-01";
 
 
-           CustomerDetails customerDetails = new CustomerDetails();
-           customerDetails.setCustomerId("walterwNrcMi");
-           customerDetails.setCustomerName("MOHAN SINGH");
-           customerDetails.setCustomerPhone("9999999999");
 
-           CreateOrderRequest request = new CreateOrderRequest();
-           request.setOrderAmount(1.0);
-           request.setOrderCurrency("INR");
-           request.setCustomerDetails(customerDetails);
-           try {
-               ApiResponse<OrderEntity> response = cashfree.PGCreateOrder(xApiVersion, request, null, null, null);
-               System.out.println(response.getData().getOrderId());
-               System.out.println("=========================");
-               System.out.println(response.getData().toString());
-           } catch (ApiException e) {
-               throw new RuntimeException(e);
-           }
-       }
-       catch (Exception e){
-           e.printStackTrace();
-       }
-       return ResponseEntity.ok("OK");
-    }
-
-    @Override
-    public ResponseEntity<?> getCashFreePayments(String orderId) {
-        try {
-            Cashfree.XClientId = "TEST10273801f926777210256c1f133b10837201";
-            Cashfree.XClientSecret = "cfsk_ma_test_6d8f486cc954082eac55bea32889fb97_be734858";
-            Cashfree.XEnvironment = Cashfree.SANDBOX;
-
-            Cashfree cashfree = new Cashfree();
-            String xApiVersion = "2022-09-01";
-
-            ApiResponse<OrderEntity> responseFetchOrder = cashfree.PGFetchOrder(xApiVersion, orderId, null, null, null);
-            System.out.println(responseFetchOrder.getData());
-
-            return ResponseEntity.ok(responseFetchOrder);
-        } catch (ApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
 }

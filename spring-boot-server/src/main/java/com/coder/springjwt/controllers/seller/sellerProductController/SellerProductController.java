@@ -70,19 +70,4 @@ public class SellerProductController {
         return sellerProductService.getProductBYId(productId);
     }
 
-    @GetMapping("/createOrderCashFreePayments")
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> createOrderCashFreePayments() {
-        return sellerProductService.createOrderCashFreePayments();
-    }
-
-    @GetMapping("/getCashFreePayments/{orderId}")
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getCashFreePayments(@PathVariable String orderId) {
-        return sellerProductService.getCashFreePayments(orderId);
-    }
-
-
-
-
 }

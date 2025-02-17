@@ -31,6 +31,7 @@ public class SellerProductStatusServiceImple implements SellerProductStatusServi
 
     @Autowired
     private SellerProductRepository sellerProductRepository;
+
     @Autowired
     private ProductBreathRepo productBreathRepo;
 
