@@ -5,11 +5,9 @@ import com.coder.springjwt.constants.customerConstants.messageConstants.test.Cus
 import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
-import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
-import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
-import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
+import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
 import com.coder.springjwt.helpers.passwordValidation.PasswordValidator;
 import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.models.Role;
@@ -20,11 +18,13 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpP
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
 import com.coder.springjwt.payload.response.JwtResponse;
-import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
+import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
+import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
+import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

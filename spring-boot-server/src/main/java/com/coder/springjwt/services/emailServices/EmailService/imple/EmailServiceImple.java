@@ -1,9 +1,9 @@
 package com.coder.springjwt.services.emailServices.EmailService.imple;
 
 import com.coder.springjwt.helpers.userHelper.UserHelper;
+import com.coder.springjwt.payload.emailPayloads.EmailBucket;
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.payload.emailPayloads.EmailPayload;
-import com.coder.springjwt.payload.emailPayloads.EmailBucket;
 import com.coder.springjwt.repository.emailRepository.EmailRepository;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.util.MessageResponse;

@@ -5,7 +5,6 @@ import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.babyDto.BabyCategoryDt
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.parentDtos.ParentCategoryDto;
-import com.coder.springjwt.services.sellerServices.sellerProductCategoryService.SellerProductCategoryService;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
@@ -14,13 +13,19 @@ import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRe
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ChildCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
+import com.coder.springjwt.services.sellerServices.sellerProductCategoryService.SellerProductCategoryService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

@@ -2,10 +2,10 @@ package com.coder.springjwt.services.sellerServices.catalogWeightService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.productMetaDtos.ProductWeightDto;
-import com.coder.springjwt.services.sellerServices.catalogBrandService.imple.ProductBrandServiceImple;
-import com.coder.springjwt.services.sellerServices.catalogWeightService.ProductWeightService;
 import com.coder.springjwt.models.sellerModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.repository.sellerRepository.catalogRepos.ProductWeightRepo;
+import com.coder.springjwt.services.sellerServices.catalogBrandService.imple.ProductBrandServiceImple;
+import com.coder.springjwt.services.sellerServices.catalogWeightService.ProductWeightService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

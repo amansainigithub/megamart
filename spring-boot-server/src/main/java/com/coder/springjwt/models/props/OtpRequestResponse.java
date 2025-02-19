@@ -1,14 +1,11 @@
 package com.coder.springjwt.models.props;
 
-import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.Map;
 
 @Data
 @Entity

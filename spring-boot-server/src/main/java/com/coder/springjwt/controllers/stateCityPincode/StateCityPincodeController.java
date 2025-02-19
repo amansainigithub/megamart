@@ -4,7 +4,10 @@ import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrl
 import com.coder.springjwt.services.stateCityPincodeServices.StateCityPincodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(SellerUrlMappings.STATE_CITY_PINCODE_CONTROLLER)

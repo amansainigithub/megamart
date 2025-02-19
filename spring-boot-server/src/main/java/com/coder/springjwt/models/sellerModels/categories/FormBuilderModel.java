@@ -2,8 +2,6 @@ package com.coder.springjwt.models.sellerModels.categories;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

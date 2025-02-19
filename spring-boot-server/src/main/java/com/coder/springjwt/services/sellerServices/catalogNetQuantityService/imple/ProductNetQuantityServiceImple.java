@@ -4,9 +4,9 @@ import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.Sell
 import com.coder.springjwt.dtos.sellerDtos.productMetaDtos.ProductNetQuantityDto;
 import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
 import com.coder.springjwt.exception.customerException.DataNotFoundException;
-import com.coder.springjwt.services.sellerServices.catalogNetQuantityService.ProductNetQuantityService;
 import com.coder.springjwt.models.sellerModels.catalog.catalogNetQuantity.ProductNetQuantityModel;
 import com.coder.springjwt.repository.sellerRepository.catalogRepos.ProductNetQuantityRepo;
+import com.coder.springjwt.services.sellerServices.catalogNetQuantityService.ProductNetQuantityService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

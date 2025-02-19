@@ -1,17 +1,18 @@
 package com.coder.springjwt.services.MobileOtpService.imple;
 
 import com.coder.springjwt.exception.customerException.PropsNotFoundException;
-import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.props.Api_Props;
 import com.coder.springjwt.models.props.OtpRequestResponse;
 import com.coder.springjwt.repository.OtpReqResRepository.OtpRequestResponseRepo;
 import com.coder.springjwt.repository.apiProps.ApiPropsRepository;
+import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;

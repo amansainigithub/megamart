@@ -1,7 +1,9 @@
 package com.coder.springjwt.payload.emailPayloads;
 
 import jakarta.persistence.Column;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

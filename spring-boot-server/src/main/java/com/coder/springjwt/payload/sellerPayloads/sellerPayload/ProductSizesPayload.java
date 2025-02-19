@@ -1,7 +1,5 @@
 package com.coder.springjwt.payload.sellerPayloads.sellerPayload;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 

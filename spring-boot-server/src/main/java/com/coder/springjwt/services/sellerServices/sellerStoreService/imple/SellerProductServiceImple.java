@@ -1,16 +1,13 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
-import com.cashfree.ApiException;
-import com.cashfree.ApiResponse;
-import com.cashfree.Cashfree;
-import com.cashfree.model.CreateOrderRequest;
-import com.cashfree.model.CustomerDetails;
-import com.cashfree.model.OrderEntity;
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerException.DataNotFoundException;
-import com.coder.springjwt.formBuilderTools.formVariableKeys.*;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
+import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRows;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.sellerModels.catalog.catalogBreath.BreathModel;
 import com.coder.springjwt.models.sellerModels.catalog.catalogHeight.ProductHeightModel;
@@ -23,7 +20,6 @@ import com.coder.springjwt.models.sellerModels.catalog.catalogWeight.ProductWeig
 import com.coder.springjwt.models.sellerModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.sellerModels.catalog.hsn.HsnCodes;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
-import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -43,7 +39,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

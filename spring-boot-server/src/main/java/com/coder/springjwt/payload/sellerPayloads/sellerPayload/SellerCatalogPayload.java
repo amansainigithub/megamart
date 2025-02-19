@@ -1,6 +1,5 @@
 package com.coder.springjwt.payload.sellerPayloads.sellerPayload;
 
-import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
 

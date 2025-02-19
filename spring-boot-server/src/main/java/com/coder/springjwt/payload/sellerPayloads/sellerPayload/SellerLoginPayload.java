@@ -2,7 +2,6 @@ package com.coder.springjwt.payload.sellerPayloads.sellerPayload;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 public class SellerLoginPayload {

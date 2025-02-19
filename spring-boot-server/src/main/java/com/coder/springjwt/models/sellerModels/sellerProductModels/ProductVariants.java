@@ -2,7 +2,6 @@ package com.coder.springjwt.models.sellerModels.sellerProductModels;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;

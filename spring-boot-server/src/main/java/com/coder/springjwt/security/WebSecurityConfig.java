@@ -1,6 +1,5 @@
 package com.coder.springjwt.security;
 
-import com.coder.springjwt.models.ERole;
 import com.coder.springjwt.security.jwt.AuthEntryPointJwt;
 import com.coder.springjwt.security.jwt.AuthTokenFilter;
 import com.coder.springjwt.security.services.UserDetailsServiceImpl;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

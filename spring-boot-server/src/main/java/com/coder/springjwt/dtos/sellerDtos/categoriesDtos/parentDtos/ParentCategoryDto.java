@@ -1,6 +1,6 @@
 package com.coder.springjwt.dtos.sellerDtos.categoriesDtos.parentDtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
