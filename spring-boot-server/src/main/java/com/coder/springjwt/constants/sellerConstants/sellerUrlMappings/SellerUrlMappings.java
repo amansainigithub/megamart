@@ -204,4 +204,24 @@ public class SellerUrlMappings {
 
     public static final String PRODUCT_REVIEW_DECISION_CONTROLLER = SELLER_AUTH_URL +"/productReviewDecisionController";
     public static final String  SAVE_PRODUCT_REVIEW_DECISION= "/saveProductReviewDecision";
+
+
+
+
+
+
+//Home Slider Controller
+    public static final String HOME_SLIDER_CONTROLLER = SELLER_AUTH_URL +"/homeSliderController";
+    public static final String  SAVE_HOME_SLIDER= "/saveHomeSlider";
+    public static final String UPDATE_HOME_SLIDER_FILE="/updateHomeSliderFile/{homeSliderId}";
+
+    public static final String DELETE_HOME_SLIDER="/deleteHomeSlider/{homeSliderId}";
+    public static final String  GET_HOME_SLIDER_BY_ID= "/getHomeSliderById/{homeSliderId}";
+
+    public static final String  GET_HOME_SLIDER_LIST= "/getHomeSliderList";
+
+    public static final String  UPDATE_HOME_SLIDER= "/updateHomeSlider";
+
+
+
 }
