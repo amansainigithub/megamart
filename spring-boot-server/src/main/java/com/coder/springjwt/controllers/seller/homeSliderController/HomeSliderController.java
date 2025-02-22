@@ -32,7 +32,7 @@ public class HomeSliderController {
         return this.homeSliderService.updateHomeSliderFile(file,homeSliderId);
     }
 
-    @PostMapping(SellerUrlMappings.DELETE_HOME_SLIDER)
+    @GetMapping(SellerUrlMappings.DELETE_HOME_SLIDER)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> deleteHomeSlider( @PathVariable Long homeSliderId) {
         return this.homeSliderService.deleteHomeSlider(homeSliderId);

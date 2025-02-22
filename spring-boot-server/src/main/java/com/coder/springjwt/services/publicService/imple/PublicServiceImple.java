@@ -9,6 +9,8 @@ import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
+import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
+import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
 import com.coder.springjwt.services.publicService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -17,15 +19,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PublicServiceImple implements PublicService {
     @Autowired
     private ParentCategoryRepo parentCategoryRepo;
 
+    @Autowired
+    private HomeSliderRepo homeSliderRepo;
+
     @Override
     public ResponseEntity<?> getProductCategoryService() {
+
+        Map<Object,Object> mapNode = new HashMap<>();
+
         try {
             List<ParentCategoryModel> parentCategories = this.parentCategoryRepo.findAll();
 
@@ -50,7 +60,7 @@ public class PublicServiceImple implements PublicService {
 
 
 
-            List<ParentCategoryDto> parentCategoryDtoList = new ArrayList<>();
+            List<ParentCategoryDto> listOfCategories = new ArrayList<>();
             for(ParentCategoryModel pcm : parentCategories)
             {
                     ParentCategoryDto parentCategoryDto =  new ParentCategoryDto();
@@ -83,9 +93,15 @@ public class PublicServiceImple implements PublicService {
                         }
                     }
                     parentCategoryDto.setBabyCategoryDtos(babyCategoryDtoList);
-                    parentCategoryDtoList.add(parentCategoryDto);
+                listOfCategories.add(parentCategoryDto);
             }
-            return ResponseGenerator.generateSuccessResponse(parentCategoryDtoList, SellerMessageResponse.SUCCESS);
+
+
+            //Get Hole Slider Data
+            List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
+            mapNode.put("listOfCategories",listOfCategories);
+            mapNode.put("homeSliderData",homeSliderData);
+            return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
