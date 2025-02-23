@@ -219,6 +219,28 @@ public class SellerUrlMappings {
     public static final String  GET_HOME_SLIDER_LIST= "/getHomeSliderList";
     public static final String  UPDATE_HOME_SLIDER= "/updateHomeSlider";
 
+    //Hot Deals Engine Controller
+    public static final String HOT_DEALS_ENGINE_CONTROLLER = SELLER_AUTH_URL +"/hotDealsEngineController";
+    public static final String  SAVE_HOT_DEALS_ENGINE= "/saveHotDealsEngine";
+    public static final String  GET_HOT_DEALS_ENGINE= "/getHotDealsEngine/{engineId}";
+    public static final String  GET_HOT_DEALS_ENGINES= "/getHotDealsEngines";
+    public static final String DELETE_HOT_DEALS_ENGINES="/deleteHotDealsEngine/{engineId}";
+    public static final String  UPDATE_HOT_DEALS_ENGINES= "/updateHotDealsEngine";
+
+
+
+
+    //Hot Deals Controller
+    public static final String HOT_DEALS_CONTROLLER = SELLER_AUTH_URL +"/hotDealsController";
+    public static final String  SAVE_HOT_DEALS= "/saveHotDeals";
+    public static final String DELETE_HOT_DEAL="/deleteHotDeals/{id}";
+    public static final String DELETE_ALL_HOT_DEALS="/deleteAllHotDeals";
+    public static final String  GET_HOT_DEALS= "/getHotDeals";
+    public static final String  GET_HOT_DEAL= "/getHotDeal/{id}";
+    public static final String  UPDATE_HOT_DEALS= "/updateHotDeals";
+    public static final String UPDATE_HOT_DEAL_FILE="/updateHotDealFile/{dealId}";
+
+
 
 
 }

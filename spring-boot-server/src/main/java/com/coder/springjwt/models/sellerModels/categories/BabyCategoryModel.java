@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "BabyCategory")
 public class BabyCategoryModel extends BaseEntity {
 
@@ -56,4 +56,9 @@ public class BabyCategoryModel extends BaseEntity {
     private List<BornCategoryModel> bornCategoryModel ;
 
 
+    public BabyCategoryModel(long id, String categoryName,String categoryFile) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.categoryFile = categoryFile;
+    }
 }

@@ -1,8 +1,5 @@
 package com.coder.springjwt.dtos.sellerDtos.homeSliderDtos;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HomeSliderDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String title;

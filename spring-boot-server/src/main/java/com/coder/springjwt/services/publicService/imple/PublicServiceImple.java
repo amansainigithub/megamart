@@ -11,10 +11,13 @@ import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
 import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
+import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
 import com.coder.springjwt.services.publicService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicServiceImple implements PublicService {
@@ -30,6 +34,9 @@ public class PublicServiceImple implements PublicService {
 
     @Autowired
     private HomeSliderRepo homeSliderRepo;
+
+    @Autowired
+    private BabyCategoryRepo babyCategoryRepo;
 
     @Override
     public ResponseEntity<?> getProductCategoryService() {
@@ -99,8 +106,17 @@ public class PublicServiceImple implements PublicService {
 
             //Get Hole Slider Data
             List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
+
+            //get Baby Category
+            Pageable pageable = PageRequest.of(0, 17);
+            List<BabyCategoryModel> babyList = this.babyCategoryRepo.findAll(pageable).getContent();
+            List<BabyCategoryModel> babyDataFilter = babyList.stream().map(
+                    b -> new BabyCategoryModel(b.getId(), b.getCategoryName(),b.getCategoryFile()))
+                    .collect(Collectors.toList());
+
             mapNode.put("listOfCategories",listOfCategories);
             mapNode.put("homeSliderData",homeSliderData);
+            mapNode.put("babyDataFilter",babyDataFilter);
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)

@@ -8,6 +8,8 @@ public class SellerMessageResponse {
     public static final String SLR = ":SLR";
     public static final String SUCCESS = "Success";
 
+    public static final String DELETE_SUCCESS = "Delete Success";
+
     public static final String FAILED = "Failed";
 
     public static final String ERROR = "Error";
@@ -17,7 +19,7 @@ public class SellerMessageResponse {
     public static final String DATA_NOT_SAVED = "Data Not Saved";
 
     public static final String USER_NOT_FOUND = "User Not Found";
-    public static final String DATA_SAVED_SUCCESS = "OTP SEND ";
+    public static final String DATA_SAVED_SUCCESS = "DATA SAVED SUCCESS ";
 
     public static final String DATA_UPDATE_SUCCESS = "Data Update Success ";
     public static final String DATA_UPDATE_FAILED = "Data Update Failed ";

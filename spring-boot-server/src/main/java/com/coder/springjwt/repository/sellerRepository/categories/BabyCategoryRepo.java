@@ -14,4 +14,5 @@ public interface BabyCategoryRepo extends JpaRepository<BabyCategoryModel,Long> 
     @Query("SELECT u FROM BabyCategoryModel u WHERE u.childCategoryModel.id = :id")
     List<BabyCategoryModel> getBabyCategoryListByChildCategoryId(@Param("id") Long id);
 
+
 }
