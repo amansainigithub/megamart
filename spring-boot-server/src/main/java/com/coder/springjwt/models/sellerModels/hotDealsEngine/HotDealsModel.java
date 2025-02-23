@@ -1,6 +1,7 @@
 package com.coder.springjwt.models.sellerModels.hotDealsEngine;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class HotDealsModel extends BaseEntity {
 
     @ManyToOne
     @JoinColumn( referencedColumnName = "id" )
+    @JsonIgnore
     private HotDealsEngineModel hotDealsEngineModel;
 
 }

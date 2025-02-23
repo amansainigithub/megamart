@@ -10,8 +10,12 @@ import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
+import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
+import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
 import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
+import com.coder.springjwt.repository.hotDealsRepos.HotDealsEngineRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
+import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
 import com.coder.springjwt.services.publicService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -21,10 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,13 @@ public class PublicServiceImple implements PublicService {
     @Autowired
     private BabyCategoryRepo babyCategoryRepo;
 
+    @Autowired
+    private BornCategoryRepo bornCategoryRepo;
+
+    @Autowired
+    private HotDealsEngineRepo hotDealsEngineRepo;
+
+
     @Override
     public ResponseEntity<?> getProductCategoryService() {
 
@@ -46,26 +54,8 @@ public class PublicServiceImple implements PublicService {
         try {
             List<ParentCategoryModel> parentCategories = this.parentCategoryRepo.findAll();
 
-
-//            List<ParentCategoryDto> collect = parentCategories.stream().map(parent ->
-//                    new ParentCategoryDto(parent.getId(), parent.getCategoryName(),
-//
-//                            parent.getChildCategoryModelList().stream().map(child->
-//                                            new ChildCategoryDto(child.getId(),child.getCategoryName(),
-//                                            child.getBabyCategoryModel().stream().map(baby->
-//                                                    new BabyCategoryDto(baby.getId(),baby.getCategoryName(),
-//                                                            baby.getBornCategoryModel().stream()
-//                                                                    .map(born->
-//                                                                            new BornCategoryDto(born.getId(),born.getCategoryName()))
-//                                                                    .collect(Collectors.toList())
-//                                                    ))
-//                                                    .collect(Collectors.toList())
-//                                            ))
-//                                    .collect(Collectors.toList())
-//
-//                    )).collect(Collectors.toList());
-
-
+            //Get Hole Slider Data
+            List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
 
             List<ParentCategoryDto> listOfCategories = new ArrayList<>();
             for(ParentCategoryModel pcm : parentCategories)
@@ -103,10 +93,6 @@ public class PublicServiceImple implements PublicService {
                 listOfCategories.add(parentCategoryDto);
             }
 
-
-            //Get Hole Slider Data
-            List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
-
             //get Baby Category
             Pageable pageable = PageRequest.of(0, 17);
             List<BabyCategoryModel> babyList = this.babyCategoryRepo.findAll(pageable).getContent();
@@ -114,9 +100,26 @@ public class PublicServiceImple implements PublicService {
                     b -> new BabyCategoryModel(b.getId(), b.getCategoryName(),b.getCategoryFile()))
                     .collect(Collectors.toList());
 
-            mapNode.put("listOfCategories",listOfCategories);
+
+            //get HotDealEngine Data
+            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(16L).get();
+            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
+
+            //Get Parent Categories only Men
+            Pageable mensListPageable = PageRequest.of(0, 25);
+            List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(2L,mensListPageable);
+
+            //Get Parent Categories only Women
+            Pageable womenListPageable = PageRequest.of(0, 25);
+            List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
+
             mapNode.put("homeSliderData",homeSliderData);
+            mapNode.put("listOfCategories",listOfCategories);
             mapNode.put("babyDataFilter",babyDataFilter);
+            mapNode.put("hotDealEngine",hotDealEngine);
+            mapNode.put("hotDeals",hotDeals);
+            mapNode.put("mensList",mensList);
+            mapNode.put("womenList",womenList);
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
