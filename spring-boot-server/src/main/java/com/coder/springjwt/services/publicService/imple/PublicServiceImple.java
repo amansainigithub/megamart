@@ -106,11 +106,11 @@ public class PublicServiceImple implements PublicService {
             List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
 
             //Get Parent Categories only Men
-            Pageable mensListPageable = PageRequest.of(0, 25);
+            Pageable mensListPageable = PageRequest.of(0, 22);
             List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(2L,mensListPageable);
 
             //Get Parent Categories only Women
-            Pageable womenListPageable = PageRequest.of(0, 25);
+            Pageable womenListPageable = PageRequest.of(0, 22);
             List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
 
             mapNode.put("homeSliderData",homeSliderData);
