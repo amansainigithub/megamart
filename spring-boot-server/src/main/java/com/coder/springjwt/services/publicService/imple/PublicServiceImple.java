@@ -13,6 +13,7 @@ import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
 import com.coder.springjwt.repository.hotDealsRepos.HotDealsEngineRepo;
@@ -144,7 +145,7 @@ public class PublicServiceImple implements PublicService {
     }
 
     @Override
-    public ResponseEntity<?> getProductListByCategoryId(long categoryId, Integer page, Integer size) {
+    public ResponseEntity<?> getProductListByCategoryId(long categoryId, String categoryName, Integer page, Integer size) {
         try {
             BabyCategoryModel babyCategoryModel = this.babyCategoryRepo.findById(categoryId)
                     .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
@@ -154,14 +155,16 @@ public class PublicServiceImple implements PublicService {
                                                     .findByBabyCategoryId(String.valueOf(babyCategoryModel.getId()),pageRequest);
 
 
-            List<SellerProductResponse> sellerProductResponses = babyCategoryData.getContent().stream()
+            List<SellerProductResponse> productResponses = babyCategoryData.getContent().stream()
                     .map(sellerProduct -> {
                         SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
-                        response.setSellerProductVarientResponses(
-                                sellerProduct.getProductRows().stream()
-                                        .map(variant -> modelMapper.map(variant, SellerProductVarientResponse.class))
-                                        .collect(Collectors.toList())
-                        );
+
+                        ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                        response.setColorVariant(productVariants.getColorVariant());
+                        response.setProductPrice(productVariants.getProductPrice());
+                        response.setProductMrp(productVariants.getProductMrp());
+                        response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
                         response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
                                 .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
 
@@ -169,7 +172,7 @@ public class PublicServiceImple implements PublicService {
                     })
                     .collect(Collectors.toList());
 
-            Page<SellerProductResponse> responsePage = new PageImpl<>(sellerProductResponses, babyCategoryData.getPageable(), babyCategoryData.getTotalElements());
+            Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, babyCategoryData.getPageable(), babyCategoryData.getTotalElements());
 
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)

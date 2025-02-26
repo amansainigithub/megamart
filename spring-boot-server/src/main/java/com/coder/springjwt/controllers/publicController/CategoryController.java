@@ -18,11 +18,12 @@ public class CategoryController {
         return this.publicService.getProductCategoryService();
     }
 
-    @GetMapping("/getProductListByCategoryId/{categoryId}")
-    public ResponseEntity<?> getProductListByCategoryId(@PathVariable long categoryId,
+    @GetMapping("/getProductListByCategoryId")
+    public ResponseEntity<?> getProductListByCategoryId(@RequestParam long cI,
+                                                        @RequestParam String cN,
                                                         @RequestParam Integer page ,
                                                         @RequestParam  Integer size) {
-        return this.publicService.getProductListByCategoryId(categoryId,page,size);
+        return this.publicService.getProductListByCategoryId(cI , cN , page , size);
     }
 
 

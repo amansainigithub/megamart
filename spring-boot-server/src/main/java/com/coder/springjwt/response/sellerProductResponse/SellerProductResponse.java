@@ -18,6 +18,13 @@ public class SellerProductResponse {
     private String productStatus;
     private String bornCategoryId;
     private String variant;
+    private String brandField;
+
+    private String colorVariant;
+    private String productPrice;
+    private String productMrp;
+    private String calculatedDiscount;
+
     private List<SellerProductVarientResponse> sellerProductVarientResponses;
 
     private List<ProductFilesResponse> productFilesResponses;

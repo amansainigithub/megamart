@@ -148,21 +148,31 @@ public class ProductCalculationService {
         return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
-    public String calculateDiscount(double mrp, double sellingPrice) {
+    public String calculateDiscount(double sellingPrice , double mrp) {
+        System.out.println("=================");
+        System.out.println("MRP " + mrp);
+        System.out.println("SELLING PRICE " + sellingPrice);
+
         if (mrp <= 0) {
             log.info("MRP should be greater than 0");
-            return "MRP should be greater than 0";
+            throw new RuntimeException("MRP should be greater than 0");
         }
+        if ( sellingPrice > mrp) {
+            log.info("Selling price cannot be greater than MRP");
+            throw new RuntimeException("Selling price cannot be greater than MRP");
+        }
+
         // Calculate discount percentage
         double discountPercentage = ((mrp - sellingPrice) / mrp) * 100;
 
         // Round to 2 decimal places
-        BigDecimal roundedDiscount = new BigDecimal(discountPercentage).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal roundedDiscount = BigDecimal.valueOf(discountPercentage).setScale(2, RoundingMode.HALF_UP);
 
         log.info("Discount Percentage: " + roundedDiscount + "%");
 
-        return String.valueOf(roundedDiscount);
+        return roundedDiscount.toPlainString() + "%";
     }
+
     public String getCurrentDate() // d MMM yyyy
     {
         LocalDate currentDate = LocalDate.now();
