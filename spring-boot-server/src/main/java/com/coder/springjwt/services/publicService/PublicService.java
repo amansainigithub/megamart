@@ -7,4 +7,6 @@ import org.springframework.stereotype.Component;
 public interface PublicService {
 
     ResponseEntity<?> getProductCategoryService();
+
+    ResponseEntity<?> getProductListByCategoryId(long categoryId, Integer page, Integer size);
 }

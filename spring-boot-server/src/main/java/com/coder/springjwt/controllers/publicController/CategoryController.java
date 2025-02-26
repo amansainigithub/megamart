@@ -5,9 +5,7 @@ import com.coder.springjwt.constants.customerConstants.customerUrlMappings.Custo
 import com.coder.springjwt.services.publicService.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.CUSTOMER_BASE_URL+"/categoryController")
@@ -19,6 +17,15 @@ public class CategoryController {
     public ResponseEntity<?> getProductCategory() {
         return this.publicService.getProductCategoryService();
     }
+
+    @GetMapping("/getProductListByCategoryId/{categoryId}")
+    public ResponseEntity<?> getProductListByCategoryId(@PathVariable long categoryId,
+                                                        @RequestParam Integer page ,
+                                                        @RequestParam  Integer size) {
+        return this.publicService.getProductListByCategoryId(categoryId,page,size);
+    }
+
+
 
 
 

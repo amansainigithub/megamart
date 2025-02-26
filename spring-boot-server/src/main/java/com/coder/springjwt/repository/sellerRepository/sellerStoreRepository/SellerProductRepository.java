@@ -67,5 +67,8 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
                                                         Pageable pageable);
 
 
+    Page<SellerProduct> findByBabyCategoryId(String id , Pageable pageable);
+
+
 
 }

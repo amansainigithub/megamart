@@ -19,6 +19,7 @@ import com.coder.springjwt.models.sellerModels.catalog.catalogType.ProductTypeMo
 import com.coder.springjwt.models.sellerModels.catalog.catalogWeight.ProductWeightModel;
 import com.coder.springjwt.models.sellerModels.catalog.gstPercentage.GstPercentageModel;
 import com.coder.springjwt.models.sellerModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductFiles;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
@@ -398,7 +399,10 @@ public class SellerProductServiceImple implements SellerProductService {
                 BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(bornCategoryId)
                                                   .orElseThrow(()-> new DataNotFoundException("Born Category not Found"));
 
-            // Map incoming data to SellerProduct
+                BabyCategoryModel babyCategoryModel = bornCategoryModel.getBabyCategoryModel();
+
+
+                // Map incoming data to SellerProduct
             SellerProduct sellerProduct = modelMapper.map(productRootBuilder, SellerProduct.class);
 
 //            //Set Seller Store
@@ -430,6 +434,12 @@ public class SellerProductServiceImple implements SellerProductService {
 
             //set Born Category Name
             sellerProduct.setBornCategoryId(String.valueOf(bornCategoryModel.getId()));
+
+            //set Baby Category Name
+            sellerProduct.setBabyCategoryName(babyCategoryModel.getCategoryName());
+
+            //set Baby Category Name
+            sellerProduct.setBabyCategoryId(String.valueOf(babyCategoryModel.getId()));
 
             if(sellerProduct.getProductCode() == null)
             {

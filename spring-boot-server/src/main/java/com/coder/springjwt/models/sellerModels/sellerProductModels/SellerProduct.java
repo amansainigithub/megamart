@@ -72,6 +72,10 @@ public class SellerProduct extends BaseEntity {
 
     private String bornCategoryId;
 
+    private String babyCategoryName;
+
+    private String babyCategoryId;
+
     private String variant;
 
     private String productLauncherId;

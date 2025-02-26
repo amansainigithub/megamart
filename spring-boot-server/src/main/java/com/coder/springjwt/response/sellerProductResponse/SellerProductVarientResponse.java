@@ -1,0 +1,18 @@
+package com.coder.springjwt.response.sellerProductResponse;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SellerProductVarientResponse {
+
+    private long id;
+
+    private String colorVariant;
+    private String productPrice;
+    private String productMrp;
+    private String calculatedDiscount;
+}
