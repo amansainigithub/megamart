@@ -26,6 +26,22 @@ public class CategoryController {
         return this.publicService.getProductListByCategoryId(cI , cN , page , size);
     }
 
+    @GetMapping("/getProductListByBornCategoryId")
+    public ResponseEntity<?> getProductListByBornCategoryId(@RequestParam long cI,
+                                                            @RequestParam String cN,
+                                                            @RequestParam Integer page ,
+                                                            @RequestParam  Integer size) {
+        return this.publicService.getProductListByBornCategoryId(cI , cN , page , size);
+    }
+
+    @GetMapping("/getProductListDeal99")
+    public ResponseEntity<?> getProductListDeal99(@RequestParam long cI,
+                                                  @RequestParam String cN,
+                                                  @RequestParam Integer page ,
+                                                  @RequestParam  Integer size) {
+        return this.publicService.getProductListDeal99(cI , cN , page , size);
+    }
+
 
 
 

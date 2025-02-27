@@ -67,8 +67,27 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
                                                         Pageable pageable);
 
 
-    Page<SellerProduct> findByBabyCategoryId(String id , Pageable pageable);
+    Page<SellerProduct> findByBabyCategoryIdAndProductStatusAndNetQuantityGreaterThan(
+            String id, String productStatus, String netQuantity, Pageable pageable);
 
+    Page<SellerProduct> findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(
+            String id, String productStatus, String netQuantity, Pageable pageable);
+
+    List<SellerProduct> findByBabyCategoryIdAndProductStatusAndNetQuantityGreaterThan(
+            String id, String productStatus, String netQuantity);
+
+
+//    @Query("SELECT sp FROM SellerProduct sp JOIN sp.productRows pv " +
+//            "WHERE sp.bornCategoryId = :id " +
+//            "AND sp.productStatus = :productStatus " +
+//            "AND sp.netQuantity > :netQuantity " +
+//            "AND CAST(pv.productPrice AS double) < :dealPrice")
+//    Page<SellerProduct> findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThanAndPriceLessThan(
+//            @Param("id") String id,
+//            @Param("productStatus") String productStatus,
+//            @Param("netQuantity") String netQuantity,
+//            @Param("dealPrice") String dealPrice,
+//            Pageable pageable);
 
 
 }

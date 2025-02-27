@@ -5,6 +5,7 @@ import com.coder.springjwt.dtos.customerDtos.BabyCategoryDto;
 import com.coder.springjwt.dtos.customerDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.customerDtos.ChildCategoryDto;
 import com.coder.springjwt.dtos.customerDtos.ParentCategoryDto;
+import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
@@ -26,6 +27,7 @@ import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
 import com.coder.springjwt.services.publicService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PublicServiceImple implements PublicService {
     @Autowired
     private ParentCategoryRepo parentCategoryRepo;
@@ -152,7 +155,8 @@ public class PublicServiceImple implements PublicService {
 
             PageRequest pageRequest= PageRequest.of(page, size);
             Page<SellerProduct> babyCategoryData = this.sellerProductRepository
-                                                    .findByBabyCategoryId(String.valueOf(babyCategoryModel.getId()),pageRequest);
+                                                    .findByBabyCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(babyCategoryModel.getId()) ,
+                                                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
 
 
             List<SellerProductResponse> productResponses = babyCategoryData.getContent().stream()
@@ -172,7 +176,9 @@ public class PublicServiceImple implements PublicService {
                     })
                     .collect(Collectors.toList());
 
+            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
             Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, babyCategoryData.getPageable(), babyCategoryData.getTotalElements());
+
 
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
@@ -183,7 +189,54 @@ public class PublicServiceImple implements PublicService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> getProductListByBornCategoryId(long categoryId, String categoryName, Integer page, Integer size) {
+        try {
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
+                    .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
+            PageRequest pageRequest= PageRequest.of(page, size);
+            Page<SellerProduct> data = this.sellerProductRepository
+                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
+                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
+
+
+            List<SellerProductResponse> productResponses = data.getContent().stream()
+                    .map(sellerProduct -> {
+                        SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                        ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                        response.setColorVariant(productVariants.getColorVariant());
+                        response.setProductPrice(productVariants.getProductPrice());
+                        response.setProductMrp(productVariants.getProductMrp());
+                        response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+                        response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
+                                .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+
+            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
+            Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, data.getPageable(), data.getTotalElements());
+
+
+            return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
 
     }
+
+    @Override
+    public ResponseEntity<?> getProductListDeal99(long categoryId, String categoryName, Integer page, Integer size) {
+        return null;
+    }
+
+
+}
 

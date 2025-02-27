@@ -9,4 +9,8 @@ public interface PublicService {
     ResponseEntity<?> getProductCategoryService();
 
     ResponseEntity<?> getProductListByCategoryId(long categoryId, String categoryName, Integer page, Integer size);
+
+    ResponseEntity<?> getProductListByBornCategoryId(long cI, String cN, Integer page, Integer size);
+
+    ResponseEntity<?> getProductListDeal99(long cI, String cN, Integer page, Integer size);
 }
