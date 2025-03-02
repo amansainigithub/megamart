@@ -328,19 +328,19 @@ public class PublicServiceImple implements PublicService {
             response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
 
             ProductDetailsResponse pd1 = new ProductDetailsResponse();
-            pd1.setPdKey("Sleeve");
+            pd1.setPdKey("Sleeve Type");
             pd1.setPdValue(sellerProduct.getSleeveType());
             ProductDetailsResponse pd2 = new ProductDetailsResponse();
-            pd2.setPdKey("pattern");
+            pd2.setPdKey("patterns");
             pd2.setPdValue(sellerProduct.getPattern());
             ProductDetailsResponse pd3 = new ProductDetailsResponse();
-            pd3.setPdKey("finishing");
+            pd3.setPdKey("finishing Type");
             pd3.setPdValue(sellerProduct.getFinishingType());
             ProductDetailsResponse pd4 = new ProductDetailsResponse();
             pd4.setPdKey("fitType");
             pd4.setPdValue(sellerProduct.getFitType());
             ProductDetailsResponse pd5 = new ProductDetailsResponse();
-            pd5.setPdKey("material");
+            pd5.setPdKey("material Type");
             pd5.setPdValue(sellerProduct.getMaterialType());
             ProductDetailsResponse pd6 = new ProductDetailsResponse();
             pd6.setPdKey("country");
