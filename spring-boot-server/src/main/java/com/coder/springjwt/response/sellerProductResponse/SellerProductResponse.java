@@ -1,6 +1,5 @@
 package com.coder.springjwt.response.sellerProductResponse;
 
-import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,7 @@ public class SellerProductResponse {
     private String productColor;
     private String productStatus;
     private String bornCategoryId;
+    private String bornCategoryName;
     private String variant;
     private String brandField;
 
@@ -24,6 +24,9 @@ public class SellerProductResponse {
     private String productPrice;
     private String productMrp;
     private String calculatedDiscount;
+    private String description;
+
+    private List<ProductDetailsResponse> productDetailsResponses;
 
     private List<SellerProductVarientResponse> sellerProductVarientResponses;
 

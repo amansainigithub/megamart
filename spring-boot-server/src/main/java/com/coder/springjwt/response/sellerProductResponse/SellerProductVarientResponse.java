@@ -15,4 +15,11 @@ public class SellerProductVarientResponse {
     private String productPrice;
     private String productMrp;
     private String calculatedDiscount;
+    private String productLabel;
+    private String productLength;
+
+    private String productInventory;
+    private String waistSize;
+    private String shoulderWidth;
+    private String chestBustSize;
 }

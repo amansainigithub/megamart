@@ -47,7 +47,6 @@ public class SellerProduct extends BaseEntity {
     private String brandField;
     private String description;
 
-
     private String productCreationDate;
     private String productCreationTime;
 

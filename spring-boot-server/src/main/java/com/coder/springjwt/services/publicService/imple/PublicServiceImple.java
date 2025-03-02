@@ -22,6 +22,7 @@ import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRe
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
+import com.coder.springjwt.response.sellerProductResponse.ProductDetailsResponse;
 import com.coder.springjwt.response.sellerProductResponse.ProductFilesResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
@@ -234,7 +235,132 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> getProductListDeal99(long categoryId, String categoryName, Integer page, Integer size) {
-        return null;
+        try {
+            log.info("getProductListDeal99 Running....");
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
+                    .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+
+            Pageable pageable = PageRequest.of(page, size);
+
+            Page<SellerProduct> pagedSellerProducts = this.sellerProductRepository
+                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(
+                            String.valueOf(bornCategoryModel.getId()),
+                            ProductStatus.PV_APPROVED.toString(), "0",
+                            pageable);
+
+            List<SellerProductResponse> sellerProductResponsesList = pagedSellerProducts.getContent()
+                    .stream()
+                    .map(sp -> {
+                        SellerProductResponse response = modelMapper.map(sp, SellerProductResponse.class);
+                        ProductVariants productVariants = sp.getProductRows().get(0);
+                        if (Integer.parseInt(productVariants.getProductPrice()) < 100) {
+                            response.setColorVariant(productVariants.getColorVariant());
+                            response.setProductPrice(productVariants.getProductPrice());
+                            response.setProductMrp(productVariants.getProductMrp());
+                            response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+                            response.setProductFilesResponses(sp.getProductFiles()
+                                    .stream()
+                                    .map(productFiles -> modelMapper.map(productFiles, ProductFilesResponse.class))
+                                    .collect(Collectors.toList()));
+                            return response;
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            Page<SellerProductResponse> pagedResponse = new PageImpl<>(sellerProductResponsesList, pageable, pagedSellerProducts.getTotalElements());
+
+
+//            List<SellerProduct> data = this.sellerProductRepository
+//                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
+//                            ProductStatus.PV_APPROVED.toString(), "0" );
+//
+//            List<SellerProductResponse> sellerProductResponsesList = new ArrayList<>();
+//            for(SellerProduct sp : data)
+//            {
+//                SellerProductResponse response = modelMapper.map(sp, SellerProductResponse.class);
+//                ProductVariants productVariants = sp.getProductRows().get(0);
+//                if(Integer.parseInt(productVariants.getProductPrice()) < 100)
+//                {
+//                    response.setColorVariant(productVariants.getColorVariant());
+//                    response.setProductPrice(productVariants.getProductPrice());
+//                    response.setProductMrp(productVariants.getProductMrp());
+//                    response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+//
+//                    response.setProductFilesResponses(sp.getProductFiles().stream()
+//                            .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+//
+//                    sellerProductResponsesList.add(response);
+//                }
+//            }
+//
+//            // Implement Pageable
+//            Pageable pageable = PageRequest.of(page, size);
+//            int start = (int) pageable.getOffset();
+//            int end = Math.min((start + pageable.getPageSize()), sellerProductResponsesList.size());
+//
+//            List<SellerProductResponse> pagedList = sellerProductResponsesList.subList(start, end);
+//            Page<SellerProductResponse> pagedResponse = new PageImpl<>(pagedList, pageable, sellerProductResponsesList.size());
+
+            return ResponseGenerator.generateSuccessResponse(pagedResponse, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> productWatching(String cI, String cN, String pI, String pN) {
+        try {
+
+            SellerProduct sellerProduct = this.sellerProductRepository
+                    .findByIdAndProductStatusAndNetQuantityGreaterThan(Long.parseLong(pI),
+                            ProductStatus.PV_APPROVED.toString(), "0");
+
+            SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+            ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+            response.setColorVariant(productVariants.getColorVariant());
+            response.setProductPrice(productVariants.getProductPrice());
+            response.setProductMrp(productVariants.getProductMrp());
+            response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+            ProductDetailsResponse pd1 = new ProductDetailsResponse();
+            pd1.setPdKey("Sleeve");
+            pd1.setPdValue(sellerProduct.getSleeveType());
+            ProductDetailsResponse pd2 = new ProductDetailsResponse();
+            pd2.setPdKey("pattern");
+            pd2.setPdValue(sellerProduct.getPattern());
+            ProductDetailsResponse pd3 = new ProductDetailsResponse();
+            pd3.setPdKey("finishing");
+            pd3.setPdValue(sellerProduct.getFinishingType());
+            ProductDetailsResponse pd4 = new ProductDetailsResponse();
+            pd4.setPdKey("fitType");
+            pd4.setPdValue(sellerProduct.getFitType());
+            ProductDetailsResponse pd5 = new ProductDetailsResponse();
+            pd5.setPdKey("material");
+            pd5.setPdValue(sellerProduct.getMaterialType());
+            ProductDetailsResponse pd6 = new ProductDetailsResponse();
+            pd6.setPdKey("country");
+            pd6.setPdValue(sellerProduct.getCountry());
+            response.setProductDetailsResponses(List.of(pd1,pd2,pd3,pd4,pd5,pd6));
+
+            response.setSellerProductVarientResponses(sellerProduct.getProductRows().stream()
+                    .map(pv->modelMapper.map(pv,SellerProductVarientResponse.class)).collect(Collectors.toList()));
+
+            response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
+                    .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+
+            return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+
     }
 
 

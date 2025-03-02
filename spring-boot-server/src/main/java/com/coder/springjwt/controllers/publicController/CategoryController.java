@@ -1,6 +1,5 @@
 package com.coder.springjwt.controllers.publicController;
 
-
 import com.coder.springjwt.constants.customerConstants.customerUrlMappings.CustomerUrlMappings;
 import com.coder.springjwt.services.publicService.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,16 @@ public class CategoryController {
                                                   @RequestParam  Integer size) {
         return this.publicService.getProductListDeal99(cI , cN , page , size);
     }
+
+
+    @GetMapping("/productWatching")
+    public ResponseEntity<?> productWatching(@RequestParam String cI,
+                                             @RequestParam String cN ,
+                                             @RequestParam String pI ,
+                                             @RequestParam String pN) {
+        return this.publicService.productWatching(cI , cN, pI, pN);
+    }
+
 
 
 

@@ -28,7 +28,6 @@ public class ProductVariants extends BaseEntity {
     private String shoulderWidth;
     private String chestBustSize;
 
-
     private String calculatedGst;
     private String calculatedTds;
     private String calculatedTcs;
