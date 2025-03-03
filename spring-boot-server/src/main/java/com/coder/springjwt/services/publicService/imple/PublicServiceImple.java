@@ -129,8 +129,12 @@ public class PublicServiceImple implements PublicService {
             List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(2L,mensListPageable);
 
             //Get Parent Categories only Women
-            Pageable womenListPageable = PageRequest.of(0, 22);
-            List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
+//            Pageable womenListPageable = PageRequest.of(0, 22);
+//            List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
+
+
+            Page<SellerProductResponse> productsList = this.getBornCategoryList(17l, "Mens Top Wear", 0, 999);
+
 
             mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("listOfCategories",listOfCategories);
@@ -138,7 +142,8 @@ public class PublicServiceImple implements PublicService {
             mapNode.put("hotDealEngine",hotDealEngine);
             mapNode.put("hotDeals",hotDeals);
             mapNode.put("mensList",mensList);
-            mapNode.put("womenList",womenList);
+//            mapNode.put("womenList",womenList);
+            mapNode.put("productsList",productsList.getContent());
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -230,7 +235,6 @@ public class PublicServiceImple implements PublicService {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
-
     }
 
     @Override
@@ -270,39 +274,6 @@ public class PublicServiceImple implements PublicService {
                     .collect(Collectors.toList());
 
             Page<SellerProductResponse> pagedResponse = new PageImpl<>(sellerProductResponsesList, pageable, pagedSellerProducts.getTotalElements());
-
-
-//            List<SellerProduct> data = this.sellerProductRepository
-//                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
-//                            ProductStatus.PV_APPROVED.toString(), "0" );
-//
-//            List<SellerProductResponse> sellerProductResponsesList = new ArrayList<>();
-//            for(SellerProduct sp : data)
-//            {
-//                SellerProductResponse response = modelMapper.map(sp, SellerProductResponse.class);
-//                ProductVariants productVariants = sp.getProductRows().get(0);
-//                if(Integer.parseInt(productVariants.getProductPrice()) < 100)
-//                {
-//                    response.setColorVariant(productVariants.getColorVariant());
-//                    response.setProductPrice(productVariants.getProductPrice());
-//                    response.setProductMrp(productVariants.getProductMrp());
-//                    response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
-//
-//                    response.setProductFilesResponses(sp.getProductFiles().stream()
-//                            .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
-//
-//                    sellerProductResponsesList.add(response);
-//                }
-//            }
-//
-//            // Implement Pageable
-//            Pageable pageable = PageRequest.of(page, size);
-//            int start = (int) pageable.getOffset();
-//            int end = Math.min((start + pageable.getPageSize()), sellerProductResponsesList.size());
-//
-//            List<SellerProductResponse> pagedList = sellerProductResponsesList.subList(start, end);
-//            Page<SellerProductResponse> pagedResponse = new PageImpl<>(pagedList, pageable, sellerProductResponsesList.size());
-
             return ResponseGenerator.generateSuccessResponse(pagedResponse, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
@@ -314,8 +285,8 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> productWatching(String cI, String cN, String pI, String pN) {
+        Map<Object,Object> map = new HashMap<>();
         try {
-
             SellerProduct sellerProduct = this.sellerProductRepository
                     .findByIdAndProductStatusAndNetQuantityGreaterThan(Long.parseLong(pI),
                             ProductStatus.PV_APPROVED.toString(), "0");
@@ -353,14 +324,77 @@ public class PublicServiceImple implements PublicService {
             response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
                     .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
 
-            return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
+
+            //Similar Products Starting
+            Page<SellerProductResponse> similarProduct = this.getBornCategoryList(
+                                                            Long.valueOf(sellerProduct.getBornCategoryId()),
+                                                            sellerProduct.getBornCategoryName(),
+                                                            0,
+                                                            99);
+
+            // Filter out records
+//            List<SellerProductResponse> filteredSimilarList = bornData.getContent()
+//                    .stream()
+//                    .filter(product -> product.getBornCategoryId() != sellerProduct.getBornCategoryId())
+//                    .collect(Collectors.toList());
+//
+//            // Convert back to Page if needed
+//            Page<SellerProductResponse> similarProduct = new PageImpl<>(filteredSimilarList, bornData.getPageable(), filteredSimilarList.size());
+
+            map.put("pw",response);
+            map.put("similarProducts",similarProduct);
+
+            return ResponseGenerator.generateSuccessResponse(map, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
             e.getMessage();
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
+    }
 
+
+
+    public Page<SellerProductResponse> getBornCategoryList(long categoryId, String categoryName, Integer page, Integer size) {
+        try {
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
+                    .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+
+            PageRequest pageRequest= PageRequest.of(page, size);
+            Page<SellerProduct> data = this.sellerProductRepository
+                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
+                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
+
+
+            List<SellerProductResponse> productResponses = data.getContent().stream()
+                    .map(sellerProduct -> {
+                        SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                        ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                        response.setColorVariant(productVariants.getColorVariant());
+                        response.setProductPrice(productVariants.getProductPrice());
+                        response.setProductMrp(productVariants.getProductMrp());
+                        response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+                        response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
+                                .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+
+            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
+            Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, data.getPageable(), data.getTotalElements());
+
+            return responsePage;
+            //ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+            return null;
+        }
     }
 
 
