@@ -27,6 +27,8 @@ public class CustMessageResponse {
     public static final String PASSWORD_REGEX_ERROR  =  "Error :: Password Regex Problem";
     public static final String OTP_VERIFIED_SUCCESS = "OTP Verified Success";
 
+    public static final String SUCCESS = "SUCCESS";
+
 
 
 

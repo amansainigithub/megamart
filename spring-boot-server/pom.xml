@@ -163,6 +163,12 @@
 			<version>4.10.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+
 
 <!--		Redis Server Automatically Start From Spring boot Apllication-->
 <!--		<dependency>-->

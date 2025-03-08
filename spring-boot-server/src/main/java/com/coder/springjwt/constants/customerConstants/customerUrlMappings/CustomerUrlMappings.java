@@ -24,4 +24,15 @@ public class CustomerUrlMappings {
 
 
 
+
+
+//    #######################RAZORPAY#######################
+public static final String PAYMENT_CONTROLLER= CUSTOMER_BASE_URL + "/paymentController";
+    public static final String CREATE_ORDER= "/createOrder";
+
+    public static final String ORDER_UPDATE= "/orderUpdate";
+
+
+
+
 }
