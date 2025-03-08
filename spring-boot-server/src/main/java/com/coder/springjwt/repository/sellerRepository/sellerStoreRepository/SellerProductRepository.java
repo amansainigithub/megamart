@@ -1,7 +1,9 @@
 package com.coder.springjwt.repository.sellerRepository.sellerStoreRepository;
 
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -67,29 +69,23 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
                                                         Pageable pageable);
 
 
-    Page<SellerProduct> findByBabyCategoryIdAndProductStatusAndNetQuantityGreaterThan(
-            String id, String productStatus, String netQuantity, Pageable pageable);
+    Page<SellerProduct> findByBabyCategoryIdAndProductStatus(
+            String id, String productStatus,Pageable pageable);
 
-    Page<SellerProduct> findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(
-            String id, String productStatus, String netQuantity, Pageable pageable);
-
-    SellerProduct findByIdAndProductStatusAndNetQuantityGreaterThan(
-            long id, String productStatus, String netQuantity);
+    Page<SellerProduct> findByBornCategoryIdAndProductStatus(
+            String id, String productStatus, Pageable pageable);
 
 
-//    @Query("SELECT sp FROM SellerProduct sp JOIN sp.productRows pv " +
-//            "WHERE sp.bornCategoryId = :id " +
-//            "AND sp.productStatus = :productStatus " +
-//            "AND sp.netQuantity > :netQuantity " +
-//            "AND CAST(pv.productPrice AS double) < :dealPrice")
-//    Page<SellerProduct> findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThanAndPriceLessThan(
-//            @Param("id") String id,
-//            @Param("productStatus") String productStatus,
-//            @Param("netQuantity") String netQuantity,
-//            @Param("dealPrice") String dealPrice,
-//            Pageable pageable);
+    SellerProduct findByIdAndProductStatus(long id, String productStatus);
+
+    Page<SellerProduct> findByBornCategoryId(String id , Pageable pageable);
 
 
+    @Query("SELECT u FROM SellerProduct u LEFT JOIN u.productRows pr WHERE u.id = :id AND pr.id = :sizeId AND pr.productLabel = :productLabel")
+    SellerProduct getSellerProductData(@Param("id") Long id,@Param("sizeId") Long sizeId, @Param("productLabel") String productLabel);
 
+
+    @Query("SELECT pr FROM SellerProduct u JOIN u.productRows pr WHERE u.id = :id AND pr.id = :sizeId AND pr.productLabel = :productLabel")
+    Optional<ProductVariants> getExactProductVariant(@Param("id") Long id, @Param("sizeId") Long sizeId, @Param("productLabel") String productLabel);
 
 }

@@ -14,5 +14,7 @@ public interface PublicService {
 
     ResponseEntity<?> getProductListDeal99(long cI, String cN, Integer page, Integer size);
 
-    ResponseEntity<?> productWatching(String cI, String cN , String pI, String pN);
+    ResponseEntity<?> productWatching(String pI, String pN);
+
+
 }

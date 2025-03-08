@@ -43,16 +43,11 @@ public class CategoryController {
 
 
     @GetMapping("/productWatching")
-    public ResponseEntity<?> productWatching(@RequestParam String cI,
-                                             @RequestParam String cN ,
+    public ResponseEntity<?> productWatching(
                                              @RequestParam String pI ,
                                              @RequestParam String pN) {
-        return this.publicService.productWatching(cI , cN, pI, pN);
+        return this.publicService.productWatching(pI, pN);
     }
-
-
-
-
 
 
 }

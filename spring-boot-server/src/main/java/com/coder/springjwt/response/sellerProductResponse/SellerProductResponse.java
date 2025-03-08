@@ -25,6 +25,9 @@ public class SellerProductResponse {
     private String productMrp;
     private String calculatedDiscount;
     private String description;
+    private String netQuantity;
+
+    private String productFirstSize;
 
     private List<ProductDetailsResponse> productDetailsResponses;
 

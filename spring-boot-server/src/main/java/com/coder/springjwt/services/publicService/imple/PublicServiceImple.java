@@ -161,8 +161,8 @@ public class PublicServiceImple implements PublicService {
 
             PageRequest pageRequest= PageRequest.of(page, size);
             Page<SellerProduct> babyCategoryData = this.sellerProductRepository
-                                                    .findByBabyCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(babyCategoryModel.getId()) ,
-                                                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
+                                                   .findByBabyCategoryIdAndProductStatus(String.valueOf(babyCategoryModel.getId()) ,
+                                                    ProductStatus.PV_APPROVED.toString(), pageRequest );
 
 
             List<SellerProductResponse> productResponses = babyCategoryData.getContent().stream()
@@ -203,8 +203,8 @@ public class PublicServiceImple implements PublicService {
 
             PageRequest pageRequest= PageRequest.of(page, size);
             Page<SellerProduct> data = this.sellerProductRepository
-                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
-                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
+                                        .findByBornCategoryIdAndProductStatus(String.valueOf(bornCategoryModel.getId()) ,
+                                         ProductStatus.PV_APPROVED.toString(), pageRequest );
 
 
             List<SellerProductResponse> productResponses = data.getContent().stream()
@@ -247,9 +247,9 @@ public class PublicServiceImple implements PublicService {
             Pageable pageable = PageRequest.of(page, size);
 
             Page<SellerProduct> pagedSellerProducts = this.sellerProductRepository
-                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(
+                    .findByBornCategoryIdAndProductStatus(
                             String.valueOf(bornCategoryModel.getId()),
-                            ProductStatus.PV_APPROVED.toString(), "0",
+                            ProductStatus.PV_APPROVED.toString(),
                             pageable);
 
             List<SellerProductResponse> sellerProductResponsesList = pagedSellerProducts.getContent()
@@ -284,12 +284,12 @@ public class PublicServiceImple implements PublicService {
     }
 
     @Override
-    public ResponseEntity<?> productWatching(String cI, String cN, String pI, String pN) {
+    public ResponseEntity<?> productWatching(String pI, String pN) {
         Map<Object,Object> map = new HashMap<>();
         try {
             SellerProduct sellerProduct = this.sellerProductRepository
-                    .findByIdAndProductStatusAndNetQuantityGreaterThan(Long.parseLong(pI),
-                            ProductStatus.PV_APPROVED.toString(), "0");
+                                            .findByIdAndProductStatus(Long.parseLong(pI),
+                                                    ProductStatus.PV_APPROVED.toString());
 
             SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
             ProductVariants productVariants = sellerProduct.getProductRows().get(0);
@@ -332,15 +332,6 @@ public class PublicServiceImple implements PublicService {
                                                             0,
                                                             99);
 
-            // Filter out records
-//            List<SellerProductResponse> filteredSimilarList = bornData.getContent()
-//                    .stream()
-//                    .filter(product -> product.getBornCategoryId() != sellerProduct.getBornCategoryId())
-//                    .collect(Collectors.toList());
-//
-//            // Convert back to Page if needed
-//            Page<SellerProductResponse> similarProduct = new PageImpl<>(filteredSimilarList, bornData.getPageable(), filteredSimilarList.size());
-
             map.put("pw",response);
             map.put("similarProducts",similarProduct);
 
@@ -354,7 +345,6 @@ public class PublicServiceImple implements PublicService {
     }
 
 
-
     public Page<SellerProductResponse> getBornCategoryList(long categoryId, String categoryName, Integer page, Integer size) {
         try {
             BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
@@ -362,10 +352,9 @@ public class PublicServiceImple implements PublicService {
 
             PageRequest pageRequest= PageRequest.of(page, size);
             Page<SellerProduct> data = this.sellerProductRepository
-                    .findByBornCategoryIdAndProductStatusAndNetQuantityGreaterThan(String.valueOf(bornCategoryModel.getId()) ,
-                            ProductStatus.PV_APPROVED.toString(), "0", pageRequest );
+                    .findByBornCategoryId(String.valueOf(bornCategoryModel.getId()) , pageRequest );
 
-
+            System.out.println("----------------------------------------");
             List<SellerProductResponse> productResponses = data.getContent().stream()
                     .map(sellerProduct -> {
                         SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);

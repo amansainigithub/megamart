@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "sellerProduct")
 @ToString
-public class SellerProduct extends BaseEntity {
+public class SellerProduct extends BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,7 +28,7 @@ public class SellerProduct extends BaseEntity {
     private List<ProductVariants> productRows;
 
     //product Size Data
-    private List<String> productSizes;
+//    private List<String> productSizes;
 
     //Product Details
     private String sleeveType;
@@ -76,6 +77,8 @@ public class SellerProduct extends BaseEntity {
     private String babyCategoryId;
 
     private String variant;
+
+    private String productFirstSize;
 
     private String productLauncherId;
 
