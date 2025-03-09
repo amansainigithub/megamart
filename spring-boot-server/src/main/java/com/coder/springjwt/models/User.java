@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -113,6 +114,10 @@ public class User extends BaseEntity {
 	private String browserName;
 
 	private String sellerStoreName;
+
+
+	@OneToMany(mappedBy = "user")
+	private List<CustomerOrders> customerOrders;
 
 	public User() {
 	}

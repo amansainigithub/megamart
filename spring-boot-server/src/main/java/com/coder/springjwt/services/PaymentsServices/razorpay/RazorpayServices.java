@@ -1,12 +1,15 @@
 package com.coder.springjwt.services.PaymentsServices.razorpay;
 
+import com.coder.springjwt.dtos.cartItemsDto.CartItemsDto;
 import com.coder.springjwt.payload.paymentTransaction.PaymentTransactionPayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface RazorpayServices {
-    ResponseEntity<?> createOrder(Double amount );
+    ResponseEntity<?> createOrder(Double amount ,  List<CartItemsDto> cartItems );
 
     ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload);
 }
