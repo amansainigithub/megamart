@@ -1,7 +1,7 @@
 package com.coder.springjwt.controllers.publicController;
 
-import com.coder.springjwt.constants.customerConstants.customerUrlMappings.CustomerUrlMappings;
-import com.coder.springjwt.services.publicService.PublicService;
+import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.services.publicService.productService.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

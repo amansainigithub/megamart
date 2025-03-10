@@ -1,8 +1,7 @@
-package com.coder.springjwt.models;
+package com.coder.springjwt.models.publicPanelModels;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 

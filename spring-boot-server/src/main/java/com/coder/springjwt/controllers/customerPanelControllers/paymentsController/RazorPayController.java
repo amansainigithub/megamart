@@ -1,6 +1,6 @@
 package com.coder.springjwt.controllers.paymentsController;
 
-import com.coder.springjwt.constants.customerConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
 import com.coder.springjwt.dtos.cartItemsDto.CartItemsDto;
 import com.coder.springjwt.payload.paymentTransaction.PaymentTransactionPayload;
 import com.coder.springjwt.services.PaymentsServices.razorpay.RazorpayServices;

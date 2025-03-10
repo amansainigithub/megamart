@@ -1,7 +1,7 @@
 package com.coder.springjwt.controllers.stateCityPincode;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
-import com.coder.springjwt.services.stateCityPincodeServices.StateCityPincodeService;
+import com.coder.springjwt.services.publicService.stateCityPincodeServices.StateCityPincodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
