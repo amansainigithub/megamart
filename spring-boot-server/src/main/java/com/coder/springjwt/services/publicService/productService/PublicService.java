@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.publicService;
+package com.coder.springjwt.services.publicService.productService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

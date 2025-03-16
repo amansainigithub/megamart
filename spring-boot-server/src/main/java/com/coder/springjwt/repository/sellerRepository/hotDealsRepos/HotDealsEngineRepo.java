@@ -1,4 +1,4 @@
-package com.coder.springjwt.repository.hotDealsRepos;
+package com.coder.springjwt.repository.sellerRepository.hotDealsRepos;
 
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,8 +3,8 @@ package com.coder.springjwt.services.sellerServices.categories.childCategoryImpl
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.childDtos.ChildCategoryDto;
-import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.repository.sellerRepository.categories.ChildCategoryRepo;

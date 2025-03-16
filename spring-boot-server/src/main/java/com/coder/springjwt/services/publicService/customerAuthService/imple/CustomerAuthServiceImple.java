@@ -1,10 +1,10 @@
-package com.coder.springjwt.services.customerServices.customerAuthService.imple;
+package com.coder.springjwt.services.publicService.customerAuthService.imple;
 
 import com.coder.springjwt.constants.OtpMessageContent;
-import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
-import com.coder.springjwt.controllers.customer.customerAuthController.CustomerAuthController;
-import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
-import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.test.CustMessageResponse;
+import com.coder.springjwt.controllers.customerPanelControllers.customerAuthController.CustomerAuthController;
+import com.coder.springjwt.exception.customerPanelException.InvalidMobileNumberException;
+import com.coder.springjwt.exception.customerPanelException.InvalidUsernameAndPasswordException;
 import com.coder.springjwt.helpers.OsLeaked.OsLeaked;
 import com.coder.springjwt.helpers.ValidateMobNumber.ValidateMobileNumber;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateOTP;
@@ -23,7 +23,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
-import com.coder.springjwt.services.customerServices.customerAuthService.CustomerAuthService;
+import com.coder.springjwt.services.publicService.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.servlet.http.HttpServletRequest;

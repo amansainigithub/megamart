@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos.cartItemsDto;
+package com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

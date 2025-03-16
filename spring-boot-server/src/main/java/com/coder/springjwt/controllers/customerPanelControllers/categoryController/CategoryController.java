@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.publicController;
+package com.coder.springjwt.controllers.customerPanelControllers.categoryController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
 import com.coder.springjwt.services.publicService.productService.PublicService;

@@ -1,6 +1,6 @@
 package com.coder.springjwt.repository.OtpReqResRepository;
 
-import com.coder.springjwt.models.props.OtpRequestResponse;
+import com.coder.springjwt.models.sellerModels.props.OtpRequestResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

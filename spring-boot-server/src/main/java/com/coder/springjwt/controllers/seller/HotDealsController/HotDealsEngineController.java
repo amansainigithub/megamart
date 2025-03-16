@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller.HotDealsController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.dtos.sellerDtos.hotDealsDtos.HotDealsEngineDto;
-import com.coder.springjwt.services.hotDealsEngineService.HotDealsEngineService;
+import com.coder.springjwt.services.sellerServices.hotDealsEngineService.HotDealsEngineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

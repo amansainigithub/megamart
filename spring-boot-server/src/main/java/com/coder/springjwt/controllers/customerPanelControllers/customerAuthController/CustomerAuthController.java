@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.customer.customerAuthController;
+package com.coder.springjwt.controllers.customerPanelControllers.customerAuthController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustForgotPasswordPayload;

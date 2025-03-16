@@ -1,4 +1,4 @@
-package com.coder.springjwt.repository.paymentRepository;
+package com.coder.springjwt.repository.customerPanelRepositories.paymentRepository;
 
 import com.coder.springjwt.models.customerPanelModels.payments.razorPay.PaymentsTransactions;
 import org.springframework.data.jpa.repository.JpaRepository;

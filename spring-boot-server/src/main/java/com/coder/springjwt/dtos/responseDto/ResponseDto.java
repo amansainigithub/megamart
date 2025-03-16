@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos;
+package com.coder.springjwt.dtos.responseDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

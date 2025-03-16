@@ -2,7 +2,7 @@ package com.coder.springjwt.services.sellerServices.sellerProductVerifierService
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.emuns.ProductStatus;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -45,6 +45,7 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
     @Override
     public ResponseEntity<?> getFormBuilderFlyingByAdmin(String categoryId) {
         try {
+            System.out.println(Long.parseLong(categoryId)+"==============");
             BornCategoryModel bornData = this.bornCategoryRepo.findById(Long.parseLong(categoryId))
                     .orElseThrow(() -> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
             return ResponseGenerator.generateSuccessResponse(bornData, SellerMessageResponse.SUCCESS);

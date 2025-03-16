@@ -1,4 +1,4 @@
-package com.coder.springjwt.dtos.customerDtos;
+package com.coder.springjwt.dtos.customerPanelDtos;
 
 
 import lombok.*;

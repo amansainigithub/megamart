@@ -1,6 +1,6 @@
-package com.coder.springjwt.payload.paymentTransaction;
+package com.coder.springjwt.payload.customerPayloads.paymentTransaction;
 
-import com.coder.springjwt.dtos.cartItemsDto.CartItemsDto;
+import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

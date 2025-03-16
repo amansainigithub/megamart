@@ -2,12 +2,12 @@ package com.coder.springjwt.services.sellerServices.categories.bornCategoryImple
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
-import com.coder.springjwt.constants.customerConstants.messageConstants.test.CustMessageResponse;
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.test.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.bornDtos.FileMetadata;
-import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategorySampleFilesModel;

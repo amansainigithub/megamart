@@ -1,8 +1,8 @@
-package com.coder.springjwt.controllers.paymentsController;
+package com.coder.springjwt.controllers.customerPanelControllers.paymentsController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
-import com.coder.springjwt.dtos.cartItemsDto.CartItemsDto;
-import com.coder.springjwt.payload.paymentTransaction.PaymentTransactionPayload;
+import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
+import com.coder.springjwt.payload.customerPayloads.paymentTransaction.PaymentTransactionPayload;
 import com.coder.springjwt.services.PaymentsServices.razorpay.RazorpayServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

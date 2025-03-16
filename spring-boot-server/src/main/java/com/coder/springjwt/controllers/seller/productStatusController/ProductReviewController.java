@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.seller.productStatusController;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.payload.sellerPayloads.ProductReviewPayload;
-import com.coder.springjwt.services.productReviewDecisionService.ProductReviewDecisionService;
+import com.coder.springjwt.services.sellerServices.productReviewDecisionService.ProductReviewDecisionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

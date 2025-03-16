@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.customerServices.customerAuthService;
+package com.coder.springjwt.services.publicService.customerAuthService;
 
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustForgotPasswordPayload;
 import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLoginPayload;

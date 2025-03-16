@@ -1,4 +1,4 @@
-package com.coder.springjwt.models.publicPanelModels;
+package com.coder.springjwt.models.customerPanelModels;
 
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;

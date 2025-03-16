@@ -1,6 +1,6 @@
 package com.coder.springjwt.util;
 
-import com.coder.springjwt.dtos.ResponseDto;
+import com.coder.springjwt.dtos.responseDto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

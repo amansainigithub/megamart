@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.hotDealsEngineService;
+package com.coder.springjwt.services.sellerServices.hotDealsEngineService;
 
 import com.coder.springjwt.dtos.sellerDtos.hotDealsDtos.HotDealsEngineDto;
 import org.springframework.http.ResponseEntity;

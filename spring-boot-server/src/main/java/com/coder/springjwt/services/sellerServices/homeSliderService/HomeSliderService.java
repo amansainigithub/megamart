@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.homeSliderService;
+package com.coder.springjwt.services.sellerServices.homeSliderService;
 
 import com.coder.springjwt.dtos.sellerDtos.homeSliderDtos.HomeSliderDto;
 import org.springframework.http.ResponseEntity;

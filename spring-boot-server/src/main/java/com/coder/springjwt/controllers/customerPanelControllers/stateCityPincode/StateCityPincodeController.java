@@ -1,4 +1,4 @@
-package com.coder.springjwt.controllers.stateCityPincode;
+package com.coder.springjwt.controllers.customerPanelControllers.stateCityPincode;
 
 import com.coder.springjwt.constants.sellerConstants.sellerUrlMappings.SellerUrlMappings;
 import com.coder.springjwt.services.publicService.stateCityPincodeServices.StateCityPincodeService;

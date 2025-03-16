@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.stateCityPincodeServices;
+package com.coder.springjwt.services.publicService.stateCityPincodeServices;
 
 
 import org.springframework.http.ResponseEntity;

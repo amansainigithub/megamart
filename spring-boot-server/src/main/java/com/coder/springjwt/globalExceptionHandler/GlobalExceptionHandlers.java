@@ -1,7 +1,7 @@
 package com.coder.springjwt.globalExceptionHandler;
 
-import com.coder.springjwt.exception.customerException.InvalidMobileNumberException;
-import com.coder.springjwt.exception.customerException.InvalidUsernameAndPasswordException;
+import com.coder.springjwt.exception.customerPanelException.InvalidMobileNumberException;
+import com.coder.springjwt.exception.customerPanelException.InvalidUsernameAndPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

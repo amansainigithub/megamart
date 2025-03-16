@@ -1,6 +1,6 @@
-package com.coder.springjwt.services.stateCityPincodeServices.imple;
+package com.coder.springjwt.services.publicService.stateCityPincodeServices.imple;
 
-import com.coder.springjwt.services.stateCityPincodeServices.StateCityPincodeService;
+import com.coder.springjwt.services.publicService.stateCityPincodeServices.StateCityPincodeService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

@@ -1,12 +1,12 @@
-package com.coder.springjwt.services.publicService.imple;
+package com.coder.springjwt.services.publicService.productService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.customerDtos.BabyCategoryDto;
-import com.coder.springjwt.dtos.customerDtos.BornCategoryDto;
-import com.coder.springjwt.dtos.customerDtos.ChildCategoryDto;
-import com.coder.springjwt.dtos.customerDtos.ParentCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.BabyCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.BornCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.ChildCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.ParentCategoryDto;
 import com.coder.springjwt.emuns.ProductStatus;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
@@ -16,8 +16,8 @@ import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineMode
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
-import com.coder.springjwt.repository.hotDealsRepos.HotDealsEngineRepo;
+import com.coder.springjwt.repository.sellerRepository.homeSliderRepo.HomeSliderRepo;
+import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsEngineRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
@@ -26,7 +26,7 @@ import com.coder.springjwt.response.sellerProductResponse.ProductDetailsResponse
 import com.coder.springjwt.response.sellerProductResponse.ProductFilesResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
-import com.coder.springjwt.services.publicService.PublicService;
+import com.coder.springjwt.services.publicService.productService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -121,26 +121,26 @@ public class PublicServiceImple implements PublicService {
 
 
             //get HotDealEngine Data
-            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(16L).get();
-            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
+//            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(1L).get();
+//            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
 
             //Get Parent Categories only Men
             Pageable mensListPageable = PageRequest.of(0, 22);
-            List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(2L,mensListPageable);
+            List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(1L,mensListPageable);
 
             //Get Parent Categories only Women
 //            Pageable womenListPageable = PageRequest.of(0, 22);
 //            List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
 
 
-            Page<SellerProductResponse> productsList = this.getBornCategoryList(17l, "Mens Top Wear", 0, 999);
+            Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 999);
 
 
             mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("listOfCategories",listOfCategories);
             mapNode.put("babyDataFilter",babyDataFilter);
-            mapNode.put("hotDealEngine",hotDealEngine);
-            mapNode.put("hotDeals",hotDeals);
+//            mapNode.put("hotDealEngine",hotDealEngine);
+//            mapNode.put("hotDeals",hotDeals);
             mapNode.put("mensList",mensList);
 //            mapNode.put("womenList",womenList);
             mapNode.put("productsList",productsList.getContent());

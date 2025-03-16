@@ -1,14 +1,14 @@
-package com.coder.springjwt.services.homeSliderService.imple;
+package com.coder.springjwt.services.sellerServices.homeSliderService.imple;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.homeSliderDtos.HomeSliderDto;
-import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
-import com.coder.springjwt.repository.homeSliderRepo.HomeSliderRepo;
-import com.coder.springjwt.services.homeSliderService.HomeSliderService;
+import com.coder.springjwt.repository.sellerRepository.homeSliderRepo.HomeSliderRepo;
+import com.coder.springjwt.services.sellerServices.homeSliderService.HomeSliderService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

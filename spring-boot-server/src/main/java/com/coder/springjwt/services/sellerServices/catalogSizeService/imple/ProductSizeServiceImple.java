@@ -2,8 +2,8 @@ package com.coder.springjwt.services.sellerServices.catalogSizeService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.productMetaDtos.ProductSizeVariantDto;
-import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.catalog.catalogSize.ProductSizeVariantModel;
 import com.coder.springjwt.repository.sellerRepository.catalogRepos.ProductSizeRepo;
 import com.coder.springjwt.services.sellerServices.catalogSizeService.ProductSizeService;

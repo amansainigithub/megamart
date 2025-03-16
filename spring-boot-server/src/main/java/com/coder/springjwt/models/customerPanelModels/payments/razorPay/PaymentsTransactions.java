@@ -1,4 +1,4 @@
-package com.coder.springjwt.models.payments.razorPay;
+package com.coder.springjwt.models.customerPanelModels.payments.razorPay;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.productReviewDecisionService;
+package com.coder.springjwt.services.sellerServices.productReviewDecisionService;
 
 import com.coder.springjwt.payload.sellerPayloads.ProductReviewPayload;
 import org.springframework.http.ResponseEntity;

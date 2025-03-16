@@ -1,15 +1,15 @@
-package com.coder.springjwt.services.productReviewDecisionService.imple;
+package com.coder.springjwt.services.sellerServices.productReviewDecisionService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.emuns.ProductStatus;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.helpers.generateDateandTime.GenerateDateAndTime;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.payload.sellerPayloads.ProductReviewPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.productStatusRepo.ProductReviewStatusRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
-import com.coder.springjwt.services.productReviewDecisionService.ProductReviewDecisionService;
+import com.coder.springjwt.services.sellerServices.productReviewDecisionService.ProductReviewDecisionService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.coder.springjwt.models.props;
+package com.coder.springjwt.models.sellerModels.props;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;

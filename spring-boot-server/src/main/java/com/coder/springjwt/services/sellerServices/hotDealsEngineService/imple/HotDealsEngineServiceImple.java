@@ -1,13 +1,12 @@
-package com.coder.springjwt.services.hotDealsEngineService.imple;
+package com.coder.springjwt.services.sellerServices.hotDealsEngineService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.hotDealsDtos.HotDealsEngineDto;
-import com.coder.springjwt.exception.customerException.CategoryNotFoundException;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
-import com.coder.springjwt.models.sellerModels.catalog.hsn.HsnCodes;
+import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
-import com.coder.springjwt.repository.hotDealsRepos.HotDealsEngineRepo;
-import com.coder.springjwt.services.hotDealsEngineService.HotDealsEngineService;
+import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsEngineRepo;
+import com.coder.springjwt.services.sellerServices.hotDealsEngineService.HotDealsEngineService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

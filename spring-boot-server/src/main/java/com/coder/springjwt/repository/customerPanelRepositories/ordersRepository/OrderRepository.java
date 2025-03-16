@@ -1,5 +1,4 @@
-package com.coder.springjwt.repository.ordersRepository;
-
+package com.coder.springjwt.repository.customerPanelRepositories.ordersRepository;
 
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import org.springframework.data.jpa.repository.JpaRepository;

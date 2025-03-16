@@ -1,6 +1,7 @@
 package com.coder.springjwt.models;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
+import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

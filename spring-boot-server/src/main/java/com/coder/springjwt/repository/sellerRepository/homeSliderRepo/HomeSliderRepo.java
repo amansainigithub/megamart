@@ -1,4 +1,4 @@
-package com.coder.springjwt.repository.homeSliderRepo;
+package com.coder.springjwt.repository.sellerRepository.homeSliderRepo;
 
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
 import org.springframework.data.jpa.repository.JpaRepository;

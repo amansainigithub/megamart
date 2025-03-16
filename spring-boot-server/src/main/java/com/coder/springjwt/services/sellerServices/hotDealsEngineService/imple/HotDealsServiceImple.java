@@ -1,15 +1,15 @@
-package com.coder.springjwt.services.hotDealsEngineService.imple;
+package com.coder.springjwt.services.sellerServices.hotDealsEngineService.imple;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.hotDealsDtos.HotDealsDto;
-import com.coder.springjwt.exception.customerException.DataNotFoundException;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
-import com.coder.springjwt.repository.hotDealsRepos.HotDealsEngineRepo;
-import com.coder.springjwt.repository.hotDealsRepos.HotDealsRepo;
-import com.coder.springjwt.services.hotDealsEngineService.HotDealsService;
+import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsEngineRepo;
+import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsRepo;
+import com.coder.springjwt.services.sellerServices.hotDealsEngineService.HotDealsService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;

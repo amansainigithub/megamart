@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.productStatusService;
+package com.coder.springjwt.services.sellerServices.productStatusService;
 
 import com.coder.springjwt.dtos.sellerDtos.productStatusDtos.ProductReviewStatusDto;
 import org.springframework.http.ResponseEntity;

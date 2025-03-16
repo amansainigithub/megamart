@@ -28,7 +28,8 @@ public class SellerProduct extends BaseEntity  {
     private List<ProductVariants> productRows;
 
     //product Size Data
-//    private List<String> productSizes;
+    @ElementCollection
+    private List<String> productSizes;
 
     //Product Details
     private String sleeveType;
