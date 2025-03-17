@@ -1,7 +1,7 @@
 package com.coder.springjwt.services.publicService.customerAuthService.imple;
 
 import com.coder.springjwt.constants.OtpMessageContent;
-import com.coder.springjwt.constants.customerPanelConstants.messageConstants.test.CustMessageResponse;
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.controllers.customerPanelControllers.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerPanelException.InvalidMobileNumberException;
 import com.coder.springjwt.exception.customerPanelException.InvalidUsernameAndPasswordException;

@@ -16,11 +16,11 @@ import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineMode
 import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.repository.sellerRepository.homeSliderRepo.HomeSliderRepo;
-import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsEngineRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
+import com.coder.springjwt.repository.sellerRepository.homeSliderRepo.HomeSliderRepo;
+import com.coder.springjwt.repository.sellerRepository.hotDealsRepos.HotDealsEngineRepo;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.response.sellerProductResponse.ProductDetailsResponse;
 import com.coder.springjwt.response.sellerProductResponse.ProductFilesResponse;
@@ -121,8 +121,8 @@ public class PublicServiceImple implements PublicService {
 
 
             //get HotDealEngine Data
-//            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(1L).get();
-//            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
+            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(1L).get();
+            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
 
             //Get Parent Categories only Men
             Pageable mensListPageable = PageRequest.of(0, 22);
@@ -139,8 +139,8 @@ public class PublicServiceImple implements PublicService {
             mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("listOfCategories",listOfCategories);
             mapNode.put("babyDataFilter",babyDataFilter);
-//            mapNode.put("hotDealEngine",hotDealEngine);
-//            mapNode.put("hotDeals",hotDeals);
+            mapNode.put("hotDealEngine",hotDealEngine);
+            mapNode.put("hotDeals",hotDeals);
             mapNode.put("mensList",mensList);
 //            mapNode.put("womenList",womenList);
             mapNode.put("productsList",productsList.getContent());

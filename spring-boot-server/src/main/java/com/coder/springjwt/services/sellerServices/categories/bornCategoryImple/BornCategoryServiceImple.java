@@ -2,7 +2,7 @@ package com.coder.springjwt.services.sellerServices.categories.bornCategoryImple
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
-import com.coder.springjwt.constants.customerPanelConstants.messageConstants.test.CustMessageResponse;
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.bornDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.bornDtos.FileMetadata;

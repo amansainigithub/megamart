@@ -36,6 +36,8 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String productDiscount;
 
+    private String orderStatus;
+
     private String userId;
 
     @ManyToOne

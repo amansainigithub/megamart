@@ -1,4 +1,4 @@
-package com.coder.springjwt.constants.customerPanelConstants.messageConstants.test;
+package com.coder.springjwt.constants.customerPanelConstants.messageConstants;
 
 import org.springframework.stereotype.Component;
 
@@ -17,13 +17,9 @@ public class CustMessageResponse {
     public static final String REGISTER_COMPLETED_FULLY = "Registration Completed Fully";
     public static final String SOMETHING_WENT_WRONG =  "Something Went Wrong";
     public static final String PASSWORD_AND_CONFORM_PASSWORD_DOES_NOT_MATCH =  "Password and conformPassword did not matched!!";
-
-    public static final String PASSWORD_MATCHED_SUCCESS = "Password matched success";
     public static final String FORGOT_PASSWORD_OTP_GENERATE_SUCCESS = "FORGOT PASSWORD OTP SUCCESSFULLY GENERATED";
     public static final String ERROR_THIRD_PARTY_API = "Error in Third Party Api's";
     public static final String VALID_OTP_FORM_OPEN = "VALID_OTP-FORM-OPEN";
-
-    public static final String PASSWORD_REGEX_MATCHED_SUCCESS =  "Password REGEX matched success";
     public static final String PASSWORD_REGEX_ERROR  =  "Error :: Password Regex Problem";
     public static final String OTP_VERIFIED_SUCCESS = "OTP Verified Success";
 

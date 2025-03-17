@@ -1,11 +1,12 @@
 package com.coder.springjwt.services.PaymentsServices.razorpay.imple;
 
-import com.coder.springjwt.constants.customerPanelConstants.messageConstants.test.CustMessageResponse;
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
+import com.coder.springjwt.emuns.OrderStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
+import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
-import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.payments.razorPay.PaymentsTransactions;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -253,6 +254,7 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setProductColor(ci.getPColor());
                 customerOrderItems.setProductMrp(String.valueOf(ci.getPMrp()));
                 customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
+                customerOrderItems.setOrderStatus(OrderStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
 
                 //Set Customer Order

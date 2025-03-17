@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
-import java.io.Serializable;
-
 @Data
 @Entity
 @Table(name = "productVariants")
