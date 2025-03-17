@@ -1,5 +1,6 @@
 package com.coder.springjwt.repository.customerPanelRepositories.ordersRepository;
 
+import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +27,9 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
                     nativeQuery = true)
     Long countTotalOrdersByCustomerIdNative(@Param("customerId") Long customerId);
 
+
+    @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.status = :paid")
+    List<CustomerOrderItems> findOrderItemsByCustomerId(@Param("customerId") Long customerId, @Param("paid") String paid);
 
 
 

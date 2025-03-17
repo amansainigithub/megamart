@@ -5,6 +5,7 @@ import com.coder.springjwt.constants.customerPanelConstants.messageConstants.Cus
 import com.coder.springjwt.emuns.OrderStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
+import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
@@ -33,7 +34,7 @@ public class DashboardServiceImple implements DashboardService {
     @Override
     public ResponseEntity<?> getDashboard(String username) {
         try {
-            Map<String,Long> data = new HashMap<>();
+            Map<String,Object> data = new HashMap<>();
 
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser)
@@ -52,6 +53,10 @@ public class DashboardServiceImple implements DashboardService {
             data.put("newOrders" , userPendingOrderCount); // Pending For new Orders
             data.put("orderDelivered" , userDeliveredOrderCount); // Delivered Successfully
             data.put("totalOrders",totalOrders); // Total Orders
+
+
+            List<CustomerOrderItems> customerOrderItems = this.orderRepository.findOrderItemsByCustomerId(user.getId() , "PAID");
+            data.put("listOfOrders",customerOrderItems);
 
             return ResponseGenerator.generateSuccessResponse(data ,CustMessageResponse.SUCCESS);
         }  catch (Exception e)
