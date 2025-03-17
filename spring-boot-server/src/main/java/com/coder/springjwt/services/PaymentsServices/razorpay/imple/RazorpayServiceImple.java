@@ -124,23 +124,28 @@ public class RazorpayServiceImple implements RazorpayServices {
         if(!validateCartItems(paymentTransactionPayload.getCartItems())){
             throw new RuntimeException("Somethin is Wrong  in Cart Items ! Please check");
         }
-        paymentTransactionPayload.setCartItems(null);
 
         try {
             PaymentsTransactions createdTransaction = this.paymentRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
             if(createdTransaction != null)
             {
+                //save Cart Items To Database Final Added
+                this.saveCustomerOrderItems(paymentTransactionPayload.getRazorpay_order_id() ,  paymentTransactionPayload.getCartItems());
+                paymentTransactionPayload.setCartItems(null); //cart Items Null Because of Object mapper can't Converted Items
+                //save Cart Items To Database Final Added
+
+
+                //Payment Transaction Updated
                 createdTransaction.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
                 createdTransaction.setSignature(paymentTransactionPayload.getRazorpay_signature());
                 createdTransaction.setStatus("PAID");
-
                 ObjectMapper objectMapper = new ObjectMapper();
                 String jsonPayload = objectMapper.writeValueAsString(paymentTransactionPayload);
                 createdTransaction.setPaymentCompleteJson(jsonPayload);
-
                 this.paymentRepository.save(createdTransaction);
-                System.out.println("Data Update Success");
+                System.out.println("Payment Transaction Data Update Success");
 
+                //Update Customer Order
                 this.updateCustomerOrderStatus(paymentTransactionPayload);
                 System.out.println("Customer Order Update Success ::::  ORDER ID-> "
                                     + paymentTransactionPayload.getRazorpay_order_id());
@@ -168,6 +173,94 @@ public class RazorpayServiceImple implements RazorpayServices {
     }
 
 
+    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList)
+    {
+        try {
+            System.out.println("save Customer Order Starting.....");
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+
+            CustomerOrders customerOrders = new CustomerOrders();
+            customerOrders.setOrderId(orderId);
+            customerOrders.setStatus("CREATED");
+            customerOrders.setUserId(String.valueOf(user.getId()));
+            customerOrders.setUser(user);
+            this.orderRepository.save(customerOrders);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateCustomerOrderStatus(PaymentTransactionPayload paymentTransactionPayload)
+    {
+        try {
+            CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
+            customerOrders.setStatus("PAID");
+            customerOrders.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
+            this.orderRepository.save(customerOrders);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList)
+    {
+        try {
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+
+            CustomerOrders customerOrders = this.orderRepository.findByOrderId(orderId);
+
+            List<CustomerOrderItems> customerOrderItemsList = new ArrayList<>();
+            for(CartItemsDto ci :  cartItemsList)
+            {
+                CustomerOrderItems customerOrderItems = new CustomerOrderItems();
+                customerOrderItems.setProductId(ci.getPId());
+                customerOrderItems.setProductName(ci.getPName());
+                customerOrderItems.setProductPrice(ci.getPPrice());
+                customerOrderItems.setProductBrand(ci.getPBrand());
+                customerOrderItems.setProductSize(ci.getPSize());
+                customerOrderItems.setQuantity(String.valueOf(ci.getQuantity()));
+                customerOrderItems.setTotalPrice(String.valueOf(ci.getTotalPrice()));
+                customerOrderItems.setFileUrl(ci.getPFileUrl());
+                customerOrderItems.setProductColor(ci.getPColor());
+                customerOrderItems.setProductMrp(String.valueOf(ci.getPMrp()));
+                customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
+                customerOrderItems.setRazorpayOrderId(orderId);
+                customerOrderItems.setPaymentStatus("PAID");
+                customerOrderItems.setOrderStatus(OrderStatus.PENDING.toString());
+                customerOrderItems.setUserId(String.valueOf(user.getId()));
+
+                //Set Customer Order
+                customerOrderItems.setCustomerOrders(customerOrders);
+
+                //Add Order Items To List
+                customerOrderItemsList.add(customerOrderItems);
+            }
+            //Set Customer Order Items List
+            customerOrders.setCustomerOrderItems(customerOrderItemsList);
+
+            //save the Order
+            this.orderRepository.save(customerOrders);
+
+            log.info("Customer Order Items Saved Success!!!");
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public boolean validateCartItems(@NotNull List<CartItemsDto> cartItems) {
 
@@ -193,11 +286,11 @@ public class RazorpayServiceImple implements RazorpayServices {
                 System.out.println("Product Inventory :: " + pv.getProductInventory());
 
                 if(pv.getProductPrice().equals(String.valueOf(ci.getPPrice()))
-                    && pv.getProductLabel().equals(ci.getPSize())
-                    && Integer.parseInt(pv.getProductInventory()) > 0 )
+                        && pv.getProductLabel().equals(ci.getPSize())
+                        && Integer.parseInt(pv.getProductInventory()) > 0 )
                 {
-                     variantTotalPrice += Integer.parseInt(pv.getProductPrice()) * ci.getQuantity();
-                     cartTotalPrice += Integer.parseInt(ci.getPPrice()) * ci.getQuantity();
+                    variantTotalPrice += Integer.parseInt(pv.getProductPrice()) * ci.getQuantity();
+                    cartTotalPrice += Integer.parseInt(ci.getPPrice()) * ci.getQuantity();
                     System.out.println("Matched");
                     isValid = Boolean.TRUE;
                 }
@@ -222,74 +315,6 @@ public class RazorpayServiceImple implements RazorpayServices {
         }
 
         return Boolean.TRUE; // All items are valid
-    }
-
-
-
-    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList)
-    {
-        try {
-            System.out.println("save Customer Order Starting.....");
-            String currentUser = UserHelper.getOnlyCurrentUser();
-            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
-
-            CustomerOrders customerOrders = new CustomerOrders();
-            customerOrders.setOrderId(orderId);
-            customerOrders.setStatus("CREATED");
-            customerOrders.setUserId(String.valueOf(user.getId()));
-            customerOrders.setUser(user);
-
-            List<CustomerOrderItems> customerOrderItemsList = new ArrayList<>();
-            for(CartItemsDto ci :  cartItemsList)
-            {
-                CustomerOrderItems customerOrderItems = new CustomerOrderItems();
-                customerOrderItems.setProductId(ci.getPId());
-                customerOrderItems.setProductName(ci.getPName());
-                customerOrderItems.setProductPrice(ci.getPPrice());
-                customerOrderItems.setProductBrand(ci.getPBrand());
-                customerOrderItems.setProductSize(ci.getPSize());
-                customerOrderItems.setQuantity(String.valueOf(ci.getQuantity()));
-                customerOrderItems.setTotalPrice(String.valueOf(ci.getTotalPrice()));
-                customerOrderItems.setFileUrl(ci.getPFileUrl());
-                customerOrderItems.setProductColor(ci.getPColor());
-                customerOrderItems.setProductMrp(String.valueOf(ci.getPMrp()));
-                customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
-                customerOrderItems.setOrderStatus(OrderStatus.PENDING.toString());
-                customerOrderItems.setUserId(String.valueOf(user.getId()));
-
-                //Set Customer Order
-                customerOrderItems.setCustomerOrders(customerOrders);
-
-                //Add Order Items To List
-                customerOrderItemsList.add(customerOrderItems);
-            }
-            //Set Customer Order Items List
-            customerOrders.setCustomerOrderItems(customerOrderItemsList);
-
-            //save the Order
-            this.orderRepository.save(customerOrders);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void updateCustomerOrderStatus(PaymentTransactionPayload paymentTransactionPayload)
-    {
-        try {
-            CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
-            customerOrders.setStatus("PAID");
-            customerOrders.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
-            this.orderRepository.save(customerOrders);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
     }
 
 

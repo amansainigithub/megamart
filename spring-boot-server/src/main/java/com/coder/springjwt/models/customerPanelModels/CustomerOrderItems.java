@@ -36,6 +36,10 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String productDiscount;
 
+    private String razorpayOrderId;
+
+    private String paymentStatus;
+
     private String orderStatus;
 
     private String userId;
