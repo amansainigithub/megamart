@@ -1,6 +1,7 @@
 package com.coder.springjwt.models;
 
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
+import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -119,6 +120,9 @@ public class User extends BaseEntity {
 
 	@OneToMany(mappedBy = "user")
 	private List<CustomerOrders> customerOrders;
+
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<CustomerAddress> customerAddresses;
 
 	public User() {
 	}
@@ -364,6 +368,22 @@ public class User extends BaseEntity {
 		this.sellerStoreName = sellerStoreName;
 	}
 
+	public List<CustomerOrders> getCustomerOrders() {
+		return customerOrders;
+	}
+
+	public void setCustomerOrders(List<CustomerOrders> customerOrders) {
+		this.customerOrders = customerOrders;
+	}
+
+	public List<CustomerAddress> getCustomerAddresses() {
+		return customerAddresses;
+	}
+
+	public void setCustomerAddresses(List<CustomerAddress> customerAddresses) {
+		this.customerAddresses = customerAddresses;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -395,6 +415,8 @@ public class User extends BaseEntity {
 				", operatingSystem='" + operatingSystem + '\'' +
 				", browserName='" + browserName + '\'' +
 				", sellerStoreName='" + sellerStoreName + '\'' +
+				", customerOrders=" + customerOrders +
+				", customerAddresses=" + customerAddresses +
 				'}';
 	}
 }

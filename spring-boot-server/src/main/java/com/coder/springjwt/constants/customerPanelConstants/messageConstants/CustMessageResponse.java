@@ -25,6 +25,8 @@ public class CustMessageResponse {
 
     public static final String SUCCESS = "SUCCESS";
 
+    public static final String DATA_SAVED_SUCCESS = "Data Saved Success";
+
 
 
 

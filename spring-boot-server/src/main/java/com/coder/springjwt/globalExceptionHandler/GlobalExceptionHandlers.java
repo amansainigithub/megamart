@@ -32,4 +32,14 @@ public class GlobalExceptionHandlers {
         ResponseEntity<Object> responseEntity = new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
         return responseEntity;
     }
+
+    @ExceptionHandler(AddressLimitExceededException.class)
+    public ResponseEntity<?> AddressLimitExceededException(AddressLimitExceededException addressLimitExceededException)
+    {
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setMessage(addressLimitExceededException.getMessage());
+        exceptionResponse.setDateTime(LocalDateTime.now());
+        ResponseEntity<Object> responseEntity = new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return responseEntity;
+    }
 }

@@ -25,17 +25,20 @@ public class CustomerUrlMappings {
 
 
 //    #######################RAZORPAY#######################
-public static final String PAYMENT_CONTROLLER= CUSTOMER_BASE_URL + "/paymentController";
+    public static final String PAYMENT_CONTROLLER= CUSTOMER_BASE_URL + "/paymentController";
     public static final String CREATE_ORDER= "/createOrder";
-
     public static final String ORDER_UPDATE= "/orderUpdate";
-
 
 
     //    #######################DASHBOARD CONTROLLER#######################
     public static final String DASHBOARD_CONTROLLER= CUSTOMER_BASE_URL + "/dashboardController";
     public static final String GET_DASHBOARD= "/getDashboard/{username}";
 
+
+    //    #######################SAVE CUSTOMER ADDRESS CONTROLLER#######################
+    public static final String ADDRESS_CONTROLLER= CUSTOMER_BASE_URL + "/addressController";
+    public static final String SAVE_ADDRESS= "/saveAddress";
+    public static final String GET_ADDRESS= "/getAddress";
 
 
 }
