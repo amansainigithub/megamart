@@ -9,4 +9,12 @@ public interface AddressService {
     ResponseEntity<?> saveAddress(AddressDto addressDto);
 
     ResponseEntity<?> getAddress();
+
+    ResponseEntity<?> deleteAddress(long id);
+
+    ResponseEntity<?> setDefaultAddress(long id);
+
+    ResponseEntity<?> getAddressById(long id);
+
+    ResponseEntity<?> updateAddress(AddressDto addressDto);
 }

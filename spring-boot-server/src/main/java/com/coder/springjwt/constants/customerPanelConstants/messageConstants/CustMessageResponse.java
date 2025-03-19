@@ -15,6 +15,7 @@ public class CustMessageResponse {
     public static final String FLY_LOGIN_PAGE = "FLY_LOGIN_PAGE";
     public static final String INVALID_MOBILE_NUMBER = "Invalid Mobile Number";
     public static final String REGISTER_COMPLETED_FULLY = "Registration Completed Fully";
+
     public static final String SOMETHING_WENT_WRONG =  "Something Went Wrong";
     public static final String PASSWORD_AND_CONFORM_PASSWORD_DOES_NOT_MATCH =  "Password and conformPassword did not matched!!";
     public static final String FORGOT_PASSWORD_OTP_GENERATE_SUCCESS = "FORGOT PASSWORD OTP SUCCESSFULLY GENERATED";
@@ -24,8 +25,14 @@ public class CustMessageResponse {
     public static final String OTP_VERIFIED_SUCCESS = "OTP Verified Success";
 
     public static final String SUCCESS = "SUCCESS";
-
     public static final String DATA_SAVED_SUCCESS = "Data Saved Success";
+    public static final String DELETE_SUCCESS = "Delete Success";
+
+    public static final String DELETE_FAILED = "Delete Failed";
+
+    public static final String UPDATE_SUCCESS= "Update Success";
+
+
 
 
 

@@ -27,4 +27,29 @@ public class CustomerAddressController {
     public ResponseEntity<?> getAddress() {
         return this.addressService.getAddress();
     }
+
+    @GetMapping(CustomerUrlMappings.DELETE_ADDRESS)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> deleteAddress(@PathVariable(required = true) long id) {
+        return this.addressService.deleteAddress(id);
+    }
+
+
+    @GetMapping(CustomerUrlMappings.SET_DEFAULT_ADDRESS)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> setDefaultAddress(@PathVariable(required = true) long id) {
+        return this.addressService.setDefaultAddress(id);
+    }
+
+    @GetMapping(CustomerUrlMappings.GET_ADDRESS_BY_ID)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> getAddressById(@PathVariable(required = true) long id) {
+        return this.addressService.getAddressById(id);
+    }
+
+    @PostMapping(CustomerUrlMappings.UPDATE_ADDRESS)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> updateAddress(@Valid @RequestBody AddressDto addressDto) {
+        return this.addressService.updateAddress(addressDto);
+    }
 }

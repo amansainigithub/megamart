@@ -39,6 +39,13 @@ public class CustomerUrlMappings {
     public static final String ADDRESS_CONTROLLER= CUSTOMER_BASE_URL + "/addressController";
     public static final String SAVE_ADDRESS= "/saveAddress";
     public static final String GET_ADDRESS= "/getAddress";
+    public static final String DELETE_ADDRESS= "/deleteAddress/{id}";
+    public static final String SET_DEFAULT_ADDRESS= "/setDefaultAddress/{id}";
+
+    public static final String GET_ADDRESS_BY_ID= "/getAddressById/{id}";
+
+
+    public static final String UPDATE_ADDRESS= "/updateAddress";
 
 
 }
