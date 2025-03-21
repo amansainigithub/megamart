@@ -31,13 +31,13 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
     @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.status = :paid")
     List<CustomerOrderItems> findOrderItemsByCustomerId(@Param("customerId") Long customerId, @Param("paid") String paid);
 
-
-
-    //    @Query("SELECT co FROM CustomerOrders co WHERE co.user.id = :customerId")
-    //    List<CustomerOrders> findOrdersByCustomerId(@Param("customerId") Long customerId);
-    //    @Query(value = "SELECT * FROM customer_Order WHERE customer_id = :customerId", nativeQuery = true)
-    //    List<CustomerOrders> findOrdersByCustomerIdNative(@Param("customerId") Long customerId);
-
+    @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi " +
+            "WHERE co.user.id = :customerId AND co.status = :paid  " +
+            "AND  coi.paymentStatus = :paymentStatus AND  coi.orderStatus = :orderStatus")
+    List<CustomerOrderItems> findOrderItemsByCustomerIdCustom( @Param("customerId") Long customerId,
+                                                               @Param("paid") String paid,
+                                                               @Param("paymentStatus") String paymentStatus,
+                                                               @Param("orderStatus") String orderStatus );
 
 
 }

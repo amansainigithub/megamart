@@ -41,11 +41,14 @@ public class CustomerUrlMappings {
     public static final String GET_ADDRESS= "/getAddress";
     public static final String DELETE_ADDRESS= "/deleteAddress/{id}";
     public static final String SET_DEFAULT_ADDRESS= "/setDefaultAddress/{id}";
-
     public static final String GET_ADDRESS_BY_ID= "/getAddressById/{id}";
-
-
     public static final String UPDATE_ADDRESS= "/updateAddress";
 
+
+
+    //    #######################ORDER CONTROLLER#######################
+    public static final String ORDER_CONTROLLER= CUSTOMER_BASE_URL + "/orderController";
+
+    public static final String GET_CUSTOMER_ORDERS= "/getCustomerOrders/{id}";
 
 }

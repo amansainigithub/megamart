@@ -1,10 +1,8 @@
 package com.coder.springjwt.emuns;
 
-public enum OrderStatus {
+public enum DeliveryStatus {
 
     PENDING,
-
-    CONFIRM,
 
     ON_THE_WAY,
     DELIVERED,

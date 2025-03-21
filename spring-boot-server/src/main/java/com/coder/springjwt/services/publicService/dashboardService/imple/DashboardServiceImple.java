@@ -2,7 +2,8 @@ package com.coder.springjwt.services.publicService.dashboardService.imple;
 
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
-import com.coder.springjwt.emuns.OrderStatus;
+import com.coder.springjwt.emuns.DeliveryStatus;
+import com.coder.springjwt.emuns.PaymentStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +40,9 @@ public class DashboardServiceImple implements DashboardService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            long userPendingOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , OrderStatus.PENDING.toString());
+            long userPendingOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , DeliveryStatus.PENDING.toString());
 
-            long userDeliveredOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , OrderStatus.DELIVERED.toString());
+            long userDeliveredOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , DeliveryStatus.DELIVERED.toString());
 
             long totalOrders = this.orderRepository.countTotalOrdersByCustomerIdNative(user.getId());
 

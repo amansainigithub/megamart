@@ -2,7 +2,7 @@ package com.coder.springjwt.services.PaymentsServices.razorpay.imple;
 
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
-import com.coder.springjwt.emuns.OrderStatus;
+import com.coder.springjwt.emuns.PaymentStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
@@ -236,7 +236,7 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
                 customerOrderItems.setRazorpayOrderId(orderId);
                 customerOrderItems.setPaymentStatus("PAID");
-                customerOrderItems.setOrderStatus(OrderStatus.PENDING.toString());
+                customerOrderItems.setOrderStatus(PaymentStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
 
                 //Set Customer Order

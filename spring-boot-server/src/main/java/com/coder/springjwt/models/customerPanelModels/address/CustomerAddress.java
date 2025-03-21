@@ -1,7 +1,6 @@
 package com.coder.springjwt.models.customerPanelModels.address;
 
 import com.coder.springjwt.models.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
