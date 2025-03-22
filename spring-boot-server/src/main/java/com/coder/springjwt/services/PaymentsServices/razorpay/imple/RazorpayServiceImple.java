@@ -1,7 +1,9 @@
 package com.coder.springjwt.services.PaymentsServices.razorpay.imple;
 
+import com.cashfree.model.CartItem;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
+import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.PaymentStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
@@ -29,6 +31,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -182,9 +186,26 @@ public class RazorpayServiceImple implements RazorpayServices {
 
             CustomerOrders customerOrders = new CustomerOrders();
             customerOrders.setOrderId(orderId);
-            customerOrders.setStatus("CREATED");
+            customerOrders.setPaymentStatus("CREATED");
             customerOrders.setUserId(String.valueOf(user.getId()));
             customerOrders.setUser(user);
+            customerOrders.setQuantity(cartItemsList.size());
+
+            // Define the required format
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+            String formattedDate = now.format(formatter);
+
+            //Set Date Time
+            customerOrders.setOrderDateTime(formattedDate);
+
+            int totalPrice = 0;
+            for(CartItemsDto ci : cartItemsList)
+            {
+                totalPrice += Integer.parseInt(ci.getPPrice()) * ci.getQuantity();
+            }
+            //Set Total Price
+            customerOrders.setTotalPrice(totalPrice);
             this.orderRepository.save(customerOrders);
         }
         catch (Exception e)
@@ -199,7 +220,11 @@ public class RazorpayServiceImple implements RazorpayServices {
     {
         try {
             CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
-            customerOrders.setStatus("PAID");
+            customerOrders.setPaymentStatus("PAID");
+
+            //Set delivery Status PENDING ORDER JUST CREATED --- PENDING
+            customerOrders.setDeliveryStatus(DeliveryStatus.PENDING.toString());
+
             customerOrders.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
             this.orderRepository.save(customerOrders);
         }
@@ -235,8 +260,8 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setProductMrp(String.valueOf(ci.getPMrp()));
                 customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
                 customerOrderItems.setRazorpayOrderId(orderId);
-                customerOrderItems.setPaymentStatus("PAID");
-                customerOrderItems.setOrderStatus(PaymentStatus.PENDING.toString());
+                customerOrderItems.setPaymentStatus(PaymentStatus.PAID.toString());
+                customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
 
                 //Set Customer Order

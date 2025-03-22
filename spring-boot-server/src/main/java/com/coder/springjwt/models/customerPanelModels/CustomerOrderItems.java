@@ -2,6 +2,7 @@ package com.coder.springjwt.models.customerPanelModels;
 
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -40,12 +41,13 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String paymentStatus;
 
-    private String orderStatus;
+    private String deliveryStatus;
 
     private String userId;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference
+    @JsonIgnore
     private CustomerOrders customerOrders;
 }

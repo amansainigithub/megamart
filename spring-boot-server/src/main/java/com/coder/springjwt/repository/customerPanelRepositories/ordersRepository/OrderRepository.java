@@ -16,28 +16,26 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
     @Query(value = "SELECT COUNT(co.id) FROM customer_Order co " +
                     "JOIN customer_order_items coi ON co.id = coi.order_id " +
                     "WHERE co.customer_id = :customerId " +
-                    "AND co.status = 'PAID'"+
-                    "AND coi.order_status = :pending",
+                    "AND co.payment_status = 'PAID'"+
+                    "AND coi.delivery_status = :pending",
                     nativeQuery = true)
     Long countOrdersByCustomerIdNative(@Param("customerId") Long customerId, @Param("pending") String pending);
 
     @Query(value = "SELECT COUNT(co.id) FROM customer_Order co " +
                     "JOIN customer_order_items coi ON co.id = coi.order_id " +
-                    "WHERE co.customer_id = :customerId AND co.status = 'PAID'",
+                    "WHERE co.customer_id = :customerId AND co.payment_status = 'PAID'",
                     nativeQuery = true)
     Long countTotalOrdersByCustomerIdNative(@Param("customerId") Long customerId);
 
 
-    @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.status = :paid")
+    @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.paymentStatus = :paid")
     List<CustomerOrderItems> findOrderItemsByCustomerId(@Param("customerId") Long customerId, @Param("paid") String paid);
 
-    @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi " +
-            "WHERE co.user.id = :customerId AND co.status = :paid  " +
-            "AND  coi.paymentStatus = :paymentStatus AND  coi.orderStatus = :orderStatus")
-    List<CustomerOrderItems> findOrderItemsByCustomerIdCustom( @Param("customerId") Long customerId,
+    @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi " +
+            "WHERE co.user.id = :customerId AND co.paymentStatus = :paid  " +
+            "AND  coi.deliveryStatus = :deliveryStatus")
+    List<CustomerOrders> findOrderItemsByCustomerIdCustom( @Param("customerId") Long customerId,
                                                                @Param("paid") String paid,
-                                                               @Param("paymentStatus") String paymentStatus,
-                                                               @Param("orderStatus") String orderStatus );
-
+                                                               @Param("deliveryStatus") String deliveryStatus );
 
 }
