@@ -1,5 +1,6 @@
 package com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos;
 
+import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,8 @@ public class CustomerOrderDTO {
     private String totalPrice;
     private String orderDateTime;;
     private int quantity;
+
+    private CustomerAddress customerAddress;
+
     private List<CustomerOrderItemDTO> customerOrderItems;
 }

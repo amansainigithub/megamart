@@ -19,8 +19,8 @@ public class RazorPayController {
 
     @PostMapping(CustomerUrlMappings.CREATE_ORDER)
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> createOrder(@RequestParam Double amount ,@RequestBody List<CartItemsDto> cartItems) {
-        return this.razorpayServices.createOrder(amount, cartItems);
+    public ResponseEntity<?> createOrder(@RequestParam Double amount , @RequestParam long addressId ,@RequestBody List<CartItemsDto> cartItems) {
+        return this.razorpayServices.createOrder(amount, addressId, cartItems);
     }
 
     @PostMapping(CustomerUrlMappings.ORDER_UPDATE)

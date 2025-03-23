@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public interface RazorpayServices {
-    ResponseEntity<?> createOrder(Double amount ,  List<CartItemsDto> cartItems );
+    ResponseEntity<?> createOrder(Double amount , long addressId ,  List<CartItemsDto> cartItems );
 
     ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload);
 }

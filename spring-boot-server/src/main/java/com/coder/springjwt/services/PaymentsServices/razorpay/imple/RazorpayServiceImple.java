@@ -9,17 +9,20 @@ import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
+import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import com.coder.springjwt.models.customerPanelModels.payments.razorPay.PaymentsTransactions;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.payload.customerPayloads.paymentTransaction.PaymentTransactionPayload;
 import com.coder.springjwt.repository.UserRepository;
+import com.coder.springjwt.repository.customerPanelRepositories.addressRepository.AddressRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.paymentRepository.PaymentRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.services.PaymentsServices.razorpay.RazorpayServices;
 import com.coder.springjwt.util.ResponseGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.razorpay.Customer;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import lombok.extern.slf4j.Slf4j;
@@ -63,14 +66,23 @@ public class RazorpayServiceImple implements RazorpayServices {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
 
 
     @Override
-    public ResponseEntity<?> createOrder(Double amount ,  List<CartItemsDto> cartItems) {
+    public ResponseEntity<?> createOrder(Double amount , long addressId, List<CartItemsDto> cartItems) {
         try {
-                System.out.println("AMOUNT:: " + amount);
+                System.out.println("AMOUNT :: " + amount);
+                System.out.println("ADDRESS ID :: " + addressId);
                 System.out.println("Cart Items :: " +cartItems.toString());
 
+                //validate Address
+                CustomerAddress customerAddress = this.addressWhereAreYou(addressId);
+
+
+            //Validate Card
                 boolean isValidCart = this.validateCartItems(cartItems);
                 System.out.println(isValidCart);
 
@@ -104,7 +116,7 @@ public class RazorpayServiceImple implements RazorpayServices {
                 System.out.println("Payment Saved to Database...");
 
                 //save USer Order
-                this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems);
+                this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems , customerAddress);
                 System.out.println("Order and cart items---- saved Success to Database");
 
                 return ResponseGenerator.generateSuccessResponse(orderData.toString() ,CustMessageResponse.SOMETHING_WENT_WRONG);
@@ -117,6 +129,19 @@ public class RazorpayServiceImple implements RazorpayServices {
         {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    public CustomerAddress addressWhereAreYou(long addressId)
+    {
+        String currentUser = UserHelper.getOnlyCurrentUser();
+        User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+        CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), addressId);
+        if(customerAddress != null)
+        {
+            return customerAddress;
+        }else{
+            throw new RuntimeException("Address Not Found User Id ==>" + user.getId());
         }
     }
 
@@ -177,7 +202,7 @@ public class RazorpayServiceImple implements RazorpayServices {
     }
 
 
-    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList)
+    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList, CustomerAddress customerAddress)
     {
         try {
             System.out.println("save Customer Order Starting.....");
@@ -206,6 +231,11 @@ public class RazorpayServiceImple implements RazorpayServices {
             }
             //Set Total Price
             customerOrders.setTotalPrice(totalPrice);
+
+            //Set Customer Address
+            customerOrders.setAddressId(String.valueOf(customerAddress.getId()));
+            customerOrders.setCustomerAddress(customerAddress);
+
             this.orderRepository.save(customerOrders);
         }
         catch (Exception e)
@@ -259,6 +289,9 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setPaymentStatus(PaymentStatus.PAID.toString());
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
+
+                //Set Customer Address ID
+                customerOrderItems.setAddressId(customerOrders.getAddressId());
 
                 //Set Customer Order
                 customerOrderItems.setCustomerOrders(customerOrders);
