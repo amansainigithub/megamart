@@ -24,14 +24,16 @@ public class CustomerOrders extends BaseEntity {
     private String paymentId; // Razorpay Payment ID
     private String paymentStatus;    // Success, Failed, Pending
     private String userId;    // User-Id
-    private int quantity;     //Cart Quantity Items
+    private int totalOrders;     //Total Number Of Orders
     private int totalPrice;     //Cart Total Price
     private String orderDateTime;
+
+    private String paymentMode;
 
     //Address Id
     private String addressId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private CustomerAddress customerAddress;
 
     @ManyToOne

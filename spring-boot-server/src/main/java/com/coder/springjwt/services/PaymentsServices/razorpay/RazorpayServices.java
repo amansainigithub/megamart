@@ -4,7 +4,6 @@ import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
 import com.coder.springjwt.payload.customerPayloads.paymentTransaction.PaymentTransactionPayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
@@ -12,4 +11,6 @@ public interface RazorpayServices {
     ResponseEntity<?> createOrder(Double amount , long addressId ,  List<CartItemsDto> cartItems );
 
     ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload);
+
+    ResponseEntity<?> payCod(Double amount, long addressId, List<CartItemsDto> cartItems);
 }

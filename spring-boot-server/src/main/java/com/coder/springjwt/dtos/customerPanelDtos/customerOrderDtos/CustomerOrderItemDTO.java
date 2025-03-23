@@ -32,4 +32,8 @@ public class CustomerOrderItemDTO {
     private String productDiscount;
 
     private String productMrp;
+
+    private String addressId;
+
+    private String paymentMode;
 }

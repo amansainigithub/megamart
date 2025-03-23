@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,7 +18,9 @@ public class RazorPayController {
 
     @PostMapping(CustomerUrlMappings.CREATE_ORDER)
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> createOrder(@RequestParam Double amount , @RequestParam long addressId ,@RequestBody List<CartItemsDto> cartItems) {
+    public ResponseEntity<?> createOrder(@RequestParam Double amount ,
+                                         @RequestParam long addressId ,
+                                         @RequestBody List<CartItemsDto> cartItems) {
         return this.razorpayServices.createOrder(amount, addressId, cartItems);
     }
 
@@ -27,6 +28,14 @@ public class RazorPayController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> orderUpdate(@RequestBody PaymentTransactionPayload paymentTransactionPayload) {
         return this.razorpayServices.orderUpdate(paymentTransactionPayload);
+    }
+
+    @PostMapping(CustomerUrlMappings.PAY_COD)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> payCod(@RequestParam Double amount ,
+                                         @RequestParam long addressId ,
+                                         @RequestBody List<CartItemsDto> cartItems) {
+        return this.razorpayServices.payCod(amount, addressId, cartItems);
     }
 
 

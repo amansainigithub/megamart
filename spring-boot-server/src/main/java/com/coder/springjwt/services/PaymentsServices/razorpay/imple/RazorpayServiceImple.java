@@ -1,10 +1,11 @@
 package com.coder.springjwt.services.PaymentsServices.razorpay.imple;
 
-import com.cashfree.model.CartItem;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
+import com.coder.springjwt.emuns.PaymentModeStatus;
 import com.coder.springjwt.emuns.PaymentStatus;
+import com.coder.springjwt.helpers.generateDateandTime.GenerateDateAndTime;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
@@ -22,7 +23,6 @@ import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.Sel
 import com.coder.springjwt.services.PaymentsServices.razorpay.RazorpayServices;
 import com.coder.springjwt.util.ResponseGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.razorpay.Customer;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -69,8 +67,6 @@ public class RazorpayServiceImple implements RazorpayServices {
     @Autowired
     private AddressRepository addressRepository;
 
-
-
     @Override
     public ResponseEntity<?> createOrder(Double amount , long addressId, List<CartItemsDto> cartItems) {
         try {
@@ -81,10 +77,12 @@ public class RazorpayServiceImple implements RazorpayServices {
                 //validate Address
                 CustomerAddress customerAddress = this.addressWhereAreYou(addressId);
 
-
-            //Validate Card
+                //Validate Card
                 boolean isValidCart = this.validateCartItems(cartItems);
                 System.out.println(isValidCart);
+
+                String currentUser = UserHelper.getOnlyCurrentUser();
+                User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
 
                 if(isValidCart){
 
@@ -108,16 +106,20 @@ public class RazorpayServiceImple implements RazorpayServices {
                 paymentsTransactions.setAttempts(String.valueOf(orderData.getInt("attempts")));
                 paymentsTransactions.setPaymentCreatedJson(order.toString());
 
-                //Check User is Valid or Not
-                this.isValidUser(paymentsTransactions);
+                //SET PAYMENT MODE STATUS
+                paymentsTransactions.setPaymentMode(PaymentModeStatus.ONLINE.toString());
+
+                //Set Users Data
+                paymentsTransactions.setUserName(user.getUsername());
+                paymentsTransactions.setUserId(String.valueOf(user.getId()));
 
                 //save Data to DB....
                 this.paymentRepository.save(paymentsTransactions);
-                System.out.println("Payment Saved to Database...");
+                System.out.println("Payment Transaction Saved Success...");
 
                 //save USer Order
                 this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems , customerAddress);
-                System.out.println("Order and cart items---- saved Success to Database");
+                System.out.println("Customer Order Saved Success...");
 
                 return ResponseGenerator.generateSuccessResponse(orderData.toString() ,CustMessageResponse.SOMETHING_WENT_WRONG);
             }
@@ -132,76 +134,6 @@ public class RazorpayServiceImple implements RazorpayServices {
         }
     }
 
-    public CustomerAddress addressWhereAreYou(long addressId)
-    {
-        String currentUser = UserHelper.getOnlyCurrentUser();
-        User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
-        CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), addressId);
-        if(customerAddress != null)
-        {
-            return customerAddress;
-        }else{
-            throw new RuntimeException("Address Not Found User Id ==>" + user.getId());
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload) {
-        System.out.println("-------------Update Cart Working-------------");
-
-        //Validate Cart Items
-        if(!validateCartItems(paymentTransactionPayload.getCartItems())){
-            throw new RuntimeException("Somethin is Wrong  in Cart Items ! Please check");
-        }
-
-        try {
-            PaymentsTransactions createdTransaction = this.paymentRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
-            if(createdTransaction != null)
-            {
-                //save Cart Items To Database Final Added
-                this.saveCustomerOrderItems(paymentTransactionPayload.getRazorpay_order_id() ,  paymentTransactionPayload.getCartItems());
-                paymentTransactionPayload.setCartItems(null); //cart Items Null Because of Object mapper can't Converted Items
-                //save Cart Items To Database Final Added
-
-
-                //Payment Transaction Updated
-                createdTransaction.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
-                createdTransaction.setSignature(paymentTransactionPayload.getRazorpay_signature());
-                createdTransaction.setStatus("PAID");
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonPayload = objectMapper.writeValueAsString(paymentTransactionPayload);
-                createdTransaction.setPaymentCompleteJson(jsonPayload);
-                this.paymentRepository.save(createdTransaction);
-                System.out.println("Payment Transaction Data Update Success");
-
-                //Update Customer Order
-                this.updateCustomerOrderStatus(paymentTransactionPayload);
-                System.out.println("Customer Order Update Success ::::  ORDER ID-> "
-                                    + paymentTransactionPayload.getRazorpay_order_id());
-
-                return ResponseGenerator.generateSuccessResponse("Payment Paid Success" , CustMessageResponse.SUCCESS);
-
-            }else{
-                throw new RuntimeException("ORDER ID NOT FOUND");
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse( CustMessageResponse.SOMETHING_WENT_WRONG);
-        }
-    }
-
-
-    public void isValidUser(PaymentsTransactions paymentsTransactions)
-    {
-        String currentUser = UserHelper.getOnlyCurrentUser();
-        User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
-        paymentsTransactions.setUserName(currentUser);
-        paymentsTransactions.setUserId(String.valueOf(user.getId()));
-    }
-
-
     public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList, CustomerAddress customerAddress)
     {
         try {
@@ -214,7 +146,7 @@ public class RazorpayServiceImple implements RazorpayServices {
             customerOrders.setPaymentStatus("CREATED");
             customerOrders.setUserId(String.valueOf(user.getId()));
             customerOrders.setUser(user);
-            customerOrders.setQuantity(cartItemsList.size());
+            customerOrders.setTotalOrders(cartItemsList.size());
 
             // Define the required format
             LocalDateTime now = LocalDateTime.now();
@@ -236,21 +168,69 @@ public class RazorpayServiceImple implements RazorpayServices {
             customerOrders.setAddressId(String.valueOf(customerAddress.getId()));
             customerOrders.setCustomerAddress(customerAddress);
 
+            //SET PAYMENT MODE STATUS
+            customerOrders.setPaymentMode(PaymentModeStatus.ONLINE.toString());
+
             this.orderRepository.save(customerOrders);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
     }
 
+
+
+    @Override
+    public ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload) {
+        //Validate Cart Items
+        if(!validateCartItems(paymentTransactionPayload.getCartItems())){
+            throw new RuntimeException("Somethin is Wrong  in Cart Items ! Please check");
+        }
+
+        try {
+            PaymentsTransactions paymentsTransactions = this.paymentRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
+            if(paymentsTransactions != null)
+            {
+                //save Cart Items To Database Final Added
+                this.saveCustomerOrderItems(paymentTransactionPayload.getRazorpay_order_id() ,  paymentTransactionPayload.getCartItems());
+                paymentTransactionPayload.setCartItems(null); //cart Items Null Because of Object mapper can't Convert Items
+                //save Cart Items To Database Final Added
+
+                //Payment Transaction Updated
+                paymentsTransactions.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
+                paymentsTransactions.setSignature(paymentTransactionPayload.getRazorpay_signature());
+                paymentsTransactions.setStatus("PAID");
+                ObjectMapper objectMapper = new ObjectMapper();
+                String jsonPayload = objectMapper.writeValueAsString(paymentTransactionPayload);
+                paymentsTransactions.setPaymentCompleteJson(jsonPayload);
+                this.paymentRepository.save(paymentsTransactions);
+
+                System.out.println("Payment Transaction Data Update Success");
+
+                //Update Customer Order
+                this.updateCustomerOrderStatus(paymentTransactionPayload);
+                System.out.println("Customer Order Update Success ::::  ORDER ID-> "
+                                    + paymentTransactionPayload.getRazorpay_order_id());
+
+                return ResponseGenerator.generateSuccessResponse("Payment Paid Success" , CustMessageResponse.SUCCESS);
+
+            }else{
+                throw new RuntimeException("ORDER ID NOT FOUND");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse( CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
 
     public void updateCustomerOrderStatus(PaymentTransactionPayload paymentTransactionPayload)
     {
         try {
             CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
-            customerOrders.setPaymentStatus("PAID");
+            customerOrders.setPaymentStatus(PaymentStatus.PAID.toString());
             customerOrders.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
             this.orderRepository.save(customerOrders);
         }
@@ -260,7 +240,6 @@ public class RazorpayServiceImple implements RazorpayServices {
         }
 
     }
-
 
     public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList)
     {
@@ -289,6 +268,7 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setPaymentStatus(PaymentStatus.PAID.toString());
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
+                customerOrderItems.setPaymentMode(PaymentModeStatus.ONLINE.toString());
 
                 //Set Customer Address ID
                 customerOrderItems.setAddressId(customerOrders.getAddressId());
@@ -312,9 +292,207 @@ public class RazorpayServiceImple implements RazorpayServices {
         {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public ResponseEntity<?> payCod(Double amount, long addressId, List<CartItemsDto> cartItems) {
+       try {
+
+           System.out.println("============ COD ORDER PROCESSED =================");
+           System.out.println("AMOUNT :: " + amount);
+           System.out.println("ADDRESS ID :: " + addressId);
+           System.out.println("Cart Items :: " + cartItems.toString());
+
+           //validate Address
+           CustomerAddress customerAddress = this.addressWhereAreYou(addressId);
+
+           //Validate Card
+           boolean isValidCart = this.validateCartItems(cartItems);
+           System.out.println(isValidCart);
+
+           String currentUser = UserHelper.getOnlyCurrentUser();
+           User user = this.userRepository.findByUsername(currentUser)
+                        .orElseThrow(() -> new RuntimeException("User Not Fount"));
+
+
+           if (isValidCart) {
+
+               String orderId = generateCodOrderId();
+               //Save Data to database
+               PaymentsTransactions paymentsTransactions = new PaymentsTransactions();
+               paymentsTransactions.setCurrency("INR");
+               paymentsTransactions.setAmount(String.valueOf(amount));
+               paymentsTransactions.setOrderId(orderId);
+               paymentsTransactions.setCreated_at(GenerateDateAndTime.getLocalDateTime());
+               paymentsTransactions.setAttempts("0");
+               paymentsTransactions.setPaymentCreatedJson(null);
+               paymentsTransactions.setPaymentId("PENDING");
+               paymentsTransactions.setSignature("PENDING");
+               paymentsTransactions.setStatus(PaymentStatus.UNPAID.toString());
+               paymentsTransactions.setUserName(user.getUsername());
+               paymentsTransactions.setUserId(String.valueOf(user.getId()));
+
+               //SET PAYMENT MODE STATUS
+               paymentsTransactions.setPaymentMode(PaymentModeStatus.COD.toString());
+
+               //save Data to DB....
+               this.paymentRepository.save(paymentsTransactions);
+               System.out.println("Payment Transaction Saved to Database...");
+
+               //save Customer Orders Data
+               this.saveCustomerOrderCOD(orderId, cartItems, customerAddress, user);
+               System.out.println("Customer Order Data Saved Success");
+
+               //save Customer Order Items
+               this.saveCustomerOrderItemsCOD(orderId , cartItems);
+               System.out.println("Customer Order Items Data Saved Success");
+
+               return ResponseGenerator.generateSuccessResponse("SUCCESS", CustMessageResponse.DATA_SAVED_SUCCESS);
+           }else{
+               throw new RuntimeException("Card Not Validate ! Please Check");
+           }
+       }
+       catch (Exception e)
+       {
+           e.printStackTrace();
+           return ResponseGenerator.generateBadRequestResponse( CustMessageResponse.SOMETHING_WENT_WRONG);
+       }
 
     }
 
+    //SAVE COD ORDER'S
+    public void saveCustomerOrderCOD( String orderId ,
+                                      List<CartItemsDto> cartItemsList,
+                                      CustomerAddress customerAddress ,
+                                      User user)
+    {
+        try {
+            System.out.println("save Customer Order Starting.....");
+            CustomerOrders customerOrders = new CustomerOrders();
+            customerOrders.setOrderId(orderId);
+            customerOrders.setPaymentStatus(PaymentStatus.UNPAID.toString());
+            customerOrders.setUserId(String.valueOf(user.getId()));
+            customerOrders.setUser(user);
+            customerOrders.setTotalOrders(cartItemsList.size());
+            customerOrders.setPaymentId("PENDING");
+
+            // Define the required format
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+            String formattedDate = now.format(formatter);
+
+            //Set Date Time
+            customerOrders.setOrderDateTime(formattedDate);
+
+            int totalPrice = 0;
+            for(CartItemsDto ci : cartItemsList)
+            {
+                totalPrice += Integer.parseInt(ci.getPPrice()) * ci.getQuantity();
+            }
+            //Set Total Price
+            customerOrders.setTotalPrice(totalPrice);
+
+            //Set Customer Address
+            customerOrders.setAddressId(String.valueOf(customerAddress.getId()));
+            customerOrders.setCustomerAddress(customerAddress);
+
+            //SET PAYMENT MODE STATUS
+            customerOrders.setPaymentMode(PaymentModeStatus.COD.toString());
+
+            this.orderRepository.save(customerOrders);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void saveCustomerOrderItemsCOD( String orderId , List<CartItemsDto> cartItemsList)
+    {
+        try {
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+
+            CustomerOrders customerOrders = this.orderRepository.findByOrderId(orderId);
+
+            List<CustomerOrderItems> customerOrderItemsList = new ArrayList<>();
+            for(CartItemsDto ci :  cartItemsList)
+            {
+                CustomerOrderItems customerOrderItems = new CustomerOrderItems();
+                customerOrderItems.setProductId(ci.getPId());
+                customerOrderItems.setProductName(ci.getPName());
+                customerOrderItems.setProductPrice(ci.getPPrice());
+                customerOrderItems.setProductBrand(ci.getPBrand());
+                customerOrderItems.setProductSize(ci.getPSize());
+                customerOrderItems.setQuantity(String.valueOf(ci.getQuantity()));
+                customerOrderItems.setTotalPrice(String.valueOf(ci.getTotalPrice()));
+                customerOrderItems.setFileUrl(ci.getPFileUrl());
+                customerOrderItems.setProductColor(ci.getPColor());
+                customerOrderItems.setProductMrp(String.valueOf(ci.getPMrp()));
+                customerOrderItems.setProductDiscount(ci.getPCalculatedDiscount());
+                customerOrderItems.setRazorpayOrderId(orderId);
+                customerOrderItems.setPaymentStatus(PaymentStatus.UNPAID.toString());
+                customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
+                customerOrderItems.setUserId(String.valueOf(user.getId()));
+                customerOrderItems.setPaymentMode(PaymentModeStatus.COD.toString());
+
+                //Set Customer Address ID
+                customerOrderItems.setAddressId(customerOrders.getAddressId());
+
+                //Set Customer Order
+                customerOrderItems.setCustomerOrders(customerOrders);
+
+                //Add Order Items To List
+                customerOrderItemsList.add(customerOrderItems);
+            }
+            //Set Customer Order Items List
+            customerOrders.setCustomerOrderItems(customerOrderItemsList);
+
+            //save the Order
+            this.orderRepository.save(customerOrders);
+
+            log.info("Customer Order Items Saved Success!!!");
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static String generateCodOrderId() {
+        // Get the current date in yyyyMMdd format
+        String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+
+        // Define the alphanumeric characters
+        String alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder randomAlphanumeric = new StringBuilder(9);
+
+        // Generate 9-character alphanumeric string
+        for (int i = 0; i < 9; i++) {
+            randomAlphanumeric.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
+        }
+
+        // Concatenate COD, current date, and alphanumeric string
+        return "COD" + "_" + currentDate + "_"+ randomAlphanumeric;
+    }
+
+
+    public CustomerAddress addressWhereAreYou(long addressId)
+    {
+        String currentUser = UserHelper.getOnlyCurrentUser();
+        User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+        CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), addressId);
+        if(customerAddress != null)
+        {
+            return customerAddress;
+        }else{
+            throw new RuntimeException("Address Not Found User Id ==>" + user.getId());
+        }
+    }
 
     public boolean validateCartItems(@NotNull List<CartItemsDto> cartItems) {
 
@@ -370,6 +548,14 @@ public class RazorpayServiceImple implements RazorpayServices {
 
         return Boolean.TRUE; // All items are valid
     }
+
+
+
+
+
+
+
+
 
 
 }

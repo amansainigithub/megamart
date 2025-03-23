@@ -27,6 +27,7 @@ public class PaymentsTransactions extends BaseEntity {
     private String status;
     private String created_at;;
     private String attempts;
+    private String paymentMode;
     private String paymentCreatedJson;
     private String paymentCompleteJson;
 

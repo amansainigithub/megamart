@@ -17,7 +17,7 @@ public class CustomerOrderDTO {
     private String paymentStatus;    // Success, Failed, Pending
     private String totalPrice;
     private String orderDateTime;;
-    private int quantity;
+    private int totalOrders;     //Total Number Of Orders
 
     private CustomerAddress customerAddress;
 

@@ -3,8 +3,5 @@ package com.coder.springjwt.emuns;
 public enum PaymentStatus {
 
     PAID ,
-
-    PENDING,
-
-    FAILED
+    UNPAID, //Mostly using For -COD- Cases
 }

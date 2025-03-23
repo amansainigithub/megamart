@@ -49,6 +49,8 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String addressId;
 
+    private String paymentMode;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference
