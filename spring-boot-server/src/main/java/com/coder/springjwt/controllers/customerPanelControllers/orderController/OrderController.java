@@ -21,5 +21,11 @@ public class OrderController {
         return this.orderService.getCustomerOrders(id);
     }
 
+    @GetMapping(CustomerUrlMappings.GET_CUSTOMER_ORDERS_BY_ID)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> getCustomerOrdersById(@PathVariable(required = true) long id) {
+        return this.orderService.getCustomerOrdersById(id);
+    }
+
 
 }

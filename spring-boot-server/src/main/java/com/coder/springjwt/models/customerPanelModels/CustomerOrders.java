@@ -22,7 +22,6 @@ public class CustomerOrders extends BaseEntity {
     private String orderId;   // Razorpay Order ID
     private String paymentId; // Razorpay Payment ID
     private String paymentStatus;    // Success, Failed, Pending
-    private String deliveryStatus;
     private String userId;    // User-Id
     private int quantity;     //Cart Quantity Items
     private int totalPrice;     //Cart Total Price

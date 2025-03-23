@@ -43,6 +43,8 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String deliveryStatus;
 
+    private String orderTrackingId;
+
     private String userId;
 
     @ManyToOne

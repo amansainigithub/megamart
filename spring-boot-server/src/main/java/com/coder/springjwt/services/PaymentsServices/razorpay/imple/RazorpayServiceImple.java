@@ -221,10 +221,6 @@ public class RazorpayServiceImple implements RazorpayServices {
         try {
             CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
             customerOrders.setPaymentStatus("PAID");
-
-            //Set delivery Status PENDING ORDER JUST CREATED --- PENDING
-            customerOrders.setDeliveryStatus(DeliveryStatus.PENDING.toString());
-
             customerOrders.setPaymentId(paymentTransactionPayload.getRazorpay_payment_id());
             this.orderRepository.save(customerOrders);
         }

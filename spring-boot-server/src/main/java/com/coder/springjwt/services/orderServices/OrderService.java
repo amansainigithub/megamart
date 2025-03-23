@@ -6,4 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface OrderService {
     ResponseEntity<?> getCustomerOrders(long id);
+
+    ResponseEntity<?> getCustomerOrdersById(long id);
 }

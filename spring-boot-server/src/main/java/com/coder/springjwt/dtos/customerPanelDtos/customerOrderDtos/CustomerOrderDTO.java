@@ -17,6 +17,5 @@ public class CustomerOrderDTO {
     private String totalPrice;
     private String orderDateTime;;
     private int quantity;
-    private String deliveryStatus;
     private List<CustomerOrderItemDTO> customerOrderItems;
 }

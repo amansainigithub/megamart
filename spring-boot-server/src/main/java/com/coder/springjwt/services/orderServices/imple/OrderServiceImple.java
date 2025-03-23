@@ -42,24 +42,41 @@ public class OrderServiceImple implements OrderService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
+            System.out.println("------------ " + user.getUsername() + " :: " + user.getId());
+
             List<CustomerOrders> customerOrderItems = this.orderRepository.
                                                                 findOrderItemsByCustomerIdCustom(
                                                                 user.getId() ,
-                                                                "PAID"  ,"PENDING");
+                                                                "PAID");
 
             List<CustomerOrderDTO> orderList = customerOrderItems.stream().map(order -> {
                 CustomerOrderDTO orderDTO = modelMapper.map(order, CustomerOrderDTO.class);
-
-                // Manually map nested items
-//                List<CustomerOrderItemDTO> itemDTOs = order.getCustomerOrderItems().stream()
-//                        .map(item -> modelMapper.map(item, CustomerOrderItemDTO.class))
-//                        .collect(Collectors.toList());
-//
-//                orderDTO.setCustomerOrderItems(itemDTOs);
                 return orderDTO;
             }).collect(Collectors.toList());
 
             return ResponseGenerator.generateSuccessResponse(orderList , CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getCustomerOrdersById(long id) {
+
+        try {
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = this.userRepository.findByUsername(currentUser)
+                    .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
+
+            CustomerOrders customerOrders = this.orderRepository.
+                    getOrderWithUserIdAndOrderId( user.getId() ,id );
+
+                CustomerOrderDTO orderDTO = modelMapper.map(customerOrders, CustomerOrderDTO.class);
+
+            return ResponseGenerator.generateSuccessResponse(orderDTO , CustMessageResponse.SOMETHING_WENT_WRONG);
         }
         catch (Exception e)
         {

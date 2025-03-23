@@ -1,11 +1,5 @@
 package com.coder.springjwt.emuns;
 
 public enum DeliveryStatus {
-
-    PENDING,
-
-    ON_THE_WAY,
-    DELIVERED,
-
-    CANCELLED
+    PENDING, SHIPPED, IN_TRANSIT, DELIVERED, CANCELLED, FAILED;
 }

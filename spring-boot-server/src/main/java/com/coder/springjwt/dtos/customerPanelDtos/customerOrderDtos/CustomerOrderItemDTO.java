@@ -24,4 +24,12 @@ public class CustomerOrderItemDTO {
     private String quantity;
 
     private String fileUrl;
+
+    private String deliveryStatus;
+
+    private String orderTrackingId;
+
+    private String productDiscount;
+
+    private String productMrp;
 }
