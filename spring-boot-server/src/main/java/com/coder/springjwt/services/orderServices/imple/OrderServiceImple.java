@@ -44,12 +44,11 @@ public class OrderServiceImple implements OrderService {
 
             System.out.println("------------ " + user.getUsername() + " :: " + user.getId());
 
-            List<CustomerOrders> customerOrderItems = this.orderRepository.
+            List<CustomerOrders> customerOrders = this.orderRepository.
                                                                 findOrderItemsByCustomerIdCustom(
-                                                                user.getId() ,
-                                                                "PAID");
+                                                                user.getId());
 
-            List<CustomerOrderDTO> orderList = customerOrderItems.stream().map(order -> {
+            List<CustomerOrderDTO> orderList = customerOrders.stream().map(order -> {
                 CustomerOrderDTO orderDTO = modelMapper.map(order, CustomerOrderDTO.class);
                 return orderDTO;
             }).collect(Collectors.toList());

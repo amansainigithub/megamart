@@ -18,6 +18,7 @@ public class CustomerOrderDTO {
     private String totalPrice;
     private String orderDateTime;;
     private int totalOrders;     //Total Number Of Orders
+    private String paymentMode;
 
     private CustomerAddress customerAddress;
 
