@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -48,12 +49,6 @@ public class User extends BaseEntity {
 	@Column(name = "customerEmailVerify", columnDefinition = "varchar(255) default 'N'")
 	private String customerEmailVerify;
 
-	@Column(name = "sellerMobileVerify", columnDefinition = "varchar(255) default 'N'")
-	private String sellerMobileVerify;
-
-	@Column(name = "sellerEmailVerify", columnDefinition = "varchar(255) default 'N'")
-	private String sellerEmailVerify;
-
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
 				joinColumns = @JoinColumn(name = "user_id"), 
@@ -73,11 +68,16 @@ public class User extends BaseEntity {
 	@NotBlank
 	private String projectRole;
 
+	@Size(max = 20)
+	//@NotBlank
+	private String firstName;
+
+	@Size(max = 20)
+	//@NotBlank
+	private String lastName;
+
 	@Column(name = "customerRegisterComplete", columnDefinition = "varchar(255) default 'N'")
 	private String customerRegisterComplete ;
-
-	@Column(name = "sellerRegisterComplete", columnDefinition = "varchar(255) default 'N'")
-	private String sellerRegisterComplete ;
 
 	@Column(length = 50)
 	private String customerForgotPasswordOtp ;
@@ -95,11 +95,6 @@ public class User extends BaseEntity {
 	@Column(unique = true)
 	private String sellerEmail;
 
-	@Size(max = 100)
-	@Email
-	@Column(unique = true)
-	private String adminEmail;
-
 	@Column(length = 255)
 	private String browserDetails;
 
@@ -114,8 +109,6 @@ public class User extends BaseEntity {
 
 	@Column(length = 255)
 	private String browserName;
-
-	private String sellerStoreName;
 
 
 	@OneToMany(mappedBy = "user")
@@ -271,14 +264,6 @@ public class User extends BaseEntity {
 		this.sellerEmail = sellerEmail;
 	}
 
-	public String getAdminEmail() {
-		return adminEmail;
-	}
-
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
-	}
-
 	public String getBrowserDetails() {
 		return browserDetails;
 	}
@@ -327,30 +312,6 @@ public class User extends BaseEntity {
 		this.customerMobileVerify = customerMobileVerify;
 	}
 
-	public String getSellerMobileVerify() {
-		return sellerMobileVerify;
-	}
-
-	public void setSellerMobileVerify(String sellerMobileVerify) {
-		this.sellerMobileVerify = sellerMobileVerify;
-	}
-
-	public String getSellerEmailVerify() {
-		return sellerEmailVerify;
-	}
-
-	public void setSellerEmailVerify(String sellerEmailVerify) {
-		this.sellerEmailVerify = sellerEmailVerify;
-	}
-
-
-	public String getSellerRegisterComplete() {
-		return sellerRegisterComplete;
-	}
-
-	public void setSellerRegisterComplete(String sellerRegisterComplete) {
-		this.sellerRegisterComplete = sellerRegisterComplete;
-	}
 
 	public String getSellerMobile() {
 		return sellerMobile;
@@ -360,13 +321,6 @@ public class User extends BaseEntity {
 		this.sellerMobile = sellerMobile;
 	}
 
-	public String getSellerStoreName() {
-		return sellerStoreName;
-	}
-
-	public void setSellerStoreName(String sellerStoreName) {
-		this.sellerStoreName = sellerStoreName;
-	}
 
 	public List<CustomerOrders> getCustomerOrders() {
 		return customerOrders;
@@ -384,6 +338,22 @@ public class User extends BaseEntity {
 		this.customerAddresses = customerAddresses;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -395,26 +365,23 @@ public class User extends BaseEntity {
 				", sellerMobile='" + sellerMobile + '\'' +
 				", customerMobileVerify='" + customerMobileVerify + '\'' +
 				", customerEmailVerify='" + customerEmailVerify + '\'' +
-				", sellerMobileVerify='" + sellerMobileVerify + '\'' +
-				", sellerEmailVerify='" + sellerEmailVerify + '\'' +
 				", roles=" + roles +
 				", passKey='" + passKey + '\'' +
 				", custUsername='" + custUsername + '\'' +
 				", customerMobileOtp='" + customerMobileOtp + '\'' +
 				", projectRole='" + projectRole + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
 				", customerRegisterComplete='" + customerRegisterComplete + '\'' +
-				", sellerRegisterComplete='" + sellerRegisterComplete + '\'' +
 				", customerForgotPasswordOtp='" + customerForgotPasswordOtp + '\'' +
 				", isCustomerForgotPassword='" + isCustomerForgotPassword + '\'' +
 				", customerEmail='" + customerEmail + '\'' +
 				", sellerEmail='" + sellerEmail + '\'' +
-				", adminEmail='" + adminEmail + '\'' +
 				", browserDetails='" + browserDetails + '\'' +
 				", userAgent='" + userAgent + '\'' +
 				", userAgentVersion='" + userAgentVersion + '\'' +
 				", operatingSystem='" + operatingSystem + '\'' +
 				", browserName='" + browserName + '\'' +
-				", sellerStoreName='" + sellerStoreName + '\'' +
 				", customerOrders=" + customerOrders +
 				", customerAddresses=" + customerAddresses +
 				'}';

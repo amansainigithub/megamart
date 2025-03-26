@@ -265,6 +265,9 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     }
     @Override
     public ResponseEntity<?> customerSignUpCompleted(FreshSignUpPayload freshSignUpPayload) {
+        System.out.println("=====================================================");
+        System.out.println("Payload :: " + freshSignUpPayload);
+
                 User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
                 orElseThrow(()-> new RuntimeException("User Not Fount"));
 
@@ -275,6 +278,12 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
             user.setCustomerRegisterComplete("Y");
             user.setPassword(encoder.encode(freshSignUpPayload.getPassword()));
+
+            //Set FirstName , LastName , EmailId
+            user.setFirstName(freshSignUpPayload.getFirstName());
+            user.setLastName(freshSignUpPayload.getLastName());
+            user.setCustomerEmail(freshSignUpPayload.getEmail());
+            user.setCustomerEmailVerify("N");
 
             //Set Project Role
             user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
