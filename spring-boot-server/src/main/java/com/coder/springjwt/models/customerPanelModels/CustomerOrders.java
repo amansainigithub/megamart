@@ -30,11 +30,7 @@ public class CustomerOrders extends BaseEntity {
 
     private String paymentMode;
 
-    //Address Id
     private String addressId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private CustomerAddress customerAddress;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

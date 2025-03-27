@@ -89,7 +89,7 @@ public class ProfileServiceIimple implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<?> sendEmailVerifyLink(long id) {
+    public ResponseEntity<?> resendEmailLink(long id) {
        try {
            String currentUser = UserHelper.getOnlyCurrentUser();
 
@@ -121,7 +121,7 @@ public class ProfileServiceIimple implements ProfileService {
 
             //Send Mail Registration Complete Successfully
             EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
-            emailHtmlPayload.setHtmlContent(CustomerEmailContent.sendEmailVerifyLink(user.getFirstName() , emailAuthToken));
+            emailHtmlPayload.setHtmlContent(CustomerEmailContent.sendResendEmailLink(user.getFirstName() , emailAuthToken));
             emailHtmlPayload.setRole("ROLE_CUSTOMER");
             emailHtmlPayload.setRecipient(user.getCustomerEmail());
             emailHtmlPayload.setSubject("Email Link Send Success");

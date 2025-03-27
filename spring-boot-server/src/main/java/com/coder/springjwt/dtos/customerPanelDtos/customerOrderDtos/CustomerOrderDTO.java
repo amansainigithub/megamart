@@ -20,7 +20,5 @@ public class CustomerOrderDTO {
     private int totalOrders;     //Total Number Of Orders
     private String paymentMode;
 
-    private CustomerAddress customerAddress;
-
     private List<CustomerOrderItemDTO> customerOrderItems;
 }

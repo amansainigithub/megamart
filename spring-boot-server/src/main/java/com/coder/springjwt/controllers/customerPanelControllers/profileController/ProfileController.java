@@ -31,9 +31,9 @@ public class ProfileController {
         return this.profileService.updateCustomerProfile(userProfileUpdatePayload);
     }
 
-    @GetMapping(CustomerUrlMappings.SEND_EMAIL_VERIFY_LINK)
+    @GetMapping(CustomerUrlMappings.RESEND_EMAIL_LINK)
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> sendEmailVerifyLink(@PathVariable(required = true) long id) {
-        return this.profileService.sendEmailVerifyLink(id);
+    public ResponseEntity<?> resendEmailLink(@PathVariable(required = true) long id) {
+        return this.profileService.resendEmailLink(id);
     }
 }

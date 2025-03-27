@@ -47,9 +47,18 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String userId;
 
-    private String addressId;
-
     private String paymentMode;
+
+    //Address Data
+    private String customerName;
+    private String addressId;
+    private String country;
+    private String mobileNumber;
+    private String area;
+    private String postalCode;
+    private String addressLine1;
+    private String addressLine2;
+    private boolean defaultAddress;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

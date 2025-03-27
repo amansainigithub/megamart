@@ -33,7 +33,29 @@ public class CustomerOrderItemDTO {
 
     private String productMrp;
 
+    private String paymentMode;
+
+
+    //Address Data
+
+    private String customerName;
+
     private String addressId;
 
-    private String paymentMode;
+    private String country;
+
+    private String mobileNumber;
+
+    private String area;
+
+    private String postalCode;
+
+    private String addressLine1;
+
+    private String addressLine2;
+
+    private boolean defaultAddress;
+
+
+
 }

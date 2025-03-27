@@ -59,13 +59,13 @@ public class CustomerUrlMappings {
     public static final String GET_CUSTOMER_ORDERS_BY_ID= "/getCustomerOrdersById/{id}";
 
 
-    //    #######################RAZORPAY#######################
+    //    ####################### PROFILE CONTROLLER #######################
     public static final String PROFILE_CONTROLLER= CUSTOMER_BASE_URL + "/profileController";
     public static final String GET_PROFILE= "/getProfile/{id}";
 
     public static final String UPDATE_CUSTOMER_PROFILE= "/updateCustomerProfile";
 
-    public static final String SEND_EMAIL_VERIFY_LINK= "/sendEmailVerifyLink/{id}";
+    public static final String RESEND_EMAIL_LINK= "/resendEmailLink/{id}";
 
 
 

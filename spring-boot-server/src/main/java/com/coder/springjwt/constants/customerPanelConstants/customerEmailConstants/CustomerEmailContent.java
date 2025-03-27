@@ -82,7 +82,7 @@ public class CustomerEmailContent {
     }
 
 
-    public static String sendEmailVerifyLink(String name, String authToken) {
+    public static String sendResendEmailLink(String name, String authToken) {
         String loginUrl = "https://localhost:8080/login?token=" + authToken;
 
         System.out.println("LOGIN URL sendEmailVerifyLink :: " + loginUrl);
