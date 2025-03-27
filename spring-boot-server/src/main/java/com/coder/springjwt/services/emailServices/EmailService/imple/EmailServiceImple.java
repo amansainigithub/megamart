@@ -105,7 +105,7 @@ public class EmailServiceImple implements EmailService {
     }
 
     @Override
-    public ResponseEntity<?> sendHtmlMail(EmailHtmlPayload emailHtmlPayload) {
+    public synchronized  ResponseEntity<?> sendHtmlMail(EmailHtmlPayload emailHtmlPayload) {
 
         log.info("HTML Mail Process Starting");
 

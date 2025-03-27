@@ -11,7 +11,6 @@ import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.profileService.ProfileService;
-import com.coder.springjwt.services.publicService.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.services.publicService.customerAuthService.imple.CustomerAuthServiceImple;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Base64;
 
 @Service
 @Slf4j
@@ -89,7 +86,7 @@ public class ProfileServiceIimple implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<?> resendEmailLink(long id) {
+    public synchronized ResponseEntity<?> resendEmailLink(long id) {
        try {
            String currentUser = UserHelper.getOnlyCurrentUser();
 
@@ -97,8 +94,10 @@ public class ProfileServiceIimple implements ProfileService {
                    .orElseThrow(()-> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
            //Send
-            this.sendEmailVerifyLink(user);
+            this.sendResendEmailVerifyLink(user);
             user.setCustomerEmailVerify("N");
+
+
             this.userRepository.save(user);
 
             System.out.println("Email Sent Success | and Data Updated");
@@ -111,7 +110,7 @@ public class ProfileServiceIimple implements ProfileService {
        }
     }
 
-    public void sendEmailVerifyLink(User user){
+    public void sendResendEmailVerifyLink(User user){
         try {
             //Generate Email Auth Token
             String emailAuthToken = emailService.generateVerificationToken();
@@ -124,7 +123,7 @@ public class ProfileServiceIimple implements ProfileService {
             emailHtmlPayload.setHtmlContent(CustomerEmailContent.sendResendEmailLink(user.getFirstName() , emailAuthToken));
             emailHtmlPayload.setRole("ROLE_CUSTOMER");
             emailHtmlPayload.setRecipient(user.getCustomerEmail());
-            emailHtmlPayload.setSubject("Email Link Send Success");
+            emailHtmlPayload.setSubject("Resend Email Link PLease Verify");
 
             emailService.sendHtmlMail(emailHtmlPayload);
             System.out.println("Email Sent Success");

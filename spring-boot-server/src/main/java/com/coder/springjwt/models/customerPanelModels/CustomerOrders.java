@@ -1,14 +1,12 @@
 package com.coder.springjwt.models.customerPanelModels;
 
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

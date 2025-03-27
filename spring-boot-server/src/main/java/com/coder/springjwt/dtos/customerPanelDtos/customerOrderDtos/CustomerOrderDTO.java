@@ -1,6 +1,5 @@
 package com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos;
 
-import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

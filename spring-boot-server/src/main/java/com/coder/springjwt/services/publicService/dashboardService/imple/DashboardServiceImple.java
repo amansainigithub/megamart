@@ -3,7 +3,6 @@ package com.coder.springjwt.services.publicService.dashboardService.imple;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.emuns.DeliveryStatus;
-import com.coder.springjwt.emuns.PaymentStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;

@@ -83,7 +83,8 @@ public class CustomerEmailContent {
 
 
     public static String sendResendEmailLink(String name, String authToken) {
-        String loginUrl = "https://localhost:8080/login?token=" + authToken;
+        String loginUrl = "http://localhost:8080/customer/api/v1/authToken/authTokenVerifier?token=" + authToken;
+
 
         System.out.println("LOGIN URL sendEmailVerifyLink :: " + loginUrl);
 
@@ -92,13 +93,30 @@ public class CustomerEmailContent {
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "    <title>Login Link</title>\n" +
+                "    <title>Email Verification</title>\n" +
+                "    <style>\n" +
+                "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 40px; }\n" +
+                "        .container { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }\n" +
+                "        h2 { color: #333; }\n" +
+                "        p { font-size: 16px; color: #555; }\n" +
+                "        a.button { display: inline-block; text-decoration: none; background: #28a745; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; }\n" +
+                "        a.button:hover { background: #218838; }\n" +
+                "        .link { color: #007bff; text-decoration: none; font-weight: bold; }\n" +
+                "        .link:hover { text-decoration: underline; }\n" +
+                "    </style>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "    <p><a href=\"" + loginUrl + "\">Click here to log in</a></p>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h2>Hello, " + name + "!</h2>\n" +
+                "        <p>Please click the button below to verify your email:</p>\n" +
+                "        <p><a href=\"" + loginUrl + "\" class=\"button\">Click Here to Verify Your Email</a></p>\n" +
+                "        <p>Or you can use this link: <a href=\"" + loginUrl + "\" class=\"link\">" + loginUrl + "</a></p>\n" +
+                "    </div>\n" +
                 "</body>\n" +
                 "</html>\n";
     }
+
+
 
 
 }

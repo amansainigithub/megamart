@@ -68,5 +68,11 @@ public class CustomerUrlMappings {
     public static final String RESEND_EMAIL_LINK= "/resendEmailLink/{id}";
 
 
+    //    #######################ORDER CONTROLLER#######################
+    public static final String EMAIL_LINK_VERIFIER= CUSTOMER_BASE_URL + "/authToken";
+
+    public static final String AUTH_TOKEN_VERIFIER=  "/authTokenVerifier";
+
+
 
 }

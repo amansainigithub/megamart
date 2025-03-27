@@ -3,12 +3,8 @@ package com.coder.springjwt.services.orderServices.imple;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderDTO;
-import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
-import com.coder.springjwt.emuns.DeliveryStatus;
-import com.coder.springjwt.emuns.PaymentStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
@@ -53,7 +49,7 @@ public class OrderServiceImple implements OrderService {
                 return orderDTO;
             }).collect(Collectors.toList());
 
-            return ResponseGenerator.generateSuccessResponse(orderList , CustMessageResponse.SOMETHING_WENT_WRONG);
+            return ResponseGenerator.generateSuccessResponse(orderList , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
@@ -75,7 +71,7 @@ public class OrderServiceImple implements OrderService {
 
                 CustomerOrderDTO orderDTO = modelMapper.map(customerOrders, CustomerOrderDTO.class);
 
-            return ResponseGenerator.generateSuccessResponse(orderDTO , CustMessageResponse.SOMETHING_WENT_WRONG);
+            return ResponseGenerator.generateSuccessResponse(orderDTO , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
