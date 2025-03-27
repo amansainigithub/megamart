@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.publicService.customerAuthService.imple;
 
 import com.coder.springjwt.constants.OtpMessageContent;
+import com.coder.springjwt.constants.customerPanelConstants.customerEmailConstants.CustomerEmailContent;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.controllers.customerPanelControllers.customerAuthController.CustomerAuthController;
 import com.coder.springjwt.exception.customerPanelException.InvalidMobileNumberException;
@@ -17,12 +18,14 @@ import com.coder.springjwt.payload.customerPayloads.customerPayload.CustomerLogi
 import com.coder.springjwt.payload.customerPayloads.customerPayload.FreshSignUpPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.FreshUserPayload;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.VerifyMobileOtpPayload;
+import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.payload.response.JwtResponse;
 import com.coder.springjwt.repository.RoleRepository;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.security.jwt.JwtUtils;
 import com.coder.springjwt.security.services.UserDetailsImpl;
 import com.coder.springjwt.services.MobileOtpService.MobileOtpService;
+import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.publicService.customerAuthService.CustomerAuthService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -40,6 +43,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +68,9 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Autowired
     private MobileOtpService mobileOtpService;
+
+    @Autowired
+    private EmailService emailService;
 
     Logger logger  = LoggerFactory.getLogger(CustomerAuthController.class);
 
@@ -288,14 +296,44 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             //Set Project Role
             user.setProjectRole(ERole.ROLE_CUSTOMER.toString());
 
+            //Send Registration Email
+            this.sendRegistrationCompleteMail(user);
+
             userRepository.save(user);
-            logger.info("Registration Completed Fully");
+            logger.info("Registration Completed Fully Success");
 
             return ResponseEntity.ok(new MessageResponse(CustMessageResponse.REGISTER_COMPLETED_FULLY,HttpStatus.OK));
         }else{
             return ResponseEntity.badRequest().body(new MessageResponse(CustMessageResponse.SOMETHING_WENT_WRONG,HttpStatus.BAD_REQUEST));
         }
     }
+
+
+    public void sendRegistrationCompleteMail(User user){
+        try {
+            //Generate Email Auth Token
+            String emailAuthToken = emailService.generateVerificationToken();
+
+            user.setEmailVerificationToken(emailAuthToken);
+            user.setEmailTokenExpiryTime(LocalDateTime.now().plusMinutes(30));
+
+            //Send Mail Registration Complete Successfully
+            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
+            emailHtmlPayload.setHtmlContent(CustomerEmailContent.registrationCompleted(user.getFirstName() , emailAuthToken));
+            emailHtmlPayload.setRole("ROLE_CUSTOMER");
+            emailHtmlPayload.setRecipient(user.getCustomerEmail());
+            emailHtmlPayload.setSubject("Registration Completed");
+
+            emailService.sendHtmlMail(emailHtmlPayload);
+            System.out.println("Email Sent Success");
+        }
+        catch (Exception e)
+        {
+            logger.error("Error in Registration sent Success Mail");
+        }
+    }
+
+
 
 
     @Override

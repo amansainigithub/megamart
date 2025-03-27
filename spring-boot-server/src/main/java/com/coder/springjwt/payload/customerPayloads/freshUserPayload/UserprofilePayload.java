@@ -14,4 +14,6 @@ public class UserprofilePayload {
     private String mobile;
 
     private String emailVerify;
+
+    private String customerGender;
 }

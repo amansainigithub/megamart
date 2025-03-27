@@ -65,5 +65,8 @@ public class CustomerUrlMappings {
 
     public static final String UPDATE_CUSTOMER_PROFILE= "/updateCustomerProfile";
 
+    public static final String SEND_EMAIL_VERIFY_LINK= "/sendEmailVerifyLink/{id}";
+
+
 
 }

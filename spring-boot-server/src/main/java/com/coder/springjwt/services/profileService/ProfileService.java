@@ -9,4 +9,6 @@ public interface ProfileService {
     ResponseEntity<?> getProfile(long id);
 
     ResponseEntity<?> updateCustomerProfile(UserProfileUpdatePayload userProfileUpdatePayload);
+
+    ResponseEntity<?> sendEmailVerifyLink(long id);
 }

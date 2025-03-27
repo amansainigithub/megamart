@@ -14,4 +14,6 @@ public interface EmailService {
 
     public void saveEmailData(EmailPayload emailPayload);
 
+    public String generateVerificationToken();
+
 }

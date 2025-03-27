@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,6 +111,14 @@ public class User extends BaseEntity {
 	@Column(length = 255)
 	private String browserName;
 
+	@Column(length = 20)
+	private String customerGender;
+
+	@Column(length = 300)
+	private String emailVerificationToken;
+
+	@Column(length = 50)
+	private LocalDateTime emailTokenExpiryTime;  // Expiry timestamp
 
 	@OneToMany(mappedBy = "user")
 	private List<CustomerOrders> customerOrders;
@@ -118,6 +127,22 @@ public class User extends BaseEntity {
 	private List<CustomerAddress> customerAddresses;
 
 	public User() {
+	}
+
+	public String getEmailVerificationToken() {
+		return emailVerificationToken;
+	}
+
+	public void setEmailVerificationToken(String emailVerificationToken) {
+		this.emailVerificationToken = emailVerificationToken;
+	}
+
+	public LocalDateTime getEmailTokenExpiryTime() {
+		return emailTokenExpiryTime;
+	}
+
+	public void setEmailTokenExpiryTime(LocalDateTime emailTokenExpiryTime) {
+		this.emailTokenExpiryTime = emailTokenExpiryTime;
 	}
 
 	public User(String username, String email, String password) {
@@ -131,6 +156,50 @@ public class User extends BaseEntity {
 		this.email = email;
 		this.password = password;
 		this.custUsername = custUsername;
+	}
+
+	public String getCustomerGender() {
+		return customerGender;
+	}
+
+	public void setCustomerGender(String customerGender) {
+		this.customerGender = customerGender;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", mobile='" + mobile + '\'' +
+				", sellerMobile='" + sellerMobile + '\'' +
+				", customerMobileVerify='" + customerMobileVerify + '\'' +
+				", customerEmailVerify='" + customerEmailVerify + '\'' +
+				", roles=" + roles +
+				", passKey='" + passKey + '\'' +
+				", custUsername='" + custUsername + '\'' +
+				", customerMobileOtp='" + customerMobileOtp + '\'' +
+				", projectRole='" + projectRole + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", customerRegisterComplete='" + customerRegisterComplete + '\'' +
+				", customerForgotPasswordOtp='" + customerForgotPasswordOtp + '\'' +
+				", isCustomerForgotPassword='" + isCustomerForgotPassword + '\'' +
+				", customerEmail='" + customerEmail + '\'' +
+				", sellerEmail='" + sellerEmail + '\'' +
+				", browserDetails='" + browserDetails + '\'' +
+				", userAgent='" + userAgent + '\'' +
+				", userAgentVersion='" + userAgentVersion + '\'' +
+				", operatingSystem='" + operatingSystem + '\'' +
+				", browserName='" + browserName + '\'' +
+				", customerGender='" + customerGender + '\'' +
+				", emailVerificationToken='" + emailVerificationToken + '\'' +
+				", emailTokenExpiryTime=" + emailTokenExpiryTime +
+				", customerOrders=" + customerOrders +
+				", customerAddresses=" + customerAddresses +
+				'}';
 	}
 
 	public Long getId() {
@@ -354,36 +423,4 @@ public class User extends BaseEntity {
 		this.lastName = lastName;
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", username='" + username + '\'' +
-				", email='" + email + '\'' +
-				", password='" + password + '\'' +
-				", mobile='" + mobile + '\'' +
-				", sellerMobile='" + sellerMobile + '\'' +
-				", customerMobileVerify='" + customerMobileVerify + '\'' +
-				", customerEmailVerify='" + customerEmailVerify + '\'' +
-				", roles=" + roles +
-				", passKey='" + passKey + '\'' +
-				", custUsername='" + custUsername + '\'' +
-				", customerMobileOtp='" + customerMobileOtp + '\'' +
-				", projectRole='" + projectRole + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", customerRegisterComplete='" + customerRegisterComplete + '\'' +
-				", customerForgotPasswordOtp='" + customerForgotPasswordOtp + '\'' +
-				", isCustomerForgotPassword='" + isCustomerForgotPassword + '\'' +
-				", customerEmail='" + customerEmail + '\'' +
-				", sellerEmail='" + sellerEmail + '\'' +
-				", browserDetails='" + browserDetails + '\'' +
-				", userAgent='" + userAgent + '\'' +
-				", userAgentVersion='" + userAgentVersion + '\'' +
-				", operatingSystem='" + operatingSystem + '\'' +
-				", browserName='" + browserName + '\'' +
-				", customerOrders=" + customerOrders +
-				", customerAddresses=" + customerAddresses +
-				'}';
-	}
 }

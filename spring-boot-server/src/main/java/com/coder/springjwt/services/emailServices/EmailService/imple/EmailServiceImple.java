@@ -19,6 +19,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Map;
 
 @Component
@@ -169,6 +171,16 @@ public class EmailServiceImple implements EmailService {
 
         this.emailRepository.save(emailBucket);
         log.info("Data Saved Success Email Content ");
+    }
+
+
+
+
+    public String generateVerificationToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[64]; // 512-bit token
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
 
