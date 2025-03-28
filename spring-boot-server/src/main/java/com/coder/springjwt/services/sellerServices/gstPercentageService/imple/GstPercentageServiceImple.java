@@ -31,6 +31,8 @@ public class GstPercentageServiceImple implements GstPercentageService {
 
     @Override
     public ResponseEntity<?> saveGstPercentage(GstPercentageDto gstPercentageDto) {
+        log.info("<-- saveGstPercentage Flying -->");
+
         MessageResponse response =new MessageResponse();
         try {
             GstPercentageModel gstPercentageModel=  modelMapper.map(gstPercentageDto , GstPercentageModel.class);
@@ -39,13 +41,13 @@ public class GstPercentageServiceImple implements GstPercentageService {
             this.gstPercentageRepo.save(gstPercentageModel);
             log.info("gstPercentage Saved Success");
 
-            response.setMessage("Gst Percentage Saved Success");
+            response.setMessage(SellerMessageResponse.DATA_SAVED_SUCCESS);
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
 
         }
         catch (DataIntegrityViolationException ex) {
-            response.setMessage("Duplicate entry error: ");
+            response.setMessage(SellerMessageResponse.DUPLICATE_ENTRY_ERROR);
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
@@ -60,6 +62,8 @@ public class GstPercentageServiceImple implements GstPercentageService {
 
     @Override
     public ResponseEntity<?> getGstPercentage(Integer page, Integer size) {
+        log.info("<-- getGstPercentage Flying -->");
+
         MessageResponse response = new MessageResponse();
         try {
             Page<GstPercentageModel> gstPercentageModels = this.gstPercentageRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));

@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 
 
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormProductVariantBuilder;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.ProductRootBuilder;
 import com.coder.springjwt.helpers.generateRandomNumbers.GenerateRandomNumber;
@@ -62,18 +63,18 @@ public class ProductCalculationService {
                 }
 
                 double grossServiceTax = this.calculateGST(productPrice, Double.parseDouble(gst));
-                System.out.println("grossServiceTax:: " + grossServiceTax);
+                log.info("grossServiceTax:: " + grossServiceTax);
 
                 double tcs = this.calculateTCS(productPrice, Double.parseDouble(gst),tcsCharge);
-                System.out.println("tcs:: " + tcs);
+                log.info("tcs:: " + tcs);
 
                 double tds = this.calculateTDS(productPrice,tdsCharge);
-                System.out.println("tds:: " + tds);
+                log.info("tds:: " + tds);
 
                 double totalPrice = this.calculateTotalPrice(productPrice, grossServiceTax , tcs ,tds , commissionFeeCharge);
-                System.out.println("totalPrice:: " + totalPrice);
+                log.info("totalPrice:: " + totalPrice);
 
-                System.out.println("-------------------------------------------------");
+                log.info("-------------------------------------------------");
                 pv.setCalculatedGst(String.valueOf(roundToTwoDecimalPlaces(grossServiceTax)));
                 pv.setCalculatedTcs(String.valueOf(roundToTwoDecimalPlaces(tcs)));
                 pv.setCalculatedTds(String.valueOf(roundToTwoDecimalPlaces(tds)));
@@ -103,9 +104,9 @@ public class ProductCalculationService {
                 skuCode = generateSkuCode();
             } while (productVariantsRepository.existsBySkuId(skuCode));
         } catch (Exception e) {
-            System.err.println("Error generating SKU code: " + e.getMessage());
+            log.error("Error generating SKU code: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Unable to generate unique SKU code", e);
+            throw new RuntimeException(SellerMessageResponse.UNABLE_TO_GENERATE_SKU, e);
         }
         return skuCode;
     }
@@ -149,10 +150,6 @@ public class ProductCalculationService {
     }
 
     public String calculateDiscount(double sellingPrice , double mrp) {
-        System.out.println("=================");
-        System.out.println("MRP " + mrp);
-        System.out.println("SELLING PRICE " + sellingPrice);
-
         if (mrp <= 0) {
             log.info("MRP should be greater than 0");
             throw new RuntimeException("MRP should be greater than 0");

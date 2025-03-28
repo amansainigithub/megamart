@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.sellerServices.sellerStoreService.userService.userServiceImple;
 
 import com.coder.springjwt.bucket.bucketService.BucketService;
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
@@ -44,22 +45,22 @@ public class UserServiceImple implements UserService {
             if(userData.isEmpty())
             {
                 response.setStatus(HttpStatus.BAD_GATEWAY);
-                response.setMessage("Data Not Found");
+                response.setMessage(SellerMessageResponse.DATA_NOT_FOUND);
                 log.info("Data Not found :::: {} " + UserServiceImple.class.getName());
-                return ResponseGenerator.generateBadRequestResponse(response, "DATA NOT FOUND");
+                return ResponseGenerator.generateBadRequestResponse(response, SellerMessageResponse.DATA_NOT_FOUND);
             }else{
                 response.setStatus(HttpStatus.OK);
-                response.setMessage("CUSTOMER Data FETCH SUCCESS");
+                response.setMessage(SellerMessageResponse.DATA_FETCH_SUCCESS);
                 log.info("Data fetch Success :::: {}" + UserServiceImple.class.getName());
-                return ResponseGenerator.generateSuccessResponse(userData, "CUSTOMER DATA FETCH SUCCESS");
+                return ResponseGenerator.generateSuccessResponse(userData, SellerMessageResponse.DATA_FETCH_SUCCESS);
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
             response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setMessage("CUSTOMER Data Not Found");
-            return ResponseGenerator.generateBadRequestResponse(response, "CUSTOMER DATA NOT FOUND");
+            response.setMessage(SellerMessageResponse.DATA_NOT_FOUND);
+            return ResponseGenerator.generateBadRequestResponse(response, SellerMessageResponse.DATA_NOT_FOUND);
         }
 
     }

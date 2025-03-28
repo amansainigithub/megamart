@@ -15,6 +15,7 @@ import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ParentCategoryServiceImple implements ParentCategoryService {
 
     @Autowired
@@ -45,10 +47,10 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
     private RedisService redisService;
 
 
-    Logger logger =  LoggerFactory.getLogger(ParentCategoryServiceImple.class);
 
     @Override
     public ResponseEntity<?> saveParentCategory(ParentCategoryDto parentCategoryDto) {
+
         MessageResponse response =new MessageResponse();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -56,18 +58,18 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
 
             //Convert DTO TO Model Class...
             ParentCategoryModel parentCategoryModel =  modelMapper.map(parentCategoryDto , ParentCategoryModel.class);
-            logger.info("model mapper Conversion Success");
+            log.info("model mapper Conversion Success");
 
             //save Category
             this.parentCategoryRepo.save(parentCategoryModel);
 
-            response.setMessage("Category Saved Success");
+            response.setMessage(SellerMessageResponse.PARENT_CATEGORY_NOT_FOUND);
             response.setStatus(HttpStatus.OK);
-            return ResponseGenerator.generateSuccessResponse(response ,"Success");
+            return ResponseGenerator.generateSuccessResponse(response ,SellerMessageResponse.PARENT_CATEGORY_SAVED);
         }
         catch (DataIntegrityViolationException ex) {
             // Handle exception here
-            response.setMessage("Duplicate entry error: ");
+            response.setMessage(SellerMessageResponse.DUPLICATE_ENTRY_ERROR);
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
@@ -88,7 +90,6 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
             String redisData = redisService.getValue(RedisKey.PARENT_DATA);
 
            if (redisData == null) {
-               System.out.println("First To Get From Database");
                // Fetch data from the database
                List<ParentCategoryModel> parentList = this.parentCategoryRepo.findAll();
                 return ResponseGenerator.generateSuccessResponse(parentList, SellerMessageResponse.SUCCESS);
@@ -112,67 +113,67 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
     public ResponseEntity<?> deleteCategoryById(long categoryId) {
         try {
             ParentCategoryModel data = this.parentCategoryRepo.findById(categoryId).orElseThrow(
-                    () -> new CategoryNotFoundException("Category id not Found"));
+                    () -> new CategoryNotFoundException(SellerMessageResponse.ID_NOT_FOUND));
 
         this.parentCategoryRepo.deleteById(data.getId());
-        logger.info("Delete Success => Category id :: " + categoryId );
-        return ResponseGenerator.generateSuccessResponse("Delete Success" , "Success");
+            log.info("Delete Success => Category id :: " + categoryId );
+        return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS , SellerMessageResponse.SUCCESS);
 
     }
         catch (Exception e)
         {
                 e.printStackTrace();
-                logger.error("Category Could Not deleted");
+            log.error("Category Could Not deleted");
                 return ResponseGenerator.generateBadRequestResponse
-                        ("Category Could not deleted :: " + e.getMessage() , "Error");
+                        (SellerMessageResponse.CATEGORY_COULD_NOT_DELETE + e.getMessage()
+                                , SellerMessageResponse.ERROR);
         }
     }
 
     @Override
     public ResponseEntity<?> getParentCategoryById(long categoryId) {
+
         try {
             ParentCategoryModel data = this.parentCategoryRepo.findById(categoryId).orElseThrow(
-                    () -> new RuntimeException("Data not Found ! Error"));
-            return ResponseGenerator.generateSuccessResponse(data , "Success");
+                    () -> new RuntimeException(SellerMessageResponse.DATA_NOT_FOUND));
+            return ResponseGenerator.generateSuccessResponse(data , SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("");
-            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , "Error");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
     @Override
     public ResponseEntity<?> updateParentCategory(ParentCategoryDto parentCategoryDto ) {
+
         MessageResponse response = new MessageResponse();
         try {
-            logger.info(parentCategoryDto.toString());
-            logger.info("Update Process Starting....");
             ParentCategoryModel parentData =  this.parentCategoryRepo.findById(parentCategoryDto.getId()).orElseThrow(()->
-                    new DataNotFoundException("Dara not Found"));
+                    new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
             //Delete Bucket -->AWS
-            logger.info("File Delete Success AWS");
             this.bucketService.deleteFile(parentData.getCategoryFile());
 
            ParentCategoryModel parentCategoryModel =  modelMapper.map(parentCategoryDto , ParentCategoryModel.class);
             this.parentCategoryRepo.save(parentCategoryModel);
 
-            logger.info("Data Update Success");
-            return ResponseGenerator.generateSuccessResponse("Success" , "Data update Success");
+            log.info("Data Update Success");
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS , SellerMessageResponse.DATA_UPDATE_SUCCESS);
 
         }
         catch (Exception e)
         {
-            logger.info("Data Update Failed");
+            log.info("Data Update Failed");
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("failed" ," Data Update Failed");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED ,SellerMessageResponse.DATA_UPDATE_FAILED);
         }
     }
 
     @Override
     public ResponseEntity<?> updateParentCategoryFile(MultipartFile file, Long parentCategoryId) {
+
         try {
             ParentCategoryModel parentCategoryModel = this.parentCategoryRepo.findById(parentCategoryId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
 
@@ -185,18 +186,18 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
             {
                 parentCategoryModel.setCategoryFile(bucketModel.getBucketUrl());
                 this.parentCategoryRepo.save(parentCategoryModel);
-                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,SellerMessageResponse.FILE_UPDATE_SUCCESS);
             }
             else {
-                logger.error("Bucket Model is null | please check AWS bucket configuration");
-                throw new Exception("Bucket AWS is Empty");
+                log.error("Bucket Model is null | please check AWS bucket configuration");
+                throw new Exception(SellerMessageResponse.AWS_BUCKET_IS_EMPTY);
             }
         }
         catch (Exception e)
         {
-            logger.info("Exception" , e.getMessage());
+            log.info("Exception" , e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.ERROR ,SellerMessageResponse.FILE_NOT_UPDATE);
         }
     }
 

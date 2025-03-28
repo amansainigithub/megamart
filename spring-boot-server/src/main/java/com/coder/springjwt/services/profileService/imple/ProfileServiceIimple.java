@@ -34,6 +34,7 @@ public class ProfileServiceIimple implements ProfileService {
 
     @Override
     public ResponseEntity<?> getProfile(long id) {
+        log.info("<-- getProfile Flying -->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
 
@@ -52,7 +53,6 @@ public class ProfileServiceIimple implements ProfileService {
                 return ResponseGenerator.generateSuccessResponse(userprofilePayload , CustMessageResponse.SOMETHING_WENT_WRONG);
             }else{
                 return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
-
             }
         }
         catch (Exception e)
@@ -64,6 +64,7 @@ public class ProfileServiceIimple implements ProfileService {
 
     @Override
     public ResponseEntity<?> updateCustomerProfile(UserProfileUpdatePayload userProfileUpdatePayload) {
+        log.info("<-- updateCustomerProfile Flying -->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
 
@@ -87,6 +88,7 @@ public class ProfileServiceIimple implements ProfileService {
 
     @Override
     public synchronized ResponseEntity<?> resendEmailLink(long id) {
+        log.info("<-- resendEmailLink Flying -->");
        try {
            String currentUser = UserHelper.getOnlyCurrentUser();
 
@@ -97,10 +99,9 @@ public class ProfileServiceIimple implements ProfileService {
             this.sendResendEmailVerifyLink(user);
             user.setCustomerEmailVerify("N");
 
-
             this.userRepository.save(user);
 
-            System.out.println("Email Sent Success | and Data Updated");
+            log.info("Email Sent Success | and Data Updated");
            return ResponseGenerator.generateSuccessResponse(CustMessageResponse.SUCCESS , CustMessageResponse.DATA_SAVED_SUCCESS);
        }
        catch (Exception e)
@@ -111,6 +112,8 @@ public class ProfileServiceIimple implements ProfileService {
     }
 
     public void sendResendEmailVerifyLink(User user){
+        log.info("<-- sendResendEmailVerifyLink Flying -->");
+
         try {
             //Generate Email Auth Token
             String emailAuthToken = emailService.generateVerificationToken();
@@ -126,11 +129,12 @@ public class ProfileServiceIimple implements ProfileService {
             emailHtmlPayload.setSubject("Resend Email Link PLease Verify");
 
             emailService.sendHtmlMail(emailHtmlPayload);
-            System.out.println("Email Sent Success");
+            log.info("Email Sent Success");
         }
         catch (Exception e)
         {
-            System.out.println("Error in Registration sent Success Mail");
+            log.error("Error in Registration sent Success Mail");
+            e.printStackTrace();
         }
     }
 

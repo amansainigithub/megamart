@@ -638,7 +638,6 @@ public class SellerProductServiceImple implements SellerProductService {
     public void deleteProductRows( List<ProductVariants>  productVariants) {
         List<Long> variantIds = productVariants.stream().map(ProductVariants::getId).collect(Collectors.toList());
         this.productVariantsRepository.deleteAllById(variantIds);
-        System.out.println("Variant List Delete Success :: " +variantIds);
     }
 
 

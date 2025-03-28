@@ -87,7 +87,6 @@ public class BucketService {
        }catch (Exception e)
        {
            e.printStackTrace();
-           log.error("Exception : " , e);
            log.error("Error in delete File in AWS Bucket :::::::::::  {}");
        }
         return fileName + " removed ...";
@@ -118,7 +117,7 @@ public class BucketService {
 
     public BucketModel uploadCloudinaryFile(@RequestParam("file") MultipartFile file)
     {
-        System.out.println("Cloudinary File Upload---Flying");
+        log.info("Cloudinary File Upload---Flying");
         try {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                                       "cloud_name", CLOUD_NAME,
@@ -137,8 +136,7 @@ public class BucketService {
             String cloudinaryResponse = objectMapper.writeValueAsString(cloudinaryUpload);
             Map<String,String > node = objectMapper.readValue(cloudinaryResponse, Map.class);
 
-            System.out.println("======= Final Node As Json Format ============");
-            System.out.println( node );
+           log.info("======= Final Node As Json Format ============");
 
             //Creating Bucket Models
             return new BucketModel(node.get("url") ,file.getOriginalFilename().toString());

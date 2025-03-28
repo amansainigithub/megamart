@@ -40,9 +40,9 @@ public class StateCityPincodeImple implements StateCityPincodeService {
             JSONArray postOffice = jsonObject.getJSONArray("PostOffice");
             JSONObject postOfficeObj = postOffice.getJSONObject(0);
 
-            System.out.println("District:: " + postOfficeObj.getString("District"));
-            System.out.println("State:: " + postOfficeObj.getString("State"));
-            System.out.println("Country:: " + postOfficeObj.getString("Country"));
+            log.info("District:: " + postOfficeObj.getString("District"));
+            log.info("State:: " + postOfficeObj.getString("State"));
+            log.info("Country:: " + postOfficeObj.getString("Country"));
 
             Map<String,String> map = new HashMap();
             map.put("District" , postOfficeObj.getString("District"));

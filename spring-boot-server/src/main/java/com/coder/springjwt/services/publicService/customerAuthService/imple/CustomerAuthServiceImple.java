@@ -30,6 +30,7 @@ import com.coder.springjwt.services.publicService.customerAuthService.CustomerAu
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Autowired
@@ -75,6 +77,8 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Override
     public ResponseEntity<?> customerAuthenticateUser(CustomerLoginPayload customerLoginPayload) {
+        log.info("<-- customerAuthenticateUser Flying --> ");
+
         if(customerLoginPayload.getUserrole().equals("ROLE_CUSTOMER"))
         {
             Authentication authentication = authenticationManager.authenticate(
@@ -97,7 +101,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                             roles));
                 }
             }
-
+            log.info("<-- customerAuthenticateUser Success --> ");
         } else{
             logger.error("CustomerAuthService :: " + "Unauthorized User ==> " + customerLoginPayload.getUsername() );
             throw new InvalidUsernameAndPasswordException(CustMessageResponse.INVALID_USERNAME_AND_PASSWORD);
@@ -107,6 +111,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Override
     public ResponseEntity<?> CustomerSignUp(FreshUserPayload freshUserPayload, HttpServletRequest request) {
+        log.info("<-- CustomerSignUp Flying --> ");
 
         //Validate Mobile Number
         //FreshUserPayload Parameter Role Is Not Mandatory------
@@ -158,6 +163,8 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     public ResponseEntity<?> saveUser(FreshUserPayload freshUserPayload , HttpServletRequest request)
     {
+        log.info("<-- saveUser Flying --> ");
+
         // Create new user's account and Random generated Male
         User user = new User(freshUserPayload.getUsername(),
                 freshUserPayload.getUsername()+ "-ROLE_CUSTOMER-" + GenerateOTP.generateOtpByAlpha(6) +"-"+ "NO@gmail.com",
@@ -224,6 +231,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Override
     public ResponseEntity<?> verifyFreshUserMobileOtp(VerifyMobileOtpPayload verifyMobileOtpPayload) {
+        logger.info("<-- verifyFreshUserMobileOtp Flying --> ");
         MessageResponse response = new MessageResponse();
 
         Optional<User> userOp =  this.userRepository.findByUsername(verifyMobileOtpPayload.getUsername());
@@ -272,8 +280,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     }
     @Override
     public ResponseEntity<?> customerSignUpCompleted(FreshSignUpPayload freshSignUpPayload) {
-        System.out.println("=====================================================");
-        System.out.println("Payload :: " + freshSignUpPayload);
+        logger.info("<-- customerSignUpCompleted Flying --> ");
 
                 User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
                 orElseThrow(()-> new RuntimeException("User Not Fount"));
@@ -324,7 +331,6 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             emailHtmlPayload.setSubject("Registration Completed");
 
             emailService.sendHtmlMail(emailHtmlPayload);
-            System.out.println("Email Sent Success");
         }
         catch (Exception e)
         {
@@ -337,6 +343,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Override
     public ResponseEntity<?> customerForgotPassword(CustForgotPasswordPayload custForgotPasswordPayload) {
+        logger.error("<-- customerForgotPassword Flying -->");
         MessageResponse response = new MessageResponse();
 
         try {
@@ -362,7 +369,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                   //Mobile OTP Generator [Mobile]
                   String otp = GenerateOTP.generateOtp(6);
 
-                  logger.info(CustMessageResponse.FORGOT_PASSWORD_OTP_GENERATE_SUCCESS + " :: " + otp);
+                  logger.info("FORGOT PASSWORD OTP SUCCESSFULLY GENERATED " + otp);
 
                   //SEND OTP TO MOBILE
                   try {
@@ -400,9 +407,10 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
 
     @Override
     public ResponseEntity<?> customerForgotPasswordFinal(CustForgotPasswordPayload custForgotPasswordPayload) {
+        logger.error("<-- customerForgotPasswordFinal Flying -->");
+
         MessageResponse response = new MessageResponse();
         try {
-            System.out.println(custForgotPasswordPayload.toString());
             User user =  this.userRepository.findByUsernameAndCustomerRegisterComplete(custForgotPasswordPayload.getUsername() , "Y")
                     .orElseThrow( ()->  new UsernameNotFoundException("Username not Found"));
 

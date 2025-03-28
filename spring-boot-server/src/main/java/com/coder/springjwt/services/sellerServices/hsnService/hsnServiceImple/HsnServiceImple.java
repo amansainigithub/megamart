@@ -34,25 +34,24 @@ public class HsnServiceImple implements HsnCodeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    Logger logger  = LoggerFactory.getLogger(HsnServiceImple.class);
 
     @Override
     public ResponseEntity<?> saveHsn(HsnCodesDto hsnCodesDto) {
         MessageResponse response =new MessageResponse();
         try {
-            HsnCodes hsnCodes=  modelMapper.map(hsnCodesDto , HsnCodes.class);
-            logger.info("Object Mapper Convert Success");
+                HsnCodes hsnCodes=  modelMapper.map(hsnCodesDto , HsnCodes.class);
+                log.info("Object Mapper Convert Success");
 
                 this.hsnRepository.save(hsnCodes);
-                logger.info("HSN Saved Success");
+                log.info("HSN Saved Success");
 
-                response.setMessage("HSN Saved Success");
+                response.setMessage(SellerMessageResponse.HSN_SAVED);
                 response.setStatus(HttpStatus.OK);
                 return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
 
         }
         catch (DataIntegrityViolationException ex) {
-            response.setMessage("Duplicate entry error: ");
+            response.setMessage(SellerMessageResponse.DUPLICATE_ENTRY_ERROR);
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
@@ -69,19 +68,19 @@ public class HsnServiceImple implements HsnCodeService {
     public ResponseEntity<?> deleteHsnCode(long hsnCodeId) {
             try {
                 HsnCodes hsnCode = this.hsnRepository.findById(hsnCodeId).orElseThrow(
-                        () -> new CategoryNotFoundException("HSN Code id not Found"));
+                        () -> new CategoryNotFoundException(SellerMessageResponse.ID_NOT_FOUND));
 
                 this.hsnRepository.deleteById(hsnCode.getId());
-                logger.info("Delete Success => HSN id :: " + hsnCodeId );
-                return ResponseGenerator.generateSuccessResponse("Delete Success" , SellerMessageResponse.SUCCESS);
+                log.info("Delete Success => HSN id :: " + hsnCodeId );
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS , SellerMessageResponse.SUCCESS);
 
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-                logger.error("HSN Code Could Not be deleted");
+                log.error("HSN Code Could Not be deleted");
                 return ResponseGenerator.generateBadRequestResponse
-                        ("HSN Could not deleted :: " + e.getMessage() , SellerMessageResponse.FAILED);
+                        (SellerMessageResponse.HSN_NOT_DELETE , SellerMessageResponse.FAILED);
             }
         }
 
@@ -89,15 +88,15 @@ public class HsnServiceImple implements HsnCodeService {
     public ResponseEntity<?> getHsnCodeById(long hsnCodeId) {
         try {
             HsnCodes  hsnCodes= this.hsnRepository.findById(hsnCodeId).orElseThrow(
-                    () -> new RuntimeException("Data not Found ! Error"));
+                    () -> new RuntimeException(SellerMessageResponse.DATA_NOT_FOUND));
             HsnCodesDto hsnCodesDto = modelMapper.map(hsnCodes, HsnCodesDto.class);
-            logger.info("Hsn Code Fetch Success !");
+            log.info("Hsn Code Fetch Success !");
             return ResponseGenerator.generateSuccessResponse(hsnCodesDto , SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("Failed To fetch Hsn Code By Id");
+            log.error("Failed To fetch Hsn Code By Id");
             return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
         }
     }
@@ -105,7 +104,7 @@ public class HsnServiceImple implements HsnCodeService {
     @Override
     public ResponseEntity<?> updateHsnCode(HsnCodesDto hsnCodesDto) {
         try {
-            logger.info("Update Child Process Starting....");
+            log.info("Update Child Process Starting....");
             log.info("ID :: "  + hsnCodesDto.getId());
             this.hsnRepository.findById(hsnCodesDto.getId())
                                     .orElseThrow(()->new DataNotFoundException("Data not Found"));
@@ -113,13 +112,13 @@ public class HsnServiceImple implements HsnCodeService {
             HsnCodes hsnCodes =  modelMapper.map(hsnCodesDto , HsnCodes.class);
             this.hsnRepository.save(hsnCodes);
 
-            logger.info("Data Updated Success");
+            log.info("Data Updated Success");
             return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS ,
                     SellerMessageResponse.DATA_UPDATE_SUCCESS);
         }
         catch (Exception e)
         {
-            logger.info("Data Update Failed");
+            log.info("Data Update Failed");
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED ,SellerMessageResponse.DATA_UPDATE_FAILED);
         }

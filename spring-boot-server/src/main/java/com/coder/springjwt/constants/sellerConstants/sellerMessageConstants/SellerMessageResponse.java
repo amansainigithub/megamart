@@ -51,6 +51,55 @@ public class SellerMessageResponse {
     public static final String THE_FOLLOWING_FILES_ARE_UNSUPPORTED_OR_EXCEED_3MB = "The following files are unsupported or exceed 3MB:";
 
 
+    public static final String CHILD_CATEGORY_SAVED_SUCCESS = "Child-Category Saved Success";
+
+    public static final String BORN_CATEGORY_SAVED_SUCCESS = "Born-Category Saved Success";
+
+
+    public static final String CHILD_CATEGORY_NOT_FOUND = "child Category Not Found ID :: ";
+
+    public static final String BABY_CATEGORY_NOT_FOUND = "Baby Category Not Found Id";
+
+    public static final String PARENT_CATEGORY_NOT_FOUND =   "parent Category Not Found Id : ";
+
+    public static final String PARENT_CATEGORY_SAVED =   "parent Category Saved";
+
+
+    public static final String DUPLICATE_ENTRY_ERROR = "Duplicate entry error";
+
+    public static final String ID_NOT_FOUND = "Id Found ID ";
+
+    public static final String CATEGORY_COULD_NOT_DELETE = "Category Could not deleted :: ";
+    public static final String UPDATE_FAILED = "Update Failed";
+
+    public static final String UPDATE_SUCCESS = "Update Success";
+
+    public static final String AWS_BUCKET_IS_EMPTY = "Bucket AWS is Empty";
+
+    public static final String FILE_NOT_UPDATE = "File Not Update";
+
+    public static final String FILE_NOT_UPLOAD = "File Not Upload";
+
+
+    public static final String FILE_NOT_DELETE = "File Not Delete:: ";
+
+    public static final String FILE_UPDATE_SUCCESS = "File Update Success";
+
+    public static final String DATA_FETCH_SUCCESS = "Data Fetch Success ";
+
+    public static final String HOT_DEAL_ENGINE_SAVED_SUCCESS = "Hot Deals Engine Saved Success";
+
+    public static final String HOT_DEAL_SAVED_SUCCESS = "Hot Deals Saved Success";
+
+    public static final String HOT_DEAL_NOT_DELETE = "Hot Deal not deleted :: ";
+
+    public static final String HSN_SAVED = "HSN Saved";
+
+    public static final String HSN_NOT_DELETE =    "HSN Could not deleted :: ";
+
+    public static final String UNABLE_TO_GENERATE_SKU = "Unable to generate unique SKU code";
+
+
 
 
 

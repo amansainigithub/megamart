@@ -32,6 +32,7 @@ public class DashboardServiceImple implements DashboardService {
 
     @Override
     public ResponseEntity<?> getDashboard(String username) {
+        log.info("<--  getDashboard Flying  -->");
         try {
             Map<String,Object> data = new HashMap<>();
 
@@ -54,7 +55,8 @@ public class DashboardServiceImple implements DashboardService {
             data.put("totalOrders",totalOrders); // Total Orders
 
 
-            List<CustomerOrderItems> customerOrderItems = this.orderRepository.findOrderItemsByCustomerId(user.getId() , "PAID");
+            List<CustomerOrderItems> customerOrderItems = this.orderRepository
+                                                          .findOrderItemsByCustomerId(user.getId() , "PAID");
             data.put("listOfOrders",customerOrderItems);
 
             return ResponseGenerator.generateSuccessResponse(data ,CustMessageResponse.SUCCESS);

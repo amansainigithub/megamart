@@ -28,6 +28,7 @@ public class HotDealsEngineServiceImple implements HotDealsEngineService {
 
     @Autowired
     private ModelMapper modelMapper;
+
     @Override
     public ResponseEntity<?> saveHotDealsEngine(HotDealsEngineDto hotDealsEngineDto) {
         MessageResponse response =new MessageResponse();
@@ -37,7 +38,7 @@ public class HotDealsEngineServiceImple implements HotDealsEngineService {
             this.hotDealsEngineRepo.save(hotDealsEngineModel);
             log.info("Hot Deals Engine Saved Success");
 
-            response.setMessage("Hot Deals Engine Saved Success");
+            response.setMessage(SellerMessageResponse.HOT_DEAL_ENGINE_SAVED_SUCCESS);
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
         }
@@ -99,7 +100,7 @@ public class HotDealsEngineServiceImple implements HotDealsEngineService {
             e.printStackTrace();
             log.error("Slider Could Not deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Category Could not deleted :: " + e.getMessage() , "Error");
+                    (SellerMessageResponse.CATEGORY_COULD_NOT_DELETE + e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 

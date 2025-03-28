@@ -74,7 +74,6 @@ public class CustomerAddressController {
             @RequestParam String transactionNote
     ) {
         try {
-            System.out.println("QR code API Fly");
             String qrCodeData = "upi://pay?pa=" + vpa +
                     "&pn=" + name +
                     "&am=" + amount +

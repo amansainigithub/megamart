@@ -34,6 +34,7 @@ public class AddressServiceImple implements  AddressService {
     private UserRepository userRepository;
     @Override
     public ResponseEntity<?> saveAddress(AddressDto addressDto) {
+        log.info("<-- saveAddress Flying --> ");
         try {
             CustomerAddress customerAddress = modelMapper.map(addressDto, CustomerAddress.class);
 
@@ -44,7 +45,7 @@ public class AddressServiceImple implements  AddressService {
             //Set Address Limit
             long addressCount = this.addressRepository.countByUserId(user.getId());
             if(addressCount >= 50){
-                throw new AddressLimitExceededException("User cannot have more than 10 addresses.");
+                throw new AddressLimitExceededException(CustMessageResponse.NOT_MORE_THAN_50_ADDRESS);
             } else if (addressCount == 0) {
                 customerAddress.setDefaultAddress(Boolean.TRUE);
             }
@@ -67,6 +68,8 @@ public class AddressServiceImple implements  AddressService {
             customerAddress.setUser(user);
 
             this.addressRepository.save(customerAddress);
+
+            log.info("saveAddress Finishing Point");
             return ResponseGenerator.generateSuccessResponse(addressDto , CustMessageResponse.DATA_SAVED_SUCCESS);
         }
         catch (Exception e)
@@ -80,6 +83,7 @@ public class AddressServiceImple implements  AddressService {
 
     @Override
     public ResponseEntity<?> getAddress() {
+        log.info("<-- getAddress Flying --> ");
       try {
           String currentUser = UserHelper.getOnlyCurrentUser();
           User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
@@ -89,6 +93,7 @@ public class AddressServiceImple implements  AddressService {
 
           List<AddressDto> addressCollector = customerAddresses.stream().map(
                                                 ca -> modelMapper.map(ca, AddressDto.class)).collect(Collectors.toList());
+          log.info("<-- getAddress Fetch Success --> ");
           return ResponseGenerator.generateSuccessResponse(addressCollector , CustMessageResponse.SOMETHING_WENT_WRONG);
       }
       catch (Exception e)
@@ -100,6 +105,8 @@ public class AddressServiceImple implements  AddressService {
 
     @Override
     public ResponseEntity<?> deleteAddress(long id) {
+        log.info("<-- deleteAddress Flying --> ");
+
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
@@ -117,6 +124,7 @@ public class AddressServiceImple implements  AddressService {
                     this.addressRepository.save(ca);
                 });
             }
+            log.info("<-- deleteAddress Success --> ");
             return ResponseGenerator.generateSuccessResponse(id,CustMessageResponse.DELETE_SUCCESS);
         }
         catch (Exception e)
@@ -129,6 +137,8 @@ public class AddressServiceImple implements  AddressService {
 
     @Override
     public ResponseEntity<?> setDefaultAddress(long id) {
+        log.info("<-- setDefaultAddress Flying --> ");
+
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
@@ -145,6 +155,7 @@ public class AddressServiceImple implements  AddressService {
 
             changeDefaultAddress.setDefaultAddress(Boolean.TRUE);
             this.addressRepository.save(changeDefaultAddress);
+            log.info("<-- setDefaultAddress Success --> ");
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -156,6 +167,7 @@ public class AddressServiceImple implements  AddressService {
 
     @Override
     public ResponseEntity<?> getAddressById(long id) {
+        log.info("<-- getAddressById Flying --> ");
        try {
            String currentUser = UserHelper.getOnlyCurrentUser();
            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
@@ -163,6 +175,7 @@ public class AddressServiceImple implements  AddressService {
 
            CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), id);
 
+           log.info("<-- getAddressById Success --> ");
            return ResponseGenerator.generateSuccessResponse(customerAddress,CustMessageResponse.SUCCESS);
        }
        catch (Exception e)
@@ -174,41 +187,43 @@ public class AddressServiceImple implements  AddressService {
 
     @Override
     public ResponseEntity<?> updateAddress(AddressDto addressDto) {
-     try {
-         String currentUser = UserHelper.getOnlyCurrentUser();
-         User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
-                 new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
+        log.info("<-- updateAddress Flying --> ");
+         try {
+             String currentUser = UserHelper.getOnlyCurrentUser();
+             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() ->
+                     new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-         if(addressDto.isDefaultAddress())
-         {
-             List<CustomerAddress> addressList = this.addressRepository.findByUserIdAndDefaultAddress(user.getId(), Boolean.TRUE);
-             addressList.stream().forEach(e->{
-                 e.setDefaultAddress(Boolean.FALSE);
-                 this.addressRepository.save(e);
-             });
+             if(addressDto.isDefaultAddress())
+             {
+                 List<CustomerAddress> addressList = this.addressRepository.findByUserIdAndDefaultAddress(user.getId(), Boolean.TRUE);
+                 addressList.stream().forEach(e->{
+                     e.setDefaultAddress(Boolean.FALSE);
+                     this.addressRepository.save(e);
+                 });
+             }
+
+             CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), addressDto.getId());
+             customerAddress.setId(addressDto.getId());
+             customerAddress.setCountry(addressDto.getCountry());
+             customerAddress.setCustomerName(addressDto.getCustomerName());
+             customerAddress.setMobileNumber(addressDto.getMobileNumber());
+             customerAddress.setArea(addressDto.getArea());
+             customerAddress.setPostalCode(addressDto.getPostalCode());
+             customerAddress.setAddressLine1(addressDto.getAddressLine1());
+             customerAddress.setAddressLine2(addressDto.getAddressLine2());
+             customerAddress.setUser(user);
+             customerAddress.setUserId(user.getId());
+             customerAddress.setUsername(user.getUsername());
+             customerAddress.setDefaultAddress(addressDto.isDefaultAddress());
+
+             this.addressRepository.save(customerAddress);
+
+             log.info(" <-- updateAddress Success --> ");
+             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.UPDATE_SUCCESS, CustMessageResponse.SUCCESS);
          }
-
-         CustomerAddress customerAddress = this.addressRepository.findByUserIdAndId(user.getId(), addressDto.getId());
-         customerAddress.setId(addressDto.getId());
-         customerAddress.setCountry(addressDto.getCountry());
-         customerAddress.setCustomerName(addressDto.getCustomerName());
-         customerAddress.setMobileNumber(addressDto.getMobileNumber());
-         customerAddress.setArea(addressDto.getArea());
-         customerAddress.setPostalCode(addressDto.getPostalCode());
-         customerAddress.setAddressLine1(addressDto.getAddressLine1());
-         customerAddress.setAddressLine2(addressDto.getAddressLine2());
-         customerAddress.setUser(user);
-         customerAddress.setUserId(user.getId());
-         customerAddress.setUsername(user.getUsername());
-         customerAddress.setDefaultAddress(addressDto.isDefaultAddress());
-
-         this.addressRepository.save(customerAddress);
-
-         return ResponseGenerator.generateSuccessResponse(CustMessageResponse.UPDATE_SUCCESS, CustMessageResponse.SUCCESS);
-     }
-     catch (Exception e){
-         e.printStackTrace();
-         return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
-     }
+         catch (Exception e){
+             e.printStackTrace();
+             return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+         }
     }
 }

@@ -24,7 +24,20 @@ public class CustomerUrlMappings {
 
 
 
-//    #######################RAZORPAY#######################
+    //    ####################### CATEGORY CONTROLLER #######################
+
+    public static final String CATEGORY_CONTROLLER= CUSTOMER_BASE_URL + "/categoryController";
+    public static final String GET_PRODUCT_CATEGORY= "/getProductCategory";
+    public static final String GET_PRODUCT_LIST_BY_CATEGORY_ID= "/getProductListByCategoryId";
+    public static final String GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID= "/getProductListByBornCategoryId";
+
+    public static final String GET_PRODUCT_LIST_DEAL_99= "/getProductListDeal99";
+    public static final String PRODUCT_WATCHING= "/productWatching";
+
+
+
+
+    //    #######################RAZORPAY#######################
     public static final String PAYMENT_CONTROLLER= CUSTOMER_BASE_URL + "/paymentController";
     //ONLINE PAYING
     public static final String CREATE_ORDER= "/createOrder";

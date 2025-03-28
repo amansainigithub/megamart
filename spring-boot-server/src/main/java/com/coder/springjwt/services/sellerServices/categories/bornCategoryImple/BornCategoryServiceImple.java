@@ -67,15 +67,8 @@ public class BornCategoryServiceImple implements BornCategoryService {
             BornCategoryModel bornCategoryModel=  modelMapper.map(bornCategoryDto , BornCategoryModel.class);
             logger.info("Mapper Convert Success");
 
-            System.out.println("Born Model =>  " + bornCategoryModel);
-
-            System.out.println("Born DTO =>  " + bornCategoryDto);
-
             Optional<BabyCategoryModel> babyOptional =
                     this.babyCategoryRepo.findById(Long.parseLong(bornCategoryDto.getBabyCategoryId()));
-
-            logger.info("bornOptional Running 1.....");
-            logger.info("IS pResent :: "+String.valueOf(babyOptional.isPresent()));
 
             if(babyOptional.isPresent()) {
                 logger.info("Data Present Success");
@@ -87,13 +80,13 @@ public class BornCategoryServiceImple implements BornCategoryService {
                 this.bornCategoryRepo.save(bornCategoryModel);
 
                 logger.info("Born-Category Saved Success");
-                response.setMessage("Born-Category Saved Success");
+                response.setMessage(SellerMessageResponse.BORN_CATEGORY_SAVED_SUCCESS);
                 response.setStatus(HttpStatus.OK);
-                return ResponseGenerator.generateSuccessResponse(response, "Success");
+                return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
             }
             else{
                 logger.error("Baby Category Not Found Via Id : "+ bornCategoryDto.getBabyCategoryId());
-                response.setMessage("Baby Category Not Found Via Id : "+ bornCategoryDto.getBabyCategoryId());
+                response.setMessage(SellerMessageResponse.BABY_CATEGORY_NOT_FOUND + bornCategoryDto.getBabyCategoryId());
                 response.setStatus(HttpStatus.BAD_REQUEST);
                 return ResponseGenerator.generateBadRequestResponse(response);
             }
@@ -101,7 +94,7 @@ public class BornCategoryServiceImple implements BornCategoryService {
         catch (DataIntegrityViolationException ex) {
             // Handle exception here
             logger.error("Duplicate entry error: ");
-            response.setMessage("Duplicate entry error: ");
+            response.setMessage(SellerMessageResponse.DUPLICATE_ENTRY_ERROR);
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
@@ -122,12 +115,12 @@ public class BornCategoryServiceImple implements BornCategoryService {
                     .stream()
                     .map(category -> modelMapper.map(category, BornCategoryDto.class))
                     .collect(Collectors.toList());
-            return ResponseGenerator.generateSuccessResponse(bornCategoryDtos,"Success");
+            return ResponseGenerator.generateSuccessResponse(bornCategoryDtos,SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Failed");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
         }
     }
 
@@ -135,19 +128,18 @@ public class BornCategoryServiceImple implements BornCategoryService {
     public ResponseEntity<?> deleteBornCategoryById(long categoryId) {
         try {
             BornCategoryModel data = this.bornCategoryRepo.findById(categoryId).orElseThrow(
-                    () -> new CategoryNotFoundException("Category id not Found"));
+                    () -> new CategoryNotFoundException(SellerMessageResponse.ID_NOT_FOUND));
 
             this.bornCategoryRepo.deleteById(data.getId());
             logger.info("Delete Success => Category id :: " + categoryId );
-            return ResponseGenerator.generateSuccessResponse("Delete Success" , "Success");
-
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS , SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("Category Could Not deleted");
+            logger.error(SellerMessageResponse.CATEGORY_COULD_NOT_DELETE);
             return ResponseGenerator.generateBadRequestResponse
-                    ("Category Could not deleted :: " + e.getMessage() , "Error");
+                    (SellerMessageResponse.CATEGORY_COULD_NOT_DELETE + e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
@@ -160,11 +152,11 @@ public class BornCategoryServiceImple implements BornCategoryService {
 
             //get Born Data
             BornCategoryModel bornData =   this.bornCategoryRepo.findById(bornCategoryDto.getId()).
-                    orElseThrow(()->new DataNotFoundException("Data not Found"));
+                    orElseThrow(()->new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
             //getBaby Category By ID
             BabyCategoryModel babyData =   this.babyCategoryRepo.findById(Long.valueOf(bornCategoryDto.getBabyCategoryId())).
-                    orElseThrow(()->new DataNotFoundException("Data not Found"));
+                    orElseThrow(()->new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
 
 //            Convert DTO TO Model Class
@@ -176,14 +168,14 @@ public class BornCategoryServiceImple implements BornCategoryService {
             this.bornCategoryRepo.save(bornCategoryModel);
 
             logger.info("Data Update Success");
-            return ResponseGenerator.generateSuccessResponse("Success" , "Data update Success");
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS , SellerMessageResponse.DATA_UPDATE_SUCCESS);
 
         }
         catch (Exception e)
         {
             logger.info("Data Update Failed");
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("failed" ," Data Update Failed");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED , SellerMessageResponse.DATA_UPDATE_FAILED);
         }
     }
 
@@ -194,13 +186,12 @@ public class BornCategoryServiceImple implements BornCategoryService {
                     () -> new RuntimeException("Data not Found ! Error"));
             BornCategoryDto bornCategoryDto = modelMapper.map(bornCategoryModel, BornCategoryDto.class);
             logger.info("Born Category Fetch Success !");
-            return ResponseGenerator.generateSuccessResponse(bornCategoryDto , "Success");
+            return ResponseGenerator.generateSuccessResponse(bornCategoryDto , SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("");
-            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , "Error");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
@@ -214,7 +205,7 @@ public class BornCategoryServiceImple implements BornCategoryService {
                 bucketService.deleteFile(bornCategoryModel.getCategoryFile());
             }catch (Exception e)
             {
-                logger.error("File Not deleted Id:: " + bornCategoryId);
+                logger.error(SellerMessageResponse.FILE_NOT_DELETE + bornCategoryId);
             }
             //upload New File
             BucketModel bucketModel = bucketService.uploadFile(file);
@@ -222,28 +213,27 @@ public class BornCategoryServiceImple implements BornCategoryService {
             {
                 bornCategoryModel.setCategoryFile(bucketModel.getBucketUrl());
                 this.bornCategoryRepo.save(bornCategoryModel);
-                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,SellerMessageResponse.FILE_UPDATE_SUCCESS);
             }
             else {
                 logger.error("Bucket Model is null | please check AWS bucket configuration");
-                throw new Exception("Bucket AWS is Empty");
+                throw new Exception(SellerMessageResponse.AWS_BUCKET_IS_EMPTY);
             }
         }
         catch (Exception e)
         {
             logger.info("Exception" , e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.ERROR ,SellerMessageResponse.FILE_NOT_UPDATE);
         }
     }
 
     @Override
     public ResponseEntity<?> getBornCategoryListByPagination(Integer page, Integer size) {
         Page<BornCategoryModel> bornData = this.bornCategoryRepo.findAll(PageRequest.of(page , size, Sort.by("id").descending()));
-        System.out.println("BORN DATA " + bornData.toString());
         if(!bornData.isEmpty()) {
 
-            return ResponseGenerator.generateSuccessResponse(bornData, "BORN_SUCCESSFULLY_FETCH");
+            return ResponseGenerator.generateSuccessResponse(bornData, SellerMessageResponse.DATA_FETCH_SUCCESS);
         }else {
             log.info("Born Data Data Not Found its NULL or BLANK ::::::::: {}", "BornCategory" );
             return ResponseGenerator.generateDataNotFound(CustMessageResponse.DATA_NOT_FOUND);
@@ -284,7 +274,6 @@ public class BornCategoryServiceImple implements BornCategoryService {
                    dataInsider.setBornCategoryModel(bornCategoryModel);
                    this.bornSampleFilesRepo.save(dataInsider);
                }
-               System.out.println("Data Saved Success!!!!");
            }
 
            return ResponseGenerator.generateSuccessResponse(uploadedFiles, SellerMessageResponse.SUCCESS);

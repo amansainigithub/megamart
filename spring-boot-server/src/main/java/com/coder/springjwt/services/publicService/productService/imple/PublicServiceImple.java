@@ -68,6 +68,8 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> getProductCategoryService() {
+        log.info("<--- getProductListByCategoryId Flying --->");
+
         Map<Object,Object> mapNode = new HashMap<>();
 
         try {
@@ -128,11 +130,6 @@ public class PublicServiceImple implements PublicService {
             Pageable mensListPageable = PageRequest.of(0, 22);
             List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(1L,mensListPageable);
 
-            //Get Parent Categories only Women
-//            Pageable womenListPageable = PageRequest.of(0, 22);
-//            List<BornCategoryModel> womenList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(5L,womenListPageable);
-
-
             Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 999);
 
 
@@ -142,8 +139,9 @@ public class PublicServiceImple implements PublicService {
             mapNode.put("hotDealEngine",hotDealEngine);
             mapNode.put("hotDeals",hotDeals);
             mapNode.put("mensList",mensList);
-//            mapNode.put("womenList",womenList);
             mapNode.put("productsList",productsList.getContent());
+
+            log.info("getProductCategoryService Fetch Data Success");
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -155,7 +153,9 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> getProductListByCategoryId(long categoryId, String categoryName, Integer page, Integer size) {
+        log.info("<--- getProductListByCategoryId Flying --->");
         try {
+
             BabyCategoryModel babyCategoryModel = this.babyCategoryRepo.findById(categoryId)
                     .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
@@ -182,10 +182,9 @@ public class PublicServiceImple implements PublicService {
                     })
                     .collect(Collectors.toList());
 
-            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
             Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, babyCategoryData.getPageable(), babyCategoryData.getTotalElements());
 
-
+            log.info("getProductListByBornCategoryId Fetch Data Success :: ");
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
@@ -197,6 +196,7 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> getProductListByBornCategoryId(long categoryId, String categoryName, Integer page, Integer size) {
+        log.info("<--- getProductListByBornCategoryId Flying --->");
         try {
             BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
                     .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
@@ -224,10 +224,9 @@ public class PublicServiceImple implements PublicService {
                     })
                     .collect(Collectors.toList());
 
-            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
             Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, data.getPageable(), data.getTotalElements());
 
-
+            log.info("getProductListByBornCategoryId Fetch Data Success :: ");
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
@@ -239,8 +238,9 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> getProductListDeal99(long categoryId, String categoryName, Integer page, Integer size) {
+        log.info("<--- getProductListDeal99 Flying --->");
+
         try {
-            log.info("getProductListDeal99 Running....");
             BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
                     .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
@@ -274,6 +274,7 @@ public class PublicServiceImple implements PublicService {
                     .collect(Collectors.toList());
 
             Page<SellerProductResponse> pagedResponse = new PageImpl<>(sellerProductResponsesList, pageable, pagedSellerProducts.getTotalElements());
+            log.info("getProductListDeal99 Fetch Data Success ::");
             return ResponseGenerator.generateSuccessResponse(pagedResponse, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
@@ -285,6 +286,8 @@ public class PublicServiceImple implements PublicService {
 
     @Override
     public ResponseEntity<?> productWatching(String pI, String pN) {
+        log.info("<--- productWatching Flying --->");
+
         Map<Object,Object> map = new HashMap<>();
         try {
             SellerProduct sellerProduct = this.sellerProductRepository
@@ -335,6 +338,7 @@ public class PublicServiceImple implements PublicService {
             map.put("pw",response);
             map.put("similarProducts",similarProduct);
 
+            log.info("productWatching Fetch Data Success:: ");
             return ResponseGenerator.generateSuccessResponse(map, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
@@ -346,6 +350,7 @@ public class PublicServiceImple implements PublicService {
 
 
     public Page<SellerProductResponse> getBornCategoryList(long categoryId, String categoryName, Integer page, Integer size) {
+        log.info("<--- getBornCategoryList Flying --->");
         try {
             BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
                     .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
@@ -354,7 +359,6 @@ public class PublicServiceImple implements PublicService {
             Page<SellerProduct> data = this.sellerProductRepository
                     .findByBornCategoryId(String.valueOf(bornCategoryModel.getId()) , pageRequest );
 
-            System.out.println("----------------------------------------");
             List<SellerProductResponse> productResponses = data.getContent().stream()
                     .map(sellerProduct -> {
                         SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
@@ -372,9 +376,9 @@ public class PublicServiceImple implements PublicService {
                     })
                     .collect(Collectors.toList());
 
-            log.info("getProductListByCategoryId Fetch Data Success :: " + PublicServiceImple.class.getName());
             Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, data.getPageable(), data.getTotalElements());
 
+            log.info("getBornCategoryList Fetch Data Success:: ");
             return responsePage;
             //ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)

@@ -71,17 +71,17 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     @Override
     public ResponseEntity<?> createOrder(Double amount , long addressId, List<CartItemsDto> cartItems) {
+        log.info("<--- createOrder  Flying -->");
         try {
-                System.out.println("AMOUNT :: " + amount);
-                System.out.println("ADDRESS ID :: " + addressId);
-                System.out.println("Cart Items :: " +cartItems.toString());
+                log.info("AMOUNT :: " + amount);
+                log.info("ADDRESS ID :: " + addressId);
+                log.info("Cart Items :: " +cartItems.toString());
 
                 //validate Address
                 CustomerAddress customerAddress = this.addressWhereAreYou(addressId);
 
                 //Validate Card
                 boolean isValidCart = this.validateCartItems(cartItems);
-                System.out.println(isValidCart);
 
                 String currentUser = UserHelper.getOnlyCurrentUser();
                 User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
@@ -95,7 +95,7 @@ public class RazorpayServiceImple implements RazorpayServices {
 
                 //Create Order
                 Order order = client.Orders.create(orderRequest);
-                System.out.println("order created Success!!");
+                log.info("order created Success!!");
 
                 //Save Data to database
                 JSONObject orderData = new JSONObject(order.toString());
@@ -117,12 +117,12 @@ public class RazorpayServiceImple implements RazorpayServices {
 
                 //save Data to DB....
                 this.paymentRepository.save(paymentsTransactions);
-                System.out.println("Payment Transaction Saved Success...");
+                log.info("Payment Transaction Saved Success...");
 
 
                 //save USer Order
                 this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems , customerAddress);
-                System.out.println("Customer Order Saved Success...");
+                log.info("Customer Order Saved Success...");
 
                 return ResponseGenerator.generateSuccessResponse(orderData.toString() ,CustMessageResponse.SOMETHING_WENT_WRONG);
             }
@@ -139,9 +139,11 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     @Override
     public ResponseEntity<?> orderUpdate(PaymentTransactionPayload paymentTransactionPayload) {
+        log.info("<-- orderUpdate Flying -->");
+
         //Validate Cart Items
         if(!validateCartItems(paymentTransactionPayload.getCartItems())){
-            throw new RuntimeException("Somethin is Wrong  in Cart Items ! Please check");
+            throw new RuntimeException(CustMessageResponse.CART_ITEMS_SOMETHING_WRONG);
         }
 
         try {
@@ -162,17 +164,18 @@ public class RazorpayServiceImple implements RazorpayServices {
                 paymentsTransactions.setPaymentCompleteJson(jsonPayload);
                 this.paymentRepository.save(paymentsTransactions);
 
-                System.out.println("Payment Transaction Data Update Success");
+                log.info("Payment Transaction Data Update Success");
 
                 //Update Customer Order
                 this.updateCustomerOrderStatus(paymentTransactionPayload);
-                System.out.println("Customer Order Update Success ::::  ORDER ID-> "
+                log.info("Order Update Success ::  ORDER-ID-> "
                                     + paymentTransactionPayload.getRazorpay_order_id());
 
-                return ResponseGenerator.generateSuccessResponse("Payment Paid Success" , CustMessageResponse.SUCCESS);
+                return ResponseGenerator.generateSuccessResponse(CustMessageResponse.PAYMENT_PAID_SUCCESS ,
+                        CustMessageResponse.SUCCESS);
 
             }else{
-                throw new RuntimeException("ORDER ID NOT FOUND");
+                throw new RuntimeException(CustMessageResponse.ORDER_ID_NOT_FOUND);
             }
         }
         catch (Exception e)
@@ -187,19 +190,19 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     @Override
     public ResponseEntity<?> payCod(Double amount, long addressId, List<CartItemsDto> cartItems) {
-       try {
+        log.info("<---- payCod  Flying  --->");
 
-           System.out.println("============ COD ORDER PROCESSED =================");
-           System.out.println("AMOUNT :: " + amount);
-           System.out.println("ADDRESS ID :: " + addressId);
-           System.out.println("Cart Items :: " + cartItems.toString());
+       try {
+           log.info("============ COD ORDER PROCESSED =================");
+           log.info("AMOUNT :: " + amount);
+           log.info("ADDRESS ID :: " + addressId);
+           log.info("Cart Items :: " + cartItems.toString());
 
            //validate Address
            CustomerAddress customerAddress = this.addressWhereAreYou(addressId);
 
            //Validate Card
            boolean isValidCart = this.validateCartItems(cartItems);
-           System.out.println(isValidCart);
 
            String currentUser = UserHelper.getOnlyCurrentUser();
            User user = this.userRepository.findByUsername(currentUser)
@@ -228,19 +231,19 @@ public class RazorpayServiceImple implements RazorpayServices {
 
                //save Data to DB....
                this.paymentRepository.save(paymentsTransactions);
-               System.out.println("Payment Transaction Saved to Database...");
+               log.info("Payment Transaction Saved to Database...");
 
                //save Customer Orders Data
                this.saveCustomerOrderCOD(orderId, cartItems, customerAddress, user);
-               System.out.println("Customer Order Data Saved Success");
+               log.info("Customer Order Data Saved Success");
 
                //save Customer Order Items
                this.saveCustomerOrderItemsCOD(orderId , cartItems);
-               System.out.println("Customer Order Items Data Saved Success");
+               log.info("Customer Order Items Data Saved Success");
 
-               return ResponseGenerator.generateSuccessResponse("SUCCESS", CustMessageResponse.DATA_SAVED_SUCCESS);
+               return ResponseGenerator.generateSuccessResponse(CustMessageResponse.COD_SUCCESS, CustMessageResponse.DATA_SAVED_SUCCESS);
            }else{
-               throw new RuntimeException("Card Not Validate ! Please Check");
+               throw new RuntimeException(CustMessageResponse.CART_ITEMS_SOMETHING_WRONG);
            }
        }
        catch (Exception e)
@@ -252,8 +255,6 @@ public class RazorpayServiceImple implements RazorpayServices {
     }
 
 
-//=====================================
-
     public CustomerAddress addressWhereAreYou(long addressId)
     {
         String currentUser = UserHelper.getOnlyCurrentUser();
@@ -263,7 +264,7 @@ public class RazorpayServiceImple implements RazorpayServices {
         {
             return customerAddress;
         }else{
-            throw new RuntimeException("Address Not Found User Id ==>" + user.getId());
+            throw new RuntimeException(CustMessageResponse.ADDRESS_NOT_FOUND + user.getId());
         }
     }
 
@@ -286,47 +287,40 @@ public class RazorpayServiceImple implements RazorpayServices {
             boolean isValid =Boolean.FALSE;
             for(ProductVariants pv : variantsList)
             {
-                System.out.println("---------------------------------");
-                System.out.println("Product Price :: " + pv.getProductPrice());
-                System.out.println("cart Iem Price :: " + ci.getPPrice());
-                System.out.println("Product Inventory :: " + pv.getProductInventory());
-
                 if(pv.getProductPrice().equals(String.valueOf(ci.getPPrice()))
                         && pv.getProductLabel().equals(ci.getPSize())
                         && Integer.parseInt(pv.getProductInventory()) > 0 )
                 {
                     variantTotalPrice += Integer.parseInt(pv.getProductPrice()) * ci.getQuantity();
                     cartTotalPrice += Integer.parseInt(ci.getPPrice()) * ci.getQuantity();
-                    System.out.println("Matched");
                     isValid = Boolean.TRUE;
+
+                    log.info("Matched Cart Items ");
                 }
                 else{
-                    System.out.println("Not matched");
+                    log.info("Not matched Cart Items");
                 }
             }
-
-            System.out.println(isValid);
             if(!isValid)
             {
-                throw new RuntimeException("Price ,Size and Inventory Could Not Matched");
+                throw new RuntimeException(CustMessageResponse.PRICE_SIZE_INVENTORY_NOT_MATCHED);
             }
         }
 
-        System.out.println("Variant Total Price :: " + variantTotalPrice);
-        System.out.println("Cart Total Price :: " + cartTotalPrice);
+        log.info("Variant Total Price :: " + variantTotalPrice);
+        log.info("Cart Total Price :: " + cartTotalPrice);
 
         if(variantTotalPrice != cartTotalPrice)
         {
-            throw new RuntimeException("Cart Total Price and Product Variant Total Price Could Not matched");
+            throw new RuntimeException(CustMessageResponse.VARIENT_TOTAL_AND_CART_TOTAL_NOT_MATCHED);
         }
-
         return Boolean.TRUE; // All items are valid
     }
 
     public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList, CustomerAddress customerAddress)
     {
+        log.info("saveCustomerOrder flying");
         try {
-            System.out.println("save Customer Order Starting.....");
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
 
@@ -373,6 +367,7 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList)
     {
+        log.info("saveCustomerOrderItems flying");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
@@ -427,7 +422,6 @@ public class RazorpayServiceImple implements RazorpayServices {
             this.orderRepository.save(customerOrders);
 
             log.info("Customer Order Items Saved Success!!!");
-
         }
         catch (Exception e)
         {
@@ -438,6 +432,7 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     public void updateCustomerOrderStatus(PaymentTransactionPayload paymentTransactionPayload)
     {
+        log.info("<-- updateCustomerOrderStatus Flying --> ");
         try {
             CustomerOrders customerOrders = this.orderRepository.findByOrderId(paymentTransactionPayload.getRazorpay_order_id());
             customerOrders.setPaymentStatus(PaymentStatus.PAID.toString());
@@ -455,12 +450,10 @@ public class RazorpayServiceImple implements RazorpayServices {
     public void saveCustomerOrderCOD( String orderId ,
                                       List<CartItemsDto> cartItemsList,
                                       CustomerAddress customerAddress ,
-                                      User user)
-    {
+                                      User user){
+
+        log.info("<-- saveCustomerOrderCOD Flying --> ");
         try {
-            System.out.println("save Customer Order Starting.....");
-
-
             CustomerOrders customerOrders = new CustomerOrders();
 
             customerOrders.setOrderId(orderId);
@@ -503,9 +496,11 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     public void saveCustomerOrderItemsCOD( String orderId , List<CartItemsDto> cartItemsList)
     {
+        log.info("<-- saveCustomerOrderItemsCOD Flying --> ");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
-            User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
+            User user = this.userRepository.findByUsername(currentUser)
+                    .orElseThrow(() -> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
 
             CustomerOrders customerOrders = this.orderRepository.findByOrderId(orderId);
 
@@ -555,7 +550,6 @@ public class RazorpayServiceImple implements RazorpayServices {
             this.orderRepository.save(customerOrders);
 
             log.info("Customer Order Items Saved Success!!!");
-
         }
         catch (Exception e)
         {
@@ -576,7 +570,6 @@ public class RazorpayServiceImple implements RazorpayServices {
         for (int i = 0; i < 9; i++) {
             randomAlphanumeric.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
         }
-
         // Concatenate COD, current date, and alphanumeric string
         return "COD" + "_" + currentDate + "_"+ randomAlphanumeric;
     }

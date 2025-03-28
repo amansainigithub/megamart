@@ -48,7 +48,7 @@ public class ProductStatusServiceImple implements ProductStatusService {
         try {
             this.productReviewStatusRepository.deleteById(id);
             log.info("Product Review Delete Success-- Id=> :: " + id);
-            return ResponseGenerator.generateSuccessResponse("DATA_DELETE_SUCCESS", SellerMessageResponse.SUCCESS);
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS, SellerMessageResponse.SUCCESS);
         }
         catch (Exception e){
             e.printStackTrace();

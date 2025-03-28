@@ -24,14 +24,13 @@ public class EmailVerifierServiceImple implements EmailVerifierService {
 
     @Override
     public ResponseEntity<?> authTokenVerifier(String token) {
+        log.info("<-- authTokenVerifier Flying -->");
        try {
-           System.out.println("Email Auth Token :: "  + token);
-
            User user = this.userRepository.findByEmailVerificationToken(token)
                    .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
 
            if (user.getEmailTokenExpiryTime().isBefore(LocalDateTime.now())) {
-             return  ResponseGenerator.generateBadRequestResponse("Token Expired! Please Resend Email Link again."
+             return  ResponseGenerator.generateBadRequestResponse(CustMessageResponse.TOKEN_EXPIRED_RESEND_EMAIL_LINK
                                                             , CustMessageResponse.SOMETHING_WENT_WRONG);
 
 //               return ResponseEntity.status(HttpStatus.FOUND)

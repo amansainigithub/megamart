@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(CustomerUrlMappings.CUSTOMER_BASE_URL+"/categoryController")
+@RequestMapping(CustomerUrlMappings.CATEGORY_CONTROLLER)
 public class CategoryController {
     @Autowired
     private PublicService publicService;
 
-    @GetMapping("/getProductCategory")
+    @GetMapping(CustomerUrlMappings.GET_PRODUCT_CATEGORY)
     public ResponseEntity<?> getProductCategory() {
         return this.publicService.getProductCategoryService();
     }
 
-    @GetMapping("/getProductListByCategoryId")
+    @GetMapping(CustomerUrlMappings.GET_PRODUCT_LIST_BY_CATEGORY_ID)
     public ResponseEntity<?> getProductListByCategoryId(@RequestParam long cI,
                                                         @RequestParam String cN,
                                                         @RequestParam Integer page ,
@@ -28,7 +28,7 @@ public class CategoryController {
         return this.publicService.getProductListByCategoryId(cI , cN , page , size);
     }
 
-    @GetMapping("/getProductListByBornCategoryId")
+    @GetMapping(CustomerUrlMappings.GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID)
     public ResponseEntity<?> getProductListByBornCategoryId(@RequestParam long cI,
                                                             @RequestParam String cN,
                                                             @RequestParam Integer page ,
@@ -36,7 +36,7 @@ public class CategoryController {
         return this.publicService.getProductListByBornCategoryId(cI , cN , page , size);
     }
 
-    @GetMapping("/getProductListDeal99")
+    @GetMapping(CustomerUrlMappings.GET_PRODUCT_LIST_DEAL_99)
     public ResponseEntity<?> getProductListDeal99(@RequestParam long cI,
                                                   @RequestParam String cN,
                                                   @RequestParam Integer page ,
@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/productWatching")
+    @GetMapping(CustomerUrlMappings.PRODUCT_WATCHING)
     public ResponseEntity<?> productWatching(
                                              @RequestParam String pI ,
                                              @RequestParam String pN) {

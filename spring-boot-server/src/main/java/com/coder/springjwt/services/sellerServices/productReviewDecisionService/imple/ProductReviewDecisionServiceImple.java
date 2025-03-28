@@ -52,7 +52,7 @@ public class ProductReviewDecisionServiceImple implements ProductReviewDecisionS
 
             if(reviewDecision && sellerProduct != null) {
                 userRepository.findByUsername(sellerProduct.getSellerUserName()).orElseThrow(() ->
-                        new UsernameNotFoundException("USERNAME_NOT_FOUND"));
+                        new UsernameNotFoundException(SellerMessageResponse.USER_NOT_FOUND));
 
                 //Generate Product Launcher Id
                 String productLauncherId;

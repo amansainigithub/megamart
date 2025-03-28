@@ -36,6 +36,8 @@ public class HomeSliderServiceImple implements HomeSliderService {
 
     @Override
     public ResponseEntity<?> saveHomeSlider(HomeSliderDto homeSliderDto) {
+        log.info("<-- saveHomeSlider Flying -->");
+
         MessageResponse response =new MessageResponse();
         try {
             HomeSliderModel homeSliderModel =  modelMapper.map(homeSliderDto, HomeSliderModel.class);
@@ -43,7 +45,7 @@ public class HomeSliderServiceImple implements HomeSliderService {
             this.homeSliderRepo.save(homeSliderModel);
             log.info("Home Slider Saved Success");
 
-            response.setMessage("Home Slider Saved Success");
+            response.setMessage(SellerMessageResponse.DATA_SAVED_SUCCESS);
             response.setStatus(HttpStatus.OK);
             return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
         }
@@ -58,6 +60,7 @@ public class HomeSliderServiceImple implements HomeSliderService {
 
     @Override
     public ResponseEntity<?> updateHomeSliderFile(MultipartFile file, Long homeSliderId) {
+        log.info("<-- updateHomeSliderFile Flying -->");
         try {
             HomeSliderModel homeSliderModel = this.homeSliderRepo.findById(homeSliderId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
 
@@ -74,30 +77,32 @@ public class HomeSliderServiceImple implements HomeSliderService {
             {
                 homeSliderModel.setFileUrl(bucketModel.getBucketUrl());
                 this.homeSliderRepo.save(homeSliderModel);
-                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,SellerMessageResponse.FILE_UPDATE_SUCCESS);
             }
             else {
                 log.error("Bucket Model is null | please check AWS bucket configuration");
-                throw new Exception("Bucket AWS is Empty");
+                throw new Exception(SellerMessageResponse.AWS_BUCKET_IS_EMPTY);
             }
         }
         catch (Exception e)
         {
             log.info("Exception" , e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Upload");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.ERROR ,SellerMessageResponse.FILE_NOT_UPLOAD);
         }
     }
 
     @Override
     public ResponseEntity<?> deleteHomeSlider(Long homeSliderId) {
+        log.info("<-- deleteHomeSlider Flying -->");
+
         try {
             HomeSliderModel data = this.homeSliderRepo.findById(homeSliderId).orElseThrow(
-                    () -> new CategoryNotFoundException("Category id not Found"));
+                    () -> new CategoryNotFoundException(SellerMessageResponse.ID_NOT_FOUND));
 
             this.homeSliderRepo.deleteById(data.getId());
             log.info("Delete Success => Slider id :: " + homeSliderId );
-            return ResponseGenerator.generateSuccessResponse("Delete Success" , "Success");
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS , SellerMessageResponse.SUCCESS);
 
         }
         catch (Exception e)
@@ -105,15 +110,17 @@ public class HomeSliderServiceImple implements HomeSliderService {
             e.printStackTrace();
             log.error("Slider Could Not deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Category Could not deleted :: " + e.getMessage() , "Error");
+                    (SellerMessageResponse.CATEGORY_COULD_NOT_DELETE + e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
     @Override
     public ResponseEntity<?> getHomeSliderById(long homeSliderId) {
+        log.info("<-- getHomeSliderById Flying -->");
+
         try {
             HomeSliderModel homeSliderModel = this.homeSliderRepo.findById(homeSliderId).orElseThrow(
-                    () -> new RuntimeException("Data not Found ! Error"));
+                    () -> new RuntimeException(SellerMessageResponse.DATA_NOT_FOUND));
             HomeSliderDto homeSliderDto = modelMapper.map(homeSliderModel, HomeSliderDto.class);
             log.info("Home Slider Fetch Success !");
             return ResponseGenerator.generateSuccessResponse(homeSliderDto , SellerMessageResponse.SUCCESS);
@@ -128,6 +135,7 @@ public class HomeSliderServiceImple implements HomeSliderService {
 
     @Override
     public ResponseEntity<?> getHomeSliderList() {
+        log.info("<-- getHomeSliderList Flying -->");
         try {
             List<HomeSliderModel> sliderList =  this.homeSliderRepo.findAll();
             List<HomeSliderDto> homeSliderDtos =   sliderList
@@ -145,6 +153,7 @@ public class HomeSliderServiceImple implements HomeSliderService {
 
     @Override
     public ResponseEntity<?> updateHomeSlider(HomeSliderDto homeSliderDto) {
+        log.info("<-- updateHomeSlider Flying -->");
         MessageResponse response = new MessageResponse();
         try {
             log.info(homeSliderDto.toString());

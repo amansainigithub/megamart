@@ -10,6 +10,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.services.orderServices.OrderService;
 import com.coder.springjwt.util.ResponseGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderServiceImple implements OrderService {
 
     @Autowired
@@ -32,13 +34,11 @@ public class OrderServiceImple implements OrderService {
 
     @Override
     public ResponseEntity<?> getCustomerOrders(long id) {
-
+        log.info("<-- getCustomerOrders Flying-->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
-
-            System.out.println("------------ " + user.getUsername() + " :: " + user.getId());
 
             List<CustomerOrders> customerOrders = this.orderRepository.
                                                                 findOrderItemsByCustomerIdCustom(
@@ -60,6 +60,7 @@ public class OrderServiceImple implements OrderService {
 
     @Override
     public ResponseEntity<?> getCustomerOrdersById(long id) {
+        log.info("<-- getCustomerOrdersById Flying-->");
 
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();

@@ -1,11 +1,14 @@
 package com.coder.springjwt.constants.customerPanelConstants.customerEmailConstants;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CustomerEmailContent {
 
     public static String registrationCompleted(String name, String authToken) {
         String loginUrl = "https://localhost:8080/login?token=" + authToken;
 
-        System.out.println("LOGIN URL registrationCompleted :: " + loginUrl);
+        log.info("LOGIN URL registrationCompleted :: " + loginUrl);
 
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -86,7 +89,7 @@ public class CustomerEmailContent {
         String loginUrl = "http://localhost:8080/customer/api/v1/authToken/authTokenVerifier?token=" + authToken;
 
 
-        System.out.println("LOGIN URL sendEmailVerifyLink :: " + loginUrl);
+        log.info("LOGIN URL sendEmailVerifyLink :: " + loginUrl);
 
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +

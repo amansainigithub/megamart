@@ -2,6 +2,7 @@ package com.coder.springjwt.services.sellerServices.categories.childCategoryImpl
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.childDtos.ChildCategoryDto;
 import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
@@ -12,6 +13,7 @@ import com.coder.springjwt.repository.sellerRepository.categories.ParentCategory
 import com.coder.springjwt.services.sellerServices.categories.ChildCategoryService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ChildCategoryServiceImple implements ChildCategoryService {
 
     @Autowired
@@ -44,20 +47,19 @@ public class ChildCategoryServiceImple implements ChildCategoryService {
     @Autowired
     private ModelMapper modelMapper;
 
-    Logger logger  = LoggerFactory.getLogger(ChildCategoryServiceImple.class);
 
     @Override
     public ResponseEntity<?> saveChildCategory(ChildCategoryDto childCategoryDto) {
         MessageResponse response =new MessageResponse();
         try {
             ChildCategoryModel childCategoryModel =  modelMapper.map(childCategoryDto , ChildCategoryModel.class);
-            logger.info("Mapper Convert Success");
+            log.info("Mapper Convert Success");
 
             Optional <ParentCategoryModel>  parentOptional=
                     this.parentCategoryRepo.findById(Long.parseLong(childCategoryDto.getParentCategoryId()));
 
             if(parentOptional.isPresent()) {
-                logger.info("Data Present Success");
+                log.info("Data Present Success");
                 childCategoryModel.setParentCategory(parentOptional.get());
 
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -65,22 +67,22 @@ public class ChildCategoryServiceImple implements ChildCategoryService {
                 //save Category
                 this.childCategoryRepo.save(childCategoryModel);
 
-                logger.info("Child-Category Saved Success");
-                response.setMessage("Child-Category Saved Success");
+                log.info("Child-Category Saved Success");
+                response.setMessage(SellerMessageResponse.CHILD_CATEGORY_SAVED_SUCCESS);
                 response.setStatus(HttpStatus.OK);
-                return ResponseGenerator.generateSuccessResponse(response, "Success");
+                return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
             }
             else{
-                logger.error("parent Category Not Found Via Id : "+ childCategoryDto.getParentCategoryId());
-                response.setMessage("parent Category Not Found Via Id : "+ childCategoryDto.getParentCategoryId());
+                log.error("parent Category Not Found Via Id : "+ childCategoryDto.getParentCategoryId());
+                response.setMessage(SellerMessageResponse.PARENT_CATEGORY_NOT_FOUND + childCategoryDto.getParentCategoryId());
                 response.setStatus(HttpStatus.BAD_REQUEST);
                 return ResponseGenerator.generateBadRequestResponse(response);
             }
         }
         catch (DataIntegrityViolationException ex) {
             // Handle exception here
-            logger.error("Duplicate entry error: ");
-            response.setMessage("Duplicate entry error: ");
+            log.error("Duplicate entry error: ");
+            response.setMessage(SellerMessageResponse.DUPLICATE_ENTRY_ERROR);
             response.setStatus(HttpStatus.BAD_REQUEST);
             return ResponseGenerator.generateBadRequestResponse(response);
         }
@@ -95,85 +97,88 @@ public class ChildCategoryServiceImple implements ChildCategoryService {
 
     @Override
     public ResponseEntity<?> getChildCategoryList() {
-      try {
+
+        try {
           List<ChildCategoryModel> childList =  this.childCategoryRepo.findAll();
           List<ChildCategoryDto> childCategoryDtos =   childList
                   .stream()
                   .map(category -> modelMapper.map(category, ChildCategoryDto.class))
                   .collect(Collectors.toList());
-          return ResponseGenerator.generateSuccessResponse(childCategoryDtos,"Success");
+          return ResponseGenerator.generateSuccessResponse(childCategoryDtos,SellerMessageResponse.SUCCESS);
       }
       catch (Exception e)
       {
           e.printStackTrace();
-          return ResponseGenerator.generateBadRequestResponse("Failed");
+          return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.FAILED);
       }
     }
 
     @Override
     public ResponseEntity<?> deleteChildCategoryById(long categoryId) {
+
         try {
             ChildCategoryModel data = this.childCategoryRepo.findById(categoryId).orElseThrow(
-                    () -> new CategoryNotFoundException("Category id not Found"));
+                    () -> new CategoryNotFoundException(SellerMessageResponse.ID_NOT_FOUND));
 
             this.childCategoryRepo.deleteById(data.getId());
-            logger.info("Delete Success => Category id :: " + categoryId );
-            return ResponseGenerator.generateSuccessResponse("Delete Success" , "Success");
+            log.info("Delete Success => Category id :: " + categoryId );
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DELETE_SUCCESS , SellerMessageResponse.SUCCESS);
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("Category Could Not deleted");
+            log.error("Category Could Not deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Category Could not deleted :: " + e.getMessage() , "Error");
+                    (SellerMessageResponse.CATEGORY_COULD_NOT_DELETE + e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
     @Override
     public ResponseEntity<?> getChildCategoryById(long categoryId) {
+
         try {
             ChildCategoryModel childCategoryModel = this.childCategoryRepo.findById(categoryId).orElseThrow(
-                    () -> new RuntimeException("Data not Found ! Error"));
+                    () -> new RuntimeException(SellerMessageResponse.DATA_NOT_FOUND));
             ChildCategoryDto childCategoryDto = modelMapper.map(childCategoryModel, ChildCategoryDto.class);
-            logger.info("Child Category Fetch Success !");
-            return ResponseGenerator.generateSuccessResponse(childCategoryDto , "Success");
+            log.info("Child Category Fetch Success !");
+            return ResponseGenerator.generateSuccessResponse(childCategoryDto , SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.error("");
-            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , "Error");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.ERROR);
         }
     }
 
     @Override
     public ResponseEntity<?> updateChildCategory(ChildCategoryDto childCategoryDto ) {
+
         MessageResponse response = new MessageResponse();
         try {
-            logger.info(childCategoryDto.toString());
-            logger.info("Update Child Process Starting....");
+            log.info("Update Child Process Starting....");
             this.childCategoryRepo.findById(childCategoryDto.getId()).orElseThrow(()->new DataNotFoundException("Dara not Found"));
 
             ChildCategoryModel childCategorymodel =  modelMapper.map(childCategoryDto , ChildCategoryModel.class);
             this.childCategoryRepo.save(childCategorymodel);
 
-            logger.info("Data Update Success");
-            return ResponseGenerator.generateSuccessResponse("Success" , "Data update Success");
+            log.info("Data Update Success");
+            return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS, SellerMessageResponse.DATA_UPDATE_SUCCESS);
 
         }
         catch (Exception e)
         {
-            logger.info("Data Update Failed");
+            log.info("Data Update Failed");
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("failed" ," Data Update Failed");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.SUCCESS ,SellerMessageResponse.DATA_UPDATE_FAILED);
         }
     }
 
     @Override
     public ResponseEntity<?> updateParentCategoryFile(MultipartFile file, Long childCategoryId) {
         try {
-            ChildCategoryModel childCategoryModel = this.childCategoryRepo.findById(childCategoryId).orElseThrow(()-> new DataNotFoundException("DATA_NOT_FOUND"));
+            ChildCategoryModel childCategoryModel = this.childCategoryRepo
+                    .findById(childCategoryId).orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
             //Delete old File
             bucketService.deleteFile(childCategoryModel.getCategoryFile());
@@ -184,18 +189,18 @@ public class ChildCategoryServiceImple implements ChildCategoryService {
             {
                 childCategoryModel.setCategoryFile(bucketModel.getBucketUrl());
                 this.childCategoryRepo.save(childCategoryModel);
-                return ResponseGenerator.generateSuccessResponse("Success","File Update Success");
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,SellerMessageResponse.FILE_UPDATE_SUCCESS);
             }
             else {
-                logger.error("Bucket Model is null | please check AWS bucket configuration");
-                throw new Exception("Bucket AWS is Empty");
+                log.error("Bucket Model is null | please check AWS bucket configuration");
+                throw new Exception(SellerMessageResponse.AWS_BUCKET_IS_EMPTY);
             }
         }
         catch (Exception e)
         {
-            logger.info("Exception" , e.getMessage());
+            log.info("Exception" , e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Update");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.ERROR,SellerMessageResponse.FILE_NOT_UPDATE);
         }
     }
 

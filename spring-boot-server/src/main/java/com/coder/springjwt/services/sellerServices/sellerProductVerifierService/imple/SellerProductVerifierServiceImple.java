@@ -45,7 +45,6 @@ public class SellerProductVerifierServiceImple implements SellerProductVerifierS
     @Override
     public ResponseEntity<?> getFormBuilderFlyingByAdmin(String categoryId) {
         try {
-            System.out.println(Long.parseLong(categoryId)+"==============");
             BornCategoryModel bornData = this.bornCategoryRepo.findById(Long.parseLong(categoryId))
                     .orElseThrow(() -> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
             return ResponseGenerator.generateSuccessResponse(bornData, SellerMessageResponse.SUCCESS);

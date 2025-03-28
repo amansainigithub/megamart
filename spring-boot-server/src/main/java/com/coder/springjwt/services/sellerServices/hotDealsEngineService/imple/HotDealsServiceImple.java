@@ -53,12 +53,12 @@ public class HotDealsServiceImple implements HotDealsService {
                 this.hotDealsRepo.save(hotDealsModel);
                 log.info("Hot Deals Saved Success");
 
-                response.setMessage("Hot Deals Saved Success");
+                response.setMessage(SellerMessageResponse.HOT_DEAL_SAVED_SUCCESS);
                 response.setStatus(HttpStatus.OK);
                 return ResponseGenerator.generateSuccessResponse(response, SellerMessageResponse.SUCCESS);
             }
             else{
-                throw new RuntimeException("Engine Id Not Found | please Check");
+                throw new RuntimeException(SellerMessageResponse.ID_NOT_FOUND);
             }
         }
         catch (Exception e)
@@ -74,7 +74,7 @@ public class HotDealsServiceImple implements HotDealsService {
     public ResponseEntity<?> deleteHotDeal(Long id) {
         try {
             HotDealsModel data = this.hotDealsRepo.findById(id).orElseThrow(
-                    () -> new RuntimeException("Hot Deal id not Found"));
+                    () -> new RuntimeException(SellerMessageResponse.ID_NOT_FOUND));
 
             this.hotDealsRepo.deleteById(data.getId());
             log.info("Delete Success => Hot Deals id :: " + id );
@@ -86,7 +86,7 @@ public class HotDealsServiceImple implements HotDealsService {
             e.printStackTrace();
             log.error("Hot Deal Not deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Hot Deal Not deleted :: " + e.getMessage() , SellerMessageResponse.ERROR);
+                    (SellerMessageResponse.HOT_DEAL_NOT_DELETE , SellerMessageResponse.ERROR);
         }
     }
 
@@ -159,7 +159,7 @@ public class HotDealsServiceImple implements HotDealsService {
             e.printStackTrace();
             log.error("Hot Deal Not deleted");
             return ResponseGenerator.generateBadRequestResponse
-                    ("Hot Deal Not deleted :: " + e.getMessage() , SellerMessageResponse.ERROR);
+                    (SellerMessageResponse.HOT_DEAL_NOT_DELETE , SellerMessageResponse.ERROR);
         }
     }
 
@@ -181,18 +181,18 @@ public class HotDealsServiceImple implements HotDealsService {
             {
                 hotDealsModel.setFileUrl(bucketModel.getBucketUrl());
                 this.hotDealsRepo.save(hotDealsModel);
-                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,"FILE Update Success");
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS,SellerMessageResponse.FILE_UPDATE_SUCCESS);
             }
             else {
                 log.error("Bucket Model is null | please check AWS bucket configuration");
-                throw new Exception("Bucket AWS is Empty");
+                throw new Exception(SellerMessageResponse.AWS_BUCKET_IS_EMPTY);
             }
         }
         catch (Exception e)
         {
             log.info("Exception" , e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse("Error" ,"File Not Upload");
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.ERROR,SellerMessageResponse.FILE_NOT_UPLOAD);
         }
     }
 }
