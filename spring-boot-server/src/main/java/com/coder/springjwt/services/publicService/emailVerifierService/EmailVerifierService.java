@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.emailVerifierService;
+package com.coder.springjwt.services.publicService.emailVerifierService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

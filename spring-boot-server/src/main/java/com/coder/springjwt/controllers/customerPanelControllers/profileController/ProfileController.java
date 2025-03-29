@@ -2,7 +2,7 @@ package com.coder.springjwt.controllers.customerPanelControllers.profileControll
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.UserProfileUpdatePayload;
-import com.coder.springjwt.services.profileService.ProfileService;
+import com.coder.springjwt.services.publicService.profileService.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,10 @@
-package com.coder.springjwt.services.emailVerifierService.imple;
+package com.coder.springjwt.services.publicService.emailVerifierService.imple;
 
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.repository.UserRepository;
-import com.coder.springjwt.services.emailVerifierService.EmailVerifierService;
+import com.coder.springjwt.services.publicService.emailVerifierService.EmailVerifierService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

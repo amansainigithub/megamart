@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.profileService;
+package com.coder.springjwt.services.publicService.profileService;
 
 import com.coder.springjwt.payload.customerPayloads.freshUserPayload.UserProfileUpdatePayload;
 import org.springframework.http.ResponseEntity;

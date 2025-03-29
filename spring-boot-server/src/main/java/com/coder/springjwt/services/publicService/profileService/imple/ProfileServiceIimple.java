@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.profileService.imple;
+package com.coder.springjwt.services.publicService.profileService.imple;
 
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.customerEmailConstants.CustomerEmailContent;
@@ -10,8 +10,8 @@ import com.coder.springjwt.payload.customerPayloads.freshUserPayload.Userprofile
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
-import com.coder.springjwt.services.profileService.ProfileService;
 import com.coder.springjwt.services.publicService.customerAuthService.imple.CustomerAuthServiceImple;
+import com.coder.springjwt.services.publicService.profileService.ProfileService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

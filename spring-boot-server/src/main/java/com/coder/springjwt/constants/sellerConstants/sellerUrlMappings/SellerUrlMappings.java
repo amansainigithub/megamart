@@ -241,6 +241,11 @@ public class SellerUrlMappings {
     public static final String UPDATE_HOT_DEAL_FILE="/updateHotDealFile/{dealId}";
 
 
+    //Hot Deals Controller
+    public static final String SELLER_ORDERS_CONTROLLER = SELLER_AUTH_URL +"/sellerOrderController";
+    public static final String GET_ORDER_BY_SELLER="/getOrderBySeller";
+
+
 
 
 }

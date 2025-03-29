@@ -1,7 +1,7 @@
 package com.coder.springjwt.controllers.customerPanelControllers.linkVerifier;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
-import com.coder.springjwt.services.emailVerifierService.EmailVerifierService;
+import com.coder.springjwt.services.publicService.emailVerifierService.EmailVerifierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

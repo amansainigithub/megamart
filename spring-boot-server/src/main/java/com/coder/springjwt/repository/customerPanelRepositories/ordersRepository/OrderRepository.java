@@ -2,6 +2,9 @@ package com.coder.springjwt.repository.customerPanelRepositories.ordersRepositor
 
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
+import com.razorpay.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,5 +45,10 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
             "WHERE co.user.id = :customerId AND co.id = :id  ")
     CustomerOrders getOrderWithUserIdAndOrderId( @Param("customerId") Long customerId,
                                                            @Param("id") long id);
+
+
+    @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE coi.deliveryStatus = :pending")
+    Page<CustomerOrders> getPendingOrderItems(@Param("pending") String pending, Pageable pageable);
+
 
 }

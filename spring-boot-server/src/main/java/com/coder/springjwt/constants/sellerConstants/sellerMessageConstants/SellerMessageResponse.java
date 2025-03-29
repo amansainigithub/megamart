@@ -11,7 +11,6 @@ public class SellerMessageResponse {
     public static final String DELETE_SUCCESS = "Delete Success";
 
     public static final String FAILED = "Failed";
-
     public static final String ERROR = "Error";
     public static final String ALREADY_VERIFIED = "Already Verified";
     public static final String DATA_NOT_FOUND = "Data Not Found";
@@ -36,8 +35,8 @@ public class SellerMessageResponse {
 
     public static final String SELLER_GST_ALREADY_VERIFIED = "Seller Gst Already Verified";
 
-    public static final String INVALID_GST_NUMBER= "Invalid GST Number";
-    public static final String GST_VERIFIED= "GST Verified";
+    public static final String INVALID_GST_NUMBER = "Invalid GST Number";
+    public static final String GST_VERIFIED = "GST Verified";
 
     public static final String SOMETHING_WENT_WRONG = "Something Went Wrong";
 
@@ -60,9 +59,9 @@ public class SellerMessageResponse {
 
     public static final String BABY_CATEGORY_NOT_FOUND = "Baby Category Not Found Id";
 
-    public static final String PARENT_CATEGORY_NOT_FOUND =   "parent Category Not Found Id : ";
+    public static final String PARENT_CATEGORY_NOT_FOUND = "parent Category Not Found Id : ";
 
-    public static final String PARENT_CATEGORY_SAVED =   "parent Category Saved";
+    public static final String PARENT_CATEGORY_SAVED = "parent Category Saved";
 
 
     public static final String DUPLICATE_ENTRY_ERROR = "Duplicate entry error";
@@ -95,16 +94,9 @@ public class SellerMessageResponse {
 
     public static final String HSN_SAVED = "HSN Saved";
 
-    public static final String HSN_NOT_DELETE =    "HSN Could not deleted :: ";
+    public static final String HSN_NOT_DELETE = "HSN Could not deleted :: ";
 
     public static final String UNABLE_TO_GENERATE_SKU = "Unable to generate unique SKU code";
-
-
-
-
-
-
-
 
 
 }

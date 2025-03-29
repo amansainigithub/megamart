@@ -50,6 +50,7 @@ public class SellerAuthController {
     @PostMapping(SellerUrlMappings.SELLER_SIGN_IN)
     public ResponseEntity<?> sellerAuthenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
+        System.out.println(loginRequest + ":: " );
             Authentication authentication = authenticationManager.authenticate(
                                             new UsernamePasswordAuthenticationToken(
                                                     loginRequest.getUsername(),

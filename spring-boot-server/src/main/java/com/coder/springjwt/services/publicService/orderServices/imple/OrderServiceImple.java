@@ -1,4 +1,4 @@
-package com.coder.springjwt.services.orderServices.imple;
+package com.coder.springjwt.services.publicService.orderServices.imple;
 
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
@@ -8,7 +8,7 @@ import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
-import com.coder.springjwt.services.orderServices.OrderService;
+import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
