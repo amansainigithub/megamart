@@ -18,10 +18,28 @@ public class SellerOrderController {
     private SellerOrdersService sellerOrdersService;
 
 
-    @GetMapping(SellerUrlMappings.GET_ORDER_BY_SELLER)
+    @GetMapping(SellerUrlMappings.GET_PENDING_ORDER_BY_SELLER)
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> getOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
-        return this.sellerOrdersService.getOrderBySeller(page , size);
+    public ResponseEntity<?> getPendingOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getPendingOrderBySeller(page , size);
     }
 
+    @GetMapping(SellerUrlMappings.GET_SHIPPED_ORDER_BY_SELLER)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getShippedOrderBySeller(page , size);
+    }
+
+    @GetMapping(SellerUrlMappings.GET_OUT_OF_DELIVERY_ORDER_BY_SELLER)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getOutOfDeliveryOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getOutOfDeliveryOrderBySellerService(page , size);
+    }
+
+
+    @GetMapping(SellerUrlMappings.GET_DELIVERED_ORDER_BY_SELLER)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getDeliveredOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getDeliveredOrderBySellerService(page , size);
+    }
 }

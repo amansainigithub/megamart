@@ -7,5 +7,11 @@ import org.springframework.stereotype.Component;
 public interface SellerOrdersService {
 
 
-    ResponseEntity<?> getOrderBySeller(Integer page, Integer page1);
+    ResponseEntity<?> getPendingOrderBySeller(Integer page, Integer page1);
+
+    ResponseEntity<?> getShippedOrderBySeller(Integer page, Integer size);
+
+    ResponseEntity<?> getOutOfDeliveryOrderBySellerService(Integer page, Integer size);
+
+    ResponseEntity<?> getDeliveredOrderBySellerService(Integer page, Integer size);
 }

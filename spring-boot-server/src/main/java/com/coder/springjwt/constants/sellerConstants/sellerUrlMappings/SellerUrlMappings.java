@@ -243,9 +243,16 @@ public class SellerUrlMappings {
 
     //Hot Deals Controller
     public static final String SELLER_ORDERS_CONTROLLER = SELLER_AUTH_URL +"/sellerOrderController";
-    public static final String GET_ORDER_BY_SELLER="/getOrderBySeller";
+    public static final String GET_PENDING_ORDER_BY_SELLER="/getPendingOrderBySeller";
+    public static final String GET_SHIPPED_ORDER_BY_SELLER="/getShippedOrderBySeller";
+    public static final String GET_OUT_OF_DELIVERY_ORDER_BY_SELLER="/getOutOfDeliveryOrderBySeller";
+    public static final String GET_DELIVERED_ORDER_BY_SELLER="/getDeliveredOrderBySeller";
 
 
 
+    //Delivery Status Controller
+    public static final String DELIVERY_STATUS_CONTROLLER = SELLER_AUTH_URL +"/deliveryStatusController";
+    public static final String UPDATE_DELIVERY_STATUS_ORDER_ITEMS="/updateDeliveryStatusOrderItems";
+    public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
 
 }

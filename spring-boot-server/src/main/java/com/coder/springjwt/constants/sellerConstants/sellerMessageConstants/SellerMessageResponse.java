@@ -98,5 +98,7 @@ public class SellerMessageResponse {
 
     public static final String UNABLE_TO_GENERATE_SKU = "Unable to generate unique SKU code";
 
+    public static final String ORDER_ITEM_NOT_FOUND ="Order Item Not Found";
+
 
 }

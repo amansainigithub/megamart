@@ -47,8 +47,31 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
                                                            @Param("id") long id);
 
 
-    @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE coi.deliveryStatus = :pending")
+    @Query("SELECT co FROM CustomerOrders co " +
+            "JOIN co.customerOrderItems coi " +
+            "WHERE coi.deliveryStatus = :pending and coi.customerOrders.id = co.id")
     Page<CustomerOrders> getPendingOrderItems(@Param("pending") String pending, Pageable pageable);
+
+    @Query("SELECT co FROM CustomerOrders co " +
+            "JOIN co.customerOrderItems coi " +
+            "WHERE coi.deliveryStatus = :shipped")
+    Page<CustomerOrders> getShippedOrders(@Param("shipped") String shipped, Pageable pageable);
+
+    @Query("SELECT co FROM CustomerOrders co " +
+            "JOIN co.customerOrderItems coi " +
+            "WHERE coi.deliveryStatus = :outOfDelivery")
+    Page<CustomerOrders> getOutOfDeliveryOrders(@Param("outOfDelivery") String outOfDelivery, Pageable pageable);
+
+    @Query("SELECT co FROM CustomerOrders co " +
+            "JOIN co.customerOrderItems coi " +
+            "WHERE coi.deliveryStatus = :delivered")
+    Page<CustomerOrders> getDeliveryOrders(@Param("delivered") String delivered, Pageable pageable);
+
+
+
+
+
+
 
 
 }
