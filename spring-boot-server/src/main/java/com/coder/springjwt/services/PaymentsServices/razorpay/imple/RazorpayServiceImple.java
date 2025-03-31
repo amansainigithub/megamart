@@ -399,6 +399,9 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
                 customerOrderItems.setPaymentMode(PaymentModeStatus.ONLINE.toString());
 
+                //Order Date Time
+                customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
+
                 //Set Customer Delivery Address To Customer Order Items
                 customerOrderItems.setCustomerName(customerAddress.getCustomerName());
                 customerOrderItems.setAddressId(String.valueOf(customerAddress.getId()));

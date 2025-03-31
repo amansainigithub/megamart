@@ -73,6 +73,8 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String courierName;
 
+    private String orderDateTime;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference

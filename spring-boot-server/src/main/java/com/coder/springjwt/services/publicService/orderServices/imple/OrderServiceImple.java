@@ -10,6 +10,7 @@ import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.repository.UserRepository;
+import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -30,6 +31,9 @@ public class OrderServiceImple implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -43,31 +47,17 @@ public class OrderServiceImple implements OrderService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            List<CustomerOrders> customerOrders = this.orderRepository.
-                                                                findOrderItemsByCustomerIdCustom(
-                                                                user.getId());
 
-            List<CustomerOrderDTO> orderList = customerOrders.stream()
-                    .map(order -> {
-                        CustomerOrderDTO orderDTO = modelMapper.map(order, CustomerOrderDTO.class);
+            List<CustomerOrderItems> orderItemsExceptDelivered = this.orderItemsRepository.findOrderItemsExceptDelivered(id);
 
-                        List<CustomerOrderItemDTO> filteredItems = order.getCustomerOrderItems().stream()
-                                .filter(item -> item.getDeliveryStatus().equals(DeliveryStatus.PENDING.toString()) ||
-                                        item.getDeliveryStatus().equals(DeliveryStatus.SHIPPED.toString()) ||
-                                        item.getDeliveryStatus().equals(DeliveryStatus.OUT_OF_DELIVERY.toString())) // Excludes "DELIVERED"
-                                .map(item -> modelMapper.map(item, CustomerOrderItemDTO.class)) // Convert to DTO
-                                .collect(Collectors.toList());
-
-                        // Set filtered items in DTO
-                        orderDTO.setCustomerOrderItems(filteredItems);
-
-                        return orderDTO;
-                    })
-                    .filter(orderDTO -> !orderDTO.getCustomerOrderItems().isEmpty())
-                    .collect(Collectors.toList());
-
-
-            return ResponseGenerator.generateSuccessResponse(orderList , CustMessageResponse.SUCCESS);
+            List<CustomerOrderItemDTO> itemsList = orderItemsExceptDelivered.stream()
+                                            .map(order -> {
+                                                    CustomerOrderItemDTO itemsDto =
+                                                            modelMapper.map(order, CustomerOrderItemDTO.class);
+                                                    return itemsDto;
+                                            })
+                                            .collect(Collectors.toList());
+            return ResponseGenerator.generateSuccessResponse(itemsList , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
@@ -85,31 +75,42 @@ public class OrderServiceImple implements OrderService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            List<CustomerOrders> customerOrders = this.orderRepository.
-                                                    findOrdersByDeliveredCustom( user.getId());
 
-            List<CustomerOrderDTO> orderList = customerOrders.stream()
+            List<CustomerOrderItems> deliveredItems = this.orderItemsRepository.findOrderItemsDelivered(id);
+
+            List<CustomerOrderItemDTO> deliveredOrders = deliveredItems.stream()
                     .map(order -> {
-                        CustomerOrderDTO customerOrderDTO = modelMapper.map(order, CustomerOrderDTO.class);
-
-                        // Filter only delivered items and map them to DTOs
-                        List<CustomerOrderItemDTO> deliveredItems = order.getCustomerOrderItems().stream()
-                                .filter(item -> DeliveryStatus.DELIVERED.toString().equals(item.getDeliveryStatus())) // Filter condition
-                                .map(item -> modelMapper.map(item, CustomerOrderItemDTO.class)) // Mapping to DTO
-                                .collect(Collectors.toList());
-
-                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
-
-                        // Only add delivered items to the DTO
-                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
-
-                        return customerOrderDTO;
+                        CustomerOrderItemDTO itemsDto =
+                                modelMapper.map(order, CustomerOrderItemDTO.class);
+                        return itemsDto;
                     })
-                    // Remove orders that have no delivered items
-                    .filter(orderDTO -> !orderDTO.getCustomerOrderItems().isEmpty())
                     .collect(Collectors.toList());
 
-            return ResponseGenerator.generateSuccessResponse(orderList , CustMessageResponse.SUCCESS);
+//            List<CustomerOrders> customerOrders = this.orderRepository.
+//                                                    findOrdersByDeliveredCustom( user.getId());
+//
+//            List<CustomerOrderDTO> orderList = customerOrders.stream()
+//                    .map(order -> {
+//                        CustomerOrderDTO customerOrderDTO = modelMapper.map(order, CustomerOrderDTO.class);
+//
+//                        // Filter only delivered items and map them to DTOs
+//                        List<CustomerOrderItemDTO> deliveredItems = order.getCustomerOrderItems().stream()
+//                                .filter(item -> DeliveryStatus.DELIVERED.toString().equals(item.getDeliveryStatus())) // Filter condition
+//                                .map(item -> modelMapper.map(item, CustomerOrderItemDTO.class)) // Mapping to DTO
+//                                .collect(Collectors.toList());
+//
+//                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
+//
+//                        // Only add delivered items to the DTO
+//                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
+//
+//                        return customerOrderDTO;
+//                    })
+//                    // Remove orders that have no delivered items
+//                    .filter(orderDTO -> !orderDTO.getCustomerOrderItems().isEmpty())
+//                    .collect(Collectors.toList());
+
+            return ResponseGenerator.generateSuccessResponse(deliveredOrders , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
@@ -129,16 +130,18 @@ public class OrderServiceImple implements OrderService {
         log.info("<-- getCustomerOrdersById Details Flying-->");
 
         try {
+
+            log.info("IDDDDDDDDDDDDDDDDDDDDDD:: " + id);
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            CustomerOrders customerOrders = this.orderRepository.
-                    getOrderWithUserIdAndOrderId( user.getId() ,id );
+            CustomerOrderItems customerOrderItems = this.orderItemsRepository.
+                                                    findOrderItemsById( user.getId() ,id );
 
-            CustomerOrderDTO orderDTO = modelMapper.map(customerOrders, CustomerOrderDTO.class);
+            CustomerOrderItemDTO orderItem = modelMapper.map(customerOrderItems, CustomerOrderItemDTO.class);
 
-            return ResponseGenerator.generateSuccessResponse(orderDTO , CustMessageResponse.SUCCESS);
+            return ResponseGenerator.generateSuccessResponse(orderItem , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {

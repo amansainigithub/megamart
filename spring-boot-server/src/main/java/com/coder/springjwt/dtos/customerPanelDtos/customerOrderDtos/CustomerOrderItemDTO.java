@@ -35,6 +35,13 @@ public class CustomerOrderItemDTO {
 
     private String paymentMode;
 
+    private String razorpayOrderId;
+
+    private String orderDateTime;
+
+    private String totalPrice;
+
+
 
     //Address Data
 
