@@ -1,12 +1,16 @@
 package com.coder.springjwt.services.sellerServices.deliveryStatusService.imple;
 
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
+import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.SellerEmailConstants;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
+import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
+import com.coder.springjwt.services.emailServices.EmailService.EmailService;
+import com.coder.springjwt.services.emailServices.EmailService.imple.EmailServiceImple;
 import com.coder.springjwt.services.sellerServices.deliveryStatusService.DeliveryStatusService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +28,9 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
 
     @Autowired
     private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -48,10 +55,22 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             customerOrderItems.setOrderTrackingId(deliveryStatusDto.getTackerId());
             customerOrderItems.setDeliveryDateTime(formattedDateTime);
             customerOrderItems.setCourierName(deliveryStatusDto.getCourierName());
-
-
             this.orderItemsRepository.save(customerOrderItems);
 
+            //Email Send
+//            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
+//            emailHtmlPayload.setSubject("Your Order is On Its Way! ");
+//            emailHtmlPayload.setStatus("SUCCESS");
+//            emailHtmlPayload.setRole("CUSTOMER");
+//            emailHtmlPayload.setAreaMode("DELIVERY STATUS");
+//            emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
+//            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(customerOrderItems.getCustomerName(),
+//                    customerOrderItems.getCustomOrderId(), customerOrderItems.getOrderTrackingId(),
+//                    customerOrderItems.getCourierName(), customerOrderItems.getDeliveryDateTime(), "SHOPPERS", "https:https://www.google.co.in/");
+//            emailHtmlPayload.setHtmlContent(shippingTemplate);
+//
+//            emailService.sendHtmlMail(emailHtmlPayload);
+            log.info("Email Sent Success| Shipping");
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -104,9 +123,6 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
     }
 
 
-    public void sendDeliveryStatusEmail(String deliveryStatus){
-
-    }
 
 
 }

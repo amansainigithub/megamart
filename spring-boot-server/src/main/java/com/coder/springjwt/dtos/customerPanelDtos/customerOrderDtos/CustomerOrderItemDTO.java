@@ -41,7 +41,7 @@ public class CustomerOrderItemDTO {
 
     private String totalPrice;
 
-    private String customOrderId;
+    private String customOrderNumber;
 
 
 

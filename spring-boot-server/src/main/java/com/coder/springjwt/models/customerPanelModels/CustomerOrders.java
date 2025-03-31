@@ -34,7 +34,7 @@ public class CustomerOrders extends BaseEntity {
 
     private String addressId;
 
-    private String customOrderId;
+    private String customOrderNumber;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
