@@ -58,18 +58,19 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             this.orderItemsRepository.save(customerOrderItems);
 
             //Email Send
-//            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
-//            emailHtmlPayload.setSubject("Your Order is On Its Way! ");
-//            emailHtmlPayload.setStatus("SUCCESS");
-//            emailHtmlPayload.setRole("CUSTOMER");
-//            emailHtmlPayload.setAreaMode("DELIVERY STATUS");
-//            emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
-//            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(customerOrderItems.getCustomerName(),
-//                    customerOrderItems.getCustomOrderId(), customerOrderItems.getOrderTrackingId(),
-//                    customerOrderItems.getCourierName(), customerOrderItems.getDeliveryDateTime(), "SHOPPERS", "https:https://www.google.co.in/");
-//            emailHtmlPayload.setHtmlContent(shippingTemplate);
-//
-//            emailService.sendHtmlMail(emailHtmlPayload);
+            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
+            emailHtmlPayload.setSubject("Your Order is On Its Way! Shoppers");
+            emailHtmlPayload.setStatus("SUCCESS");
+            emailHtmlPayload.setRole("CUSTOMER");
+            emailHtmlPayload.setAreaMode("DELIVERY STATUS");
+            emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
+            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(customerOrderItems.getCustomerName(),
+                    customerOrderItems.getCustomOrderNumber(), customerOrderItems.getOrderTrackingId(),
+                    customerOrderItems.getCourierName(), customerOrderItems.getDeliveryDateTime(), "SHOPPERS", "https:https://www.google.co.in/");
+//            String shippingTemplate = SellerEmailConstants.getTestEmail();
+            emailHtmlPayload.setHtmlContent(shippingTemplate);
+
+            emailService.sendHtmlMail(emailHtmlPayload);
             log.info("Email Sent Success| Shipping");
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
         }
