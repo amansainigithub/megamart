@@ -115,13 +115,17 @@ public class RazorpayServiceImple implements RazorpayServices {
                 paymentsTransactions.setUserName(user.getUsername());
                 paymentsTransactions.setUserId(String.valueOf(user.getId()));
 
-                //save Data to DB....
+                //Generate OrderId
+                String customOrderId = generateCustomOrderID();
+                paymentsTransactions.setCustomOrderId(customOrderId);
+
+                    //save Data to DB....
                 this.paymentRepository.save(paymentsTransactions);
                 log.info("Payment Transaction Saved Success...");
 
 
                 //save USer Order
-                this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems , customerAddress);
+                this.saveCustomerOrder(String.valueOf(orderData.getString("id")) ,cartItems , customerAddress , customOrderId);
                 log.info("Customer Order Saved Success...");
 
                 return ResponseGenerator.generateSuccessResponse(orderData.toString() ,CustMessageResponse.SOMETHING_WENT_WRONG);
@@ -151,7 +155,10 @@ public class RazorpayServiceImple implements RazorpayServices {
             if(paymentsTransactions != null)
             {
                 //save Cart Items To Database Final Added
-                this.saveCustomerOrderItems(paymentTransactionPayload.getRazorpay_order_id() ,  paymentTransactionPayload.getCartItems());
+                this.saveCustomerOrderItems(paymentTransactionPayload.getRazorpay_order_id()
+                                            ,paymentTransactionPayload.getCartItems()
+                                            ,paymentsTransactions.getCustomOrderId());
+
                 paymentTransactionPayload.setCartItems(null); //cart Items Null Because of Object mapper can't Convert Items
                 //save Cart Items To Database Final Added
 
@@ -211,7 +218,7 @@ public class RazorpayServiceImple implements RazorpayServices {
 
            if (isValidCart) {
 
-               String orderId = generateCodOrderId();
+               String orderId = generateRazorpayCodOrderId();
                //Save Data to database
                PaymentsTransactions paymentsTransactions = new PaymentsTransactions();
                paymentsTransactions.setCurrency("INR");
@@ -226,6 +233,10 @@ public class RazorpayServiceImple implements RazorpayServices {
                paymentsTransactions.setUserName(user.getUsername());
                paymentsTransactions.setUserId(String.valueOf(user.getId()));
 
+               //Set Custom OrderId
+               String customOrderID = generateCustomOrderID();
+               paymentsTransactions.setCustomOrderId(customOrderID);
+
                //SET PAYMENT MODE STATUS
                paymentsTransactions.setPaymentMode(PaymentModeStatus.COD.toString());
 
@@ -234,11 +245,11 @@ public class RazorpayServiceImple implements RazorpayServices {
                log.info("Payment Transaction Saved to Database...");
 
                //save Customer Orders Data
-               this.saveCustomerOrderCOD(orderId, cartItems, customerAddress, user);
+               this.saveCustomerOrderCOD(orderId, cartItems, customerAddress, user , customOrderID);
                log.info("Customer Order Data Saved Success");
 
                //save Customer Order Items
-               this.saveCustomerOrderItemsCOD(orderId , cartItems);
+               this.saveCustomerOrderItemsCOD(orderId , cartItems , customOrderID);
                log.info("Customer Order Items Data Saved Success");
 
                return ResponseGenerator.generateSuccessResponse(CustMessageResponse.COD_SUCCESS, CustMessageResponse.DATA_SAVED_SUCCESS);
@@ -317,7 +328,7 @@ public class RazorpayServiceImple implements RazorpayServices {
         return Boolean.TRUE; // All items are valid
     }
 
-    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList, CustomerAddress customerAddress)
+    public void saveCustomerOrder( String orderId , List<CartItemsDto> cartItemsList, CustomerAddress customerAddress , String customOrderId)
     {
         log.info("saveCustomerOrder flying");
         try {
@@ -336,7 +347,6 @@ public class RazorpayServiceImple implements RazorpayServices {
 
             //Set Customer AddressId
             customerOrders.setAddressId(String.valueOf(customerAddress.getId()));
-
 
             // Define the required format TimeStamp
             LocalDateTime now = LocalDateTime.now();
@@ -357,6 +367,9 @@ public class RazorpayServiceImple implements RazorpayServices {
             //SET PAYMENT MODE STATUS
             customerOrders.setPaymentMode(PaymentModeStatus.ONLINE.toString());
 
+            //Set Custom OrderID
+            customerOrders.setCustomOrderId(customOrderId);
+
             this.orderRepository.save(customerOrders);
         }
         catch (Exception e)
@@ -365,7 +378,7 @@ public class RazorpayServiceImple implements RazorpayServices {
         }
     }
 
-    public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList)
+    public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList,String customOrderId)
     {
         log.info("saveCustomerOrderItems flying");
         try {
@@ -398,6 +411,9 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
                 customerOrderItems.setPaymentMode(PaymentModeStatus.ONLINE.toString());
+
+                //save Sutom Order Id
+                customerOrderItems.setCustomOrderId(customOrderId);
 
                 //Order Date Time
                 customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
@@ -453,7 +469,8 @@ public class RazorpayServiceImple implements RazorpayServices {
     public void saveCustomerOrderCOD( String orderId ,
                                       List<CartItemsDto> cartItemsList,
                                       CustomerAddress customerAddress ,
-                                      User user){
+                                      User user ,
+                                      String customOrderID){
 
         log.info("<-- saveCustomerOrderCOD Flying --> ");
         try {
@@ -488,6 +505,9 @@ public class RazorpayServiceImple implements RazorpayServices {
             //SET PAYMENT MODE STATUS
             customerOrders.setPaymentMode(PaymentModeStatus.COD.toString());
 
+            //set Custom Order ID
+            customerOrders.setCustomOrderId(customOrderID);
+
             this.orderRepository.save(customerOrders);
         }
         catch (Exception e)
@@ -497,7 +517,7 @@ public class RazorpayServiceImple implements RazorpayServices {
     }
 
 
-    public void saveCustomerOrderItemsCOD( String orderId , List<CartItemsDto> cartItemsList)
+    public void saveCustomerOrderItemsCOD( String orderId , List<CartItemsDto> cartItemsList, String customOrderId)
     {
         log.info("<-- saveCustomerOrderItemsCOD Flying --> ");
         try {
@@ -529,6 +549,12 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.PENDING.toString());
                 customerOrderItems.setUserId(String.valueOf(user.getId()));
                 customerOrderItems.setPaymentMode(PaymentModeStatus.COD.toString());
+                customerOrderItems.setCustomOrderId(customOrderId);
+
+                //Order Date Time
+                customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
+
+
 
                 //Set Customer Delivery Address To Customer Order Items
                 customerOrderItems.setCustomerName(customerAddress.getCustomerName());
@@ -545,6 +571,7 @@ public class RazorpayServiceImple implements RazorpayServices {
 
                 //Add Order Items To List
                 customerOrderItemsList.add(customerOrderItems);
+
             }
             //Set Customer Order Items List
             customerOrders.setCustomerOrderItems(customerOrderItemsList);
@@ -560,7 +587,7 @@ public class RazorpayServiceImple implements RazorpayServices {
         }
     }
 
-    public static String generateCodOrderId() {
+    public static String generateRazorpayCodOrderId() {
         // Get the current date in yyyyMMdd format
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
@@ -576,5 +603,18 @@ public class RazorpayServiceImple implements RazorpayServices {
         // Concatenate COD, current date, and alphanumeric string
         return "COD" + "_" + currentDate + "_"+ randomAlphanumeric;
     }
+
+
+    public static String generateCustomOrderID() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss"); // Timestamp format
+        String timestamp = sdf.format(new Date());
+
+        Random random = new Random();
+        int randomNum = 1000 + random.nextInt(90000); // 5-digit random number
+        System.out.println("RANDOM NUMBER :: " +randomNum);
+
+        return "ORD-" + timestamp + randomNum; // Example: ORD202503311230451234
+    }
+
 
 }

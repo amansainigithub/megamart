@@ -31,6 +31,8 @@ public class PaymentsTransactions extends BaseEntity {
     private String paymentCreatedJson;
     private String paymentCompleteJson;
 
+    private String customOrderId;
+
     private String userId;
     private String userName;
 }

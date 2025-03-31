@@ -42,11 +42,14 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
             String formattedDateTime = zonedDateTime.format(formatter);
 
-
+            //customerOrderItems.setDeliveryStatus(DeliveryStatus.SHIPPED.toString());
             customerOrderItems.setDeliveryStatus(deliveryStatusDto.getDeliveryStatus());
+
             customerOrderItems.setOrderTrackingId(deliveryStatusDto.getTackerId());
             customerOrderItems.setDeliveryDateTime(formattedDateTime);
             customerOrderItems.setCourierName(deliveryStatusDto.getCourierName());
+
+
             this.orderItemsRepository.save(customerOrderItems);
 
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
@@ -99,4 +102,11 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
         }
     }
+
+
+    public void sendDeliveryStatusEmail(String deliveryStatus){
+
+    }
+
+
 }

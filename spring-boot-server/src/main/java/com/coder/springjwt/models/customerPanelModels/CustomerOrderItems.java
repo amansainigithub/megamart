@@ -51,6 +51,8 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String paymentMode;
 
+    private String customOrderId;
+
 
 
     //Address Data

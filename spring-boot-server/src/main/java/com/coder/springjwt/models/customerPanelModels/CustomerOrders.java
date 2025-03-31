@@ -34,6 +34,8 @@ public class CustomerOrders extends BaseEntity {
 
     private String addressId;
 
+    private String customOrderId;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonIgnore
