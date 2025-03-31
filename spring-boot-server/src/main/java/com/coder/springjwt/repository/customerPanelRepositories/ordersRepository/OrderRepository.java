@@ -34,19 +34,36 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
     @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.paymentStatus = :paid")
     List<CustomerOrderItems> findOrderItemsByCustomerId(@Param("customerId") Long customerId, @Param("paid") String paid);
 
+
+
+
+//    ODERS HISTORY AND MY ORDER STARTING
     @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi " +
             "WHERE co.user.id = :customerId " +
-            "AND co.paymentStatus IN ('PAID', 'UNPAID') " +  // Allow both PAID and UNPAID
+            "AND coi.deliveryStatus IN ('PENDING' , 'SHIPPED' , 'OUT_OF_DELIVERY')" +
             "ORDER BY co.creationDate DESC")
     List<CustomerOrders> findOrderItemsByCustomerIdCustom(@Param("customerId") Long customerId);
+    @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi " +
+            "WHERE co.user.id = :customerId " +
+            "AND coi.deliveryStatus = 'DELIVERED'" +
+            "ORDER BY co.creationDate DESC")
+    List<CustomerOrders> findOrdersByDeliveredCustom(@Param("customerId") Long customerId);
+//    ODERS HISTORY AND MY ORDER ENDING
 
 
+
+
+    //GET ORDER DETAILS LIKE ADDRESS< AND EXTRA DETAILS STARTING
     @Query("SELECT co FROM CustomerOrders co JOIN co.customerOrderItems coi " +
             "WHERE co.user.id = :customerId AND co.id = :id  ")
     CustomerOrders getOrderWithUserIdAndOrderId( @Param("customerId") Long customerId,
                                                            @Param("id") long id);
+    //GET ORDER DETAILS LIKE ADDRESS< AND EXTRA DETAILS STARTING
 
 
+
+
+    //Delivered Status Starting
     @Query("SELECT co FROM CustomerOrders co " +
             "JOIN co.customerOrderItems coi " +
             "WHERE coi.deliveryStatus = :pending and coi.customerOrders.id = co.id")
@@ -67,7 +84,7 @@ public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
             "WHERE coi.deliveryStatus = :delivered")
     Page<CustomerOrders> getDeliveryOrders(@Param("delivered") String delivered, Pageable pageable);
 
-
+//Delivered Status Starting
 
 
 

@@ -46,6 +46,9 @@ public class SellerProduct extends BaseEntity  {
     //Product Other Details
     private String finishingType;
     private String brandField;
+
+    @Lob
+    @Column(length = 50000)
     private String description;
 
     private String productCreationDate;

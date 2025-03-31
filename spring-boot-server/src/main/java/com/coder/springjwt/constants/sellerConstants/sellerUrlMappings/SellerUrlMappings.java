@@ -252,7 +252,10 @@ public class SellerUrlMappings {
 
     //Delivery Status Controller
     public static final String DELIVERY_STATUS_CONTROLLER = SELLER_AUTH_URL +"/deliveryStatusController";
-    public static final String UPDATE_DELIVERY_STATUS_ORDER_ITEMS="/updateDeliveryStatusOrderItems";
+    public static final String UPDATE_PENDING_DELIVERY_STATUS="/updatePendingDeliveryStatus";
+
+    public static final String UPDATE_DELIVERY_STATUS="/updateDeliveryStatus";
+
     public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
 
 }

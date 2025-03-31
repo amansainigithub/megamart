@@ -23,12 +23,18 @@ public class OrderController {
     public ResponseEntity<?> getCustomerOrders(@PathVariable(required = true) long id) {
         return this.orderService.getCustomerOrders(id);
     }
+    @GetMapping(CustomerUrlMappings.GET_MY_ORDERS_DELIVERED)
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> getMyOrdersDelivered(@PathVariable(required = true) long id) {
+        return this.orderService.getMyOrdersDelivered(id);
+    }
 
-    @GetMapping(CustomerUrlMappings.GET_CUSTOMER_ORDERS_BY_ID)
+    @GetMapping(CustomerUrlMappings.GET_CUSTOMER_ORDERS_BY_ID) // Order Details Particular Order
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> getCustomerOrdersById(@PathVariable(required = true) long id) {
         return this.orderService.getCustomerOrdersById(id);
     }
+
 
 
 }

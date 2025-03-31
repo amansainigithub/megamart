@@ -45,15 +45,13 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String paymentStatus;
 
-    private String deliveryStatus;
 
-    private String orderTrackingId;
 
     private String userId;
 
     private String paymentMode;
 
-    private String deliveryDate;
+
 
     //Address Data
     private String customerName;
@@ -65,6 +63,15 @@ public class CustomerOrderItems extends BaseEntity {
     private String addressLine1;
     private String addressLine2;
     private boolean defaultAddress;
+
+    //Delivery Data
+    private String deliveryStatus;
+
+    private String orderTrackingId;
+
+    private String deliveryDateTime;
+
+    private String courierName;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

@@ -56,6 +56,10 @@ public class CustomerOrderItemDTO {
 
     private boolean defaultAddress;
 
+    private String deliveryDateTime;
+
+    private String courierName;
+
 
 
 }

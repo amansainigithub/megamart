@@ -3,6 +3,7 @@ package com.coder.springjwt.services.sellerServices.deliveryStatusService.imple;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
+import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
@@ -12,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
@@ -23,7 +27,7 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
 
 
     @Override
-    public ResponseEntity<?> updateDeliveryStatusOrderItems(DeliveryStatusDto deliveryStatusDto) {
+    public ResponseEntity<?> updatePendingDeliveryStatus(DeliveryStatusDto deliveryStatusDto) {
         try {
                 log.info("===> updateDeliveryStatusOrderItems Flying");
 
@@ -31,10 +35,38 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
                                         .findById(Long.valueOf(deliveryStatusDto.getOrderItemId()))
                                         .orElseThrow(() -> new RuntimeException(SellerMessageResponse.ORDER_ITEM_NOT_FOUND));
 
+            //Convert Date Form and Add Time with AM and PM
+            LocalDateTime localDateTime = LocalDateTime.parse(deliveryStatusDto.getDeliveryDateTime());
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
+                    .withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+            String formattedDateTime = zonedDateTime.format(formatter);
+
+
             customerOrderItems.setDeliveryStatus(deliveryStatusDto.getDeliveryStatus());
             customerOrderItems.setOrderTrackingId(deliveryStatusDto.getTackerId());
-            customerOrderItems.setDeliveryDate(deliveryStatusDto.getDeliveryDate());
+            customerOrderItems.setDeliveryDateTime(formattedDateTime);
+            customerOrderItems.setCourierName(deliveryStatusDto.getCourierName());
+            this.orderItemsRepository.save(customerOrderItems);
 
+            return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateDeliveryStatus(DeliveryStatusUpdateDto deliveryStatusUpdateDto) {
+        try {
+            log.info("===> updateDeliveryStatus Flying");
+            CustomerOrderItems customerOrderItems = this.orderItemsRepository
+                    .findById(Long.valueOf(deliveryStatusUpdateDto.getOrderItemId()))
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.ORDER_ITEM_NOT_FOUND));
+
+            customerOrderItems.setDeliveryStatus(deliveryStatusUpdateDto.getUpdateDeliveryStatus());
             this.orderItemsRepository.save(customerOrderItems);
 
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
@@ -57,7 +89,7 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             deliveryStatusDto.setTackerId(customerOrderItems.getOrderTrackingId());
             deliveryStatusDto.setDeliveryStatus(customerOrderItems.getDeliveryStatus());
             deliveryStatusDto.setOrderItemId(String.valueOf(customerOrderItems.getId()));
-            deliveryStatusDto.setDeliveryDate(customerOrderItems.getDeliveryDate());
+            deliveryStatusDto.setDeliveryDateTime(customerOrderItems.getDeliveryDateTime());
 
             return ResponseGenerator.generateSuccessResponse(deliveryStatusDto , CustMessageResponse.SUCCESS);
         }
