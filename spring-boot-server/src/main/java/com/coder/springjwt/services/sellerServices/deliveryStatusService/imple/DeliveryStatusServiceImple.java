@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -64,10 +66,19 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             emailHtmlPayload.setRole("CUSTOMER");
             emailHtmlPayload.setAreaMode("DELIVERY STATUS");
             emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
-            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(customerOrderItems.getCustomerName(),
-                    customerOrderItems.getCustomOrderNumber(), customerOrderItems.getOrderTrackingId(),
-                    customerOrderItems.getCourierName(), customerOrderItems.getDeliveryDateTime(), "SHOPPERS", "https:https://www.google.co.in/");
-//            String shippingTemplate = SellerEmailConstants.getTestEmail();
+
+            Map<String,String> emailData = new HashMap<>();
+            emailData.put("customerName",customerOrderItems.getCustomerName());
+            emailData.put("orderNumber",customerOrderItems.getCustomOrderNumber());
+            emailData.put("productName",customerOrderItems.getProductName());
+            emailData.put("quantity",customerOrderItems.getQuantity());
+            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
+            emailData.put("productPrice",customerOrderItems.getProductPrice());
+            emailData.put("estimatedDeliveryDate",customerOrderItems.getOrderDateTime());
+            emailData.put("courierPartner",customerOrderItems.getCourierName());
+            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
+            emailData.put("companyName" , "Shoppers");
+            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(emailData);
             emailHtmlPayload.setHtmlContent(shippingTemplate);
 
             emailService.sendHtmlMail(emailHtmlPayload);
