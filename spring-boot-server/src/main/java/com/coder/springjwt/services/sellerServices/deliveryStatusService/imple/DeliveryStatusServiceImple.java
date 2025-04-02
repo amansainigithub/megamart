@@ -81,7 +81,7 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(emailData);
             emailHtmlPayload.setHtmlContent(shippingTemplate);
 
-            emailService.sendHtmlMail(emailHtmlPayload);
+            //emailService.sendHtmlMail(emailHtmlPayload);
             log.info("Email Sent Success| Shipping");
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
         }
