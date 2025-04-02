@@ -2,13 +2,10 @@ package com.coder.springjwt.services.publicService.orderServices.imple;
 
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
-import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderDTO;
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
-import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
-import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;

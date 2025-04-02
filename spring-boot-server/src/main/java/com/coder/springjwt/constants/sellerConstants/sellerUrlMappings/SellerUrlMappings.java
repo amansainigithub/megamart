@@ -250,6 +250,13 @@ public class SellerUrlMappings {
 
 
 
+    //Hot Deals Controller
+    public static final String SELLER_ORDERS_ONE_BY_ONE_CONTROLLER = SELLER_AUTH_URL +"/sellerOrderOneByOneController";
+    public static final String GET_PENDING_ORDER_ONE_BY_ONE_BY_SELLER="/getPendingOrderOneByOneBySeller";
+    public static final String GET_SHIPPED_ORDER_ONE_BY_ONE_BY_SELLER="/getShippedOrderOneByOneBySeller";
+    public static final String GET_OUT_OF_DELIVERY_ORDER_ONE_BY_ONE_BY_SELLER="/getOutOfDeliveryOrderOneByOneBySeller";
+    public static final String GET_DELIVERED_ORDER_ONE_BY_ONE_BY_SELLER="/getDeliveredOrderOneByOneBySeller";
+
     //Delivery Status Controller
     public static final String DELIVERY_STATUS_CONTROLLER = SELLER_AUTH_URL +"/deliveryStatusController";
     public static final String UPDATE_PENDING_DELIVERY_STATUS="/updatePendingDeliveryStatus";

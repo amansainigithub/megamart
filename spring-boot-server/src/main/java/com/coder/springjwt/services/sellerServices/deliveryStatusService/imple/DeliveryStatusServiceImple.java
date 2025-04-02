@@ -5,12 +5,10 @@ import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.Seller
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
-import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
-import com.coder.springjwt.services.emailServices.EmailService.imple.EmailServiceImple;
 import com.coder.springjwt.services.sellerServices.deliveryStatusService.DeliveryStatusService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;

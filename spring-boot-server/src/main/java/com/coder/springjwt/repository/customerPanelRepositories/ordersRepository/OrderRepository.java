@@ -2,7 +2,6 @@ package com.coder.springjwt.repository.customerPanelRepositories.ordersRepositor
 
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
-import com.razorpay.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

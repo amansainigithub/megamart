@@ -188,7 +188,7 @@ public class SellerEmailConstants {
                 "                        <td>{productName}</td>\n" +
                 "                        <td>{quantity}</td>\n" +
                 "                        <td>{trackingNumber}</td>\n" +
-                "                        <td>$ {productPrice}</td>\n" +
+                "                        <td> ₹ {productPrice}</td>\n" +
                 "                    </tr>\n" +
                 "                </tbody>\n" +
                 "            </table>\n" +
