@@ -11,4 +11,5 @@ public interface ProfileService {
     ResponseEntity<?> updateCustomerProfile(UserProfileUpdatePayload userProfileUpdatePayload);
 
     ResponseEntity<?> resendEmailLink(long id);
+
 }

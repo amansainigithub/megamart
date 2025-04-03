@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
@@ -32,5 +31,17 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 
 
     Page<CustomerOrderItems> findAllByDeliveryStatus(String deliveryStatus , Pageable pageable);
+
+
+    @Query("SELECT coi, r FROM CustomerOrderItems coi " +
+            "LEFT JOIN Ratings r ON coi.id = CAST(r.orderItemsId as long) " +
+            "WHERE coi.userId = :userId AND r.orderItemsId IS NOT NULL")
+    List<Object[]> findAllWithoutRatingsWithDetails(@Param("userId") String userId);
+
+
+
+
+
+
 
 }

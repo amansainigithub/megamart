@@ -84,9 +84,13 @@ public class CustomerUrlMappings {
 
     //    #######################ORDER CONTROLLER#######################
     public static final String EMAIL_LINK_VERIFIER= CUSTOMER_BASE_URL + "/authToken";
-
     public static final String AUTH_TOKEN_VERIFIER=  "/authTokenVerifier";
 
 
+
+    //    #######################ORDER CONTROLLER#######################
+
+    public static final String PRODUCT_RATING_CONTROLLER= CUSTOMER_BASE_URL + "/productRatingController";
+    public static final String UNRATED_DELIVERED_PRODUCT = "/unratedDeliveredProduct";
 
 }

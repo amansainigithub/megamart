@@ -77,6 +77,9 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String orderDateTime;
 
+    //By Default is Rating =  N
+    private boolean isRating = Boolean.FALSE;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference
