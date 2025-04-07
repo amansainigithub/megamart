@@ -90,8 +90,14 @@ public class ReviewsServiceImple implements ReviewsService {
             Optional<String> optReviewText = Optional.ofNullable(reviewText);
             Optional<MultipartFile> optFile = Optional.ofNullable(file);
 
-            if(optId.isPresent() && optRating.isPresent() && Optional.ofNullable(id).isPresent() && optReviewText.isPresent()
-               && optFile.isPresent()){
+            if(optFile.isEmpty())
+            {
+                log.warn("Review File is Empty");
+            } else if (optFile.isPresent()) {
+                log.warn("Review File is Present");
+            }
+
+            if(optId.isPresent() && optRating.isPresent() && Optional.ofNullable(id).isPresent() && optReviewText.isPresent()){
 
                 //User Check
                 String currentUser = UserHelper.getOnlyCurrentUser();
@@ -135,8 +141,10 @@ public class ReviewsServiceImple implements ReviewsService {
                     productReviews.setProductPrice(checkedOrderItems.getProductPrice());
 
                     //Set Review File URL
-                    BucketModel bucketModel = this.bucketService.uploadFile(file);
-                    productReviews.setReviewFileUrl(bucketModel.getBucketUrl());
+                    if(optFile.isPresent()) {
+                        BucketModel bucketModel = this.bucketService.uploadFile(file);
+                        productReviews.setReviewFileUrl(bucketModel.getBucketUrl());
+                    }
 
                     //Set Seller Product
                     productReviews.setSellerProduct(sellerProduct);

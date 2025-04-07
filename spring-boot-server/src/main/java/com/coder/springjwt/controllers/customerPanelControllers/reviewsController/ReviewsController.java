@@ -24,8 +24,7 @@ public class ReviewsController {
 
     @PostMapping(CustomerUrlMappings.SUBMIT_PRODUCT_REVIEW)
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> submitProductReview(
-                                                  @RequestParam(value = "id" ,required = true) long id,
+    public ResponseEntity<?> submitProductReview( @RequestParam(value = "id" ,required = true) long id,
                                                   @RequestParam(value = "rating" ,required = true) String rating,
                                                   @RequestParam(value = "reviewText" ,required = true) String reviewText,
                                                   @RequestParam(value = "file") MultipartFile file) {
@@ -41,12 +40,29 @@ public class ReviewsController {
         return this.reviewsService.getUserReviews( page ,size);
     }
 
-    @GetMapping(CustomerUrlMappings.GET_EDIT_REVIEW)
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> getEditReview(@PathVariable(value = "reviewId" ,required = true) long reviewId) {
-        return this.reviewsService.getEditReview(reviewId);
-    }
+//    @GetMapping(CustomerUrlMappings.GET_EDIT_REVIEW)
+//    @PreAuthorize("hasRole('CUSTOMER')")
+//    public ResponseEntity<?> getEditReview(@PathVariable(value = "reviewId" ,required = true) long reviewId) {
+//        return this.reviewsService.getEditReview(reviewId);
+//    }
 
+
+    @PostMapping("updateReviews")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> updateReviews( @RequestParam(value = "id" ,required = true) long id,
+                                                  @RequestParam(value = "rating" ,required = true) String rating,
+                                                  @RequestParam(value = "reviewText" ,required = true) String reviewText,
+                                                  @RequestParam(value = "file",required = false) MultipartFile file) {
+
+
+        System.out.println(id);
+        System.out.println(rating);
+        System.out.println(reviewText);
+        System.out.println(file.getOriginalFilename());
+
+        return null;
+
+    }
 
 
 }
