@@ -33,15 +33,18 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
     Page<CustomerOrderItems> findAllByDeliveryStatus(String deliveryStatus , Pageable pageable);
 
 
-    @Query("SELECT coi, r FROM CustomerOrderItems coi " +
-            "LEFT JOIN Ratings r ON coi.id = CAST(r.orderItemsId as long) " +
-            "WHERE coi.userId = :userId AND r.orderItemsId IS NOT NULL")
-    List<Object[]> findAllWithoutRatingsWithDetails(@Param("userId") String userId);
+//    @Query("SELECT coi, r FROM CustomerOrderItems coi " +
+//            "LEFT JOIN Ratings r ON coi.id = CAST(r.orderItemsId as long) " +
+//            "WHERE coi.userId = :userId AND r.orderItemsId IS NULL")
+//    List<Object[]> findAllWithoutRatingsWithDetails(@Param("userId") String userId);
 
 
+    List<CustomerOrderItems> findByUserIdAndDeliveryStatusAndIsRatingOrderByIdDesc(  String userId,
+                                                                                    String deliveryStatus,
+                                                                                    boolean isRating);
 
-
-
-
-
+    CustomerOrderItems findByIdAndUserIdAndDeliveryStatusAndIsRating(Long id,
+                                                                     String userId,
+                                                                     String deliveryStatus,
+                                                                     boolean isRating);
 }

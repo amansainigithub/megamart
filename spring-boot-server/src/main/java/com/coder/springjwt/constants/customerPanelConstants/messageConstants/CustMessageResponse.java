@@ -54,6 +54,7 @@ public class CustMessageResponse {
 
     public static final String VARIENT_TOTAL_AND_CART_TOTAL_NOT_MATCHED =  "Cart Total Price and Product Variant Total Price Could Not matched";
 
+    public static final String REVIEW_ALREADY_SUBMIT = "Review already Submit !!..";
 
 
 
