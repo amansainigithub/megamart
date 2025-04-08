@@ -27,7 +27,7 @@ public class ReviewsController {
     public ResponseEntity<?> submitProductReview( @RequestParam(value = "id" ,required = true) long id,
                                                   @RequestParam(value = "rating" ,required = true) String rating,
                                                   @RequestParam(value = "reviewText" ,required = true) String reviewText,
-                                                  @RequestParam(value = "file") MultipartFile file) {
+                                                  @RequestParam(value = "file",required = false) MultipartFile file) {
 
         return this.reviewsService.submitProductReview(id , rating , reviewText , file);
 
@@ -50,17 +50,10 @@ public class ReviewsController {
     @PostMapping("updateReviews")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> updateReviews( @RequestParam(value = "id" ,required = true) long id,
-                                                  @RequestParam(value = "rating" ,required = true) String rating,
-                                                  @RequestParam(value = "reviewText" ,required = true) String reviewText,
-                                                  @RequestParam(value = "file",required = false) MultipartFile file) {
-
-
-        System.out.println(id);
-        System.out.println(rating);
-        System.out.println(reviewText);
-        System.out.println(file.getOriginalFilename());
-
-        return null;
+                                            @RequestParam(value = "rating" ,required = true) String rating,
+                                             @RequestParam(value = "reviewText" ,required = true) String reviewText,
+                                             @RequestParam(value = "file",required = false) MultipartFile file) {
+        return this.reviewsService.updateReviews(id , rating ,reviewText ,file);
 
     }
 

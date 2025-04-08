@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,10 +32,7 @@ public class ProductReviews extends BaseEntity {
     private String userId;
 
     @Column(length = 1000)
-    private String fileUrl;
-
-    @Column(length = 1000)
-    private String reviewFileUrl;
+    private String productFileUrl;
 
     @Column(length = 1000)
     private String productName;
@@ -41,14 +41,15 @@ public class ProductReviews extends BaseEntity {
 
     private String productPrice;
 
-
     private String productId;
+
+    @OneToMany(mappedBy = "productReviews" , cascade = CascadeType.ALL)
+    private List<ProductReviewFiles> productReviewFiles;
 
     @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_product_id")
     @JsonIgnore
     private SellerProduct sellerProduct;
-
 
     @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_user_id")

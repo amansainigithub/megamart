@@ -26,6 +26,9 @@ public class CustMessageResponse {
 
     public static final String SUCCESS = "SUCCESS";
     public static final String DATA_SAVED_SUCCESS = "Data Saved Success";
+
+    public static final String DATA_UPDATE_SUCCESS = "Data Update Success";
+
     public static final String DELETE_SUCCESS = "Delete Success";
 
     public static final String DELETE_FAILED = "Delete Failed";

@@ -14,4 +14,6 @@ public interface ReviewsService {
     ResponseEntity<?> getUserReviews( Integer page, Integer size);
 
     ResponseEntity<?> getEditReview(long reviewId);
+
+    ResponseEntity<?> updateReviews(long id, String rating, String reviewText, MultipartFile file);
 }

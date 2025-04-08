@@ -8,6 +8,7 @@ import com.coder.springjwt.exception.customerPanelException.ReviewAlreadySubmitE
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
+import com.coder.springjwt.models.customerPanelModels.productReviews.ProductReviewFiles;
 import com.coder.springjwt.models.customerPanelModels.productReviews.ProductReviews;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.repository.UserRepository;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -125,11 +127,10 @@ public class ReviewsServiceImple implements ReviewsService {
                     ProductReviews productReviews = new ProductReviews();
                     productReviews.setRating(optRating.get());
                     productReviews.setReview(optReviewText.get());
-
                     productReviews.setOrderItemId(String.valueOf(checkedOrderItems.getId()));
                     productReviews.setUserId(checkedOrderItems.getUserId());
                     productReviews.setProductId(checkedOrderItems.getProductId());
-                    productReviews.setFileUrl(checkedOrderItems.getFileUrl());
+                    productReviews.setProductFileUrl(checkedOrderItems.getFileUrl());
 
                     //Set Product Name
                     productReviews.setProductName(checkedOrderItems.getProductName());
@@ -140,17 +141,24 @@ public class ReviewsServiceImple implements ReviewsService {
                     //Set Product Price
                     productReviews.setProductPrice(checkedOrderItems.getProductPrice());
 
-                    //Set Review File URL
-                    if(optFile.isPresent()) {
-                        BucketModel bucketModel = this.bucketService.uploadFile(file);
-                        productReviews.setReviewFileUrl(bucketModel.getBucketUrl());
-                    }
-
                     //Set Seller Product
                     productReviews.setSellerProduct(sellerProduct);
 
                     //Set User
                      productReviews.setUser(user);
+
+                    //Set Review File URL
+                    if(optFile.isPresent()) {
+                        BucketModel bucketModel = this.bucketService.uploadFile(file);
+
+                        ProductReviewFiles productReviewFiles = new ProductReviewFiles();
+                        productReviewFiles.setReviewFileUrl(bucketModel.getBucketUrl());
+                        productReviewFiles.setProductReviews(productReviews);
+
+                        //Set Product Reviews Files To LIST
+                        productReviews.setProductReviewFiles(List.of(productReviewFiles));
+
+                    }
 
                     //save RUser Review
                     this.reviewsRepository.save(productReviews);
@@ -214,8 +222,56 @@ public class ReviewsServiceImple implements ReviewsService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            ProductReviews reviewData = this.reviewsRepository.findByIdAndUserId(reviewId, String.valueOf(user.getId()));
+            ProductReviews reviewData = this.reviewsRepository.findByIdAndUserId(reviewId, String.valueOf(user.getId()))
+                                        .orElseThrow(()->new RuntimeException(CustMessageResponse.DATA_NOT_FOUND));
+
             return ResponseGenerator.generateSuccessResponse(reviewData,CustMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateReviews(long id, String rating, String reviewText, MultipartFile file) {
+        log.info("==== updateReviews Flying ====");
+        try {
+            //Get User
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            User user = this.userRepository.findByUsername(currentUser)
+                    .orElseThrow(() -> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
+
+            ProductReviews productReviews = this.reviewsRepository
+                                            .findByIdAndUserId(id, String.valueOf(user.getId()))
+                                            .orElseThrow(()-> new  RuntimeException("Review Id not Found Here !!!"));
+
+            if(Optional.ofNullable(file).isPresent())
+            {
+                productReviews.setReview(reviewText);
+                productReviews.setRating(rating);
+
+                //Upload File To AWS and GET URL
+                BucketModel bucketModel = bucketService.uploadFile(file);
+                ProductReviewFiles productReviewFiles = new ProductReviewFiles();
+                productReviewFiles.setReviewFileUrl(bucketModel.getBucketUrl());
+                productReviewFiles.setProductReviews(productReviews);
+
+                List<ProductReviewFiles> reviewFiles = new ArrayList<>();
+                reviewFiles.add(productReviewFiles);
+                productReviews.setProductReviewFiles(reviewFiles);
+
+                this.reviewsRepository.save(productReviews);
+                log.info("Product Review Update Success with File");
+            }else{
+                productReviews.setReview(reviewText);
+                productReviews.setRating(rating);
+
+                this.reviewsRepository.save(productReviews);
+                log.info("Product Review Update Success!!!");
+            }
+            return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_UPDATE_SUCCESS,CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {
