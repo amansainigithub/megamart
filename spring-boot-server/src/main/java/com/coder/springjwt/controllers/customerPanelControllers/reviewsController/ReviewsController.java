@@ -18,8 +18,9 @@ public class ReviewsController {
 
     @GetMapping(CustomerUrlMappings.UNREVIEWED_DELIVERED_PRODUCT)
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> unReviewDeliveredProduct(@PathVariable(required = false) long id) {
-        return this.reviewsService.unReviewDeliveredProduct(id);
+    public ResponseEntity<?> unReviewDeliveredProduct(@RequestParam  Integer page ,
+                                                      @RequestParam  Integer size) {
+        return this.reviewsService.unReviewDeliveredProduct(page,size);
     }
 
     @PostMapping(CustomerUrlMappings.SUBMIT_PRODUCT_REVIEW)

@@ -53,7 +53,7 @@ public class ReviewsServiceImple implements ReviewsService {
     private BucketService bucketService;
 
     @Override
-    public ResponseEntity<?> unReviewDeliveredProduct(long id) {
+    public ResponseEntity<?> unReviewDeliveredProduct(Integer page, Integer size) {
         log.info("<-- unratedDeliveredProduct Flying -->");
         try {
 
@@ -62,10 +62,12 @@ public class ReviewsServiceImple implements ReviewsService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            List<CustomerOrderItems> unReviewProducts = this.orderItemsRepository.
-                    findByUserIdAndDeliveryStatusAndIsRatingOrderByIdDesc
-                            (String.valueOf(user.getId()),DeliveryStatus.DELIVERED.toString(),
-                                    Boolean.FALSE);
+            PageRequest pageRequest = PageRequest.of(page, size);
+
+            Page<CustomerOrderItems> unReviewProducts = this.orderItemsRepository.
+                                                        findByUserIdAndDeliveryStatusAndIsRatingOrderByIdDesc
+                                                        (String.valueOf(user.getId()),DeliveryStatus.DELIVERED.toString(),
+                                                        Boolean.FALSE , pageRequest);
 
 //            List<Object[]> allWithoutRatingsByUserId = this.orderItemsRepository
 //                                            .findAllWithoutRatingsWithDetails("16");

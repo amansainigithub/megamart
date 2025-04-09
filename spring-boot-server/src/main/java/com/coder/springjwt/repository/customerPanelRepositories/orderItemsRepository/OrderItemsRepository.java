@@ -39,9 +39,9 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 //    List<Object[]> findAllWithoutRatingsWithDetails(@Param("userId") String userId);
 
 
-    List<CustomerOrderItems> findByUserIdAndDeliveryStatusAndIsRatingOrderByIdDesc(  String userId,
+    Page<CustomerOrderItems> findByUserIdAndDeliveryStatusAndIsRatingOrderByIdDesc(  String userId,
                                                                                     String deliveryStatus,
-                                                                                    boolean isRating);
+                                                                                    boolean isRating,Pageable pageable);
 
     CustomerOrderItems findByIdAndUserIdAndDeliveryStatusAndIsRating(Long id,
                                                                      String userId,

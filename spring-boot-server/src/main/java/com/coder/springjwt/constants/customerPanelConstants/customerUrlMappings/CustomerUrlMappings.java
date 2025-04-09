@@ -90,7 +90,7 @@ public class CustomerUrlMappings {
 
     //    #######################ORDER CONTROLLER#######################
     public static final String PRODUCT_REVIEWS_CONTROLLER= CUSTOMER_BASE_URL + "/productReviewsController";
-    public static final String UNREVIEWED_DELIVERED_PRODUCT = "/unReviewDeliveredProduct/{id}";
+    public static final String UNREVIEWED_DELIVERED_PRODUCT = "/unReviewDeliveredProduct";
     public static final String SUBMIT_PRODUCT_REVIEW = "/submitProductReview";
     public static final String GET_USER_REVIEWS = "/getUserReviews";
     public static final String GET_EDIT_REVIEW = "/getEditReview/{reviewId}";
