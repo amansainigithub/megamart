@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -256,14 +257,22 @@ public class ReviewsServiceImple implements ReviewsService {
 
                 //Upload File To AWS and GET URL
                 BucketModel bucketModel = bucketService.uploadFile(file);
-                ProductReviewFiles productReviewFiles = new ProductReviewFiles();
-                productReviewFiles.setReviewFileUrl(bucketModel.getBucketUrl());
-                productReviewFiles.setProductReviews(productReviews);
+                if(productReviews.getProductReviewFiles().isEmpty()){
+                    ProductReviewFiles productReviewFiles = new ProductReviewFiles();
+                    productReviewFiles.setReviewFileUrl(bucketModel.getBucketUrl());
+                    productReviewFiles.setProductReviews(productReviews);
 
-                List<ProductReviewFiles> reviewFiles = new ArrayList<>();
-                reviewFiles.add(productReviewFiles);
-                productReviews.setProductReviewFiles(reviewFiles);
-
+                    List<ProductReviewFiles> reviewFiles = new ArrayList<>();
+                    reviewFiles.add(productReviewFiles);
+                    productReviews.setProductReviewFiles(reviewFiles);
+                }else{
+                    List<ProductReviewFiles> productReviewFilesStream = productReviews.getProductReviewFiles().stream()
+                            .map(e -> {
+                                e.setReviewFileUrl(bucketModel.getBucketUrl());
+                                return e;
+                            }).collect(Collectors.toList());
+                    productReviews.setProductReviewFiles(productReviewFilesStream);
+                }
                 this.reviewsRepository.save(productReviews);
                 log.info("Product Review Update Success with File");
             }else{
