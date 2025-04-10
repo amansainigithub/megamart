@@ -15,20 +15,6 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<CustomerOrders,Long> {
     CustomerOrders findByOrderId(String orderId);
 
-    @Query(value = "SELECT COUNT(co.id) FROM customer_Order co " +
-                    "JOIN customer_order_items coi ON co.id = coi.order_id " +
-                    "WHERE co.customer_id = :customerId " +
-                    "AND co.payment_status = 'PAID'"+
-                    "AND coi.delivery_status = :pending",
-                    nativeQuery = true)
-    Long countOrdersByCustomerIdNative(@Param("customerId") Long customerId, @Param("pending") String pending);
-
-    @Query(value = "SELECT COUNT(co.id) FROM customer_Order co " +
-                    "JOIN customer_order_items coi ON co.id = coi.order_id " +
-                    "WHERE co.customer_id = :customerId AND co.payment_status = 'PAID'",
-                    nativeQuery = true)
-    Long countTotalOrdersByCustomerIdNative(@Param("customerId") Long customerId);
-
 
     @Query("SELECT coi FROM CustomerOrders co JOIN co.customerOrderItems coi WHERE co.user.id = :customerId AND co.paymentStatus = :paid")
     List<CustomerOrderItems> findOrderItemsByCustomerId(@Param("customerId") Long customerId, @Param("paid") String paid);

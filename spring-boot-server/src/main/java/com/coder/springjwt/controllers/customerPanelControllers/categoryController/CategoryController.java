@@ -52,5 +52,12 @@ public class CategoryController {
         return this.publicService.productWatching(pI, pN);
     }
 
+    @GetMapping(CustomerUrlMappings.PRODUCT_SEARCHING)
+    public ResponseEntity<?> productSearching( @RequestParam String searchKey) {
+        return this.publicService.productSearching(searchKey);
+    }
+
+
+
 
 }

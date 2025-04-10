@@ -7,6 +7,7 @@ import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.repository.UserRepository;
+import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.services.publicService.dashboardService.DashboardService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -25,6 +26,9 @@ public class DashboardServiceImple implements DashboardService {
 
 
     @Autowired
+    private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -40,25 +44,18 @@ public class DashboardServiceImple implements DashboardService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            long userPendingOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , DeliveryStatus.PENDING.toString());
+            long pendingCount = this.orderItemsRepository.countByDeliveryStatusAndUserId(DeliveryStatus.PENDING.toString(),
+                    String.valueOf(user.getId()));
 
-            long userDeliveredOrderCount = this.orderRepository.countOrdersByCustomerIdNative(user.getId() , DeliveryStatus.DELIVERED.toString());
+            long deliveredCount = this.orderItemsRepository.countByDeliveryStatusAndUserId(DeliveryStatus.DELIVERED.toString(),
+                    String.valueOf(user.getId()));
 
-            long totalOrders = this.orderRepository.countTotalOrdersByCustomerIdNative(user.getId());
-
-            log.info("PENDING COUNT:: " + userPendingOrderCount);
-            log.info("DELIVERED COUNT:: " + userDeliveredOrderCount);
-            log.info("TOTAL COUNT:: " + totalOrders);
-
-            data.put("newOrders" , userPendingOrderCount); // Pending For new Orders
-            data.put("orderDelivered" , userDeliveredOrderCount); // Delivered Successfully
-            data.put("totalOrders",totalOrders); // Total Orders
+            long totalCounts = this.orderItemsRepository.countByUserId(String.valueOf(user.getId()));
 
 
-            List<CustomerOrderItems> customerOrderItems = this.orderRepository
-                                                          .findOrderItemsByCustomerId(user.getId() , "PAID");
-            data.put("listOfOrders",customerOrderItems);
-
+            data.put("newOrders" , pendingCount); // Pending For new Orders
+            data.put("orderDelivered" , deliveredCount); // Delivered Successfully
+            data.put("totalOrders",totalCounts); // Total Orders
             return ResponseGenerator.generateSuccessResponse(data ,CustMessageResponse.SUCCESS);
         }  catch (Exception e)
         {

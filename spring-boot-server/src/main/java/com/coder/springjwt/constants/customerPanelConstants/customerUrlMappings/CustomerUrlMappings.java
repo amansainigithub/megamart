@@ -34,6 +34,7 @@ public class CustomerUrlMappings {
     public static final String GET_PRODUCT_LIST_DEAL_99= "/getProductListDeal99";
     public static final String PRODUCT_WATCHING= "/productWatching";
 
+    public static final String PRODUCT_SEARCHING= "/productSearching";
 
 
 

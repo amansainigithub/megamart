@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.publicService.productService.imple;
 
+import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.BabyCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.BornCategoryDto;
@@ -40,6 +41,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -349,6 +351,8 @@ public class PublicServiceImple implements PublicService {
     }
 
 
+
+
     public Page<SellerProductResponse> getBornCategoryList(long categoryId, String categoryName, Integer page, Integer size) {
         log.info("<--- getBornCategoryList Flying --->");
         try {
@@ -387,6 +391,28 @@ public class PublicServiceImple implements PublicService {
             e.printStackTrace();
             ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
             return null;
+        }
+    }
+
+
+
+    @Override
+    public ResponseEntity<?> productSearching(String searchKey) {
+        log.info("===> productSearching <====");
+        try {
+            log.info("searchKey :: " + searchKey);
+            List<BornCategoryModel> searchingData = this.bornCategoryRepo.findByCategoryNameContainingIgnoreCase(searchKey);
+
+            log.info("Searching Found :: " + searchingData.size());
+
+            List<BornCategoryDto> searchData = searchingData.stream()
+                                               .map(bc -> modelMapper.map(bc, BornCategoryDto.class))
+                                               .collect(Collectors.toList());
+            return ResponseGenerator.generateSuccessResponse(searchData, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
     }
 

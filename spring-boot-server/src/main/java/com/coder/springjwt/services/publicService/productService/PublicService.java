@@ -17,4 +17,5 @@ public interface PublicService {
     ResponseEntity<?> productWatching(String pI, String pN);
 
 
+    ResponseEntity<?> productSearching(String searchKey);
 }

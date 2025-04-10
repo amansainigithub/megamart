@@ -47,4 +47,13 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
                                                                      String userId,
                                                                      String deliveryStatus,
                                                                      boolean isRating);
+
+
+    // Method 1: Derived Query Method
+    long countByDeliveryStatusAndUserId(String deliveryStatus, String userId);
+
+    long countByUserId(String userId);
+
+
+
 }

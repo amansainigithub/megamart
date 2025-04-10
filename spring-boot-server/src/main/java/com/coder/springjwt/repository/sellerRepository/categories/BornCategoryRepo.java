@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BornCategoryRepo extends JpaRepository<BornCategoryModel,Long> {
@@ -20,5 +21,6 @@ public interface BornCategoryRepo extends JpaRepository<BornCategoryModel,Long> 
     @Query("SELECT u FROM BornCategoryModel u WHERE u.babyCategoryModel.childCategoryModel.parentCategory.id = :id")
     List<BornCategoryModel> getBornCategoryListByParentCategoryId(@Param("id") Long id , Pageable pageable);
 
+    List<BornCategoryModel> findByCategoryNameContainingIgnoreCase(String categoryName);
 
 }
