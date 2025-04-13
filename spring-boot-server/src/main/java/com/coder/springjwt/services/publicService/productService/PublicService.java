@@ -1,7 +1,11 @@
 package com.coder.springjwt.services.publicService.productService;
 
+import com.coder.springjwt.dtos.customerPanelDtos.filterDto.ProductFilterDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public interface PublicService {
@@ -17,4 +21,6 @@ public interface PublicService {
 
 
     ResponseEntity<?> productSearching(String searchKey);
+
+    ResponseEntity<?> productFilter(ProductFilterDto productFilterDto, Integer page, Integer size);
 }

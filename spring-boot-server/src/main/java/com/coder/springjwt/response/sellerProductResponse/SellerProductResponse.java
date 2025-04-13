@@ -19,6 +19,7 @@ public class SellerProductResponse {
     private String bornCategoryName;
     private String variant;
     private String brandField;
+    private String gender;
 
     private String colorVariant;
     private String productPrice;

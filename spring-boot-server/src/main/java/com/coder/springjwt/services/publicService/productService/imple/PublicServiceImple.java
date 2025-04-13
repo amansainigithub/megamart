@@ -6,6 +6,7 @@ import com.coder.springjwt.dtos.customerPanelDtos.BabyCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.BornCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.ChildCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.ParentCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.filterDto.ProductFilterDto;
 import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
@@ -354,6 +355,67 @@ public class PublicServiceImple implements PublicService {
                                                .map(bc -> modelMapper.map(bc, BornCategoryDto.class))
                                                .collect(Collectors.toList());
             return ResponseGenerator.generateSuccessResponse(searchData, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> productFilter(ProductFilterDto productFilterDto, Integer page, Integer size) {
+        log.info("<===  productFilter Flying... ===>");
+        System.out.println(productFilterDto.getBrandKeys());
+        System.out.println(productFilterDto.getGenders());
+        try {
+            Page<SellerProductResponse> responsePage = null;
+            if(productFilterDto.getGenders().isEmpty()) {
+                PageRequest pageRequest = PageRequest.of(page, size);
+                Page<SellerProduct> sellerProductResponse = this.sellerProductRepository.findByBrandField(
+                        productFilterDto.getBrandKeys(),
+                        pageRequest);
+
+                    responsePage = sellerProductResponse.map(sellerProduct -> {
+                    SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                    ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                    response.setColorVariant(productVariants.getColorVariant());
+                    response.setProductPrice(productVariants.getProductPrice());
+                    response.setProductMrp(productVariants.getProductMrp());
+                    response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+                    response.setProductFilesResponses(
+                            sellerProduct.getProductFiles().stream()
+                                    .map(productFiles -> modelMapper.map(productFiles, ProductFilesResponse.class))
+                                    .collect(Collectors.toList())
+                    );
+                    return response;
+                });
+            }
+            else if(!productFilterDto.getGenders().isEmpty()){
+                PageRequest pageRequest = PageRequest.of(page, size);
+                Page<SellerProduct> sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
+                                                            productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
+                                                            pageRequest);
+
+                    responsePage = sellerProductResponse.map(sellerProduct -> {
+                    SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                    ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                    response.setColorVariant(productVariants.getColorVariant());
+                    response.setProductPrice(productVariants.getProductPrice());
+                    response.setProductMrp(productVariants.getProductMrp());
+                    response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+                    response.setProductFilesResponses(
+                            sellerProduct.getProductFiles().stream()
+                                    .map(productFiles -> modelMapper.map(productFiles, ProductFilesResponse.class))
+                                    .collect(Collectors.toList())
+                    );
+                    return response;
+                });
+            }
+            return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
             e.printStackTrace();

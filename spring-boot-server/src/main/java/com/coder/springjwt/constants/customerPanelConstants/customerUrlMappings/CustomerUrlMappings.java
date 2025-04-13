@@ -31,8 +31,9 @@ public class CustomerUrlMappings {
     public static final String GET_PRODUCT_LIST_BY_CATEGORY_ID= "/getProductListByCategoryId";
     public static final String GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID= "/getProductListByBornCategoryId";
     public static final String PRODUCT_WATCHING= "/productWatching";
-
     public static final String PRODUCT_SEARCHING= "/productSearching";
+
+    public static final String PRODUCT_FILTER= "/productFilter";
 
 
 
@@ -42,7 +43,6 @@ public class CustomerUrlMappings {
     public static final String CREATE_ORDER= "/createOrder";
     //ONLINE PAYING
     public static final String ORDER_UPDATE= "/orderUpdate";
-
     //PAY COD
     public static final String PAY_COD= "/payCod";
 

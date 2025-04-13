@@ -1,13 +1,14 @@
 package com.coder.springjwt.controllers.customerPanelControllers.categoryController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.dtos.customerPanelDtos.filterDto.ProductFilterDto;
 import com.coder.springjwt.services.publicService.productService.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.CATEGORY_CONTROLLER)
@@ -46,6 +47,13 @@ public class CategoryController {
     @GetMapping(CustomerUrlMappings.PRODUCT_SEARCHING)
     public ResponseEntity<?> productSearching( @RequestParam String searchKey) {
         return this.publicService.productSearching(searchKey);
+    }
+
+    @PostMapping(CustomerUrlMappings.PRODUCT_FILTER)
+    public ResponseEntity<?> productFilter(@RequestBody ProductFilterDto productFilterDto,
+                                           @RequestParam Integer page ,
+                                           @RequestParam  Integer size) {
+        return this.publicService.productFilter(productFilterDto,page,size);
     }
 
 

@@ -13,10 +13,8 @@ import java.util.Optional;
 @Repository
 public interface BornCategoryRepo extends JpaRepository<BornCategoryModel,Long> {
 
-
     @Query("SELECT u FROM BornCategoryModel u WHERE u.babyCategoryModel.id = :id")
     List<BornCategoryModel> getBornCategoryListByBabyCategoryId(@Param("id") Long id);
-
 
     @Query("SELECT u FROM BornCategoryModel u WHERE u.babyCategoryModel.childCategoryModel.parentCategory.id = :id")
     List<BornCategoryModel> getBornCategoryListByParentCategoryId(@Param("id") Long id , Pageable pageable);
