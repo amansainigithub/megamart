@@ -75,10 +75,10 @@ public class PublicServiceImple implements PublicService {
         Map<Object,Object> mapNode = new HashMap<>();
 
         try {
-            List<ParentCategoryModel> parentCategories = this.parentCategoryRepo.findAll();
-
             //Get Hole Slider Data
             List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
+
+            List<ParentCategoryModel> parentCategories = this.parentCategoryRepo.findAll();
 
             List<ParentCategoryDto> listOfCategories = new ArrayList<>();
             for(ParentCategoryModel pcm : parentCategories)
@@ -123,26 +123,17 @@ public class PublicServiceImple implements PublicService {
                     b -> new BabyCategoryModel(b.getId(), b.getCategoryName(),b.getCategoryFile()))
                     .collect(Collectors.toList());
 
-
-            //get HotDealEngine Data
-            HotDealsEngineModel hotDealEngine = this.hotDealsEngineRepo.findById(1L).get();
-            List<HotDealsModel> hotDeals = hotDealEngine.getHotDealsModels();
-
             //Get Parent Categories only Men
             Pageable mensListPageable = PageRequest.of(0, 22);
             List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(1L,mensListPageable);
 
-            Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 999);
-
+            Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 100);
 
             mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("listOfCategories",listOfCategories);
             mapNode.put("babyDataFilter",babyDataFilter);
-            mapNode.put("hotDealEngine",hotDealEngine);
-            mapNode.put("hotDeals",hotDeals);
             mapNode.put("mensList",mensList);
             mapNode.put("productsList",productsList.getContent());
-
             log.info("getProductCategoryService Fetch Data Success");
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
@@ -238,53 +229,7 @@ public class PublicServiceImple implements PublicService {
         }
     }
 
-    @Override
-    public ResponseEntity<?> getProductListDeal99(long categoryId, String categoryName, Integer page, Integer size) {
-        log.info("<--- getProductListDeal99 Flying --->");
 
-        try {
-            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
-                    .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
-
-            Pageable pageable = PageRequest.of(page, size);
-
-            Page<SellerProduct> pagedSellerProducts = this.sellerProductRepository
-                    .findByBornCategoryIdAndProductStatus(
-                            String.valueOf(bornCategoryModel.getId()),
-                            ProductStatus.PV_APPROVED.toString(),
-                            pageable);
-
-            List<SellerProductResponse> sellerProductResponsesList = pagedSellerProducts.getContent()
-                    .stream()
-                    .map(sp -> {
-                        SellerProductResponse response = modelMapper.map(sp, SellerProductResponse.class);
-                        ProductVariants productVariants = sp.getProductRows().get(0);
-                        if (Integer.parseInt(productVariants.getProductPrice()) < 100) {
-                            response.setColorVariant(productVariants.getColorVariant());
-                            response.setProductPrice(productVariants.getProductPrice());
-                            response.setProductMrp(productVariants.getProductMrp());
-                            response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
-                            response.setProductFilesResponses(sp.getProductFiles()
-                                    .stream()
-                                    .map(productFiles -> modelMapper.map(productFiles, ProductFilesResponse.class))
-                                    .collect(Collectors.toList()));
-                            return response;
-                        }
-                        return null;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-
-            Page<SellerProductResponse> pagedResponse = new PageImpl<>(sellerProductResponsesList, pageable, pagedSellerProducts.getTotalElements());
-            log.info("getProductListDeal99 Fetch Data Success ::");
-            return ResponseGenerator.generateSuccessResponse(pagedResponse, SellerMessageResponse.SUCCESS);
-        }catch (Exception e)
-        {
-            e.getMessage();
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
-        }
-    }
 
     @Override
     public ResponseEntity<?> productWatching(String pI, String pN) {

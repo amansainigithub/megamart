@@ -12,7 +12,6 @@ public interface PublicService {
 
     ResponseEntity<?> getProductListByBornCategoryId(long cI, String cN, Integer page, Integer size);
 
-    ResponseEntity<?> getProductListDeal99(long cI, String cN, Integer page, Integer size);
 
     ResponseEntity<?> productWatching(String pI, String pN);
 

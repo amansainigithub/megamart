@@ -30,8 +30,6 @@ public class CustomerUrlMappings {
     public static final String GET_PRODUCT_CATEGORY= "/getProductCategory";
     public static final String GET_PRODUCT_LIST_BY_CATEGORY_ID= "/getProductListByCategoryId";
     public static final String GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID= "/getProductListByBornCategoryId";
-
-    public static final String GET_PRODUCT_LIST_DEAL_99= "/getProductListDeal99";
     public static final String PRODUCT_WATCHING= "/productWatching";
 
     public static final String PRODUCT_SEARCHING= "/productSearching";
