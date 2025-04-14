@@ -89,6 +89,9 @@ public class SellerProduct extends BaseEntity  {
 
     private String productLauncherTime;
 
+    @Column(length = 50)
+    private String productFPrice;
+
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;

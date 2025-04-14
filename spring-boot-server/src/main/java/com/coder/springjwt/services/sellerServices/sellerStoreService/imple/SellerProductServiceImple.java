@@ -455,7 +455,16 @@ public class SellerProductServiceImple implements SellerProductService {
                 sellerProduct.setProductStatus(ProductStatus.COMPLETE.toString());
             }
 
-            //if SKU-ID is null or blank then Generate otherwise set SKU-ID
+            //Set First Row Price To SellerProduct Table to Using Filter Product
+            try {
+                ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                sellerProduct.setProductFPrice(productVariants.getProductPrice());
+            }
+            catch (Exception e){
+                log.error("Product First Row Error | First Price Not Capturing | Error");
+            }
+
+                //if SKU-ID is null or blank then Generate otherwise set SKU-ID
             if (sellerProduct.getProductRows() != null) {
                 for (ProductVariants variant : sellerProduct.getProductRows()) {
                     if(variant.getSkuId() == "" || variant.getSkuId() == null)

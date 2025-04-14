@@ -90,9 +90,6 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     Optional<ProductVariants> getExactProductVariant(@Param("id") Long id, @Param("sizeId") Long sizeId, @Param("productLabel") String productLabel);
 
 
-    @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField")
-    Page<SellerProduct> findByBrandField(List<String> brandField, Pageable pageable);
-
     @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField OR p.gender IN:genders")
     Page<SellerProduct> findByBrandFieldAndGenders(List<String> brandField, List<String> genders, Pageable pageable);
 

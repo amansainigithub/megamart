@@ -30,6 +30,7 @@ import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
 import com.coder.springjwt.services.publicService.productService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
+import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -367,38 +368,14 @@ public class PublicServiceImple implements PublicService {
         log.info("<===  productFilter Flying... ===>");
         System.out.println(productFilterDto.getBrandKeys());
         System.out.println(productFilterDto.getGenders());
+
         try {
-            Page<SellerProductResponse> responsePage = null;
-            if(productFilterDto.getGenders().isEmpty()) {
-                PageRequest pageRequest = PageRequest.of(page, size);
-                Page<SellerProduct> sellerProductResponse = this.sellerProductRepository.findByBrandField(
-                        productFilterDto.getBrandKeys(),
-                        pageRequest);
-
-                    responsePage = sellerProductResponse.map(sellerProduct -> {
-                    SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
-
-                    ProductVariants productVariants = sellerProduct.getProductRows().get(0);
-                    response.setColorVariant(productVariants.getColorVariant());
-                    response.setProductPrice(productVariants.getProductPrice());
-                    response.setProductMrp(productVariants.getProductMrp());
-                    response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
-
-                    response.setProductFilesResponses(
-                            sellerProduct.getProductFiles().stream()
-                                    .map(productFiles -> modelMapper.map(productFiles, ProductFilesResponse.class))
-                                    .collect(Collectors.toList())
-                    );
-                    return response;
-                });
-            }
-            else if(!productFilterDto.getGenders().isEmpty()){
                 PageRequest pageRequest = PageRequest.of(page, size);
                 Page<SellerProduct> sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
                                                             productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
                                                             pageRequest);
 
-                    responsePage = sellerProductResponse.map(sellerProduct -> {
+                    Page<SellerProductResponse> responsePage  = sellerProductResponse.map(sellerProduct -> {
                     SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
 
                     ProductVariants productVariants = sellerProduct.getProductRows().get(0);
@@ -414,7 +391,6 @@ public class PublicServiceImple implements PublicService {
                     );
                     return response;
                 });
-            }
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
