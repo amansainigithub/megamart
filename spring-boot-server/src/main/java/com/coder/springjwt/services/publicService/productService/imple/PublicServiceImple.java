@@ -368,18 +368,17 @@ public class PublicServiceImple implements PublicService {
         log.info("<===  productFilter Flying... ===>");
         log.info("BRAND :: " + productFilterDto.getBrandKeys());
         log.info("GENDER :: " +productFilterDto.getGenders());
-//        log.info("PRICE:: " + productFilterDto.getPrice());
+        log.info("PRICE:: " + productFilterDto.getPrice());
 
-//        String minPrice = null;
-//        String maxPrice = null;
-//        if(Optional.ofNullable(productFilterDto.getPrice()).isPresent())
-//        {
-//            String[] parts = productFilterDto.getPrice().split("to");
-//            minPrice = parts[0].trim();
-//            maxPrice = parts[1].trim();
-//            System.out.println("minPrice: " + minPrice);
-//            System.out.println("maxPrice: " + maxPrice);
-//        }
+        //Price Range
+        int min = 0;
+        int max = 0;
+        if(productFilterDto.getPrice() != null)
+        {
+            int[] range = parsePriceRange(productFilterDto.getPrice());
+            min = range[0];
+            max = range[1];
+        }
 
         try {
             int brandKeys = productFilterDto.getBrandKeys().size();
@@ -390,7 +389,7 @@ public class PublicServiceImple implements PublicService {
 
             Page<SellerProduct> sellerProductResponse= null;
             //Brand Keys Present and Gender is Empty
-            if(brandKeys > 0 &&  genders == 0){
+            if(brandKeys > 0 &&  genders == 0 && productFilterDto.getPrice() == null){
                 log.info("Brand Present and Gender is Empty");
                 sellerProductResponse = this.sellerProductRepository.findByBrandField(
                                                             productFilterDto.getBrandKeys(),
@@ -398,11 +397,41 @@ public class PublicServiceImple implements PublicService {
                 }
 
             //Brand Keys Present and Gender is Present
-            if(brandKeys > 0 && genders > 0){
+            if(brandKeys > 0 && genders > 0 && productFilterDto.getPrice() == null){
                 log.info("Brand Present and Gender Present");
                 sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
                         productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
                         pageRequest);
+            }
+
+            //Brand Empty and Gender is Present
+            if(brandKeys == 0 && genders > 0 && productFilterDto.getPrice() == null){
+                log.info("Brand Empty and Gender Present");
+                sellerProductResponse = this.sellerProductRepository.findByGenders(
+                                                                productFilterDto.getGenders(),
+                                                                pageRequest);
+            }
+
+            //Price Range Present
+            if( brandKeys > 0 && genders == 0 && productFilterDto.getPrice() != null ){
+                log.info("brand Present and gender Empty and PriceRange Present ");
+                sellerProductResponse = this.sellerProductRepository
+                                        .findByBrandFieldAndPriceRange(productFilterDto.getBrandKeys() ,
+                                        min ,max ,pageRequest);
+            }
+            //Price Range Present
+            if( brandKeys > 0 && genders > 0 && productFilterDto.getPrice() != null ){
+                log.info("brand Present and gender Present and PriceRange Present ");
+                sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenderAndPriceRange(
+                                productFilterDto.getBrandKeys() ,
+                                productFilterDto.getGenders() ,
+                                min ,max ,pageRequest);
+            }
+
+            //Price Range Present
+            if( brandKeys == 0 && genders == 0 && productFilterDto.getPrice() != null ){
+                log.info("brand Empty and gender Empty and PriceRange Present ");
+                sellerProductResponse = this.sellerProductRepository.findByPriceRange(min ,max ,pageRequest);
             }
 
                     Page<SellerProductResponse> responsePage  = sellerProductResponse.map(sellerProduct -> {
@@ -424,9 +453,21 @@ public class PublicServiceImple implements PublicService {
             return ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
         }catch (Exception e)
         {
-            e.printStackTrace();
+//            e.printStackTrace();
+            log.error(e.getMessage());
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
+    }
+
+    public static int[] parsePriceRange(String option) {
+            int min = 0;
+            int max = 0;
+
+            // Matches "Up to ₹100"
+            String[] parts = option.split("to");
+            min = Integer.parseInt(parts[0]);
+            max = Integer.parseInt(parts[1]);
+            return new int[]{min, max};
     }
 
 

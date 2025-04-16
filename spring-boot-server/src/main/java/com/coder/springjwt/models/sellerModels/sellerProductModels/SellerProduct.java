@@ -90,7 +90,7 @@ public class SellerProduct extends BaseEntity  {
     private String productLauncherTime;
 
     @Column(length = 50)
-    private String productFPrice;
+    private int productFPrice;
 
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")

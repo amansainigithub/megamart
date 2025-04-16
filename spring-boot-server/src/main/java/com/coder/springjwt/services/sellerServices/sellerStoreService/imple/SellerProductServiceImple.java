@@ -458,7 +458,7 @@ public class SellerProductServiceImple implements SellerProductService {
             //Set First Row Price To SellerProduct Table to Using Filter Product
             try {
                 ProductVariants productVariants = sellerProduct.getProductRows().get(0);
-                sellerProduct.setProductFPrice(productVariants.getProductPrice());
+                sellerProduct.setProductFPrice(Integer.valueOf(productVariants.getProductPrice()));
             }
             catch (Exception e){
                 log.error("Product First Row Error | First Price Not Capturing | Error");

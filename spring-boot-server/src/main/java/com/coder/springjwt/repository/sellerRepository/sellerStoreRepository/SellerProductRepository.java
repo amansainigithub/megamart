@@ -96,6 +96,47 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField AND p.gender IN :genders")
     Page<SellerProduct> findByBrandFieldAndGenders(List<String> brandField, List<String> genders , Pageable pageable);
 
+    @Query("SELECT p FROM SellerProduct p WHERE p.gender IN :genders")
+    Page<SellerProduct> findByGenders(List<String> genders , Pageable pageable);
+
+    @Query("SELECT p FROM SellerProduct p WHERE p.productFPrice BETWEEN :minPrice AND :maxPrice")
+    Page<SellerProduct> findByPriceRange(
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            Pageable pageable);
+
+    @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField AND p.productFPrice BETWEEN :minPrice AND :maxPrice")
+    Page<SellerProduct> findByBrandFieldAndPriceRange(
+            @Param("brandField") List<String> brandField,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            Pageable pageable);
+
+    @Query("SELECT p FROM SellerProduct p WHERE " +
+            "p.brandField IN :brandField AND " +
+            "p.gender IN :gender " +
+            "AND p.productFPrice BETWEEN :minPrice AND :maxPrice")
+    Page<SellerProduct> findByBrandFieldAndGenderAndPriceRange(
+            @Param("brandField") List<String> brandField,
+            @Param("gender") List<String> gender,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            Pageable pageable);
+
+//    @Query("SELECT p FROM SellerProduct p " +
+//            "WHERE (:minPrice IS NULL OR p.productFPrice >= :minPrice) " +
+//            "AND (:maxPrice IS NULL OR p.productFPrice <= :maxPrice)")
+//    Page<SellerProduct> findByPriceRange(
+//            @Param("minPrice") Integer minPrice,
+//            @Param("maxPrice") Integer maxPrice,
+//            Pageable pageable);
+
+
+
+
+
+
+
 
 //    @Query("SELECT p FROM SellerProduct p " +
 //            "WHERE (:brandField IS NULL OR p.brandField IN :brandField) " +
