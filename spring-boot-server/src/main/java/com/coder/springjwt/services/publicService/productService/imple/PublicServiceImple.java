@@ -388,50 +388,64 @@ public class PublicServiceImple implements PublicService {
             PageRequest pageRequest = PageRequest.of(page, size);
 
             Page<SellerProduct> sellerProductResponse= null;
-            //Brand Keys Present and Gender is Empty
-            if(brandKeys > 0 &&  genders == 0 && productFilterDto.getPrice() == null){
-                log.info("Brand Present and Gender is Empty");
-                sellerProductResponse = this.sellerProductRepository.findByBrandField(
-                                                            productFilterDto.getBrandKeys(),
-                                                            pageRequest);
+
+            //Brand Filter
+            if(brandKeys > 0)
+            {
+                //Brand Keys Present and Gender is Empty
+                if(brandKeys > 0 &&  genders == 0 && productFilterDto.getPrice() == null){
+                    log.info("Brand Present and Gender is Empty");
+                    sellerProductResponse = this.sellerProductRepository.findByBrandField(
+                            productFilterDto.getBrandKeys(),
+                            pageRequest);
                 }
 
-            //Brand Keys Present and Gender is Present
-            if(brandKeys > 0 && genders > 0 && productFilterDto.getPrice() == null){
-                log.info("Brand Present and Gender Present");
-                sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
-                        productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
-                        pageRequest);
+                //Brand Keys Present and Gender is Present
+                if(brandKeys > 0 && genders > 0 && productFilterDto.getPrice() == null){
+                    log.info("Brand Present and Gender Present");
+                    sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
+                            productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
+                            pageRequest);
+                }
             }
 
-            //Brand Empty and Gender is Present
-            if(brandKeys == 0 && genders > 0 && productFilterDto.getPrice() == null){
-                log.info("Brand Empty and Gender Present");
-                sellerProductResponse = this.sellerProductRepository.findByGenders(
-                                                                productFilterDto.getGenders(),
-                                                                pageRequest);
+            //Gender Filter
+            if(genders > 0)
+            {
+                //Brand Empty and Gender is Present
+                if(brandKeys == 0 && genders > 0 && productFilterDto.getPrice() == null){
+                    log.info("Brand Empty and Gender Present");
+                    sellerProductResponse = this.sellerProductRepository.findByGenders(
+                            productFilterDto.getGenders(),
+                            pageRequest);
+                }
             }
 
-            //Price Range Present
-            if( brandKeys > 0 && genders == 0 && productFilterDto.getPrice() != null ){
-                log.info("brand Present and gender Empty and PriceRange Present ");
-                sellerProductResponse = this.sellerProductRepository
-                                        .findByBrandFieldAndPriceRange(productFilterDto.getBrandKeys() ,
-                                        min ,max ,pageRequest);
-            }
-            //Price Range Present
-            if( brandKeys > 0 && genders > 0 && productFilterDto.getPrice() != null ){
-                log.info("brand Present and gender Present and PriceRange Present ");
-                sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenderAndPriceRange(
-                                productFilterDto.getBrandKeys() ,
-                                productFilterDto.getGenders() ,
-                                min ,max ,pageRequest);
-            }
 
-            //Price Range Present
-            if( brandKeys == 0 && genders == 0 && productFilterDto.getPrice() != null ){
-                log.info("brand Empty and gender Empty and PriceRange Present ");
-                sellerProductResponse = this.sellerProductRepository.findByPriceRange(min ,max ,pageRequest);
+            //Price Filter
+            if(productFilterDto.getPrice() != null)
+            {
+                //Price Range Present
+                if( brandKeys > 0 && genders == 0 && productFilterDto.getPrice() != null ){
+                    log.info("brand Present and gender Empty and PriceRange Present ");
+                    sellerProductResponse = this.sellerProductRepository
+                            .findByBrandFieldAndPriceRange(productFilterDto.getBrandKeys() ,
+                                    min ,max ,pageRequest);
+                }
+                //Price Range Present
+                if( brandKeys > 0 && genders > 0 && productFilterDto.getPrice() != null ){
+                    log.info("brand Present and gender Present and PriceRange Present ");
+                    sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenderAndPriceRange(
+                            productFilterDto.getBrandKeys() ,
+                            productFilterDto.getGenders() ,
+                            min ,max ,pageRequest);
+                }
+
+                //Price Range Present
+                if( brandKeys == 0 && genders == 0 && productFilterDto.getPrice() != null ){
+                    log.info("brand Empty and gender Empty and PriceRange Present ");
+                    sellerProductResponse = this.sellerProductRepository.findByPriceRange(min ,max ,pageRequest);
+                }
             }
 
                     Page<SellerProductResponse> responsePage  = sellerProductResponse.map(sellerProduct -> {

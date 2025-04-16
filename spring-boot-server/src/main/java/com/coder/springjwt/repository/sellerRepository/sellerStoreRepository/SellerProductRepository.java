@@ -90,6 +90,9 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     Optional<ProductVariants> getExactProductVariant(@Param("id") Long id, @Param("sizeId") Long sizeId, @Param("productLabel") String productLabel);
 
 
+
+
+//    Filters Query Starting
     @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField")
     Page<SellerProduct> findByBrandField(List<String> brandField, Pageable pageable);
 
@@ -122,44 +125,6 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
             @Param("minPrice") int minPrice,
             @Param("maxPrice") int maxPrice,
             Pageable pageable);
-
-//    @Query("SELECT p FROM SellerProduct p " +
-//            "WHERE (:minPrice IS NULL OR p.productFPrice >= :minPrice) " +
-//            "AND (:maxPrice IS NULL OR p.productFPrice <= :maxPrice)")
-//    Page<SellerProduct> findByPriceRange(
-//            @Param("minPrice") Integer minPrice,
-//            @Param("maxPrice") Integer maxPrice,
-//            Pageable pageable);
-
-
-
-
-
-
-
-
-//    @Query("SELECT p FROM SellerProduct p " +
-//            "WHERE (:brandField IS NULL OR p.brandField IN :brandField) " +
-//            "AND (:genders IS NULL OR p.gender IN :genders)")
-//    Page<SellerProduct> findByBrandFieldAndGenders(
-//            @Param("brandField") List<String> brandField,
-//            @Param("genders") List<String> genders,
-//            Pageable pageable
-//    );
-
-
-
-
-    @Query("SELECT p FROM SellerProduct p WHERE " +
-            "(p.brandField IN :brandField) OR " +
-            "(p.gender IN :genders) OR " +
-            "(p.productFPrice >= :minPrice) AND " +
-            "(p.productFPrice <= :maxPrice)")
-    Page<SellerProduct> findByBrandFieldAndGendersAndPriceRange(@Param("brandField") List<String> brandField,
-                                                                @Param("genders") List<String> genders,
-                                                                @Param("minPrice") String minPrice,
-                                                                @Param("maxPrice") String maxPrice,
-                                                                Pageable pageable);
-
+    //    Filters Query Ending
 
 }
