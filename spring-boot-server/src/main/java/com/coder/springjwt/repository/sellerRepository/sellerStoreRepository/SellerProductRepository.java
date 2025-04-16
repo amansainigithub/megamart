@@ -90,7 +90,35 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
     Optional<ProductVariants> getExactProductVariant(@Param("id") Long id, @Param("sizeId") Long sizeId, @Param("productLabel") String productLabel);
 
 
-    @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField OR p.gender IN:genders")
-    Page<SellerProduct> findByBrandFieldAndGenders(List<String> brandField, List<String> genders, Pageable pageable);
+    @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField")
+    Page<SellerProduct> findByBrandField(List<String> brandField, Pageable pageable);
+
+    @Query("SELECT p FROM SellerProduct p WHERE p.brandField IN :brandField AND p.gender IN :genders")
+    Page<SellerProduct> findByBrandFieldAndGenders(List<String> brandField, List<String> genders , Pageable pageable);
+
+
+//    @Query("SELECT p FROM SellerProduct p " +
+//            "WHERE (:brandField IS NULL OR p.brandField IN :brandField) " +
+//            "AND (:genders IS NULL OR p.gender IN :genders)")
+//    Page<SellerProduct> findByBrandFieldAndGenders(
+//            @Param("brandField") List<String> brandField,
+//            @Param("genders") List<String> genders,
+//            Pageable pageable
+//    );
+
+
+
+
+    @Query("SELECT p FROM SellerProduct p WHERE " +
+            "(p.brandField IN :brandField) OR " +
+            "(p.gender IN :genders) OR " +
+            "(p.productFPrice >= :minPrice) AND " +
+            "(p.productFPrice <= :maxPrice)")
+    Page<SellerProduct> findByBrandFieldAndGendersAndPriceRange(@Param("brandField") List<String> brandField,
+                                                                @Param("genders") List<String> genders,
+                                                                @Param("minPrice") String minPrice,
+                                                                @Param("maxPrice") String maxPrice,
+                                                                Pageable pageable);
+
 
 }

@@ -12,4 +12,5 @@ import java.util.List;
 public class ProductFilterDto {
     private List<String> brandKeys;
     private List<String> genders;
+    private String price;
 }

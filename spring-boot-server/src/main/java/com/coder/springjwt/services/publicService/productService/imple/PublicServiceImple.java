@@ -366,14 +366,44 @@ public class PublicServiceImple implements PublicService {
     @Override
     public ResponseEntity<?> productFilter(ProductFilterDto productFilterDto, Integer page, Integer size) {
         log.info("<===  productFilter Flying... ===>");
-        System.out.println(productFilterDto.getBrandKeys());
-        System.out.println(productFilterDto.getGenders());
+        log.info("BRAND :: " + productFilterDto.getBrandKeys());
+        log.info("GENDER :: " +productFilterDto.getGenders());
+//        log.info("PRICE:: " + productFilterDto.getPrice());
+
+//        String minPrice = null;
+//        String maxPrice = null;
+//        if(Optional.ofNullable(productFilterDto.getPrice()).isPresent())
+//        {
+//            String[] parts = productFilterDto.getPrice().split("to");
+//            minPrice = parts[0].trim();
+//            maxPrice = parts[1].trim();
+//            System.out.println("minPrice: " + minPrice);
+//            System.out.println("maxPrice: " + maxPrice);
+//        }
 
         try {
-                PageRequest pageRequest = PageRequest.of(page, size);
-                Page<SellerProduct> sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
-                                                            productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
+            int brandKeys = productFilterDto.getBrandKeys().size();
+            int genders = productFilterDto.getGenders().size();
+
+            //Page Request Size
+            PageRequest pageRequest = PageRequest.of(page, size);
+
+            Page<SellerProduct> sellerProductResponse= null;
+            //Brand Keys Present and Gender is Empty
+            if(brandKeys > 0 &&  genders == 0){
+                log.info("Brand Present and Gender is Empty");
+                sellerProductResponse = this.sellerProductRepository.findByBrandField(
+                                                            productFilterDto.getBrandKeys(),
                                                             pageRequest);
+                }
+
+            //Brand Keys Present and Gender is Present
+            if(brandKeys > 0 && genders > 0){
+                log.info("Brand Present and Gender Present");
+                sellerProductResponse = this.sellerProductRepository.findByBrandFieldAndGenders(
+                        productFilterDto.getBrandKeys(),productFilterDto.getGenders(),
+                        pageRequest);
+            }
 
                     Page<SellerProductResponse> responsePage  = sellerProductResponse.map(sellerProduct -> {
                     SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
