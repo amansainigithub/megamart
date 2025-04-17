@@ -361,7 +361,6 @@ public class PublicServiceImple implements PublicService {
             {
                 if(pv != null)
                 {
-                    System.out.println(" Ratings :: " + pv.getRating());
                     rating+=Double.valueOf(pv.getRating());
                     reviewCount++;
                 }
@@ -369,9 +368,6 @@ public class PublicServiceImple implements PublicService {
             if(rating != 0 )
             {
                 double averageRating = rating / reviewCount;
-                System.out.println("calculateRating :: " + averageRating);
-                System.out.println("reviewCount :: " + reviewCount);
-
                 sellerProductResponse.setRating(String.valueOf(averageRating));
                 sellerProductResponse.setReviewCount(String.valueOf(reviewCount));
             }
