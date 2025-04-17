@@ -27,8 +27,12 @@ public class SellerProductResponse {
     private String calculatedDiscount;
     private String description;
     private String netQuantity;
+    private String materialType;
 
     private String productFirstSize;
+
+    private String rating;
+    private String reviewCount;
 
     private List<ProductDetailsResponse> productDetailsResponses;
 

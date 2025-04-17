@@ -17,8 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class SellerOrderOneByOneServiceImple implements SellerOrderOneByOneService {

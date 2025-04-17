@@ -1,5 +1,6 @@
 package com.coder.springjwt.models.sellerModels.sellerProductModels;
 
+import com.coder.springjwt.models.customerPanelModels.productReviews.ProductReviews;
 import com.coder.springjwt.models.entities.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -96,6 +97,9 @@ public class SellerProduct extends BaseEntity  {
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
     private List<ProductFiles> productFiles;
 
+
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sellerProduct")
+    private List<ProductReviews> productReviews;
 
 
 

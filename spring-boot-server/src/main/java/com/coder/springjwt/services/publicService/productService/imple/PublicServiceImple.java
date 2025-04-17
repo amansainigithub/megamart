@@ -1,6 +1,5 @@
 package com.coder.springjwt.services.publicService.productService.imple;
 
-import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.BabyCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.BornCategoryDto;
@@ -9,13 +8,12 @@ import com.coder.springjwt.dtos.customerPanelDtos.ParentCategoryDto;
 import com.coder.springjwt.dtos.customerPanelDtos.filterDto.ProductFilterDto;
 import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
+import com.coder.springjwt.models.customerPanelModels.productReviews.ProductReviews;
 import com.coder.springjwt.models.sellerModels.categories.BabyCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.BornCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ChildCategoryModel;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
-import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsEngineModel;
-import com.coder.springjwt.models.sellerModels.hotDealsEngine.HotDealsModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
@@ -30,7 +28,6 @@ import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
 import com.coder.springjwt.services.publicService.productService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
-import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +38,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -129,13 +128,13 @@ public class PublicServiceImple implements PublicService {
             Pageable mensListPageable = PageRequest.of(0, 22);
             List<BornCategoryModel> mensList = this.bornCategoryRepo.getBornCategoryListByParentCategoryId(1L,mensListPageable);
 
-            Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 100);
+            Page<SellerProductResponse> productsList = this.getBornCategoryList(1l, "Mens Top Wear", 0, 40);
 
-            mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("listOfCategories",listOfCategories);
+            mapNode.put("homeSliderData",homeSliderData);
             mapNode.put("babyDataFilter",babyDataFilter);
-            mapNode.put("mensList",mensList);
             mapNode.put("productsList",productsList.getContent());
+            mapNode.put("mensList",mensList);
             log.info("getProductCategoryService Fetch Data Success");
             return ResponseGenerator.generateSuccessResponse(mapNode, SellerMessageResponse.SUCCESS);
         }
@@ -163,6 +162,9 @@ public class PublicServiceImple implements PublicService {
             List<SellerProductResponse> productResponses = babyCategoryData.getContent().stream()
                     .map(sellerProduct -> {
                         SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                        //Calculate Ratings
+                        this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
 
                         ProductVariants productVariants = sellerProduct.getProductRows().get(0);
                         response.setColorVariant(productVariants.getColorVariant());
@@ -244,6 +246,10 @@ public class PublicServiceImple implements PublicService {
                                                     ProductStatus.PV_APPROVED.toString());
 
             SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+            //Calculate Ratings
+            this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
+
             ProductVariants productVariants = sellerProduct.getProductRows().get(0);
             response.setColorVariant(productVariants.getColorVariant());
             response.setProductPrice(productVariants.getProductPrice());
@@ -282,7 +288,7 @@ public class PublicServiceImple implements PublicService {
                                                             Long.valueOf(sellerProduct.getBornCategoryId()),
                                                             sellerProduct.getBornCategoryName(),
                                                             0,
-                                                            99);
+                                                            40);
 
             map.put("pw",response);
             map.put("similarProducts",similarProduct);
@@ -314,6 +320,10 @@ public class PublicServiceImple implements PublicService {
                     .map(sellerProduct -> {
                         SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
 
+                        //Calculate Ratings
+                        this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
+
+
                         ProductVariants productVariants = sellerProduct.getProductRows().get(0);
                         response.setColorVariant(productVariants.getColorVariant());
                         response.setProductPrice(productVariants.getProductPrice());
@@ -338,6 +348,38 @@ public class PublicServiceImple implements PublicService {
             e.printStackTrace();
             ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
             return null;
+        }
+    }
+
+    public void calculateRatingAndReviews( SellerProductResponse sellerProductResponse , List<ProductReviews> productReviews)
+    {
+        try {
+            //Ratings
+            double rating = 0;
+            double reviewCount = 0.0;
+            for(ProductReviews pv : productReviews)
+            {
+                if(pv != null)
+                {
+                    System.out.println(" Ratings :: " + pv.getRating());
+                    rating+=Double.valueOf(pv.getRating());
+                    reviewCount++;
+                }
+            }
+            if(rating != 0 )
+            {
+                double averageRating = rating / reviewCount;
+                System.out.println("calculateRating :: " + averageRating);
+                System.out.println("reviewCount :: " + reviewCount);
+
+                sellerProductResponse.setRating(String.valueOf(averageRating));
+                sellerProductResponse.setReviewCount(String.valueOf(reviewCount));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            log.error("Calculated Rating Error !!!");
         }
     }
 
@@ -450,6 +492,9 @@ public class PublicServiceImple implements PublicService {
 
                     Page<SellerProductResponse> responsePage  = sellerProductResponse.map(sellerProduct -> {
                     SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                    //Calculate Ratings
+                    this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
 
                     ProductVariants productVariants = sellerProduct.getProductRows().get(0);
                     response.setColorVariant(productVariants.getColorVariant());

@@ -5,7 +5,6 @@ import com.coder.springjwt.constants.customerPanelConstants.messageConstants.Cus
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
-import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
