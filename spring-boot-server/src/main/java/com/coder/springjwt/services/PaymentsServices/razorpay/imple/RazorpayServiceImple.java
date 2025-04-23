@@ -25,6 +25,8 @@ import com.coder.springjwt.util.ResponseGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+import com.razorpay.Refund;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -616,5 +618,15 @@ public class RazorpayServiceImple implements RazorpayServices {
         return "ORD-" + timestamp + randomNum; // Example: ORD202503311230451234
     }
 
+
+
+    public Refund initiateRefund(String paymentId, double amountInRupees) throws RazorpayException {
+        RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
+
+        int amountInPaise = (int) Math.round(amountInRupees * 100); // ₹ to paise
+
+        JSONObject options = new JSONObject().put("amount", amountInPaise);
+        return razorpayClient.Payments.refund(paymentId, options);
+    }
 
 }

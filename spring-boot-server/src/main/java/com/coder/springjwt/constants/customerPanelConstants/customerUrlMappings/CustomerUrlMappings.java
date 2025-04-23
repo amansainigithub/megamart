@@ -94,4 +94,11 @@ public class CustomerUrlMappings {
     public static final String GET_USER_REVIEWS = "/getUserReviews";
     public static final String GET_EDIT_REVIEW = "/getEditReview/{reviewId}";
 
+
+
+
+    //    #######################CANCLE ORDER CONTROLLER#######################
+    public static final String ORDER_CANCEL_CONTROLLER= CUSTOMER_BASE_URL + "/orderCancelController";
+
+    public static final String ORDER_CANCEL = "/orderCancel";
 }

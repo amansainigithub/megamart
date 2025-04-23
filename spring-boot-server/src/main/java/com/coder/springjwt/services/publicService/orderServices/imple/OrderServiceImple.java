@@ -41,7 +41,7 @@ public class OrderServiceImple implements OrderService {
         log.info("<-- getCustomerOrders Flying-->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
-            User user = this.userRepository.findByUsername(currentUser)
+            this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
 

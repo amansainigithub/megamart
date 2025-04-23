@@ -56,5 +56,16 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
     long countByUserId(String userId);
 
 
+    @Query("SELECT coi FROM CustomerOrderItems coi "+
+            "WHERE coi.id = :id " +
+            "AND coi.userId = :userId " +
+            "AND coi.customOrderNumber = :customOrderNumber " +
+            "AND coi.razorpayOrderId = :razorpayOrderId ")
+    CustomerOrderItems findByCancelOrder(@Param("id") String id,
+                                         @Param("userId") String userId ,
+                                         @Param("customOrderNumber") String customOrderNumber,
+                                         @Param("razorpayOrderId") String razorpayOrderId);
+
+
 
 }

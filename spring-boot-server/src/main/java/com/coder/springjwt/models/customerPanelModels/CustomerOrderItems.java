@@ -77,6 +77,17 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String orderDateTime;
 
+
+    //Refund Var Starting
+    private String refundStatus;
+    private String refundRequestDateTime;
+    private String refundProcessedDateTime;
+    private String refundId;
+
+    @Column(length = 500)
+    private String cancelReason;
+    //Refund Var Ending
+
     //By Default is Rating =  N
     private boolean isRating = Boolean.FALSE;
 
