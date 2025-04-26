@@ -82,31 +82,6 @@ public class OrderServiceImple implements OrderService {
                         return itemsDto;
                     })
                     .collect(Collectors.toList());
-
-//            List<CustomerOrders> customerOrders = this.orderRepository.
-//                                                    findOrdersByDeliveredCustom( user.getId());
-//
-//            List<CustomerOrderDTO> orderList = customerOrders.stream()
-//                    .map(order -> {
-//                        CustomerOrderDTO customerOrderDTO = modelMapper.map(order, CustomerOrderDTO.class);
-//
-//                        // Filter only delivered items and map them to DTOs
-//                        List<CustomerOrderItemDTO> deliveredItems = order.getCustomerOrderItems().stream()
-//                                .filter(item -> DeliveryStatus.DELIVERED.toString().equals(item.getDeliveryStatus())) // Filter condition
-//                                .map(item -> modelMapper.map(item, CustomerOrderItemDTO.class)) // Mapping to DTO
-//                                .collect(Collectors.toList());
-//
-//                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
-//
-//                        // Only add delivered items to the DTO
-//                        customerOrderDTO.setCustomerOrderItems(deliveredItems);
-//
-//                        return customerOrderDTO;
-//                    })
-//                    // Remove orders that have no delivered items
-//                    .filter(orderDTO -> !orderDTO.getCustomerOrderItems().isEmpty())
-//                    .collect(Collectors.toList());
-
             return ResponseGenerator.generateSuccessResponse(deliveredOrders , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)

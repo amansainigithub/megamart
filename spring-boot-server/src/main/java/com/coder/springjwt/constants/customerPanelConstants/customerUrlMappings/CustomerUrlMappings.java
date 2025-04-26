@@ -101,4 +101,7 @@ public class CustomerUrlMappings {
     public static final String ORDER_CANCEL_CONTROLLER= CUSTOMER_BASE_URL + "/orderCancelController";
 
     public static final String ORDER_CANCEL = "/orderCancel";
+
+    public static final String GET_CANCEL_ORDERS= "/getCancelOrders/{id}";
+
 }

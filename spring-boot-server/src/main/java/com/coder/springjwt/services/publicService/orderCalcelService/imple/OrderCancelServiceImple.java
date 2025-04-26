@@ -3,6 +3,7 @@ package com.coder.springjwt.services.publicService.orderCalcelService.imple;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cancelOrderDtos.CancelOrderDto;
+import com.coder.springjwt.dtos.customerPanelDtos.cancelOrderDtos.CustomerCancelOrderDto;
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.PaymentModeStatus;
@@ -27,6 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -70,18 +73,24 @@ public class OrderCancelServiceImple implements OrderCancelService {
                 throw new RuntimeException("Unable to cancel order. Order details not found.");
             }
 
-            if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()))
+
+            cancelItems.setDeliveryStatus(DeliveryStatus.CANCELLED.toString());
+            cancelItems.setCancelReason(cancelOrderDto.getCancelReason());
+            cancelItems.setRefundRequestDateTime(LocalDateTime.now().toString());
+
+            if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()) )
             {
-                this.onlinePaymentRefundProcess(cancelItems);
+                cancelItems.setRefundStatus(RefundStatus.PENDING.toString());
             }
             else if (cancelItems.getPaymentMode().equals(PaymentModeStatus.COD.toString()))
             {
-                this.codPaymentRefundProcess(cancelItems);
+                cancelItems.setRefundStatus(RefundStatus.SUCCESS.toString());
             }
 
-            CustomerOrderItemDTO customerOrderItemDTO = modelMapper.map(cancelItems, CustomerOrderItemDTO.class);
-            System.out.println(customerOrderItemDTO);
-            return ResponseGenerator.generateSuccessResponse(customerOrderItemDTO ,CustMessageResponse.SUCCESS);
+            //Save To Cancel Order Items To DB
+            this.orderItemsRepository.save(cancelItems);
+
+            return ResponseGenerator.generateSuccessResponse("Cancel Order Success" ,CustMessageResponse.SUCCESS);
         }  catch (Exception e)
         {
             e.printStackTrace();
@@ -89,6 +98,10 @@ public class OrderCancelServiceImple implements OrderCancelService {
         }
     }
 
+
+    public void codPaymentRefundProcess(CustomerOrderItems customerOrderItems){
+        System.out.println("COD PAYMENT Process Starting....");
+    }
 
 
     public void onlinePaymentRefundProcess(CustomerOrderItems customerOrderItems){
@@ -127,7 +140,6 @@ public class OrderCancelServiceImple implements OrderCancelService {
             }else if (status.equals("failed")) {
                 customerOrderItems.setRefundStatus(RefundStatus.FAILED.toString());
             }
-
             //Refund Processed Date
             customerOrderItems.setRefundProcessedDateTime(LocalDateTime.now().toString());
 
@@ -135,14 +147,32 @@ public class OrderCancelServiceImple implements OrderCancelService {
         } catch (RazorpayException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
-
-    public void codPaymentRefundProcess(CustomerOrderItems customerOrderItems){
-        System.out.println("COD PAYMENT Process Starting....");
-    }
-
+//    @Override
+//    public ResponseEntity<?> getCancelOrdersService(long id) {
+//        log.info("<-- getCancelOrdersService Flying-->");
+//        try {
+//            String currentUser = UserHelper.getOnlyCurrentUser();
+//            User user = this.userRepository.findByUsername(currentUser)
+//                    .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
+//
+//            List<CustomerOrderItems> orderItemsCancelled = this.orderItemsRepository.findOrderItemsCancelled(user.getId());
+//
+//            List<CustomerCancelOrderDto> deliveredOrders = orderItemsCancelled.stream()
+//                    .map(order -> {
+//                        CustomerCancelOrderDto itemsDto =
+//                                modelMapper.map(order, CustomerCancelOrderDto.class);
+//                        return itemsDto;
+//                    })
+//                    .collect(Collectors.toList());
+//            return ResponseGenerator.generateSuccessResponse(deliveredOrders , CustMessageResponse.SUCCESS);
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+//        }
+//    }
 
 }

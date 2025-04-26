@@ -6,10 +6,7 @@ import com.coder.springjwt.services.publicService.orderCalcelService.OrderCancel
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.ORDER_CANCEL_CONTROLLER)
@@ -24,4 +21,11 @@ public class OrderCancelController {
     public ResponseEntity<?> orderCancel(@RequestBody CancelOrderDto cancelOrderDto) {
         return this.orderCancelService.orderCancelService(cancelOrderDto);
     }
+
+
+//    @GetMapping(CustomerUrlMappings.GET_CANCEL_ORDERS)
+//    @PreAuthorize("hasRole('CUSTOMER')")
+//    public ResponseEntity<?> getCancelOrders(@PathVariable(required = true) long id) {
+//        return this.orderCancelService.getCancelOrdersService(id);
+//    }
 }

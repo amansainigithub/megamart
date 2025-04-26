@@ -16,4 +16,6 @@ public class CancelOrderDto {
     private String customerOrderNumber;
 
     private String razorpayOrderId;
+
+    private String cancelReason;
 }

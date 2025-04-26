@@ -15,7 +15,7 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 
     @Query("SELECT coi FROM CustomerOrderItems coi "+
             "WHERE coi.userId = :customerId " +
-            "AND coi.deliveryStatus IN ('PENDING' , 'SHIPPED' , 'OUT_OF_DELIVERY')" +
+            "AND coi.deliveryStatus IN ('PENDING' , 'SHIPPED' , 'OUT_OF_DELIVERY' , 'CANCELLED')" +
             "ORDER BY coi.creationDate DESC")
     List<CustomerOrderItems> findOrderItemsExceptDelivered(@Param("customerId") Long customerId);
 
@@ -67,5 +67,10 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
                                          @Param("razorpayOrderId") String razorpayOrderId);
 
 
+    @Query("SELECT coi FROM CustomerOrderItems coi "+
+            "WHERE coi.userId = :customerId " +
+            "AND coi.deliveryStatus IN ('CANCELLED')" +
+            "ORDER BY coi.creationDate DESC")
+    List<CustomerOrderItems> findOrderItemsCancelled(@Param("customerId") Long customerId);
 
 }
