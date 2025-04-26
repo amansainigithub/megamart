@@ -67,10 +67,6 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
                                          @Param("razorpayOrderId") String razorpayOrderId);
 
 
-    @Query("SELECT coi FROM CustomerOrderItems coi "+
-            "WHERE coi.userId = :customerId " +
-            "AND coi.deliveryStatus IN ('CANCELLED')" +
-            "ORDER BY coi.creationDate DESC")
-    List<CustomerOrderItems> findOrderItemsCancelled(@Param("customerId") Long customerId);
+    CustomerOrderItems findByIdAndUserIdAndDeliveryStatus( Long id,String userId,String deliveryStatus);
 
 }

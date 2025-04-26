@@ -9,5 +9,4 @@ public interface OrderCancelService {
 
     ResponseEntity<?> orderCancelService(CancelOrderDto cancelOrderDto);
 
-//    ResponseEntity<?> getCancelOrdersService(long id);
 }

@@ -383,6 +383,10 @@ public class RazorpayServiceImple implements RazorpayServices {
     public void saveCustomerOrderItems( String orderId , List<CartItemsDto> cartItemsList,String customOrderId)
     {
         log.info("saveCustomerOrderItems flying");
+
+        double baseFeePercentage = 2.0;  // 2% base Razorpay fee
+        double gstPercentage = 18.0;     // 18% GST on base fee
+
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
@@ -430,11 +434,34 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setAddressLine1(customerAddress.getAddressLine1());
                 customerOrderItems.setAddressLine2(customerAddress.getAddressLine2());
 
+                //Calculated Razorpay Tax Starting
+                //Calculated BASE FEES
+                double razorpayBaseFee = calculateBaseFee(ci.getTotalPrice(), baseFeePercentage);
+                //Calculated GST
+                double razorpayGst = calculateGST(razorpayBaseFee, gstPercentage);
+                //TotalFee
+                double totalFee = razorpayBaseFee + razorpayGst;
+                //Final Amount
+                double finalAmount = ci.getTotalPrice() - totalFee;
+                System.out.println("razorpayBaseFee :: " + razorpayBaseFee);
+                System.out.println("razorpayGst :: " + razorpayGst);
+                System.out.println("totalFee :: " + totalFee);
+                System.out.println("finalAmount :: " + finalAmount);
+
+                customerOrderItems.setRazorpayFees(String.valueOf(razorpayBaseFee));
+                customerOrderItems.setRazorpayGst(String.valueOf(razorpayGst));
+                customerOrderItems.setRazorpayTotalFees(String.valueOf(roundToTwoDecimal(totalFee)));
+                customerOrderItems.setRazorpayFinalAmt(String.valueOf(roundToTwoDecimal(finalAmount)));
+                //Calculated Razorpay Tax Ending
+
                 //Set Customer Order
                 customerOrderItems.setCustomerOrders(customerOrders);
 
                 //Add Order Items To List
                 customerOrderItemsList.add(customerOrderItems);
+
+                //Razorpay-Fees
+
             }
             //Set Customer Order Items List
             customerOrders.setCustomerOrderItems(customerOrderItemsList);
@@ -448,6 +475,21 @@ public class RazorpayServiceImple implements RazorpayServices {
         {
             e.printStackTrace();
         }
+    }
+
+
+    public static double calculateBaseFee(double amount, double baseFeePercentage) {
+        double baseFee = (amount * baseFeePercentage) / 100;
+        return roundToTwoDecimal(baseFee);
+    }
+
+    public static double calculateGST(double baseFee, double gstPercentage) {
+        double gst = (baseFee * gstPercentage) / 100;
+        return roundToTwoDecimal(gst);
+    }
+
+    public static double roundToTwoDecimal(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
 
@@ -522,6 +564,8 @@ public class RazorpayServiceImple implements RazorpayServices {
     public void saveCustomerOrderItemsCOD( String orderId , List<CartItemsDto> cartItemsList, String customOrderId)
     {
         log.info("<-- saveCustomerOrderItemsCOD Flying --> ");
+
+
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser)
@@ -556,8 +600,6 @@ public class RazorpayServiceImple implements RazorpayServices {
                 //Order Date Time
                 customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
 
-
-
                 //Set Customer Delivery Address To Customer Order Items
                 customerOrderItems.setCustomerName(customerAddress.getCustomerName());
                 customerOrderItems.setAddressId(String.valueOf(customerAddress.getId()));
@@ -573,7 +615,6 @@ public class RazorpayServiceImple implements RazorpayServices {
 
                 //Add Order Items To List
                 customerOrderItemsList.add(customerOrderItems);
-
             }
             //Set Customer Order Items List
             customerOrders.setCustomerOrderItems(customerOrderItemsList);
@@ -617,6 +658,8 @@ public class RazorpayServiceImple implements RazorpayServices {
 
         return "ORD-" + timestamp + randomNum; // Example: ORD202503311230451234
     }
+
+
 
 
 

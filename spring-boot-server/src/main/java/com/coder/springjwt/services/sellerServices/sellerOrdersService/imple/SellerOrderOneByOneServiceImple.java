@@ -34,7 +34,7 @@ public class SellerOrderOneByOneServiceImple implements SellerOrderOneByOneServi
             Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC , "orderDateTime"));
 
             Page<CustomerOrderItems> allPendingOrders = orderItemsRepository
-                                                        .findAllByDeliveryStatus(DeliveryStatus.PENDING.toString() ,  pageable);
+                                                        .findAllByDeliveryStatus(DeliveryStatus.PENDING.toString() , pageable);
 
             return ResponseGenerator.generateSuccessResponse(allPendingOrders , CustMessageResponse.SUCCESS);
         }

@@ -70,5 +70,16 @@ public class CustomerOrderItemDTO {
     private String courierName;
 
 
+    //Razorpay Fees And status
+    private String razorpayFees;
+    private String razorpayGst;
+    private String razorpayTotalFees;
+    private String razorpayFinalAmt;
+
+    private String refundStatus;
+    private String refundRequestDateTime;
+    private String refundProcessedDateTime;
+    private String refundId;
+
 
 }

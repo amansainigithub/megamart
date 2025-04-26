@@ -77,12 +77,19 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String orderDateTime;
 
+    //Razorpay Fees And status
+    private String razorpayFees;
+    private String razorpayGst;
+    private String razorpayTotalFees;
+    private String razorpayFinalAmt;
 
-    //Refund Var Starting
     private String refundStatus;
     private String refundRequestDateTime;
     private String refundProcessedDateTime;
     private String refundId;
+
+    @Column(length = 2000)
+    private String refundResponse;
 
     @Column(length = 500)
     private String cancelReason;

@@ -265,4 +265,13 @@ public class SellerUrlMappings {
 
     public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
 
+
+
+
+    //Seller Cancel Orders Controller
+    public static final String SELLER_CANCEL_ORDER_CONTROLLER = SELLER_AUTH_URL +"/sellerCancelOrderController";
+    public static final String  SELLER_CANCEL_ORDERS_FETCH= "/sellerCancelOrdersFetch";
+
+    public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
+
 }
