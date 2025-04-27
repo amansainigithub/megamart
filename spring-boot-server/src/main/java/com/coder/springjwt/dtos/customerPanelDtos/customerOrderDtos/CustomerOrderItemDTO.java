@@ -81,5 +81,7 @@ public class CustomerOrderItemDTO {
     private String refundProcessedDateTime;
     private String refundId;
 
+    private String returnMessage;
+
 
 }

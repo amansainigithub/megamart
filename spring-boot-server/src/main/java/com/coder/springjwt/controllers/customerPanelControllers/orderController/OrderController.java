@@ -1,14 +1,12 @@
 package com.coder.springjwt.controllers.customerPanelControllers.orderController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
 import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(CustomerUrlMappings.ORDER_CONTROLLER)
@@ -33,6 +31,13 @@ public class OrderController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> getCustomerOrdersById(@PathVariable(required = true) long id) {
         return this.orderService.getCustomerOrdersById(id);
+    }
+
+
+    @PostMapping(CustomerUrlMappings.ORDER_RETURN_REQUEST_INITIATE) // Order Details Particular Order
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> orderReturnRequestInitiate(@RequestBody ReturnRequestInitiateDto returnRequestInitiateDto) {
+        return this.orderService.orderReturnRequestInitiate(returnRequestInitiateDto);
     }
 
 

@@ -8,4 +8,8 @@ public enum DeliveryStatus {
     DELIVERED,
 
     CANCELLED,
+
+    RETURN,
+
+    EXCHANGE
 }
