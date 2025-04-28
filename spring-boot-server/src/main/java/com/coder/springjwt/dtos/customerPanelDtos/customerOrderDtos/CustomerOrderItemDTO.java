@@ -83,5 +83,7 @@ public class CustomerOrderItemDTO {
 
     private String returnMessage;
 
+    private CustomerReturnOrderDto customerReturnOrderDto;
+
 
 }

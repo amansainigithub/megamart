@@ -3,6 +3,7 @@ package com.coder.springjwt.services.publicService.orderServices.imple;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
+import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerReturnOrderDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.PaymentModeStatus;
@@ -11,9 +12,11 @@ import com.coder.springjwt.exception.customerPanelException.DataNotFoundExceptio
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
+import com.coder.springjwt.models.customerPanelModels.CustomerReturnOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
+import com.coder.springjwt.repository.customerPanelRepositories.returnRepository.ReturnRepository;
 import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,9 @@ public class OrderServiceImple implements OrderService {
 
     @Autowired
     private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
+    private ReturnRepository returnRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -89,6 +94,12 @@ public class OrderServiceImple implements OrderService {
             List<CustomerOrderItemDTO> deliveredOrders = deliveredItems.stream()
                     .map(order -> {
                         CustomerOrderItemDTO itemsDto = modelMapper.map(order, CustomerOrderItemDTO.class);
+
+                        if(order.getCustomerReturnOrders() != null) {
+                            CustomerReturnOrders customerReturnOrders = order.getCustomerReturnOrders();
+                            CustomerReturnOrderDto returnOrder = modelMapper.map(customerReturnOrders, CustomerReturnOrderDto.class);
+                            itemsDto.setCustomerReturnOrderDto(returnOrder);
+                        }
 
                         try {
                             String deliveredDateString = order.getDeliveryDateTime(); // Assuming String
@@ -151,6 +162,7 @@ public class OrderServiceImple implements OrderService {
     @Override
     public ResponseEntity<?> orderReturnRequestInitiate(ReturnRequestInitiateDto returnRequestInitiateDto) {
         log.info("returnRequestInitiateDto ....." );
+        CustomerReturnOrders customerReturnOrders = new CustomerReturnOrders();
         try {
 
             CustomerOrderItems customerOrderItems = this.orderItemsRepository
@@ -159,25 +171,43 @@ public class OrderServiceImple implements OrderService {
 
             if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.COD.toString())) {
 
-                customerOrderItems.setReturnReason(returnRequestInitiateDto.getReturnReason());
-                customerOrderItems.setAccountNumber(returnRequestInitiateDto.getAccountNumber());
-                customerOrderItems.setIfscCode(returnRequestInitiateDto.getIfscCode());
-                customerOrderItems.setBankName(returnRequestInitiateDto.getBankName());
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
-                customerOrderItems.setRefundStatus(RefundStatus.PENDING.toString());
-                customerOrderItems.setReturnExchangeReqDateTime(LocalDateTime.now().toString());
 
-                this.orderItemsRepository.save(customerOrderItems);
+                //Return Data Save To Return Table
+                customerReturnOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
+                //Customer Account Details
+                customerReturnOrders.setAccountNumber(returnRequestInitiateDto.getAccountNumber());
+                customerReturnOrders.setIfscCode(returnRequestInitiateDto.getIfscCode());
+                customerReturnOrders.setBankName(returnRequestInitiateDto.getBankName());
+                //Refund Status
+                customerReturnOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
+                customerReturnOrders.setReturnRefundRequestDateTime(LocalDateTime.now().toString());
+                //Set OrderItemId
+                customerReturnOrders.setOrderItemId(customerOrderItems.getId());
+
+                //Set Delivery Status
+                customerReturnOrders.setDeliveryStatus(DeliveryStatus.RETURN.toString());
+
             }else if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString())) {
 
                 //Set Cancel Order Properties
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
-                customerOrderItems.setReturnReason(returnRequestInitiateDto.getReturnReason());
-                customerOrderItems.setRefundRequestDateTime(LocalDateTime.now().toString());
-                customerOrderItems.setRefundStatus(RefundStatus.PENDING.toString());
 
-                this.orderItemsRepository.save(customerOrderItems);
+                customerReturnOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
+                customerReturnOrders.setReturnRefundRequestDateTime(LocalDateTime.now().toString());
+                customerReturnOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
+                //Set OrderItemId
+                customerReturnOrders.setOrderItemId(customerOrderItems.getId());
+
+                //Set Delivery Status
+                customerReturnOrders.setDeliveryStatus(DeliveryStatus.RETURN.toString());
             }
+
+            //Set Customer Return to Customer Items
+            customerOrderItems.setCustomerReturnOrders(customerReturnOrders);
+
+            //Save Customer Order Items to CustomerOrderItems Table
+            this.orderItemsRepository.save(customerOrderItems);
 
             return ResponseGenerator.generateSuccessResponse("REQUEST INITIATED" , CustMessageResponse.SUCCESS);
         }
