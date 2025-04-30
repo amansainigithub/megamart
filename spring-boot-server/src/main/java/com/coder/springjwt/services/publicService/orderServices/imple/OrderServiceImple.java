@@ -3,7 +3,8 @@ package com.coder.springjwt.services.publicService.orderServices.imple;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
-import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerReturnOrderDto;
+import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerReturnExchangeOrderDto;
+import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ExchangeRequestDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.PaymentModeStatus;
@@ -12,11 +13,11 @@ import com.coder.springjwt.exception.customerPanelException.DataNotFoundExceptio
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
-import com.coder.springjwt.models.customerPanelModels.CustomerReturnOrders;
+import com.coder.springjwt.models.customerPanelModels.CustomerReturnExchangeOrders;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
-import com.coder.springjwt.repository.customerPanelRepositories.returnRepository.ReturnRepository;
+import com.coder.springjwt.repository.customerPanelRepositories.returnExchangeRepository.ReturnExchangeRepository;
 import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class OrderServiceImple implements OrderService {
     private OrderItemsRepository orderItemsRepository;
 
     @Autowired
-    private ReturnRepository returnRepository;
+    private ReturnExchangeRepository returnExchangeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -95,10 +96,11 @@ public class OrderServiceImple implements OrderService {
                     .map(order -> {
                         CustomerOrderItemDTO itemsDto = modelMapper.map(order, CustomerOrderItemDTO.class);
 
-                        if(order.getCustomerReturnOrders() != null) {
-                            CustomerReturnOrders customerReturnOrders = order.getCustomerReturnOrders();
-                            CustomerReturnOrderDto returnOrder = modelMapper.map(customerReturnOrders, CustomerReturnOrderDto.class);
-                            itemsDto.setCustomerReturnOrderDto(returnOrder);
+                        //If return Not NUll (RETURN ITEMS)
+                        if(order.getCustomerReturnExchangeOrders() != null) {
+                            CustomerReturnExchangeOrders customerReturnOrders = order.getCustomerReturnExchangeOrders();
+                            CustomerReturnExchangeOrderDto returnOrder = modelMapper.map(customerReturnOrders, CustomerReturnExchangeOrderDto.class);
+                            itemsDto.setCustomerReturnExchangeOrderDto(returnOrder);
                         }
 
                         try {
@@ -162,53 +164,74 @@ public class OrderServiceImple implements OrderService {
     @Override
     public ResponseEntity<?> orderReturnRequestInitiate(ReturnRequestInitiateDto returnRequestInitiateDto) {
         log.info("returnRequestInitiateDto ....." );
-        CustomerReturnOrders customerReturnOrders = new CustomerReturnOrders();
+        CustomerReturnExchangeOrders customerReturnExchangeOrders = new CustomerReturnExchangeOrders();
         try {
 
             CustomerOrderItems customerOrderItems = this.orderItemsRepository
                     .findById(returnRequestInitiateDto.getId())
                     .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
 
+            // Change Delivery  Status to CustomerOrderItems
+            customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
+
+            //SET Payment Mode and Delivery Status and Customer Order Data
+            customerReturnExchangeOrders.setPaymentMode(customerOrderItems.getPaymentMode());
+            customerReturnExchangeOrders.setOrderItemId(customerOrderItems.getId());
+            customerReturnExchangeOrders.setProductId(customerOrderItems.getProductId());
+            //Refund Status
+            customerReturnExchangeOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
+            //Set Delivery Status
+            customerReturnExchangeOrders.setReturnDeliveryStatus(DeliveryStatus.PENDING.toString());
+
+
             if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.COD.toString())) {
 
-                customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
+                customerReturnExchangeOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
+                customerReturnExchangeOrders.setAccountNumber(returnRequestInitiateDto.getAccountNumber());
+                customerReturnExchangeOrders.setIfscCode(returnRequestInitiateDto.getIfscCode());
+                customerReturnExchangeOrders.setBankName(returnRequestInitiateDto.getBankName());
 
-                //Return Data Save To Return Table
-                customerReturnOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
-                //Customer Account Details
-                customerReturnOrders.setAccountNumber(returnRequestInitiateDto.getAccountNumber());
-                customerReturnOrders.setIfscCode(returnRequestInitiateDto.getIfscCode());
-                customerReturnOrders.setBankName(returnRequestInitiateDto.getBankName());
-                //Refund Status
-                customerReturnOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
-                customerReturnOrders.setReturnRefundRequestDateTime(LocalDateTime.now().toString());
-                //Set OrderItemId
-                customerReturnOrders.setOrderItemId(customerOrderItems.getId());
-
-                //Set Delivery Status
-                customerReturnOrders.setDeliveryStatus(DeliveryStatus.RETURN.toString());
 
             }else if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString())) {
-
-                //Set Cancel Order Properties
-                customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
-
-                customerReturnOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
-                customerReturnOrders.setReturnRefundRequestDateTime(LocalDateTime.now().toString());
-                customerReturnOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
-                //Set OrderItemId
-                customerReturnOrders.setOrderItemId(customerOrderItems.getId());
-
-                //Set Delivery Status
-                customerReturnOrders.setDeliveryStatus(DeliveryStatus.RETURN.toString());
+                customerReturnExchangeOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
             }
 
             //Set Customer Return to Customer Items
-            customerOrderItems.setCustomerReturnOrders(customerReturnOrders);
+            customerOrderItems.setCustomerReturnExchangeOrders(customerReturnExchangeOrders);
 
             //Save Customer Order Items to CustomerOrderItems Table
             this.orderItemsRepository.save(customerOrderItems);
 
+            return ResponseGenerator.generateSuccessResponse("REQUEST INITIATED" , CustMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> orderExchangeRequestInitiate( ExchangeRequestDto exchangeRequestDto) {
+        log.info("orderExchangeRequestInitiate ....." );
+        try {
+            CustomerOrderItems customerOrderItems = this.orderItemsRepository
+                                        .findById(exchangeRequestDto.getOrderItemId())
+                                        .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
+
+            customerOrderItems.setDeliveryStatus(DeliveryStatus.EXCHANGE.toString());
+
+            CustomerReturnExchangeOrders customerReturnExchangeOrders = new CustomerReturnExchangeOrders();
+            customerReturnExchangeOrders.setExchangeReason(exchangeRequestDto.getExchangeReason());
+            customerReturnExchangeOrders.setExchangeProductSize(exchangeRequestDto.getSelectedLabel());
+            customerReturnExchangeOrders.setOrderItemId(exchangeRequestDto.getOrderItemId());
+            customerReturnExchangeOrders.setProductId(exchangeRequestDto.getProductId());
+            customerReturnExchangeOrders.setExchangeDeliveryStatus("PENDING");
+
+            customerReturnExchangeOrders.setPaymentMode(customerOrderItems.getPaymentMode());
+
+            customerOrderItems.setCustomerReturnExchangeOrders(customerReturnExchangeOrders);
+            this.orderItemsRepository.save(customerOrderItems);
             return ResponseGenerator.generateSuccessResponse("REQUEST INITIATED" , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)

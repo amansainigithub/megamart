@@ -53,6 +53,12 @@ public class CategoryController {
         return this.publicService.productFilter(productFilterDto,page,size);
     }
 
+    @GetMapping(CustomerUrlMappings.GET_PRODUCT_BY_ID_CUSTOMER)
+    public ResponseEntity<?> getProductByIdCustomer(@RequestParam String pI , @RequestParam String pN) {
+        return this.publicService.getProductByIdCustomer(pI, pN);
+    }
+
+
 
 
 

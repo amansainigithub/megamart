@@ -1,6 +1,7 @@
 package com.coder.springjwt.controllers.customerPanelControllers.orderController;
 
 import com.coder.springjwt.constants.customerPanelConstants.customerUrlMappings.CustomerUrlMappings;
+import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ExchangeRequestDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
 import com.coder.springjwt.services.publicService.orderServices.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,12 @@ public class OrderController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> orderReturnRequestInitiate(@RequestBody ReturnRequestInitiateDto returnRequestInitiateDto) {
         return this.orderService.orderReturnRequestInitiate(returnRequestInitiateDto);
+    }
+
+    @PostMapping(CustomerUrlMappings.ORDER_EXCHANGE_REQUEST_INITIATE) // Order Details Particular Order
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> orderExchangeRequestInitiate(@RequestBody ExchangeRequestDto exchangeRequestDto) {
+        return this.orderService.orderExchangeRequestInitiate(exchangeRequestDto);
     }
 
 

@@ -31,9 +31,12 @@ public class CustomerUrlMappings {
     public static final String GET_PRODUCT_LIST_BY_CATEGORY_ID= "/getProductListByCategoryId";
     public static final String GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID= "/getProductListByBornCategoryId";
     public static final String PRODUCT_WATCHING= "/productWatching";
+
     public static final String PRODUCT_SEARCHING= "/productSearching";
 
     public static final String PRODUCT_FILTER= "/productFilter";
+    public static final String GET_PRODUCT_BY_ID_CUSTOMER= "/getProductByIdCustomer";
+
 
 
 
@@ -69,6 +72,8 @@ public class CustomerUrlMappings {
     public static final String GET_CUSTOMER_ORDERS_BY_ID= "/getCustomerOrdersById/{id}";
     public static final String GET_MY_ORDERS_DELIVERED= "/getMyOrdersDelivered/{id}";
     public static final String ORDER_RETURN_REQUEST_INITIATE= "/orderReturnRequestInitiate";
+    public static final String ORDER_EXCHANGE_REQUEST_INITIATE= "/orderExchangeRequestInitiate";
+
 
 
 

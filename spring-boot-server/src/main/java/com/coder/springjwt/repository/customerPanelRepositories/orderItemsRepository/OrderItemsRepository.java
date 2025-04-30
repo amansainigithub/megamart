@@ -21,7 +21,7 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 
     @Query("SELECT coi FROM CustomerOrderItems coi "+
             "WHERE coi.userId = :customerId " +
-            "AND coi.deliveryStatus IN ('DELIVERED','RETURN')" +
+            "AND coi.deliveryStatus IN ('DELIVERED','RETURN','EXCHANGE')" +
             "ORDER BY coi.creationDate DESC")
     List<CustomerOrderItems> findOrderItemsDelivered(@Param("customerId") Long customerId);
 

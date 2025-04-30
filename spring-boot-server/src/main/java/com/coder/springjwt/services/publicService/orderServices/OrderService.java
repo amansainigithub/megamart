@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.publicService.orderServices;
 
+import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ExchangeRequestDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -14,4 +15,7 @@ public interface OrderService {
 
 
     ResponseEntity<?> orderReturnRequestInitiate(ReturnRequestInitiateDto returnRequestInitiateDto);
+
+    ResponseEntity<?> orderExchangeRequestInitiate( ExchangeRequestDto exchangeRequestDto);
+
 }

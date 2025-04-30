@@ -514,6 +514,42 @@ public class PublicServiceImple implements PublicService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> getProductByIdCustomer(String pI, String pN) {
+        log.info("<--- productWatching Flying --->");
+
+        Map<Object,Object> map = new HashMap<>();
+        try {
+            SellerProduct sellerProduct = this.sellerProductRepository
+                    .findByIdAndProductStatus(Long.parseLong(pI),
+                            ProductStatus.PV_APPROVED.toString());
+
+            SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+            ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+            response.setColorVariant(productVariants.getColorVariant());
+            response.setProductPrice(productVariants.getProductPrice());
+            response.setProductMrp(productVariants.getProductMrp());
+            response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+            response.setSellerProductVarientResponses(sellerProduct.getProductRows().stream()
+                    .map(pv->modelMapper.map(pv,SellerProductVarientResponse.class)).collect(Collectors.toList()));
+
+            response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
+                    .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+
+            map.put("pw",response);
+
+            log.info("productWatching Fetch Data Success:: ");
+            return ResponseGenerator.generateSuccessResponse(map, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+    }
+
     public static int[] parsePriceRange(String option) {
             int min = 0;
             int max = 0;

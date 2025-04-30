@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 @Setter
 @Getter
-public class CustomerReturnOrderDto {
+public class CustomerReturnExchangeOrderDto {
 
     private Long id;
 
@@ -20,15 +20,25 @@ public class CustomerReturnOrderDto {
     private String bankName;
 
     //DELIVERY DATE TIME PICKUP
-    private String deliveryPickUpDateTime;
-
-    //AMOUNT REFUND ID
+    private String returnDeliveryPickUpDateTime;
     private String returnRefundStatus;
     private String returnRefundRequestDateTime;
     private String returnRefundProcessedDateTime;
     private String returnRefundId;
+    private String returnDeliveryStatus;
 
-    private String deliveryStatus;
+
+
+    //Exchange Items Properties
+    private String exchangeReason;
+    private String exchangeProductSize;
+    private String exchangeRequestDateTime;
+    private String exchangeProcessedDateTime;
+    private String exchangeDeliveryPickUpDateTime;
+    private String exchangeDeliveryStatus;
+
+
+    private String productId;
     private long orderItemId;
 
 }

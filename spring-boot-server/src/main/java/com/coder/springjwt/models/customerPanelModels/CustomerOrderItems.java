@@ -110,7 +110,7 @@ public class CustomerOrderItems extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "return_order_item_id")
     @JsonIgnore
-    private CustomerReturnOrders customerReturnOrders;
+    private CustomerReturnExchangeOrders customerReturnExchangeOrders;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

@@ -20,4 +20,7 @@ public interface PublicService {
     ResponseEntity<?> productSearching(String searchKey);
 
     ResponseEntity<?> productFilter(ProductFilterDto productFilterDto, Integer page, Integer size);
+
+    ResponseEntity<?> getProductByIdCustomer(String pI, String pN);
+
 }
