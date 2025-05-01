@@ -158,4 +158,43 @@ public class SellerOrdersServiceImple implements SellerOrdersService {
     }
 
 
+    @Override
+    public ResponseEntity<?> getReturnOrdersData(Integer page, Integer size) {
+        log.info("<=== getReturnOrdersData Flying ===>");
+        try {
+            Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC , "orderDateTime"));
+
+            Page<CustomerOrderItems> returnOrders = orderItemsRepository
+                    .findAllByDeliveryStatus(DeliveryStatus.RETURN.toString() ,  pageable);
+
+            return ResponseGenerator.generateSuccessResponse(returnOrders , CustMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            log.error("Failed To fetch");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getExchangeOrdersData(Integer page, Integer size) {
+        log.info("<=== getExchangeOrdersData Flying ===>");
+        try {
+            Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC , "orderDateTime"));
+
+            Page<CustomerOrderItems> exchangeOrders = orderItemsRepository
+                    .findAllByDeliveryStatus(DeliveryStatus.EXCHANGE.toString() ,  pageable);
+
+            return ResponseGenerator.generateSuccessResponse(exchangeOrders , CustMessageResponse.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            log.error("Failed To fetch");
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
+        }
+    }
+
+
 }

@@ -247,7 +247,8 @@ public class SellerUrlMappings {
     public static final String GET_SHIPPED_ORDER_BY_SELLER="/getShippedOrderBySeller";
     public static final String GET_OUT_OF_DELIVERY_ORDER_BY_SELLER="/getOutOfDeliveryOrderBySeller";
     public static final String GET_DELIVERED_ORDER_BY_SELLER="/getDeliveredOrderBySeller";
-
+    public static final String GET_RETURN_ORDER_DATA="/getReturnOrdersData";
+    public static final String GET_EXCHANGE_ORDER_DATA="/getExchangeOrdersData";
 
 
     //Hot Deals Controller
@@ -271,7 +272,8 @@ public class SellerUrlMappings {
     //Seller Cancel Orders Controller
     public static final String SELLER_CANCEL_ORDER_CONTROLLER = SELLER_AUTH_URL +"/sellerCancelOrderController";
     public static final String  SELLER_CANCEL_ORDERS_FETCH= "/sellerCancelOrdersFetch";
-
     public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
+
+
 
 }

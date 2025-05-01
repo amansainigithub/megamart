@@ -89,14 +89,6 @@ public class CustomerOrderItems extends BaseEntity {
     private String refundId;
 
 
-    //RETURN Columns
-//    private String returnReason;
-//    private String accountNumber;
-//    private String ifscCode;
-//    private String bankName;
-//    private String returnExchangeReqDateTime;
-//    private String returnExchangeProDateTime;
-
     @Column(length = 2000)
     private String refundResponse;
 
@@ -107,9 +99,8 @@ public class CustomerOrderItems extends BaseEntity {
     //By Default is Rating =  N
     private boolean isRating = Boolean.FALSE;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL )
     @JoinColumn(name = "return_order_item_id")
-    @JsonIgnore
     private CustomerReturnExchangeOrders customerReturnExchangeOrders;
 
     @ManyToOne

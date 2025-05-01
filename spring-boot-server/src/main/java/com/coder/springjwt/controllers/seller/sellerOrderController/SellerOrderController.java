@@ -42,4 +42,17 @@ public class SellerOrderController {
     public ResponseEntity<?> getDeliveredOrderBySeller(@RequestParam Integer page , @RequestParam Integer size) {
         return this.sellerOrdersService.getDeliveredOrderBySellerService(page , size);
     }
+
+
+    @GetMapping(SellerUrlMappings.GET_RETURN_ORDER_DATA)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getReturnOrdersData(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getReturnOrdersData(page,size);
+    }
+
+    @GetMapping(SellerUrlMappings.GET_EXCHANGE_ORDER_DATA)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getExchangeOrdersData(@RequestParam Integer page , @RequestParam Integer size) {
+        return this.sellerOrdersService.getExchangeOrdersData(page,size);
+    }
 }

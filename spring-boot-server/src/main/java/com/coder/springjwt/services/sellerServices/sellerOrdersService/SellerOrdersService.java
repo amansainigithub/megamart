@@ -14,4 +14,8 @@ public interface SellerOrdersService {
     ResponseEntity<?> getOutOfDeliveryOrderBySellerService(Integer page, Integer size);
 
     ResponseEntity<?> getDeliveredOrderBySellerService(Integer page, Integer size);
+
+    ResponseEntity<?> getReturnOrdersData(Integer page, Integer size);
+
+    ResponseEntity<?> getExchangeOrdersData(Integer page, Integer size);
 }
