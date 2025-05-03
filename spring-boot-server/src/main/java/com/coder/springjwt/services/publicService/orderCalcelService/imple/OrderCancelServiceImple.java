@@ -72,11 +72,11 @@ public class OrderCancelServiceImple implements OrderCancelService {
 
             if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()) )
             {
-                cancelItems.setRefundStatus(RefundStatus.PENDING.toString());
+                cancelItems.setRefundStatus(RefundStatus.REFUND_PENDING.toString());
             }
             else if (cancelItems.getPaymentMode().equals(PaymentModeStatus.COD.toString()))
             {
-                cancelItems.setRefundStatus(RefundStatus.SUCCESS.toString());
+                cancelItems.setRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
             }
 
             //Save To Cancel Order Items To DB

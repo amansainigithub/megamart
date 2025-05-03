@@ -83,7 +83,7 @@ public class SellerCancelOrderServiceImple implements SellerCancelOrderService {
                 log.info("Order Refund Payment Initiated Success... ");
 
                 data.setRefundId(refund.get("id"));
-                data.setRefundStatus(RefundStatus.SUCCESS.toString());
+                data.setRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
                 data.setRefundProcessedDateTime(LocalDateTime.now().toString());
                 data.setRefundResponse(refund.toString());
 

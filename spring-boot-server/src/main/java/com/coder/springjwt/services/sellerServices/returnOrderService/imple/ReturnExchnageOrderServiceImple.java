@@ -41,7 +41,6 @@ public class ReturnExchnageOrderServiceImple implements ReturnExchnageOrderServi
     public ResponseEntity<?> returnPaymentInitiated(Long id) {
         log.info("<=== returnPaymentInitiated Flying ===>");
         try {
-
             CustomerReturnExchangeOrders returnExchangeOrders = this.returnExchangeRepository.findById(id)
                     .orElseThrow(() -> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
@@ -64,7 +63,7 @@ public class ReturnExchnageOrderServiceImple implements ReturnExchnageOrderServi
                 log.info("Order Refund Payment Initiated Success... ");
 
                 returnExchangeOrders.setReturnRefundId(refund.get("id"));
-                returnExchangeOrders.setReturnRefundStatus(RefundStatus.SUCCESS.toString());
+                returnExchangeOrders.setReturnRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
                 this.orderItemsRepository.save(orderItems);
 
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.DATA_UPDATE_SUCCESS,

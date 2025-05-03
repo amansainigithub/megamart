@@ -2,11 +2,9 @@ package com.coder.springjwt.emuns;
 
 public enum RefundStatus {
 
-    PENDING,
-    INITIATED ,
-    BANK_PROCESSED,
+    REFUND_PENDING,
 
-    SUCCESS ,
+    REFUND_INITIATED ,
 
-    FAILED
+    REFUND_COMPLETED
 }

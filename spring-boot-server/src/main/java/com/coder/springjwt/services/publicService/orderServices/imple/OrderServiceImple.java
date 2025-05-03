@@ -6,9 +6,7 @@ import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrde
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerReturnExchangeOrderDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ExchangeRequestDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
-import com.coder.springjwt.emuns.DeliveryStatus;
-import com.coder.springjwt.emuns.PaymentModeStatus;
-import com.coder.springjwt.emuns.RefundStatus;
+import com.coder.springjwt.emuns.*;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
@@ -171,6 +169,8 @@ public class OrderServiceImple implements OrderService {
                     .findById(returnRequestInitiateDto.getId())
                     .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
 
+            if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString())) {
+
             // Change Delivery  Status to CustomerOrderItems
             customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
 
@@ -179,30 +179,23 @@ public class OrderServiceImple implements OrderService {
             customerReturnExchangeOrders.setOrderItemId(customerOrderItems.getId());
             customerReturnExchangeOrders.setProductId(customerOrderItems.getProductId());
             //Refund Status
-            customerReturnExchangeOrders.setReturnRefundStatus(RefundStatus.PENDING.toString());
+            customerReturnExchangeOrders.setReturnRefundStatus(RefundStatus.REFUND_PENDING.toString());
             //Set Delivery Status
-            customerReturnExchangeOrders.setReturnDeliveryStatus(DeliveryStatus.PENDING.toString());
+            customerReturnExchangeOrders.setReturnDeliveryStatus(ReturnDeliveryStatus.RETURN_REQUESTED.toString());
 
-
-            if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.COD.toString())) {
-
-                customerReturnExchangeOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
-                customerReturnExchangeOrders.setAccountNumber(returnRequestInitiateDto.getAccountNumber());
-                customerReturnExchangeOrders.setIfscCode(returnRequestInitiateDto.getIfscCode());
-                customerReturnExchangeOrders.setBankName(returnRequestInitiateDto.getBankName());
-
-
-            }else if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString())) {
-                customerReturnExchangeOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
-            }
+            customerReturnExchangeOrders.setReturnReason(returnRequestInitiateDto.getReturnReason());
 
             //Set Customer Return to Customer Items
             customerOrderItems.setCustomerReturnExchangeOrders(customerReturnExchangeOrders);
 
             //Save Customer Order Items to CustomerOrderItems Table
             this.orderItemsRepository.save(customerOrderItems);
-
             return ResponseGenerator.generateSuccessResponse("REQUEST INITIATED" , CustMessageResponse.SUCCESS);
+            }
+            else
+            {
+                return ResponseGenerator.generateBadRequestResponse("REQUEST FAILED" , CustMessageResponse.SOMETHING_WENT_WRONG);
+            }
         }
         catch (Exception e)
         {
@@ -226,7 +219,7 @@ public class OrderServiceImple implements OrderService {
             customerReturnExchangeOrders.setExchangeProductSize(exchangeRequestDto.getSelectedLabel());
             customerReturnExchangeOrders.setOrderItemId(exchangeRequestDto.getOrderItemId());
             customerReturnExchangeOrders.setProductId(exchangeRequestDto.getProductId());
-            customerReturnExchangeOrders.setExchangeDeliveryStatus("PENDING");
+            customerReturnExchangeOrders.setExchangeDeliveryStatus(ExchangeDeliveryStatus.EXCHANGE_PENDING.toString());
 
             customerReturnExchangeOrders.setPaymentMode(customerOrderItems.getPaymentMode());
 
