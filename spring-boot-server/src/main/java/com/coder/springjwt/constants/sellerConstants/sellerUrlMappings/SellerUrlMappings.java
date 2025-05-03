@@ -275,5 +275,14 @@ public class SellerUrlMappings {
     public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
 
 
+    //return Orders Controller
+    public static final String RETURN_EXCHANGE_ORDER_CONTROLLER = SELLER_AUTH_URL +"/returnExchangeOrderController";
+    public static final String RETURN_PAYMENT_INITIATED="/returnPaymentInitiated/{id}";
+    public static final String CHANGE_RETURN_DELIVERY_STATUS="/changeReturnDeliveryStatus/{id}/{returnDeliveryStatus}";
+
+    public static final String CHANGE_RETURN_PICKUP_DATE_TIME="/changeReturnPickUpDateTime/{id}/{pickupDateTime}";
+    public static final String EXCHANGE_DELIVERY_STATUS="/exchangeDeliveryStatus/{id}/{exchangeDeliveryStatus}";
+    public static final String EXCHANGE_PICKUP_DATE_TIME="/exchangePickupDateTime/{id}/{pickupDateTime}";
+
 
 }

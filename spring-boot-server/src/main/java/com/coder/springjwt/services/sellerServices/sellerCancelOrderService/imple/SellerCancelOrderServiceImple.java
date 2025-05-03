@@ -3,13 +3,11 @@ package com.coder.springjwt.services.sellerServices.sellerCancelOrderService.imp
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrderItemDTO;
 import com.coder.springjwt.dtos.sellerDtos.refundDtos.RefundRequestDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.RefundStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
-import com.coder.springjwt.models.User;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
@@ -28,8 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

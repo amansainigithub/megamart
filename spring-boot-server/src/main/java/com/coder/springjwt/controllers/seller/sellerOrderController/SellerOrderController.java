@@ -55,4 +55,6 @@ public class SellerOrderController {
     public ResponseEntity<?> getExchangeOrdersData(@RequestParam Integer page , @RequestParam Integer size) {
         return this.sellerOrdersService.getExchangeOrdersData(page,size);
     }
+
+
 }
