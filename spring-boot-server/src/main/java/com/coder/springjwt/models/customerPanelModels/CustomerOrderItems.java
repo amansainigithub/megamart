@@ -77,6 +77,10 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String orderDateTime;
 
+    private String invoiceNumber;
+
+    private String invoiceDateTime;
+
     //Razorpay Fees And status
     private String razorpayFees;
     private String razorpayGst;

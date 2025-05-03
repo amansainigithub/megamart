@@ -16,10 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +59,13 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
             customerOrderItems.setOrderTrackingId(deliveryStatusDto.getTackerId());
             customerOrderItems.setDeliveryDateTime(formattedDateTime);
             customerOrderItems.setCourierName(deliveryStatusDto.getCourierName());
+
+            //Set Invoice Number and Invoice DateTime
+            if(customerOrderItems.getInvoiceDateTime() == null && customerOrderItems.getInvoiceNumber() == null ) {
+                customerOrderItems.setInvoiceNumber(generateInvoiceNumber());
+                customerOrderItems.setInvoiceDateTime(getInvoiceDateTime());
+            }
+
             this.orderItemsRepository.save(customerOrderItems);
 
             //Email Send
@@ -134,6 +143,17 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
         }
     }
 
+    public static String generateInvoiceNumber() {
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        // Generate 8-digit random number (from 10000000 to 99999999)
+        int random = (int)(Math.random() * 90000000) + 10000000;
+        return "INV-" + date + "-" + random;
+    }
+
+    public static String getInvoiceDateTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return formatter.format(new Date());
+    }
 
 
 

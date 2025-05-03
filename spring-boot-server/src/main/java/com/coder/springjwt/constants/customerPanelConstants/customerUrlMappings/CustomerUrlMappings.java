@@ -109,4 +109,8 @@ public class CustomerUrlMappings {
 
     public static final String GET_CANCEL_ORDERS= "/getCancelOrders/{id}";
 
+
+    //DOWNLOAD INVOICE CONTROLLER
+    public static final String INVOICE_DOWNLOAD_CONTROLLER  = CUSTOMER_BASE_URL +"/invoiceDownloadController";
+    public static final String INVOICE_DOWNLOAD="/invoiceDownload/{id}";
 }
