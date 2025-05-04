@@ -23,7 +23,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -87,8 +86,7 @@ public class OrderServiceImple implements OrderService {
 
             List<CustomerOrderItems> deliveredItems = this.orderItemsRepository.findOrderItemsDelivered(id);
 
-            // Create date formatter
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+
 
             List<CustomerOrderItemDTO> deliveredOrders = deliveredItems.stream()
                     .map(order -> {
@@ -102,12 +100,14 @@ public class OrderServiceImple implements OrderService {
                         }
 
                         try {
-                            String deliveredDateString = order.getDeliveryDateTime(); // Assuming String
+                            // Create date formatter
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+                            String deliveredDateString = order.getDeliveryDateTime();
                             LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
                             LocalDateTime returnExpiryDate = deliveredDate.plusDays(7);
                             long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
 
-                            if (daysLeft > 0) {
+                            if (daysLeft >= 0) {
                                 itemsDto.setReturnMessage("Return/Exchange available till " + daysLeft + " days");
                             } else {
                                 itemsDto.setReturnMessage("0");

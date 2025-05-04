@@ -62,13 +62,19 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
 
+            //Order Item
             CustomerOrderItems orderItems = this.orderItemsRepository.findOrderItemsById(user.getId(), id);
+
+            //Customer Address
             CustomerAddress address = this.addressRepository.findById(Long.parseLong(orderItems.getAddressId()))
                                             .orElseThrow(() -> new RuntimeException(CustMessageResponse.ADDRESS_NOT_FOUND));
+
+            //Product Data for TAX and PRICE
             SellerProduct sellerProduct = this.sellerProductRepository.findById(Long.parseLong(orderItems.getProductId()))
                                         .orElseThrow(() -> new RuntimeException(CustMessageResponse.ADDRESS_NOT_FOUND));
 
 
+            //Creating Invoice DTO
             InvoiceDto invoiceDto = new InvoiceDto();
 
             //Business Name
@@ -106,11 +112,9 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
 
             invoiceDto.setTotalPrice(amount);
 
-
             // Step 2: Set up Thymeleaf context
             Context context = new Context();
             context.setVariable("invoice", invoiceDto);
-
 
             //Logo Convert to Base 64 and set to context
             File file = ResourceUtils.getFile("classpath:static/images/pepsi.png");

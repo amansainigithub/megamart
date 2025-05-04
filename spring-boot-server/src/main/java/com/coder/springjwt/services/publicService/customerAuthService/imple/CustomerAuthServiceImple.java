@@ -92,12 +92,17 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
+            User user = this.userRepository.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
+
             for(String role : roles){
                 if(role.equals("ROLE_CUSTOMER")){
                     return ResponseEntity.ok(new JwtResponse(jwt,
                             userDetails.getId(),
                             userDetails.getUsername(),
                             userDetails.getEmail(),
+                            user.getFirstName(),
+                            user.getLastName(),
                             roles));
                 }
             }
