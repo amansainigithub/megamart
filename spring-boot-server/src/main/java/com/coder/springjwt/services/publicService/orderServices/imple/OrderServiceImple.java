@@ -108,7 +108,7 @@ public class OrderServiceImple implements OrderService {
                             long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
 
                             if (daysLeft >= 0) {
-                                itemsDto.setReturnMessage("Return/Exchange available till " + daysLeft + " days");
+                                itemsDto.setReturnMessage("Exchange available till " + daysLeft + " days");
                             } else {
                                 itemsDto.setReturnMessage("0");
                             }
