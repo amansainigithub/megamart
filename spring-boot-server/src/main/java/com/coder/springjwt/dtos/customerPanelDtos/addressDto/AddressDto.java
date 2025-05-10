@@ -18,4 +18,6 @@ public class AddressDto {
     private String addressLine1;
     private String addressLine2;
     private boolean defaultAddress;
+    private String city;
+    private String state;
 }

@@ -5,13 +5,21 @@ import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.Seller
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
+import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
+import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
+import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
+import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
+import com.coder.springjwt.services.deliveryServices.shipRocketServices.imple.ShipRocketServiceImple;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.sellerServices.deliveryStatusService.DeliveryStatusService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,62 +44,78 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ShipRocketService shipRocketServiceImple;
+
+    @Autowired
+    private SellerProductRepository sellerProductRepository;
+
+    @Autowired
+    private ProductVariantsRepository productVariantsRepository;
 
     @Override
     public ResponseEntity<?> updatePendingDeliveryStatus(DeliveryStatusDto deliveryStatusDto) {
         try {
                 log.info("===> updateDeliveryStatusOrderItems Flying");
+                log.info("ORDER ITEMS :: " + deliveryStatusDto.getOrderItemId());
 
             CustomerOrderItems customerOrderItems = this.orderItemsRepository
                                         .findById(Long.valueOf(deliveryStatusDto.getOrderItemId()))
                                         .orElseThrow(() -> new RuntimeException(SellerMessageResponse.ORDER_ITEM_NOT_FOUND));
 
-            //Convert Date Form and Add Time with AM and PM
-            LocalDateTime localDateTime = LocalDateTime.parse(deliveryStatusDto.getDeliveryDateTime());
-            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
-                    .withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
-            String formattedDateTime = zonedDateTime.format(formatter);
+            ProductVariants productVariant = productVariantsRepository.findByLabelAndProductId(customerOrderItems.getProductSize(),
+                                             customerOrderItems.getProductId());
 
-            //customerOrderItems.setDeliveryStatus(DeliveryStatus.SHIPPED.toString());
-            customerOrderItems.setDeliveryStatus(deliveryStatusDto.getDeliveryStatus());
-
-            customerOrderItems.setOrderTrackingId(deliveryStatusDto.getTackerId());
-            customerOrderItems.setDeliveryDateTime(formattedDateTime);
-            customerOrderItems.setCourierName(deliveryStatusDto.getCourierName());
-
-            //Set Invoice Number and Invoice DateTime
-            if(customerOrderItems.getInvoiceDateTime() == null && customerOrderItems.getInvoiceNumber() == null ) {
-                customerOrderItems.setInvoiceNumber(generateInvoiceNumber());
-                customerOrderItems.setInvoiceDateTime(getInvoiceDateTime());
+            ResponseEntity<String> response = shipRocketServiceImple.createOrder(customerOrderItems, productVariant, deliveryStatusDto);
+            if (response == null)
+            {
+                throw new RuntimeException(SellerMessageResponse.SOMETHING_WENT_WRONG);
             }
 
-            this.orderItemsRepository.save(customerOrderItems);
+            if(response != null)
+            {
+                //Set Ship Rocket Response To Customer Order Item Object or POJO and save Data
+                JSONObject jsonObject = new JSONObject(response.getBody());
+                customerOrderItems.setSrOrderId(jsonObject.getInt("order_id"));
+                customerOrderItems.setSrChannelOrderId(jsonObject.getString("channel_order_id"));
+                customerOrderItems.setSrShipmentId(jsonObject.getInt("shipment_id"));
+                customerOrderItems.setSrStatus(jsonObject.getString("status"));
+                customerOrderItems.setSrStatusCode(jsonObject.getInt("status_code"));
+                customerOrderItems.setSrAwbCode(jsonObject.getString("awb_code"));
+                customerOrderItems.setSrCourierName(jsonObject.getString("courier_name"));
+                customerOrderItems.setSrRequest("REQUEST ABHI BAKI HAIN");
+                customerOrderItems.setSrResponse(response.getBody().toString());
 
-            //Email Send
-            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
-            emailHtmlPayload.setSubject("Your Order is On Its Way! Shoppers");
-            emailHtmlPayload.setStatus("SUCCESS");
-            emailHtmlPayload.setRole("CUSTOMER");
-            emailHtmlPayload.setAreaMode("DELIVERY STATUS");
-            emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
+                orderItemsRepository.save(customerOrderItems);
 
-            Map<String,String> emailData = new HashMap<>();
-            emailData.put("customerName",customerOrderItems.getCustomerName());
-            emailData.put("orderNumber",customerOrderItems.getCustomOrderNumber());
-            emailData.put("productName",customerOrderItems.getProductName());
-            emailData.put("quantity",customerOrderItems.getQuantity());
-            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
-            emailData.put("productPrice",customerOrderItems.getProductPrice());
-            emailData.put("estimatedDeliveryDate",customerOrderItems.getOrderDateTime());
-            emailData.put("courierPartner",customerOrderItems.getCourierName());
-            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
-            emailData.put("companyName" , "Shoppers");
-            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(emailData);
-            emailHtmlPayload.setHtmlContent(shippingTemplate);
+            }
 
-            //emailService.sendHtmlMail(emailHtmlPayload);
-            log.info("Email Sent Success| Shipping");
+
+
+//            //Email Send
+//            EmailHtmlPayload emailHtmlPayload = new EmailHtmlPayload();
+//            emailHtmlPayload.setSubject("Your Order is On Its Way! Shoppers");
+//            emailHtmlPayload.setStatus("SUCCESS");
+//            emailHtmlPayload.setRole("CUSTOMER");
+//            emailHtmlPayload.setAreaMode("DELIVERY STATUS");
+//            emailHtmlPayload.setRecipient("amansaini1407@gmail.com");
+//
+//            Map<String,String> emailData = new HashMap<>();
+//            emailData.put("customerName",customerOrderItems.getCustomerName());
+//            emailData.put("orderNumber",customerOrderItems.getCustomOrderNumber());
+//            emailData.put("productName",customerOrderItems.getProductName());
+//            emailData.put("quantity",customerOrderItems.getQuantity());
+//            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
+//            emailData.put("productPrice",customerOrderItems.getProductPrice());
+//            emailData.put("estimatedDeliveryDate",customerOrderItems.getOrderDateTime());
+//            emailData.put("courierPartner",customerOrderItems.getCourierName());
+//            emailData.put("trackingNumber",customerOrderItems.getOrderTrackingId());
+//            emailData.put("companyName" , "Shoppers");
+//            String shippingTemplate = SellerEmailConstants.generateOrderShippedEmail(emailData);
+//            emailHtmlPayload.setHtmlContent(shippingTemplate);
+//
+//            //emailService.sendHtmlMail(emailHtmlPayload);
+//            log.info("Email Sent Success| Shipping");
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -101,25 +125,6 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
         }
     }
 
-    @Override
-    public ResponseEntity<?> updateDeliveryStatus(DeliveryStatusUpdateDto deliveryStatusUpdateDto) {
-        try {
-            log.info("===> updateDeliveryStatus Flying");
-            CustomerOrderItems customerOrderItems = this.orderItemsRepository
-                    .findById(Long.valueOf(deliveryStatusUpdateDto.getOrderItemId()))
-                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.ORDER_ITEM_NOT_FOUND));
-
-            customerOrderItems.setDeliveryStatus(deliveryStatusUpdateDto.getUpdateDeliveryStatus());
-            this.orderItemsRepository.save(customerOrderItems);
-
-            return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_SAVED_SUCCESS , CustMessageResponse.SUCCESS);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
-        }
-    }
 
     @Override
     public ResponseEntity<?> getDeliveryDetailsById(Long id) {
@@ -129,11 +134,6 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
                                                     .orElseThrow(() -> new RuntimeException(
                                                             SellerMessageResponse.ORDER_ITEM_NOT_FOUND));
             DeliveryStatusDto deliveryStatusDto = new DeliveryStatusDto();
-            deliveryStatusDto.setTackerId(customerOrderItems.getOrderTrackingId());
-            deliveryStatusDto.setDeliveryStatus(customerOrderItems.getDeliveryStatus());
-            deliveryStatusDto.setOrderItemId(String.valueOf(customerOrderItems.getId()));
-            deliveryStatusDto.setDeliveryDateTime(customerOrderItems.getDeliveryDateTime());
-
             return ResponseGenerator.generateSuccessResponse(deliveryStatusDto , CustMessageResponse.SUCCESS);
         }
         catch (Exception e)
@@ -143,17 +143,7 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
         }
     }
 
-    public static String generateInvoiceNumber() {
-        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        // Generate 8-digit random number (from 10000000 to 99999999)
-        int random = (int)(Math.random() * 90000000) + 10000000;
-        return "INV-" + date + "-" + random;
-    }
 
-    public static String getInvoiceDateTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        return formatter.format(new Date());
-    }
 
 
 

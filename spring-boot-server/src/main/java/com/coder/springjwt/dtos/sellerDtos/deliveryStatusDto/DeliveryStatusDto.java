@@ -5,31 +5,32 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class DeliveryStatusDto {
 
+    @NotNull(message = "Product Length cannot be null")
+    @NotBlank(message = "Product Length cannot be empty")
+    private String productLength;
 
-    @NotNull(message = "Delivery status cannot be null")
-    @NotBlank(message = "Delivery status cannot be empty")
-//    @Pattern(regexp = "PENDING|SHIPPED|DELIVERED", message = "Invalid delivery status. Allowed values: PENDING, SHIPPED, DELIVERED")
-    private String deliveryStatus;
+    @NotNull(message = "Product Breadth cannot be null")
+    @NotBlank(message = "Product Breadth cannot be empty")
+    private String productBreadth;
 
-    @NotNull(message = "deliveryDateTime cannot be null")
-    @NotBlank(message = "deliveryDateTime cannot be empty")
-    private String deliveryDateTime;
+    @NotNull(message = "Product Height cannot be null")
+    @NotBlank(message = "Product Height cannot be empty")
+    private String productHeight;
 
-    @NotNull(message = "tackerId cannot be null")
-    @NotBlank(message = "tackerId cannot be empty")
-    private String tackerId;
+    @NotNull(message = "Product Weight cannot be null")
+    @NotBlank(message = "Product Weight cannot be empty")
+    private String productWeight;
 
-    @NotNull(message = "orderItemId  cannot be null")
-    @NotBlank(message = "orderItemId cannot be empty")
+    @NotNull(message = "Order Item cannot be null")
+    @NotBlank(message = "Order Item cannot be empty")
     private String orderItemId;
 
-    @NotNull(message = "courierName  cannot be null")
-    @NotBlank(message = "courierName cannot be empty")
-    private String courierName;
 }

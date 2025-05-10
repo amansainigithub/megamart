@@ -45,8 +45,6 @@ public class CustomerOrderItems extends BaseEntity {
 
     private String paymentStatus;
 
-
-
     private String userId;
 
     private String paymentMode;
@@ -65,40 +63,46 @@ public class CustomerOrderItems extends BaseEntity {
     private String addressLine1;
     private String addressLine2;
     private boolean defaultAddress;
+    private String city;
+    private String state;
 
     //Delivery Data
     private String deliveryStatus;
-
-    private String orderTrackingId;
-
-    private String deliveryDateTime;
-
-    private String courierName;
-
+//
     private String orderDateTime;
-
-    private String invoiceNumber;
-
-    private String invoiceDateTime;
 
     //Razorpay Fees And status
     private String razorpayFees;
     private String razorpayGst;
     private String razorpayTotalFees;
     private String razorpayFinalAmt;
-
     private String refundStatus;
     private String refundRequestDateTime;
     private String refundProcessedDateTime;
     private String refundId;
-
-
     @Column(length = 2000)
     private String refundResponse;
-
     @Column(length = 500)
     private String cancelReason;
     //Refund Var Ending
+
+
+
+    //ShipRocket Parameter
+    private int srOrderId;
+    private String srChannelOrderId;
+    private int srShipmentId;
+    private String srStatus;
+    private String srAwbCode;
+    private String srCourierName;
+    private int srStatusCode;
+    @Lob
+    @Column(length = 3000)
+    private String srRequest;
+    @Column(length = 500)
+    private String srResponse;
+    //ShipRocket Parameter
+
 
     //By Default is Rating =  N
     private boolean isRating = Boolean.FALSE;

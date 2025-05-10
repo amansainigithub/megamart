@@ -209,6 +209,8 @@ public class AddressServiceImple implements  AddressService {
              customerAddress.setMobileNumber(addressDto.getMobileNumber());
              customerAddress.setArea(addressDto.getArea());
              customerAddress.setPostalCode(addressDto.getPostalCode());
+             customerAddress.setCity(addressDto.getCity());
+             customerAddress.setState(addressDto.getState());
              customerAddress.setAddressLine1(addressDto.getAddressLine1());
              customerAddress.setAddressLine2(addressDto.getAddressLine2());
              customerAddress.setUser(user);

@@ -433,6 +433,8 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setPostalCode(customerAddress.getPostalCode());
                 customerOrderItems.setAddressLine1(customerAddress.getAddressLine1());
                 customerOrderItems.setAddressLine2(customerAddress.getAddressLine2());
+                customerOrderItems.setCity(customerAddress.getCity());
+                customerOrderItems.setState(customerAddress.getState());
 
                 //Calculated Razorpay Tax Starting
                 //Calculated BASE FEES
@@ -609,6 +611,8 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setPostalCode(customerAddress.getPostalCode());
                 customerOrderItems.setAddressLine1(customerAddress.getAddressLine1());
                 customerOrderItems.setAddressLine2(customerAddress.getAddressLine2());
+                customerOrderItems.setCity(customerAddress.getCity());
+                customerOrderItems.setState(customerAddress.getState());
 
                 //Set Customer Order
                 customerOrderItems.setCustomerOrders(customerOrders);

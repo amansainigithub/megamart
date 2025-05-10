@@ -100,18 +100,19 @@ public class OrderServiceImple implements OrderService {
                         }
 
                         try {
-                            // Create date formatter
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
-                            String deliveredDateString = order.getDeliveryDateTime();
-                            LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
-                            LocalDateTime returnExpiryDate = deliveredDate.plusDays(7);
-                            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
-
-                            if (daysLeft >= 0) {
-                                itemsDto.setReturnMessage("Exchange available till " + daysLeft + " days");
-                            } else {
-                                itemsDto.setReturnMessage("0");
-                            }
+//                            // Create date formatter
+//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+//                            String deliveredDateString = order.getDeliveryDateTime();
+//                            LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
+//                            LocalDateTime returnExpiryDate = deliveredDate.plusDays(7);
+//                            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
+//
+//                            if (daysLeft >= 0) {
+//                                itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
+//                            } else {
+//                                itemsDto.setReturnMessage("0");
+//                            }
+                            itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
 
                         } catch (Exception e) {
                             itemsDto.setReturnMessage("Delivery date invalid");
@@ -172,7 +173,7 @@ public class OrderServiceImple implements OrderService {
             if(customerOrderItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString())) {
 
             // Change Delivery  Status to CustomerOrderItems
-            customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
+//            customerOrderItems.setDeliveryStatus(DeliveryStatus.RETURN.toString());
 
             //SET Payment Mode and Delivery Status and Customer Order Data
             customerReturnExchangeOrders.setPaymentMode(customerOrderItems.getPaymentMode());
@@ -212,7 +213,7 @@ public class OrderServiceImple implements OrderService {
                                         .findById(exchangeRequestDto.getOrderItemId())
                                         .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
 
-            customerOrderItems.setDeliveryStatus(DeliveryStatus.EXCHANGE.toString());
+//            customerOrderItems.setDeliveryStatus(DeliveryStatus.EXCHANGE.toString());
 
             CustomerReturnExchangeOrders customerReturnExchangeOrders = new CustomerReturnExchangeOrders();
             customerReturnExchangeOrders.setExchangeReason(exchangeRequestDto.getExchangeReason());

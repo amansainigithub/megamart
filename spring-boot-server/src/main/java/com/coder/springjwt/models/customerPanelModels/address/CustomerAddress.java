@@ -26,6 +26,10 @@ public class CustomerAddress {
     private String username;
     private long userId;
 
+    private String city;
+    private String state;
+
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "customerId")

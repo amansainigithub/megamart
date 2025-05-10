@@ -22,12 +22,6 @@ public class DeliveryStatusController {
         return this.deliveryStatusService.updatePendingDeliveryStatus(deliveryStatusDto);
     }
 
-    @PostMapping(SellerUrlMappings.UPDATE_DELIVERY_STATUS)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> updateDeliveryStatus(@RequestBody DeliveryStatusUpdateDto deliveryStatusUpdateDto) {
-        return this.deliveryStatusService.updateDeliveryStatus(deliveryStatusUpdateDto);
-    }
-
 
     @GetMapping(SellerUrlMappings.GET_DELIVERY_DETAILS_BY_ID)
     @PreAuthorize("hasRole('SELLER')")

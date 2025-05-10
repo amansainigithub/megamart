@@ -11,7 +11,6 @@ public interface DeliveryStatusService {
 
         ResponseEntity<?> updatePendingDeliveryStatus(DeliveryStatusDto deliveryStatusDto);
 
-        ResponseEntity<?> updateDeliveryStatus(DeliveryStatusUpdateDto deliveryStatusUpdateDto);
 
         ResponseEntity<?> getDeliveryDetailsById(Long id);
 

@@ -91,9 +91,9 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
 
 
             invoiceDto.setPaymentMode(orderItems.getPaymentMode());
-            invoiceDto.setInvoiceNumber(orderItems.getInvoiceNumber());
-            invoiceDto.setInvoiceDate(orderItems.getInvoiceDateTime());
-            invoiceDto.setOrderDate(orderItems.getOrderDateTime());
+//            invoiceDto.setInvoiceNumber(orderItems.getInvoiceNumber());
+//            invoiceDto.setInvoiceDate(orderItems.getInvoiceDateTime());
+//            invoiceDto.setOrderDate(orderItems.getOrderDateTime());
             invoiceDto.setOrderNumber(orderItems.getCustomOrderNumber());
 
 
