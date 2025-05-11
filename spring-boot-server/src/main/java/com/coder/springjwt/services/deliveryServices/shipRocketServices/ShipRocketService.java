@@ -22,4 +22,6 @@ public interface ShipRocketService {
 
     ResponseEntity<String> cancelOrders(List<Integer> orderIds);
 
+    ResponseEntity<String> getTrackingUrl(String awbCode);
+
 }

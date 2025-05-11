@@ -3,11 +3,13 @@ package com.coder.springjwt.services.deliveryServices.shipRocketServices.imple;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.CreateOrderRequestSRDto;
 import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.OrderItem;
+import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -190,25 +192,147 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
 
 
-    //CORN JOBS
-    @Scheduled(cron = "*/5 * * * * *")
-    public void trackShipments() {
 
+    public ResponseEntity<String> getTrackingUrl(String awbCode) {
         try {
-            List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
-            for(CustomerOrderItems  si : shippedItems)
-            {
-                System.out.println("---------------------------------------");
-                System.out.println("ID :: " + si.getId());
-                System.out.println("SHIP-ROCKET ID :: " + si.getDeliveryStatus());
-                System.out.println("---------------------------------------");
+            String url = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/" + awbCode;
+
+            // Headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(TOKEN);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            // Make the request
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                return response;
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            return null;
         }
+        return null;
     }
+
+
+
+
+
+    //CORN JOBS
+//    @Scheduled(cron = "*/5 * * * * *") // 5 SEC
+//    @Scheduled(cron = "0 0/30 * * * *") //30 MINUTES
+//
+//    @Scheduled(cron = "0 0 * * * *")  //1 HOUR
+    @Scheduled(cron = "0 * * * * *") //1 MINUTE
+    public void trackShipments() {
+         String trackingUrl = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
+
+        try {
+            System.out.println("-----------------------------------------------------");
+            List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
+
+            if (shippedItems.isEmpty())
+            {
+                System.out.println("Shipped Items Empty...");
+                return;
+            }
+
+            for (CustomerOrderItems si : shippedItems) {
+                String currentTrackingUrl = trackingUrl + si.getSrAwbCode();
+                RestTemplate restTemplate = new RestTemplate();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setBearerAuth(TOKEN);
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+
+                ResponseEntity<String> response = restTemplate.exchange(currentTrackingUrl,
+                                                                        HttpMethod.GET,
+                                                                        entity,
+                                                                        String.class);
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    System.out.println("ID :: " + si.getId());
+                    System.out.println("ORDER ITEM ID :: " + si.getOrderIdPerItem());
+                    System.out.println("SHIP-ROCKET STATUS :: " + si.getDeliveryStatus());
+                    System.out.println("API RESPONSE :: " + response.getBody());
+
+                    String responseBody = response.getBody();
+                    JSONObject jsonObject = new JSONObject(responseBody);
+                    JSONObject trackingData = jsonObject.getJSONObject("tracking_data");
+                    JSONArray activities = trackingData.getJSONArray("shipment_track_activities");
+
+                    for (int i = 0; i < activities.length(); i++) {
+                        JSONObject activity = activities.getJSONObject(i);
+                        String statusLabel = activity.getString("sr-status-label");
+
+                        if("OUT FOR DELIVERY".equalsIgnoreCase(statusLabel) &&
+                           !DeliveryStatus.OUT_OF_DELIVERY.toString().equalsIgnoreCase(si.getDeliveryStatus()))
+                        {
+                            if ("OUT FOR DELIVERY".equalsIgnoreCase(statusLabel)) {
+                                String date = activity.getString("date");
+                                String status = activity.getString("status");
+                                String location = activity.getString("location");
+                                System.out.println("Status: OUT FOR DELIVERY, Date: " + date + ", Location: " + location);
+
+                                si.setDeliveryStatus(DeliveryStatus.OUT_OF_DELIVERY.toString());
+                                si.setSrStatus(DeliveryStatus.OUT_OF_DELIVERY.toString());
+                                orderItemsRepository.save(si);
+                                log.info("Order Item OUT FOR DELIVERY Update Success");
+                            }
+                        }
+
+
+                        if("DELIVERED".equalsIgnoreCase(statusLabel) &&
+                                !DeliveryStatus.DELIVERED.toString().equalsIgnoreCase(si.getDeliveryStatus())){
+
+                            if ("DELIVERED".equalsIgnoreCase(statusLabel)) {
+                                String date = activity.getString("date");
+                                String status = activity.getString("status");
+                                String location = activity.getString("location");
+                                System.out.println("Status: DELIVERED, Date: " + date + ", Location: " + location);
+
+                                si.setDeliveryStatus(DeliveryStatus.DELIVERED.toString());
+                                si.setSrStatus(DeliveryStatus.DELIVERED.toString());
+                                orderItemsRepository.save(si);
+                                log.info("Order Item DELIVERED Update Success");
+                            }
+                        }
+
+//                        //Checking
+//                        if("NA".equalsIgnoreCase(statusLabel) &&
+//                                !DeliveryStatus.DELIVERED.toString().equalsIgnoreCase(si.getDeliveryStatus())){
+//
+//
+//                                String date = activity.getString("date");
+//                                String status = activity.getString("status");
+//                                String location = activity.getString("location");
+//                                System.out.println("Status: DELIVERED, Date: " + date + ", Location: " + location);
+//
+//                                si.setDeliveryStatus(DeliveryStatus.DELIVERED.toString());
+//                                si.setSrStatus(DeliveryStatus.DELIVERED.toString());
+//                                orderItemsRepository.save(si);
+//                                log.info("Order Item DELIVERED Update Success");
+//
+//                        }
+
+                    }
+                }
+                System.out.println("-----------------------------------------------------");
+            }
+
+        } catch (Exception e) {
+            System.err.println("FAILED TO FETCH SHIPPED ITEMS OR PROCESS THEM: " + e.getMessage());
+        }
+
+    }
+
+
 
 
 

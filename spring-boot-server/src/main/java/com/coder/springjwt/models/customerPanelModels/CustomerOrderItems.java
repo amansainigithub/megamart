@@ -100,6 +100,7 @@ public class CustomerOrderItems extends BaseEntity {
     private String srCourierName;
     private int srStatusCode;
     private String srEtd;
+    private String srTrackerUrl;
 
     @Lob
     @Column(length = 3000)

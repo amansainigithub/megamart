@@ -69,6 +69,7 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
                                              customerOrderItems.getProductId());
 
             ResponseEntity<String> response = shipRocketServiceImple.createOrder(customerOrderItems, productVariant, deliveryStatusDto);
+            System.out.println(response.toString());
             if (response == null)
             {
                 throw new RuntimeException(SellerMessageResponse.SOMETHING_WENT_WRONG);
@@ -171,13 +172,24 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
                 customerOrderItems.setSrAwbCode(awb);
                 customerOrderItems.setSrCourierName(courier);
                 customerOrderItems.setSrEtd(etd);
-                customerOrderItems.setSrCourierName(status);
+                customerOrderItems.setSrStatus(status);
 
                 //Set Delivery Status
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.SHIPPED.toString());
 
+
+                //Get Delivery Tracker URL
+                ResponseEntity<String> tracking = this.shipRocketServiceImple.getTrackingUrl(awb);
+                JSONObject trackerBody = new JSONObject(tracking.getBody());
+                JSONObject trackingData = trackerBody.getJSONObject("tracking_data");
+                String track_url = trackingData.getString("track_url");
+                customerOrderItems.setSrTrackerUrl(track_url);
+
                 //save Customer Order Items
                 orderItemsRepository.save(customerOrderItems);
+
+
+
 
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.AWB_MAPPED_SUCCESS, CustMessageResponse.SUCCESS);
             }
@@ -192,6 +204,9 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
 
         }
     }
+
+
+
 
 
 }

@@ -70,7 +70,8 @@ public class CustomerOrderItemDTO {
 
     private String deliveryDateTime;
 
-    private String courierName;
+    private String srCourierName;
+    private String srTrackerUrl;
 
 
     //Razorpay Fees And status
