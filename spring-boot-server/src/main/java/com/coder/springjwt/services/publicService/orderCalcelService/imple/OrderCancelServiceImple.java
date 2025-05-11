@@ -13,15 +13,18 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.services.PaymentsServices.razorpay.imple.RazorpayServiceImple;
+import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
 import com.coder.springjwt.services.publicService.orderCalcelService.OrderCancelService;
 import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -41,6 +44,9 @@ public class OrderCancelServiceImple implements OrderCancelService {
     @Autowired
     private RazorpayServiceImple razorpayServiceImple;
 
+    @Autowired
+    private ShipRocketService shipRocketService;
+
 
 
     @Override
@@ -57,6 +63,7 @@ public class OrderCancelServiceImple implements OrderCancelService {
                                                 cancelOrderDto.getId(),
                                                 String.valueOf(user.getId()),
                                                 cancelOrderDto.getCustomerOrderNumber(),
+                                                DeliveryStatus.PENDING.toString(),
                                                 cancelOrderDto.getRazorpayOrderId());
 
             if (cancelItems == null)
@@ -64,30 +71,64 @@ public class OrderCancelServiceImple implements OrderCancelService {
                 throw new RuntimeException("Unable to cancel order. Order details not found.");
             }
 
-
-            //Set Cancel Order Properties
-            cancelItems.setDeliveryStatus(DeliveryStatus.CANCELLED.toString());
-            cancelItems.setCancelReason(cancelOrderDto.getCancelReason());
-            cancelItems.setRefundRequestDateTime(LocalDateTime.now().toString());
-
-            if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()) )
+            if(cancelItems.getSrOrderId() == 0)
             {
-                cancelItems.setRefundStatus(RefundStatus.REFUND_PENDING.toString());
+                //Set Cancel Order Properties
+                cancelItems.setDeliveryStatus(DeliveryStatus.CANCELLED.toString());
+                cancelItems.setCancelReason(cancelOrderDto.getCancelReason());
+                cancelItems.setRefundRequestDateTime(LocalDateTime.now().toString());
+
+                if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()) )
+                {
+                    cancelItems.setRefundStatus(RefundStatus.REFUND_PENDING.toString());
+                }
+                else if (cancelItems.getPaymentMode().equals(PaymentModeStatus.COD.toString()))
+                {
+                    cancelItems.setRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
+                }
+
+                //Save To Cancel Order Items To DB
+                this.orderItemsRepository.save(cancelItems);
+                log.info("Order Cancel | ShipRocket Order Current Not Generated | Success");
+                return ResponseGenerator.generateSuccessResponse("Order Cancel Success" ,CustMessageResponse.SUCCESS);
             }
-            else if (cancelItems.getPaymentMode().equals(PaymentModeStatus.COD.toString()))
-            {
-                cancelItems.setRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
+            else if(cancelItems.getSrOrderId() != 0) {
+
+                ResponseEntity<String> response = this.shipRocketService.cancelOrders(List.of(cancelItems.getSrOrderId()));
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+
+                    //Set Cancel Order Properties
+                    cancelItems.setDeliveryStatus(DeliveryStatus.CANCELLED.toString());
+                    cancelItems.setCancelReason(cancelOrderDto.getCancelReason());
+                    cancelItems.setRefundRequestDateTime(LocalDateTime.now().toString());
+
+                    if(cancelItems.getPaymentMode().equals(PaymentModeStatus.ONLINE.toString()) )
+                    {
+                        cancelItems.setRefundStatus(RefundStatus.REFUND_PENDING.toString());
+                        cancelItems.setSrStatus(DeliveryStatus.CANCELLED.toString());
+                    }
+                    else if (cancelItems.getPaymentMode().equals(PaymentModeStatus.COD.toString()))
+                    {
+                        cancelItems.setRefundStatus(RefundStatus.REFUND_COMPLETED.toString());
+                    }
+
+                    //Save To Cancel Order Items To DB
+                    this.orderItemsRepository.save(cancelItems);
+                    log.info("Order Cancel | ShipRocket Order Cancel | Success");
+                    return ResponseGenerator.generateSuccessResponse("Order Cancel Success" ,CustMessageResponse.SUCCESS);
+            }
+            }
+            else{
+                throw new RuntimeException("Order Cancel Failed | OR Error in ShipRocket API");
             }
 
-            //Save To Cancel Order Items To DB
-            this.orderItemsRepository.save(cancelItems);
-
-            return ResponseGenerator.generateSuccessResponse("Cancel Order Success" ,CustMessageResponse.SUCCESS);
         }  catch (Exception e)
         {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
         }
+        return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
     }
 
 

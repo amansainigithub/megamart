@@ -15,6 +15,8 @@ public class SellerMessageResponse {
     public static final String ALREADY_VERIFIED = "Already Verified";
     public static final String DATA_NOT_FOUND = "Data Not Found";
 
+
+
     public static final String DATA_NOT_SAVED = "Data Not Saved";
 
     public static final String USER_NOT_FOUND = "User Not Found";
@@ -99,6 +101,10 @@ public class SellerMessageResponse {
     public static final String UNABLE_TO_GENERATE_SKU = "Unable to generate unique SKU code";
 
     public static final String ORDER_ITEM_NOT_FOUND ="Order Item Not Found";
+
+    public static final String COULD_NOT_GENERATE_AWB = "could not generate awb number..";
+
+    public static final String AWB_MAPPED_SUCCESS = "AWB mapped Success...";
 
 
 }

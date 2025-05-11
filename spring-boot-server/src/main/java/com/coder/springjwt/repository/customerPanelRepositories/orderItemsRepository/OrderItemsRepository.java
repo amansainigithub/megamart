@@ -60,10 +60,12 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
             "WHERE coi.id = :id " +
             "AND coi.userId = :userId " +
             "AND coi.customOrderNumber = :customOrderNumber " +
+            "AND coi.deliveryStatus = :deliveryStatus " +
             "AND coi.razorpayOrderId = :razorpayOrderId ")
     CustomerOrderItems findByCancelOrder(@Param("id") String id,
                                          @Param("userId") String userId ,
                                          @Param("customOrderNumber") String customOrderNumber,
+                                         @Param("deliveryStatus") String deliveryStatus,
                                          @Param("razorpayOrderId") String razorpayOrderId);
 
 

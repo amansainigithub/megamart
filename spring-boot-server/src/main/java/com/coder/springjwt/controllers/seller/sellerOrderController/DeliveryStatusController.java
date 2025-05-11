@@ -29,6 +29,12 @@ public class DeliveryStatusController {
         return this.deliveryStatusService.getDeliveryDetailsById(id);
     }
 
+    @PostMapping(SellerUrlMappings.AWB_NUMBER_MAPPING)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> awbNumberMapping(@PathVariable Long id) {
+        return this.deliveryStatusService.awbNumberMapping(id);
+    }
+
 
 
 

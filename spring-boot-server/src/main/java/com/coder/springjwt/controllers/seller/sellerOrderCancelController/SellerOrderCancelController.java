@@ -29,4 +29,11 @@ public class SellerOrderCancelController {
         return this.sellerCancelOrderService.sellerOrderRefundRequest(refundRequestDto);
     }
 
+    @PostMapping(SellerUrlMappings.SELLER_CANCEL_ORDERS)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> sellerCancelOrders(@PathVariable long id) {
+        return this.sellerCancelOrderService.sellerCancelOrders(id);
+    }
+
+
 }

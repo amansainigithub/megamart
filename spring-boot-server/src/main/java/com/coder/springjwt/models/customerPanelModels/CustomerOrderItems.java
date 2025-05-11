@@ -96,6 +96,7 @@ public class CustomerOrderItems extends BaseEntity {
     private String srAwbCode;
     private String srCourierName;
     private int srStatusCode;
+    private String srEtd;
     @Lob
     @Column(length = 3000)
     private String srRequest;

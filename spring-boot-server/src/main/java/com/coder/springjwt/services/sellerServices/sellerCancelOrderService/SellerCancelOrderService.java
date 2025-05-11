@@ -9,4 +9,6 @@ public interface SellerCancelOrderService {
     ResponseEntity<?> sellerCancelOrdersFetch(Integer page, Integer size);
 
     ResponseEntity<?> sellerOrderRefundRequest(RefundRequestDto refundRequestDto);
+
+    ResponseEntity<?> sellerCancelOrders(long id);
 }

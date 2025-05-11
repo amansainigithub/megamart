@@ -6,6 +6,7 @@ import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.Sell
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
+import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
@@ -32,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -143,8 +145,53 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> awbNumberMapping(Long id) {
+        log.info("awbNumberMapping Flying...");
+        try {
+            CustomerOrderItems customerOrderItems = this.orderItemsRepository.findById(id)
+                                                    .orElseThrow(() -> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+            ResponseEntity<String> response = shipRocketServiceImple.orderDetails(customerOrderItems.getSrOrderId());
+            JSONObject jsonObject = new JSONObject(response.getBody());
+            JSONObject data = jsonObject.getJSONObject("data");
+            JSONObject shipments = data.getJSONObject("shipments");
 
+            String awb = shipments.optString("awb", "null");
+            String courier = shipments.optString("courier", "null");
+            String etd = shipments.optString("etd", "null");
+            String status = shipments.optString("status", "null");
 
+            if(awb != "null")
+            {
+                System.out.println("AWB Number: " + awb);
+                System.out.println("Courier: " + courier);
+                System.out.println("Delivered Date: " + etd);
+                System.out.println("Status: " + status);
+
+                customerOrderItems.setSrAwbCode(awb);
+                customerOrderItems.setSrCourierName(courier);
+                customerOrderItems.setSrEtd(etd);
+                customerOrderItems.setSrCourierName(status);
+
+                //Set Delivery Status
+                customerOrderItems.setDeliveryStatus(DeliveryStatus.SHIPPED.toString());
+
+                //save Customer Order Items
+                orderItemsRepository.save(customerOrderItems);
+
+                return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.AWB_MAPPED_SUCCESS, CustMessageResponse.SUCCESS);
+            }
+            else {
+                throw new RuntimeException(SellerMessageResponse.COULD_NOT_GENERATE_AWB);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(e.getMessage() , SellerMessageResponse.FAILED);
+
+        }
+    }
 
 
 }

@@ -6,6 +6,9 @@ import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVarian
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+
 @Component
 public interface ShipRocketService {
 
@@ -15,6 +18,8 @@ public interface ShipRocketService {
                                   DeliveryStatusDto deliveryStatusDto);
 
 
+    ResponseEntity<String> orderDetails(int orderId);
 
+    ResponseEntity<String> cancelOrders(List<Integer> orderIds);
 
 }

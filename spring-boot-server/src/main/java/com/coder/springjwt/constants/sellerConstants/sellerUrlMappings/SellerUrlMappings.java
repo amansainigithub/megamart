@@ -258,13 +258,16 @@ public class SellerUrlMappings {
     public static final String GET_OUT_OF_DELIVERY_ORDER_ONE_BY_ONE_BY_SELLER="/getOutOfDeliveryOrderOneByOneBySeller";
     public static final String GET_DELIVERED_ORDER_ONE_BY_ONE_BY_SELLER="/getDeliveredOrderOneByOneBySeller";
 
+
+
+
     //Delivery Status Controller
     public static final String DELIVERY_STATUS_CONTROLLER = SELLER_AUTH_URL +"/deliveryStatusController";
     public static final String UPDATE_PENDING_DELIVERY_STATUS="/updatePendingDeliveryStatus";
-
-    public static final String UPDATE_DELIVERY_STATUS="/updateDeliveryStatus";
-
     public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
+
+    public static final String AWB_NUMBER_MAPPING="/awbNumberMapping/{id}";
+
 
 
 
@@ -273,6 +276,9 @@ public class SellerUrlMappings {
     public static final String SELLER_CANCEL_ORDER_CONTROLLER = SELLER_AUTH_URL +"/sellerCancelOrderController";
     public static final String  SELLER_CANCEL_ORDERS_FETCH= "/sellerCancelOrdersFetch";
     public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
+
+    public static final String  SELLER_CANCEL_ORDERS= "/sellerCancelOrders/{id}";
+
 
 
     //return Orders Controller

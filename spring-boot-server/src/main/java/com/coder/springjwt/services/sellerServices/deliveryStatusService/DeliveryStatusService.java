@@ -15,4 +15,5 @@ public interface DeliveryStatusService {
         ResponseEntity<?> getDeliveryDetailsById(Long id);
 
 
+    ResponseEntity<?> awbNumberMapping(Long id);
 }

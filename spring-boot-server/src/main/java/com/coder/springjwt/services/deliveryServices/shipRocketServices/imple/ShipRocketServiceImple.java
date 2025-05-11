@@ -11,12 +11,13 @@ import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
+
 import org.springframework.http.*;
 
 @Service
@@ -24,7 +25,7 @@ import org.springframework.http.*;
 public class ShipRocketServiceImple implements ShipRocketService {
 
     private final String API_URL = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
-    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1MTI5NTMsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NDkxMzcwLCJqdGkiOiJyNGVHTnc5Mm9HYUdjSGZaIiwiaWF0IjoxNzQ2NjI3MzcwLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NjYyNzM3MCwiY2lkIjo2Mjg3NDQ5LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.OeKTbRkYaSXOG2PFOSfMrh2mDmlQz6WUVzGWcbs_5S8";
+    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjY0MzEsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NzY2MDA3LCJqdGkiOiI1Y0pqREh5eUJNdlVpSUhFIiwiaWF0IjoxNzQ2OTAyMDA3LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NjkwMjAwNywiY2lkIjo1MzY5NDM2LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.vK6TDxb-6pzykGxLUdDv9AkrJg9UNBog_m117DyuBtg";
 
 
     @Override
@@ -37,7 +38,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
            String orderDate = now.format(formatter);
 
            CreateOrderRequestSRDto cosp = new CreateOrderRequestSRDto();
-           cosp.setOrder_id(UUID.randomUUID().toString());
+           cosp.setOrder_id(customerOrderItems.getCustomOrderNumber());
            cosp.setOrder_date(orderDate);
            cosp.setPickup_location("Home");
            cosp.setComment("NO COMMENT");
@@ -121,4 +122,70 @@ public class ShipRocketServiceImple implements ShipRocketService {
            return null;
        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ResponseEntity<String> orderDetails(int orderId) {
+        try {
+            System.out.println("orderDetails JOBS");
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+            headers.set("Authorization", "Bearer " + TOKEN);
+            String URL = "https://apiv2.shiprocket.in/v1/external/orders/show/"+orderId;
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                return response;
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error while updating order status: " + e.getMessage());
+
+            return null;
+        }
+        return null;
+    }
+
+
+    public ResponseEntity<String> cancelOrders(List<Integer> orderIds) {
+        String SHIPROCKET_CANCLE_ORDER_URL = "https://apiv2.shiprocket.in/v1/external/orders/cancel";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(TOKEN);
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("ids", orderIds);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                                            SHIPROCKET_CANCLE_ORDER_URL,
+                                            HttpMethod.POST,
+                                            entity,
+                                            String.class );
+
+        return response;
+    }
+
+
+
+
+
+
+
+
+
 }
