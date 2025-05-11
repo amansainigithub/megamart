@@ -5,9 +5,11 @@ import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.CreateOrderRequestSRDto
 import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.OrderItem;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
+import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ import org.springframework.http.*;
 @Slf4j
 public class ShipRocketServiceImple implements ShipRocketService {
 
+    @Autowired
+    private OrderItemsRepository orderItemsRepository;
+
     private final String API_URL = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
     private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjY0MzEsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NzY2MDA3LCJqdGkiOiI1Y0pqREh5eUJNdlVpSUhFIiwiaWF0IjoxNzQ2OTAyMDA3LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NjkwMjAwNywiY2lkIjo1MzY5NDM2LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.vK6TDxb-6pzykGxLUdDv9AkrJg9UNBog_m117DyuBtg";
 
@@ -38,7 +43,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
            String orderDate = now.format(formatter);
 
            CreateOrderRequestSRDto cosp = new CreateOrderRequestSRDto();
-           cosp.setOrder_id(customerOrderItems.getCustomOrderNumber());
+           cosp.setOrder_id(customerOrderItems.getOrderIdPerItem());
            cosp.setOrder_date(orderDate);
            cosp.setPickup_location("Home");
            cosp.setComment("NO COMMENT");
@@ -181,6 +186,29 @@ public class ShipRocketServiceImple implements ShipRocketService {
     }
 
 
+
+
+
+
+    //CORN JOBS
+    @Scheduled(cron = "*/5 * * * * *")
+    public void trackShipments() {
+
+        try {
+            List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
+            for(CustomerOrderItems  si : shippedItems)
+            {
+                System.out.println("---------------------------------------");
+                System.out.println("ID :: " + si.getId());
+                System.out.println("SHIP-ROCKET ID :: " + si.getDeliveryStatus());
+                System.out.println("---------------------------------------");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 

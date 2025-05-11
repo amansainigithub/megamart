@@ -71,4 +71,7 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 
     CustomerOrderItems findByIdAndUserIdAndDeliveryStatus( Long id,String userId,String deliveryStatus);
 
+
+    List<CustomerOrderItems> findAllByDeliveryStatus(String deliveryStatus);
+
 }

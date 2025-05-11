@@ -421,6 +421,10 @@ public class RazorpayServiceImple implements RazorpayServices {
                 //save Sutom Order Id
                 customerOrderItems.setCustomOrderNumber(customOrderId);
 
+                //Save Order Id Number Per Items Uniquely
+                String orderNoPerItems = this.generateOrderIdPerItem();
+                customerOrderItems.setOrderIdPerItem(orderNoPerItems);
+
                 //Order Date Time
                 customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
 
@@ -599,6 +603,10 @@ public class RazorpayServiceImple implements RazorpayServices {
                 customerOrderItems.setPaymentMode(PaymentModeStatus.COD.toString());
                 customerOrderItems.setCustomOrderNumber(customOrderId);
 
+                //Save Order Id Number Per Items Uniquely
+                String orderNoPerItems = this.generateOrderIdPerItem();
+                customerOrderItems.setOrderIdPerItem(orderNoPerItems);
+
                 //Order Date Time
                 customerOrderItems.setOrderDateTime(customerOrders.getOrderDateTime());
 
@@ -662,6 +670,18 @@ public class RazorpayServiceImple implements RazorpayServices {
 
         return "ORD-" + timestamp + randomNum; // Example: ORD202503311230451234
     }
+
+    public static String generateOrderIdPerItem() {
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmss"); // Updated format: ddMMyyyy
+        String timestamp = sdf.format(new Date());
+
+        Random random = new Random();
+        int randomNum = 1000 + random.nextInt(90000); // 5-digit random number
+
+        return "ORD-" + timestamp + randomNum; // Example: ORD-1105202415301512345
+    }
+
+
 
 
 

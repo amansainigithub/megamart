@@ -43,6 +43,9 @@ public class CustomerOrderItemDTO {
 
     private String customOrderNumber;
 
+    private String orderIdPerItem;
+
+
 
 
     //Address Data
