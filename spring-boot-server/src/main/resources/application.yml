@@ -1,16 +1,16 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAUNSLK6BFCSQW774A
-      secret-key: 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
+      access-key: AKIAX3DNHQMUAJX4RMOF
+      secret-key: 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
     region:
-      static: us-east-1
+      static: ap-south-1
     stack:
       auto: false
 
 application:
   bucket:
-    name: exam-secure
+    name: shoppersclouds
 
 
 spring:

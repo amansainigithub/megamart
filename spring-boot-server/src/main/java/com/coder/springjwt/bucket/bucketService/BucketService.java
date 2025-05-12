@@ -35,34 +35,31 @@ public class BucketService {
     private final String API_KEY = "211869472659872";
     private final String API_SECRET = "jtMvpCA3CS2DviLvCH_tkFFatxY";
     private final Boolean SECURE = Boolean.TRUE;
-
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final AmazonS3 s3Client;
 
     @Autowired
-    private AmazonS3 s3Client;
+    public BucketService(AmazonS3 s3Client) {
+        this.s3Client = s3Client;
+    }
+
 
     public BucketModel uploadFile(MultipartFile file) {
-
-        if(CLOUDINARY == "cloudinary1")
-        {
-            return  this.uploadCloudinaryFile(file);
-        }
-
        try {
            File fileObj = convertMultiPartFileToFile(file);
            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
            s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
            fileObj.delete();
+           log.info("File Write Success to S3");
 
            //Creating Bucket Models
            return new BucketModel(BucketUrlMappings.BUCKET_URL + fileName,fileName);
        }
        catch (Exception e)
        {
-           //log.error("Exception : " , e);
-           //log.error("AWS Configuration Problem :::::::::::::::: {}");
+           log.error("Exception : " , e);
            return this.getRandomFile();
        }
     }

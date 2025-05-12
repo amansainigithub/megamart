@@ -506,7 +506,8 @@ public class SellerProductServiceImple implements SellerProductService {
                     String key = entry.getKey();  // The key (e.g., file0, file1, etc.)
                     MultipartFile file = entry.getValue();
 
-                    BucketService bucketService = new BucketService();
+                    //File Upload AWS Bucket
+//                    BucketService bucketService = new BucketService();
                     BucketModel bucketModel = bucketService.uploadFile(file);
 
                     ProductFiles productFiles =new ProductFiles();
@@ -526,7 +527,7 @@ public class SellerProductServiceImple implements SellerProductService {
         catch (Exception e)
         {
             e.printStackTrace();
-            return ResponseGenerator.generateDataNotFound(SellerMessageResponse.DATA_NOT_FOUND);
+            return ResponseGenerator.generateDataNotFound(SellerMessageResponse.SOMETHING_WENT_WRONG);
         }
     }
 
