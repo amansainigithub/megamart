@@ -76,7 +76,7 @@ public class PublicServiceImple implements PublicService {
         Map<Object,Object> mapNode = new HashMap<>();
 
         try {
-            //Get Hole Slider Data
+            //Get Home Slider Data
             List<HomeSliderModel> homeSliderData = this.homeSliderRepo.findAll();
 
             List<ParentCategoryModel> parentCategories = this.parentCategoryRepo.findAll();

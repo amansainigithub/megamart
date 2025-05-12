@@ -73,7 +73,6 @@ public class ProfileServiceIimple implements ProfileService {
 
             user.setFirstName(userProfileUpdatePayload.getFirstName());
             user.setLastName(userProfileUpdatePayload.getLastName());
-            user.setCustomerEmail(userProfileUpdatePayload.getEmail());
             user.setCustomerGender(userProfileUpdatePayload.getCustomerGender());
             user.setCustomerEmailVerify("N");
             this.userRepository.save(user);

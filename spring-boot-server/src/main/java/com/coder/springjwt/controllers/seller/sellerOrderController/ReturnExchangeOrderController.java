@@ -17,28 +17,6 @@ public class ReturnExchangeOrderController {
     @Autowired
     private ReturnExchnageOrderService returnExchnageOrderService;
 
-
-    @PostMapping(SellerUrlMappings.RETURN_PAYMENT_INITIATED)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> returnPaymentInitiated(@PathVariable Long id) {
-        return this.returnExchnageOrderService.returnPaymentInitiated(id);
-    }
-
-
-    @PostMapping(SellerUrlMappings.CHANGE_RETURN_DELIVERY_STATUS)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> changeReturnDeliveryStatus(@PathVariable Long id , @PathVariable String returnDeliveryStatus) {
-        return this.returnExchnageOrderService.changeReturnDeliveryStatus(id,returnDeliveryStatus);
-    }
-
-    @PostMapping(SellerUrlMappings.CHANGE_RETURN_PICKUP_DATE_TIME)
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> changeReturnPickUpDateTime(@PathVariable Long id , @PathVariable String pickupDateTime) {
-        return this.returnExchnageOrderService.changeReturnPickUpDateTime(id,pickupDateTime);
-    }
-
-
-
     @PostMapping(SellerUrlMappings.EXCHANGE_DELIVERY_STATUS)
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> exchangeDeliveryStatus(@PathVariable Long id,@PathVariable String exchangeDeliveryStatus) {

@@ -5,11 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface ReturnExchnageOrderService {
-    ResponseEntity<?> returnPaymentInitiated(Long id);
-
-    ResponseEntity<?> changeReturnDeliveryStatus(Long id, String returnDeliveryStatus);
-
-    ResponseEntity<?> changeReturnPickUpDateTime(Long id, String pickupDateTime);
 
     ResponseEntity<?> exchangeDeliveryStatus(Long id,String exchangeDeliveryStatus);
 
