@@ -290,4 +290,11 @@ public class SellerUrlMappings {
 
 
 
+    //HOUT_OF_STOCK_CONTROLLER
+    public static final String OUT_OF_STOCK_PRODUCTS_CONTROLLER = SELLER_AUTH_URL +"/outOfStockProductsController";
+    public static final String  GET_OUT_OF_STOCK_PRODUCTS= "/getOutOfStockProducts";
+
+    public static final String  UPDATE_OUT_OF_STOCK_PRODUCTS= "/updateOutOfStocksProducts/{id}/{productInventory}";
+
+
 }

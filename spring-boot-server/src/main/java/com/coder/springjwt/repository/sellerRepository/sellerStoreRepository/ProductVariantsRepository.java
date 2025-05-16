@@ -1,10 +1,14 @@
 package com.coder.springjwt.repository.sellerRepository.sellerStoreRepository;
 
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ProductVariantsRepository extends JpaRepository<ProductVariants,Long> {
@@ -17,5 +21,6 @@ public interface ProductVariantsRepository extends JpaRepository<ProductVariants
     ProductVariants findByLabelAndProductId(@Param("label") String label, @Param("productId") String productId);
 
 
+    Page<ProductVariants> findByProductInventory(String productInventory , Pageable pageable);
 
 }

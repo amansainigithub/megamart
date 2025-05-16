@@ -227,8 +227,8 @@ public class ShipRocketServiceImple implements ShipRocketService {
 //    @Scheduled(cron = "*/5 * * * * *") // 5 SEC
 //    @Scheduled(cron = "0 0/30 * * * *") //30 MINUTES
 //
-//    @Scheduled(cron = "0 0 * * * *")  //1 HOUR
-    @Scheduled(cron = "0 * * * * *") //1 MINUTE
+    @Scheduled(cron = "0 0 * * * *")  //1 HOUR
+//    @Scheduled(cron = "0 * * * * *") //1 MINUTE
     public void trackShipments() {
          String trackingUrl = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
 
