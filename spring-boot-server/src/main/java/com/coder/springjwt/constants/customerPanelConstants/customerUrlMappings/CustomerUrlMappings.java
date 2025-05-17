@@ -28,12 +28,11 @@ public class CustomerUrlMappings {
 
     public static final String CATEGORY_CONTROLLER= CUSTOMER_BASE_URL + "/categoryController";
     public static final String GET_PRODUCT_CATEGORY= "/getProductCategory";
+    public static final String GET_BABY_CATEGORY_FOOTER= "/getBabyCategoryFooter";
     public static final String GET_PRODUCT_LIST_BY_CATEGORY_ID= "/getProductListByCategoryId";
     public static final String GET_PRODUCT_LIST_BY_BORN_CATEGORY_ID= "/getProductListByBornCategoryId";
     public static final String PRODUCT_WATCHING= "/productWatching";
-
     public static final String PRODUCT_SEARCHING= "/productSearching";
-
     public static final String PRODUCT_FILTER= "/productFilter";
     public static final String GET_PRODUCT_BY_ID_CUSTOMER= "/getProductByIdCustomer";
 

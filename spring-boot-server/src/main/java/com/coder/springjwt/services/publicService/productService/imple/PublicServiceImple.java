@@ -1,10 +1,7 @@
 package com.coder.springjwt.services.publicService.productService.imple;
 
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
-import com.coder.springjwt.dtos.customerPanelDtos.BabyCategoryDto;
-import com.coder.springjwt.dtos.customerPanelDtos.BornCategoryDto;
-import com.coder.springjwt.dtos.customerPanelDtos.ChildCategoryDto;
-import com.coder.springjwt.dtos.customerPanelDtos.ParentCategoryDto;
+import com.coder.springjwt.dtos.customerPanelDtos.*;
 import com.coder.springjwt.dtos.customerPanelDtos.filterDto.ProductFilterDto;
 import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
@@ -28,13 +25,11 @@ import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
 import com.coder.springjwt.services.publicService.productService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
+import jakarta.persistence.OrderBy;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -143,6 +138,25 @@ public class PublicServiceImple implements PublicService {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getBabyCategoryFooter() {
+       try {
+           List<BabyCategoryModel> babyCategories = babyCategoryRepo.
+                                        findAll(Sort.by(Sort.Direction.DESC, "creationDate"));
+
+           List<BabyCategoryFooterDto> footerCategory = babyCategories.stream()
+                                       .map(category -> modelMapper.map(category, BabyCategoryFooterDto.class))
+                                       .collect(Collectors.toList());
+
+           return ResponseGenerator.generateSuccessResponse(footerCategory, SellerMessageResponse.SUCCESS);
+       }
+       catch (Exception e)
+       {
+           e.printStackTrace();
+           return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+       }
     }
 
     @Override

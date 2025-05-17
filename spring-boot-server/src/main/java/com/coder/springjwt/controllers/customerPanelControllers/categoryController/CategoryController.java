@@ -18,6 +18,13 @@ public class CategoryController {
         return this.publicService.getProductCategoryService();
     }
 
+
+    @GetMapping(CustomerUrlMappings.GET_BABY_CATEGORY_FOOTER)
+    public ResponseEntity<?> getBabyCategoryFooter() {
+        return this.publicService.getBabyCategoryFooter();
+    }
+
+
     @GetMapping(CustomerUrlMappings.GET_PRODUCT_LIST_BY_CATEGORY_ID)
     public ResponseEntity<?> getProductListByCategoryId(@RequestParam long cI,
                                                         @RequestParam String cN,
