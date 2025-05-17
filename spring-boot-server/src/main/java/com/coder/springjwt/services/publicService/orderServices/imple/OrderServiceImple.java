@@ -21,11 +21,10 @@ import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,58 +48,74 @@ public class OrderServiceImple implements OrderService {
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity<?> getCustomerOrders(long id) {
-        log.info("<-- getCustomerOrders Flying-->");
+    public ResponseEntity<?> getCustomerOrders(long id, Integer page, Integer size) {
+        log.info("<-- getCustomerOrders Flying -->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
+            Pageable pageable = PageRequest.of(
+                    page != null ? page : 0,
+                    size != null ? size : 10,
+                    Sort.by("creationDate").descending()
+            );
 
-            List<CustomerOrderItems> orderItemsExceptDelivered = this.orderItemsRepository.findOrderItemsExceptDelivered(id);
+            // Original entity page
+            Page<CustomerOrderItems> orderItemsPage = this.orderItemsRepository.findOrderItemsExceptDelivered(id, pageable);
 
-            List<CustomerOrderItemDTO> itemsList = orderItemsExceptDelivered.stream()
-                                            .map(order -> {
-                                                    CustomerOrderItemDTO itemsDto =
-                                                            modelMapper.map(order, CustomerOrderItemDTO.class);
-                                                    return itemsDto;
-                                            })
-                                            .collect(Collectors.toList());
-            return ResponseGenerator.generateSuccessResponse(itemsList , CustMessageResponse.SUCCESS);
-        }
-        catch (Exception e)
-        {
+            // Map content to DTOs
+            List<CustomerOrderItemDTO> dtoList = orderItemsPage.getContent().stream()
+                    .map(order -> modelMapper.map(order, CustomerOrderItemDTO.class))
+                    .collect(Collectors.toList());
+
+            // Create new Page object with DTOs and same pagination metadata
+            Page<CustomerOrderItemDTO> dtoPage = new PageImpl<>(
+                    dtoList,
+                    pageable,
+                    orderItemsPage.getTotalElements()
+            );
+
+            return ResponseGenerator.generateSuccessResponse(dtoPage, CustMessageResponse.SUCCESS);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
         }
     }
 
 
+
     @Override
-    public ResponseEntity<?> getMyOrdersDelivered(long id) {
-        log.info("<-- getMyOrdersDelivered Flying-->");
+    public ResponseEntity<?> getMyOrdersDelivered(long id, Integer page, Integer size) {
+        log.info("<-- getMyOrdersDelivered Flying -->");
         try {
             String currentUser = UserHelper.getOnlyCurrentUser();
             User user = this.userRepository.findByUsername(currentUser)
                     .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
 
-            List<CustomerOrderItems> deliveredItems = this.orderItemsRepository.findOrderItemsDelivered(id);
+            Pageable pageable = PageRequest.of(
+                    page != null ? page : 0,
+                    size != null ? size : 10,
+                    Sort.by("creationDate").descending()
+            );
 
+            // Get paginated result
+            Page<CustomerOrderItems> deliveredItemsPage = this.orderItemsRepository.findOrderItemsDelivered(id, pageable);
 
-
-            List<CustomerOrderItemDTO> deliveredOrders = deliveredItems.stream()
+            // Map to DTOs
+            List<CustomerOrderItemDTO> deliveredOrders = deliveredItemsPage.getContent().stream()
                     .map(order -> {
                         CustomerOrderItemDTO itemsDto = modelMapper.map(order, CustomerOrderItemDTO.class);
 
-                        //If return Not NUll (RETURN ITEMS)
-                        if(order.getCustomerReturnExchangeOrders() != null) {
+                        // If return Not NUll (RETURN ITEMS)
+                        if (order.getCustomerReturnExchangeOrders() != null) {
                             CustomerReturnExchangeOrders customerReturnOrders = order.getCustomerReturnExchangeOrders();
                             CustomerReturnExchangeOrderDto returnOrder = modelMapper.map(customerReturnOrders, CustomerReturnExchangeOrderDto.class);
                             itemsDto.setCustomerReturnExchangeOrderDto(returnOrder);
                         }
 
                         try {
-//                            // Create date formatter
+                            // Create date formatter
 //                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
 //                            String deliveredDateString = order.getDeliveryDateTime();
 //                            LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
@@ -112,7 +127,9 @@ public class OrderServiceImple implements OrderService {
 //                            } else {
 //                                itemsDto.setReturnMessage("0");
 //                            }
-                            itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
+
+                            // OR use this line instead of logic above
+                            // itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
 
                         } catch (Exception e) {
                             itemsDto.setReturnMessage("Delivery date invalid");
@@ -122,14 +139,16 @@ public class OrderServiceImple implements OrderService {
                     })
                     .collect(Collectors.toList());
 
-            return ResponseGenerator.generateSuccessResponse(deliveredOrders , CustMessageResponse.SUCCESS);
-        }
-        catch (Exception e)
-        {
+            // Wrap DTOs into paginated response
+            Page<CustomerOrderItemDTO> dtoPage = new PageImpl<>(deliveredOrders, pageable, deliveredItemsPage.getTotalElements());
+
+            return ResponseGenerator.generateSuccessResponse(dtoPage, CustMessageResponse.SUCCESS);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
         }
     }
+
 
 
 

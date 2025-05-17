@@ -68,9 +68,9 @@ public class CustomerUrlMappings {
 
     //    #######################ORDER CONTROLLER#######################
     public static final String ORDER_CONTROLLER= CUSTOMER_BASE_URL + "/orderController";
-    public static final String GET_CUSTOMER_ORDERS= "/getCustomerOrders/{id}";
+    public static final String GET_CUSTOMER_ORDERS= "/getCustomerOrders";
     public static final String GET_CUSTOMER_ORDERS_BY_ID= "/getCustomerOrdersById/{id}";
-    public static final String GET_MY_ORDERS_DELIVERED= "/getMyOrdersDelivered/{id}";
+    public static final String GET_MY_ORDERS_DELIVERED= "/getMyOrdersDelivered";
     public static final String ORDER_RETURN_REQUEST_INITIATE= "/orderReturnRequestInitiate";
     public static final String ORDER_EXCHANGE_REQUEST_INITIATE= "/orderExchangeRequestInitiate";
 

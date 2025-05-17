@@ -30,7 +30,6 @@ public class CustomerAuthController {
 
     @PostMapping(CustomerUrlMappings.CUSTOMER_SIGN_IN)
     public ResponseEntity<?> customerAuthenticateUser(@Validated @RequestBody CustomerLoginPayload customerLoginPayload) {
-
         return customerAuthService.customerAuthenticateUser(customerLoginPayload);
     }
 

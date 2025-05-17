@@ -26,6 +26,10 @@ public class FreshSignUpPayload {
     )
     private String email;
 
+    @NotNull(message = "Gender cannot be null")
+    @NotBlank(message = "Gender cannot be blank")
+    private String gender;
+
     @NotNull
     @NotBlank
     private String username;

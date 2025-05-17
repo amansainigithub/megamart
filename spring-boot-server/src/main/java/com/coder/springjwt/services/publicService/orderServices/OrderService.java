@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface OrderService {
-    ResponseEntity<?> getCustomerOrders(long id);
+    ResponseEntity<?> getCustomerOrders(long id, Integer page, Integer size);
 
-    ResponseEntity<?> getMyOrdersDelivered(long id);
+    ResponseEntity<?> getMyOrdersDelivered(long id , Integer page, Integer size);
 
     ResponseEntity<?> getCustomerOrdersById(long id);
 

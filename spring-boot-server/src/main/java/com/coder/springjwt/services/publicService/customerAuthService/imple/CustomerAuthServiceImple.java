@@ -103,6 +103,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
                             userDetails.getEmail(),
                             user.getFirstName(),
                             user.getLastName(),
+                            user.getCustomerGender(),
                             roles));
                 }
             }
@@ -301,6 +302,7 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             //Set FirstName , LastName , EmailId
             user.setFirstName(freshSignUpPayload.getFirstName());
             user.setLastName(freshSignUpPayload.getLastName());
+            user.setCustomerGender(freshSignUpPayload.getGender());
             user.setCustomerEmail(freshSignUpPayload.getEmail());
             user.setCustomerEmailVerify("N");
 

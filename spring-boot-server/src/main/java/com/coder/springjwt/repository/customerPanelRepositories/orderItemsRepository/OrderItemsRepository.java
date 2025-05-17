@@ -17,13 +17,13 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
             "WHERE coi.userId = :customerId " +
             "AND coi.deliveryStatus IN ('PENDING' , 'SHIPPED' , 'OUT_OF_DELIVERY' , 'CANCELLED')" +
             "ORDER BY coi.creationDate DESC")
-    List<CustomerOrderItems> findOrderItemsExceptDelivered(@Param("customerId") Long customerId);
+    Page<CustomerOrderItems> findOrderItemsExceptDelivered(@Param("customerId") Long customerId , Pageable  pageable);
 
     @Query("SELECT coi FROM CustomerOrderItems coi "+
             "WHERE coi.userId = :customerId " +
             "AND coi.deliveryStatus IN ('DELIVERED','RETURN','EXCHANGE')" +
             "ORDER BY coi.creationDate DESC")
-    List<CustomerOrderItems> findOrderItemsDelivered(@Param("customerId") Long customerId);
+    Page<CustomerOrderItems> findOrderItemsDelivered(@Param("customerId") Long customerId , Pageable  pageable);
 
     @Query("SELECT coi FROM CustomerOrderItems coi "+
             "WHERE coi.userId = :userId " +
