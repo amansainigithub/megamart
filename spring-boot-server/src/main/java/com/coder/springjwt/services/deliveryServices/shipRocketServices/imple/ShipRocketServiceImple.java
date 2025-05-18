@@ -28,11 +28,16 @@ import org.springframework.http.*;
 @Slf4j
 public class ShipRocketServiceImple implements ShipRocketService {
 
+    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjY0MzEsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NzY2MDA3LCJqdGkiOiI1Y0pqREh5eUJNdlVpSUhFIiwiaWF0IjoxNzQ2OTAyMDA3LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NjkwMjAwNywiY2lkIjo1MzY5NDM2LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.vK6TDxb-6pzykGxLUdDv9AkrJg9UNBog_m117DyuBtg";
+    private final String CREATE_ORDER = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
+    private final String SHIPROCKET_CANCLE_ORDER_URL = "https://apiv2.shiprocket.in/v1/external/orders/cancel";
+    private String ORDER_DETAILS = "https://apiv2.shiprocket.in/v1/external/orders/show/";
+    private String TRACKING_URL = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
+    private String TRACK_SHIPMENTS =  "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
+
+
     @Autowired
     private OrderItemsRepository orderItemsRepository;
-
-    private final String API_URL = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
-    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjY0MzEsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NzY2MDA3LCJqdGkiOiI1Y0pqREh5eUJNdlVpSUhFIiwiaWF0IjoxNzQ2OTAyMDA3LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NjkwMjAwNywiY2lkIjo1MzY5NDM2LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.vK6TDxb-6pzykGxLUdDv9AkrJg9UNBog_m117DyuBtg";
 
 
     @Override
@@ -67,8 +72,10 @@ public class ShipRocketServiceImple implements ShipRocketService {
            orderItem.setSku(productVariant.getSkuId());
            orderItem.setUnits(Integer.parseInt(customerOrderItems.getQuantity()));
            orderItem.setSelling_price(Integer.parseInt(customerOrderItems.getProductPrice()));
-           orderItem.setDiscount(customerOrderItems.getProductDiscount().replace("%",""));
-           orderItem.setTax(productVariant.getSellerProduct().getGst().replace("%","").trim());
+//         orderItem.setDiscount(customerOrderItems.getProductDiscount().replace("%",""));
+           orderItem.setDiscount("0");
+//         orderItem.setTax(productVariant.getSellerProduct().getGst().replace("%","").trim());
+           orderItem.setTax("0");
            orderItem.setHsn(Integer.parseInt(productVariant.getSellerProduct().getHsn()));
            cosp.setOrder_items(Arrays.asList(orderItem));
 
@@ -77,7 +84,8 @@ public class ShipRocketServiceImple implements ShipRocketService {
            cosp.setShipping_charges(0);
            cosp.setGiftwrap_charges(0);
            cosp.setTransaction_charges(0);
-           cosp.setTotal_discount(Double.parseDouble(customerOrderItems.getProductDiscount().replace("%","")));
+//         cosp.setTotal_discount(Double.parseDouble(customerOrderItems.getProductDiscount().replace("%","")));
+           cosp.setTotal_discount(0);
            cosp.setSub_total( Integer.valueOf( customerOrderItems.getProductPrice()) * Integer.valueOf( customerOrderItems.getQuantity()));
            cosp.setLength(Integer.parseInt(deliveryStatusDto.getProductLength()));
            cosp.setBreadth(Integer.parseInt(deliveryStatusDto.getProductBreadth()));
@@ -91,7 +99,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
            headers.setContentType(MediaType.APPLICATION_JSON);
            headers.setBearerAuth(TOKEN);
            HttpEntity<CreateOrderRequestSRDto> entity = new HttpEntity<>(cosp, headers);
-           ResponseEntity<String> response = restTemplate.exchange( API_URL,HttpMethod.POST,entity,String.class );
+           ResponseEntity<String> response = restTemplate.exchange( CREATE_ORDER,HttpMethod.POST,entity,String.class );
 
 //           System.out.println("Response " + response);
 //           JSONObject jsonObject = new JSONObject(response.getBody());
@@ -148,11 +156,10 @@ public class ShipRocketServiceImple implements ShipRocketService {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.set("Authorization", "Bearer " + TOKEN);
-            String URL = "https://apiv2.shiprocket.in/v1/external/orders/show/"+orderId;
 
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(ORDER_DETAILS +orderId, HttpMethod.GET, requestEntity, String.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 return response;
@@ -167,7 +174,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
 
     public ResponseEntity<String> cancelOrders(List<Integer> orderIds) {
-        String SHIPROCKET_CANCLE_ORDER_URL = "https://apiv2.shiprocket.in/v1/external/orders/cancel";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -195,8 +201,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
     public ResponseEntity<String> getTrackingUrl(String awbCode) {
         try {
-            String url = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/" + awbCode;
-
             // Headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -205,7 +209,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
             // Make the request
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(TRACKING_URL + awbCode, HttpMethod.GET, entity, String.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 return response;
@@ -230,8 +234,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
     @Scheduled(cron = "0 0 * * * *")  //1 HOUR
 //    @Scheduled(cron = "0 * * * * *") //1 MINUTE
     public void trackShipments() {
-         String trackingUrl = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
-
         try {
             System.out.println("-----------------------------------------------------");
             List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
@@ -243,7 +245,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
             }
 
             for (CustomerOrderItems si : shippedItems) {
-                String currentTrackingUrl = trackingUrl + si.getSrAwbCode();
+                String currentTrackingUrl = TRACK_SHIPMENTS + si.getSrAwbCode();
                 RestTemplate restTemplate = new RestTemplate();
 
                 HttpHeaders headers = new HttpHeaders();
@@ -303,24 +305,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
                                 log.info("Order Item DELIVERED Update Success");
                             }
                         }
-
-//                        //Checking
-//                        if("NA".equalsIgnoreCase(statusLabel) &&
-//                                !DeliveryStatus.DELIVERED.toString().equalsIgnoreCase(si.getDeliveryStatus())){
-//
-//
-//                                String date = activity.getString("date");
-//                                String status = activity.getString("status");
-//                                String location = activity.getString("location");
-//                                System.out.println("Status: DELIVERED, Date: " + date + ", Location: " + location);
-//
-//                                si.setDeliveryStatus(DeliveryStatus.DELIVERED.toString());
-//                                si.setSrStatus(DeliveryStatus.DELIVERED.toString());
-//                                orderItemsRepository.save(si);
-//                                log.info("Order Item DELIVERED Update Success");
-//
-//                        }
-
                     }
                 }
                 System.out.println("-----------------------------------------------------");
