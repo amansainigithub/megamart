@@ -2,18 +2,15 @@ package com.coder.springjwt.services.sellerServices.categories.ParentCategory;
 
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
-import com.coder.springjwt.constants.redisKeys.RedisKey;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.categoriesDtos.parentDtos.ParentCategoryDto;
 import com.coder.springjwt.exception.customerPanelException.CategoryNotFoundException;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
-import com.coder.springjwt.services.redisService.RedisService;
 import com.coder.springjwt.services.sellerServices.categories.ParentCategoryService;
 import com.coder.springjwt.util.MessageResponse;
 import com.coder.springjwt.util.ResponseGenerator;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,8 +38,8 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private RedisService redisService;
+//    @Autowired
+//    private RedisService redisService;
 
 
 
@@ -83,20 +80,9 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
 
     @Override
     public ResponseEntity<?> getParentCategoryList() {
-
         try {
-            String redisData = redisService.getValue(RedisKey.PARENT_DATA);
-
-           if (redisData == null) {
-               // Fetch data from the database
                List<ParentCategoryModel> parentList = this.parentCategoryRepo.findAll();
                 return ResponseGenerator.generateSuccessResponse(parentList, SellerMessageResponse.SUCCESS);
-
-           } else {
-               // Deserialize the JSON string to a List<ParentCategoryModel>
-               List<ParentCategoryModel> parentList = objectMapper.readValue(redisData, new TypeReference<List<ParentCategoryModel>>() {});
-               return ResponseGenerator.generateSuccessResponse(parentList, SellerMessageResponse.SUCCESS);
-           }
        }
        catch (Exception e)
        {

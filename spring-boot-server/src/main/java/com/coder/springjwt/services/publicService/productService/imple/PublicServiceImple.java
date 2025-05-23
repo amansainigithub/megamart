@@ -25,7 +25,6 @@ import com.coder.springjwt.response.sellerProductResponse.SellerProductResponse;
 import com.coder.springjwt.response.sellerProductResponse.SellerProductVarientResponse;
 import com.coder.springjwt.services.publicService.productService.PublicService;
 import com.coder.springjwt.util.ResponseGenerator;
-import jakarta.persistence.OrderBy;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

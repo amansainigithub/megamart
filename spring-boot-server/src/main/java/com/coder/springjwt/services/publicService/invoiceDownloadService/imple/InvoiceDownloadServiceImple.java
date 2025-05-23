@@ -13,22 +13,19 @@ import com.coder.springjwt.repository.customerPanelRepositories.orderItemsReposi
 import com.coder.springjwt.repository.customerPanelRepositories.returnExchangeRepository.ReturnExchangeRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.services.publicService.invoiceDownloadService.InvoiceDownloadService;
-import com.coder.springjwt.util.ResponseGenerator;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.Optional;
 
 @Service
 @Slf4j

@@ -1,21 +1,16 @@
 package com.coder.springjwt.services.sellerServices.deliveryStatusService.imple;
 
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
-import com.coder.springjwt.constants.sellerConstants.sellerEmailConstants.SellerEmailConstants;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
-import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusUpdateDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
-import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
-import com.coder.springjwt.payload.emailPayloads.EmailHtmlPayload;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.ProductVariantsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
-import com.coder.springjwt.services.deliveryServices.shipRocketServices.imple.ShipRocketServiceImple;
 import com.coder.springjwt.services.emailServices.EmailService.EmailService;
 import com.coder.springjwt.services.sellerServices.deliveryStatusService.DeliveryStatusService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -24,16 +19,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
