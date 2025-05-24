@@ -3,6 +3,7 @@ package com.coder.springjwt.services.sellerServices.sellerStoreService.imple;
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
 import com.coder.springjwt.bucket.bucketService.BucketService;
 import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.ProductStatus;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.formBuilderTools.formVariableKeys.FormBuilderRoot;
@@ -52,59 +53,40 @@ public class SellerProductServiceImple implements SellerProductService {
 
     @Autowired
     private BornCategoryRepo bornCategoryRepo;
-
     @Autowired
     private HsnRepository hsnRepository;
-
     @Autowired
     private ModelMapper modelMapper;
-
-
     @Autowired
     private ProductNetQuantityRepo productNetQuantityRepo;
-
     @Autowired
     private ProductMaterialRepo productMaterialRepo;
-
     @Autowired
     private ProductSizeRepo productSizeRepo;
-
     @Autowired
     private ProductTypeRepo productTypeRepo;
-
     @Autowired
     private UserRepository userRepository;
-
-
     @Autowired
     private BucketService bucketService;
-
     @Autowired
     private ProductLengthRepo productLengthRepo;
-
     @Autowired
     private GstPercentageRepo gstPercentageRepo;
-
     @Autowired
     private ProductWeightRepo productWeightRepo;
-
     @Autowired
     private ProductBreathRepo productBreathRepo;
-
     @Autowired
     private ProductHeightRepo productHeightRepo;
     @Autowired
     private SellerProductRepository sellerProductRepository;
-
     @Autowired
     private ProductVariantsRepository productVariantsRepository;
-
     @Autowired
     private ProductCalculationService productCalculationService;
-
     @Autowired
     private FormBuilderService formBuilderService;
-
     @Override
     public ResponseEntity<?> getGstList(Long catalogId) {
         return null;
@@ -636,6 +618,25 @@ public class SellerProductServiceImple implements SellerProductService {
             }else{
                 return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.SOMETHING_WENT_WRONG);
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse("FAILED",HttpStatus.BAD_REQUEST.toString());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getProductCounts() {
+        log.info("getProductCounts Flying");
+        Map<String,String> countData = new HashMap<>();
+        try {
+            long underReview = sellerProductRepository.countAllDeliveriesByStatus(ProductStatus.PV_UNDER_REVIEW.toString());
+            long approved = sellerProductRepository.countAllDeliveriesByStatus(ProductStatus.PV_APPROVED.toString());
+            countData.put("UNDER_REVIEW",String.valueOf(underReview));
+            countData.put("APPROVED",String.valueOf(approved));
+            countData.put("TOTAL" , String.valueOf( underReview + approved) );
+            return ResponseGenerator.generateSuccessResponse(countData,SellerMessageResponse.SUCCESS);
         }
         catch (Exception e)
         {

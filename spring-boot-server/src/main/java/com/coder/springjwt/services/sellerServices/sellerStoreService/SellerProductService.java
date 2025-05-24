@@ -24,5 +24,5 @@ public interface SellerProductService {
 
     ResponseEntity<?> updateSellerProduct(ProductRootBuilder productRootBuilder, Long productId);
 
-
+    ResponseEntity<?> getProductCounts();
 }

@@ -49,6 +49,7 @@ public class SellerUrlMappings {
 
     public static final String UPDATE_SELLER_PRODUCT = "/updateSellerProduct/{productId}";
     public static final String UPLOAD_PRODUCT_FILES = "/uploadProductFiles/{productLockerNumber}";
+    public static final String GET_PRODUCT_COUNTS = "/getProductCounts";
 
 
 

@@ -129,6 +129,10 @@ public interface SellerProductRepository extends JpaRepository<SellerProduct, Lo
 
 
 
+    @Query("SELECT COUNT(pr) FROM SellerProduct pr WHERE pr.productStatus = :status")
+    long countAllDeliveriesByStatus(@Param("status") String status);
+
+
 
 
 

@@ -65,4 +65,10 @@ public class SellerProductController {
         return sellerProductService.getProductBYId(productId);
     }
 
+    @GetMapping(SellerUrlMappings.GET_PRODUCT_COUNTS)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> getProductCounts() {
+        return sellerProductService.getProductCounts();
+    }
+
 }
