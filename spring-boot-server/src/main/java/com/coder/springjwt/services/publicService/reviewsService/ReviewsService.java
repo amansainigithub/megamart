@@ -10,7 +10,6 @@ public interface ReviewsService {
 
     ResponseEntity<?> submitProductReview(long id  ,String rating, String reviewText, MultipartFile file);
 
-
     ResponseEntity<?> getUserReviews( Integer page, Integer size);
 
     ResponseEntity<?> getEditReview(long reviewId);

@@ -14,6 +14,7 @@ import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct
 import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.reviewsRepository.ReviewsRepository;
+import com.coder.springjwt.repository.productReviewFileRepo.ProductReviewsFilesRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.services.publicService.reviewsService.ReviewsService;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -49,6 +50,8 @@ public class ReviewsServiceImple implements ReviewsService {
     @Autowired
     private ReviewsRepository reviewsRepository;
 
+    @Autowired
+    private ProductReviewsFilesRepository productReviewsFilesRepository;
     @Autowired
     private BucketService bucketService;
 
@@ -279,6 +282,12 @@ public class ReviewsServiceImple implements ReviewsService {
                 productReviews.setRating(rating);
 
                 this.reviewsRepository.save(productReviews);
+
+                //DELETE File
+                for(ProductReviewFiles pvf : productReviews.getProductReviewFiles()){
+                    this.productReviewsFilesRepository.deleteById(pvf.getId());
+                    log.info("Review File Deleted Success...");
+                }
                 log.info("Product Review Update Success!!!");
             }
             return ResponseGenerator.generateSuccessResponse(CustMessageResponse.DATA_UPDATE_SUCCESS,CustMessageResponse.SUCCESS);

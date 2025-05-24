@@ -13,6 +13,7 @@ import com.coder.springjwt.models.sellerModels.categories.ParentCategoryModel;
 import com.coder.springjwt.models.sellerModels.homeSliders.HomeSliderModel;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
+import com.coder.springjwt.repository.customerPanelRepositories.reviewsRepository.ReviewsRepository;
 import com.coder.springjwt.repository.sellerRepository.categories.BabyCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.BornCategoryRepo;
 import com.coder.springjwt.repository.sellerRepository.categories.ParentCategoryRepo;
@@ -61,6 +62,9 @@ public class PublicServiceImple implements PublicService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private ReviewsRepository reviewsRepository;
 
 
     @Override
@@ -303,8 +307,12 @@ public class PublicServiceImple implements PublicService {
                                                             0,
                                                             40);
 
+            PageRequest pageRequest= PageRequest.of(0, 10);
+            Page<ProductReviews> productReviews = this.reviewsRepository.findByProductId(String.valueOf(pI), pageRequest);
+
             map.put("pw",response);
             map.put("similarProducts",similarProduct);
+            //map.put("productReviews",productReviews);
 
             log.info("productWatching Fetch Data Success:: ");
             return ResponseGenerator.generateSuccessResponse(map, SellerMessageResponse.SUCCESS);

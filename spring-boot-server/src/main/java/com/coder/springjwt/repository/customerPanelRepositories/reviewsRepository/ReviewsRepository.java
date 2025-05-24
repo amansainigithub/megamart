@@ -14,4 +14,6 @@ public interface ReviewsRepository extends JpaRepository<ProductReviews, Long> {
 
     Optional<ProductReviews> findByIdAndUserId(long id, String userId);
 
+    Page<ProductReviews> findByProductId(String productId , Pageable pageable);
+
 }
