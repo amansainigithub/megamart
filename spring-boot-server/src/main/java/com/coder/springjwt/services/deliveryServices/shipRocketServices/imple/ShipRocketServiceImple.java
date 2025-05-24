@@ -235,7 +235,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
 //    @Scheduled(cron = "0 * * * * *") //1 MINUTE
     public void trackShipments() {
         try {
-            System.out.println("-----------------------------------------------------");
             List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
 
             if (shippedItems.isEmpty())
@@ -307,7 +306,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
                         }
                     }
                 }
-                System.out.println("-----------------------------------------------------");
             }
 
         } catch (Exception e) {

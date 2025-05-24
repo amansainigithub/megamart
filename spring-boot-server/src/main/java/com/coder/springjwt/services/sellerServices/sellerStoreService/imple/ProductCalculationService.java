@@ -74,7 +74,6 @@ public class ProductCalculationService {
                 double totalPrice = this.calculateTotalPrice(productPrice, grossServiceTax , tcs ,tds , commissionFeeCharge);
                 log.info("totalPrice:: " + totalPrice);
 
-                log.info("-------------------------------------------------");
                 pv.setCalculatedGst(String.valueOf(roundToTwoDecimalPlaces(grossServiceTax)));
                 pv.setCalculatedTcs(String.valueOf(roundToTwoDecimalPlaces(tcs)));
                 pv.setCalculatedTds(String.valueOf(roundToTwoDecimalPlaces(tds)));

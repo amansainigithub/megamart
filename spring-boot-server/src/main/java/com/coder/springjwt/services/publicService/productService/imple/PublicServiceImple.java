@@ -114,8 +114,8 @@ public class PublicServiceImple implements PublicService {
             //get Baby Category
             Pageable pageable = PageRequest.of(0, 17);
             List<BabyCategoryModel> babyList = this.babyCategoryRepo.findAll(pageable).getContent();
-            List<BabyCategoryModel> babyDataFilter = babyList.stream().map(
-                    b -> new BabyCategoryModel(b.getId(), b.getCategoryName(),b.getCategoryFile()))
+            List<BabyCategoryPopularDto> babyDataFilter = babyList.stream().map(
+                    b -> new BabyCategoryPopularDto(b.getId(), b.getCategoryName(),b.getCategoryFile()))
                     .collect(Collectors.toList());
 
             //Get Parent Categories only Men
@@ -297,7 +297,7 @@ public class PublicServiceImple implements PublicService {
 
 
             //Similar Products Starting
-            Page<SellerProductResponse> similarProduct = this.getBornCategoryList(
+            Page<SellerProductResponse> similarProduct = this.getSimilarProducts(
                                                             Long.valueOf(sellerProduct.getBornCategoryId()),
                                                             sellerProduct.getBornCategoryName(),
                                                             0,
@@ -327,7 +327,8 @@ public class PublicServiceImple implements PublicService {
 
             PageRequest pageRequest= PageRequest.of(page, size);
             Page<SellerProduct> data = this.sellerProductRepository
-                    .findByBornCategoryId(String.valueOf(bornCategoryModel.getId()) , pageRequest );
+                    .findByBornCategoryIdAndProductStatus(String.valueOf(bornCategoryModel.getId()) ,
+                            ProductStatus.PV_APPROVED.toString(),pageRequest );
 
             List<SellerProductResponse> productResponses = data.getContent().stream()
                     .map(sellerProduct -> {
@@ -335,7 +336,6 @@ public class PublicServiceImple implements PublicService {
 
                         //Calculate Ratings
                         this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
-
 
                         ProductVariants productVariants = sellerProduct.getProductRows().get(0);
                         response.setColorVariant(productVariants.getColorVariant());
@@ -560,6 +560,53 @@ public class PublicServiceImple implements PublicService {
             e.getMessage();
             e.printStackTrace();
             return ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+        }
+    }
+
+
+
+    public Page<SellerProductResponse> getSimilarProducts(long categoryId, String categoryName, Integer page, Integer size) {
+        log.info("<--- getBornCategoryList Flying --->");
+        try {
+            BornCategoryModel bornCategoryModel = this.bornCategoryRepo.findById(categoryId)
+                    .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
+
+            PageRequest pageRequest= PageRequest.of(page, size);
+            Page<SellerProduct> data = this.sellerProductRepository.findByBornCategoryIdAndProductStatus
+                                                (String.valueOf(bornCategoryModel.getId()) ,
+                                                ProductStatus.PV_APPROVED.toString(), pageRequest );
+
+            List<SellerProductResponse> productResponses = data.getContent().stream()
+                    .map(sellerProduct -> {
+                        SellerProductResponse response = modelMapper.map(sellerProduct, SellerProductResponse.class);
+
+                        //Calculate Ratings
+                        this.calculateRatingAndReviews(response , sellerProduct.getProductReviews());
+
+                        ProductVariants productVariants = sellerProduct.getProductRows().get(0);
+                        response.setColorVariant(productVariants.getColorVariant());
+                        response.setProductPrice(productVariants.getProductPrice());
+                        response.setProductMrp(productVariants.getProductMrp());
+                        response.setCalculatedDiscount(productVariants.getCalculatedDiscount());
+
+                        response.setProductFilesResponses(sellerProduct.getProductFiles().stream()
+                                .map(productFiles->modelMapper.map(productFiles,ProductFilesResponse.class)).collect(Collectors.toList()));
+
+                            return response;
+                    })
+                    .collect(Collectors.toList());
+
+            Page<SellerProductResponse> responsePage = new PageImpl<>(productResponses, data.getPageable(), data.getTotalElements());
+
+            log.info("getBornCategoryList Fetch Data Success:: ");
+            return responsePage;
+            //ResponseGenerator.generateSuccessResponse(responsePage, SellerMessageResponse.SUCCESS);
+        }catch (Exception e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+            ResponseGenerator.generateBadRequestResponse(SellerMessageResponse.DATA_NOT_FOUND);
+            return null;
         }
     }
 

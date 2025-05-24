@@ -28,6 +28,9 @@ public class BucketService {
 
     @Value("${application.bucket.name}")
     private String bucketName;
+    private final AmazonS3 s3Client;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     //Cloudnairy Api Settings
     private final String CLOUDINARY = "cloudinary";
@@ -35,10 +38,7 @@ public class BucketService {
     private final String API_KEY = "211869472659872";
     private final String API_SECRET = "jtMvpCA3CS2DviLvCH_tkFFatxY";
     private final Boolean SECURE = Boolean.TRUE;
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    private final AmazonS3 s3Client;
 
     @Autowired
     public BucketService(AmazonS3 s3Client) {
@@ -59,8 +59,11 @@ public class BucketService {
        }
        catch (Exception e)
        {
-           log.error("Exception : " , e);
-           return this.getRandomFile();
+           log.error("Exception : " , "AWS Secrent Creditials Not Found | or Check AWS CRED...");
+
+           //Upload Cloudinary
+           return this.uploadCloudinaryFile(file);
+           //return this.getRandomFile();
        }
     }
 
@@ -110,8 +113,7 @@ public class BucketService {
 
 
 
-    //Cloudniary File Upload Process Starting
-
+    //cloudinary File Upload Process Starting
     public BucketModel uploadCloudinaryFile(@RequestParam("file") MultipartFile file)
     {
         log.info("Cloudinary File Upload---Flying");
@@ -121,20 +123,19 @@ public class BucketService {
                                             "api_key", API_KEY,
                                             "api_secret", API_SECRET,
                                             "secure", SECURE));
-
         // Upload the image
         Map conditionVerifier = ObjectUtils.asMap(
                                         "use_filename", true,
                                                "unique_filename", file.getOriginalFilename(),
                                                "overwrite", false,
-                                                "public_id", file.getOriginalFilename());
+                                               "public_id", file.getOriginalFilename(),
+                                                "folder", "user_uploads/RADJAC");
 
             Map cloudinaryUpload = cloudinary.uploader().upload(file.getBytes(), conditionVerifier);
             String cloudinaryResponse = objectMapper.writeValueAsString(cloudinaryUpload);
             Map<String,String > node = objectMapper.readValue(cloudinaryResponse, Map.class);
 
-           log.info("======= Final Node As Json Format ============");
-
+           log.info("======= File Upload in Cloudinary ============");
             //Creating Bucket Models
             return new BucketModel(node.get("url") ,file.getOriginalFilename().toString());
         } catch (IOException e) {

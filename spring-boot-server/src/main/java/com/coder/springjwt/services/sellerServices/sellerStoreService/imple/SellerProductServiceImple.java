@@ -372,9 +372,11 @@ public class SellerProductServiceImple implements SellerProductService {
 
     @Override
     public ResponseEntity<?> saveSellerProduct(ProductRootBuilder productRootBuilder, Long bornCategoryId) {
+        log.info("----------------------SAVE SELLER PRODUCT START---------------------------");
         try {
             if(productRootBuilder != null){
 
+                //Get Current User
                 String currentUser = UserHelper.getOnlyCurrentUser();
 
 
@@ -460,7 +462,7 @@ public class SellerProductServiceImple implements SellerProductService {
             SellerProduct productResponse = this.sellerProductRepository.save(sellerProduct);
             productResponse.setParentKey(String.valueOf(productResponse.getId()));
             this.sellerProductRepository.save(productResponse);
-
+            log.info("----------------------------SAVE SELLER PRODUCT ENDING----------------------------");
             return ResponseGenerator.generateSuccessResponse(productResponse.getId(),SellerMessageResponse.SUCCESS);
             }else{
                 return ResponseGenerator.generateBadRequestResponse("FAILED",SellerMessageResponse.SOMETHING_WENT_WRONG);
@@ -479,6 +481,8 @@ public class SellerProductServiceImple implements SellerProductService {
     @Override
     public ResponseEntity<?> uploadProductFiles(Map<String, MultipartFile> files , String productLockerNumber) {
         try {
+            log.info("----------------------------SAVE PRODUCT FILES STARTING----------------------------");
+
             SellerProduct sellerProduct = this.sellerProductRepository.findById(Long.parseLong(productLockerNumber))
                                          .orElseThrow(()-> new DataNotFoundException(SellerMessageResponse.DATA_NOT_FOUND));
 
@@ -503,6 +507,8 @@ public class SellerProductServiceImple implements SellerProductService {
                 sellerProduct.setProductFiles(productFilesList);
                 this.sellerProductRepository.save(sellerProduct);
                 log.info("Seller product Saved Success with Images");
+                log.info("----------------------------SAVE PRODUCT FILES ENDING----------------------------");
+
             }
             return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.SUCCESS);
         }
