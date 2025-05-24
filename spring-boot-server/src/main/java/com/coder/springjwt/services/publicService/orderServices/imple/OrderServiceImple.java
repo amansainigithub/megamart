@@ -6,10 +6,7 @@ import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerOrde
 import com.coder.springjwt.dtos.customerPanelDtos.customerOrderDtos.CustomerReturnExchangeOrderDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ExchangeRequestDto;
 import com.coder.springjwt.dtos.customerPanelDtos.returnExchangeDto.ReturnRequestInitiateDto;
-import com.coder.springjwt.emuns.ExchangeDeliveryStatus;
-import com.coder.springjwt.emuns.PaymentModeStatus;
-import com.coder.springjwt.emuns.RefundStatus;
-import com.coder.springjwt.emuns.ReturnDeliveryStatus;
+import com.coder.springjwt.emuns.*;
 import com.coder.springjwt.exception.customerPanelException.DataNotFoundException;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.User;
@@ -28,6 +25,9 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,26 +117,24 @@ public class OrderServiceImple implements OrderService {
                             itemsDto.setCustomerReturnExchangeOrderDto(returnOrder);
                         }
 
+                        //Exchange Delivered Date Starting
                         try {
                             // Create date formatter
-//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
-//                            String deliveredDateString = order.getDeliveryDateTime();
-//                            LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
-//                            LocalDateTime returnExpiryDate = deliveredDate.plusDays(7);
-//                            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
-//
-//                            if (daysLeft >= 0) {
-//                                itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
-//                            } else {
-//                                itemsDto.setReturnMessage("0");
-//                            }
-
-                            // OR use this line instead of logic above
-                            // itemsDto.setReturnMessage("Exchange available till " + 7 + " days");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+                            String deliveredDateString = order.getDeliveredDateTime();
+                            LocalDateTime deliveredDate = LocalDateTime.parse(deliveredDateString, formatter);
+                            LocalDateTime returnExpiryDate = deliveredDate.plusDays(7);
+                            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), returnExpiryDate);
+                            if (daysLeft > 0) {
+                                itemsDto.setReturnMessage("Exchange available till " + daysLeft + " days");
+                            } else {
+                                itemsDto.setReturnMessage("0");
+                            }
 
                         } catch (Exception e) {
                             itemsDto.setReturnMessage("Delivery date invalid");
                         }
+                        //Exchange Delivered Date Ending
 
                         return itemsDto;
                     })
@@ -235,8 +233,7 @@ public class OrderServiceImple implements OrderService {
                                         .findById(exchangeRequestDto.getOrderItemId())
                                         .orElseThrow(() -> new DataNotFoundException(CustMessageResponse.DATA_NOT_FOUND));
 
-//            customerOrderItems.setDeliveryStatus(DeliveryStatus.EXCHANGE.toString());
-
+            customerOrderItems.setDeliveryStatus(DeliveryStatus.EXCHANGE.toString());
             CustomerReturnExchangeOrders customerReturnExchangeOrders = new CustomerReturnExchangeOrders();
             customerReturnExchangeOrders.setExchangeReason(exchangeRequestDto.getExchangeReason());
             customerReturnExchangeOrders.setExchangeProductSize(exchangeRequestDto.getSelectedLabel());

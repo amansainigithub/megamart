@@ -71,7 +71,9 @@ public class CustomerOrderItems extends BaseEntity {
 
     //Delivery Data
     private String deliveryStatus;
-//
+
+    private String deliveredDateTime;
+
     private String orderDateTime;
 
     //Razorpay Fees And status

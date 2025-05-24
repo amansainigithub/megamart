@@ -296,10 +296,16 @@ public class ShipRocketServiceImple implements ShipRocketService {
                                 String date = activity.getString("date");
                                 String status = activity.getString("status");
                                 String location = activity.getString("location");
-                                System.out.println("Status: DELIVERED, Date: " + date + ", Location: " + location);
+                                log.info("Status: DELIVERED, Date: " + date + ", Location: " + location);
 
                                 si.setDeliveryStatus(DeliveryStatus.DELIVERED.toString());
                                 si.setSrStatus(DeliveryStatus.DELIVERED.toString());
+
+                                //Set Delivered Date Time
+                                LocalDateTime now = LocalDateTime.now();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a");
+                                String formattedDate = now.format(formatter);
+                                si.setDeliveredDateTime(formattedDate);
                                 orderItemsRepository.save(si);
                                 log.info("Order Item DELIVERED Update Success");
                             }

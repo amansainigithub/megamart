@@ -131,7 +131,10 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
 
             // Step 4: Set response headers
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=invoice_" + id + ".pdf");
+            String invoiceFileName = "RJ_INV_" + ".pdf";
+//            response.setHeader("Content-Disposition", "attachment; filename=" + invoiceFileName);
+
+            response.setHeader("Content-Disposition", "attachment; filename=invoice_RJ" + id + ".pdf");
 
 
             // Render PDF
