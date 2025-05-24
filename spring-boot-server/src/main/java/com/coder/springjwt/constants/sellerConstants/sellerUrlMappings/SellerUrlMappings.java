@@ -265,7 +265,6 @@ public class SellerUrlMappings {
     public static final String DELIVERY_STATUS_CONTROLLER = SELLER_AUTH_URL +"/deliveryStatusController";
     public static final String UPDATE_PENDING_DELIVERY_STATUS="/updatePendingDeliveryStatus";
     public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
-
     public static final String AWB_NUMBER_MAPPING="/awbNumberMapping/{id}";
 
 
@@ -276,7 +275,6 @@ public class SellerUrlMappings {
     public static final String SELLER_CANCEL_ORDER_CONTROLLER = SELLER_AUTH_URL +"/sellerCancelOrderController";
     public static final String  SELLER_CANCEL_ORDERS_FETCH= "/sellerCancelOrdersFetch";
     public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
-
     public static final String  SELLER_CANCEL_ORDERS= "/sellerCancelOrders/{id}";
 
 
@@ -293,7 +291,6 @@ public class SellerUrlMappings {
     //HOUT_OF_STOCK_CONTROLLER
     public static final String OUT_OF_STOCK_PRODUCTS_CONTROLLER = SELLER_AUTH_URL +"/outOfStockProductsController";
     public static final String  GET_OUT_OF_STOCK_PRODUCTS= "/getOutOfStockProducts";
-
     public static final String  UPDATE_OUT_OF_STOCK_PRODUCTS= "/updateOutOfStocksProducts/{id}/{productInventory}";
 
 

@@ -79,9 +79,7 @@ public class CustomerUrlMappings {
     //    ####################### PROFILE CONTROLLER #######################
     public static final String PROFILE_CONTROLLER= CUSTOMER_BASE_URL + "/profileController";
     public static final String GET_PROFILE= "/getProfile/{id}";
-
     public static final String UPDATE_CUSTOMER_PROFILE= "/updateCustomerProfile";
-
     public static final String RESEND_EMAIL_LINK= "/resendEmailLink/{id}";
 
 
@@ -103,7 +101,6 @@ public class CustomerUrlMappings {
 
     //    #######################CANCLE ORDER CONTROLLER#######################
     public static final String ORDER_CANCEL_CONTROLLER= CUSTOMER_BASE_URL + "/orderCancelController";
-
     public static final String ORDER_CANCEL = "/orderCancel";
 
     public static final String GET_CANCEL_ORDERS= "/getCancelOrders/{id}";

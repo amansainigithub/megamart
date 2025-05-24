@@ -35,11 +35,9 @@ public class ParentCategoryServiceImple implements ParentCategoryService {
     BucketService bucketService;
     @Autowired
     private ModelMapper modelMapper;
+
     @Autowired
     private ObjectMapper objectMapper;
-
-//    @Autowired
-//    private RedisService redisService;
 
 
 

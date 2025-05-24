@@ -146,48 +146,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.cashfree.pg.java</groupId>
-			<artifactId>cashfree_pg</artifactId>
-			<version>4.3.6</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>4.10.0</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.razorpay</groupId>
 			<artifactId>razorpay-java</artifactId>
 			<version>1.3.9</version>
 		</dependency>
 
-
-<!--		Redis Server Automatically Start From Spring boot Apllication-->
-<!--		<dependency>-->
-<!--			<groupId>com.github.kstyrc</groupId>-->
-<!--			<artifactId>embedded-redis</artifactId>-->
-<!--			<version>0.6</version>-->
-<!--		</dependency>-->
-
-
-
-<!--		QR code Dependency Starting-->
-		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>core</artifactId>
-			<version>3.5.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>javase</artifactId>
-			<version>3.5.0</version>
-		</dependency>
-		<!--		QR code Dependency Ending-->
-
-
-		<!-- Thymeleaf -->
+		<!-- Thymeleaf For Invoice Generate -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
