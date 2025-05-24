@@ -198,9 +198,13 @@
 
     <div class="section total-section">
         <table class="info-table total-table">
+<!--            <tr>-->
+<!--                <td>Sub Total:</td>-->
+<!--                <td class="text-right"> Rs <span th:text="${invoice.totalPrice}"></span></td>-->
+<!--            </tr>-->
             <tr>
-                <td>Sub Total:</td>
-                <td class="text-right"> Rs <span th:text="${invoice.totalPrice}"></span></td>
+                <td>Product Price</td>
+                <td class="text-right"> Rs <span th:text="${invoice.grossAmount}"></span> </td>
             </tr>
             <tr>
                 <td>Tax (<span th:text="${invoice.tax}"></span>):</td>

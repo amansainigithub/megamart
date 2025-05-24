@@ -36,6 +36,12 @@ public class ProductVariants extends BaseEntity{
 
     private String bankSettlementAmount;
 
+    private String pricePlusGst;
+
+    private String priceMinusGst;
+
+    private String gst;
+
 
 
 

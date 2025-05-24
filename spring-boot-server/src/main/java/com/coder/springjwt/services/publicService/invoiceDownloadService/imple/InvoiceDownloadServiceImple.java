@@ -96,7 +96,6 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
 
             invoiceDto.setProductName(orderItems.getProductName());
             invoiceDto.setHsn(sellerProduct.getHsn());
-            invoiceDto.setGrossAmount(orderItems.getProductPrice());
             invoiceDto.setQuantity(orderItems.getQuantity());
             invoiceDto.setProductSize(orderItems.getProductSize());
             invoiceDto.setTax(sellerProduct.getGst());
@@ -105,8 +104,16 @@ public class InvoiceDownloadServiceImple implements InvoiceDownloadService {
             double amount = Double.parseDouble(orderItems.getProductPrice());
             double gst = Double.parseDouble(sellerProduct.getGst().replace("%",""));
             double gstAmount = (gst / 100) * amount;
+
+            //GST AMOUNT
             invoiceDto.setGstAmount(gstAmount);
 
+
+            //product Price Minus GST
+            double productPriceMinusGst = amount - gstAmount;
+            invoiceDto.setGrossAmount(String.valueOf(productPriceMinusGst));
+
+            //Set Product Price
             invoiceDto.setTotalPrice(amount);
 
             // Step 2: Set up Thymeleaf context

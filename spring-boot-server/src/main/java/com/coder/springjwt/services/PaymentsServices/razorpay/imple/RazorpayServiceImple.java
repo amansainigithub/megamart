@@ -449,10 +449,10 @@ public class RazorpayServiceImple implements RazorpayServices {
                 double totalFee = razorpayBaseFee + razorpayGst;
                 //Final Amount
                 double finalAmount = ci.getTotalPrice() - totalFee;
-                System.out.println("razorpayBaseFee :: " + razorpayBaseFee);
-                System.out.println("razorpayGst :: " + razorpayGst);
-                System.out.println("totalFee :: " + totalFee);
-                System.out.println("finalAmount :: " + finalAmount);
+                log.info("razorpayBaseFee :: " + razorpayBaseFee);
+                log.info("razorpayGst :: " + razorpayGst);
+                log.info("totalFee :: " + totalFee);
+                log.info("finalAmount :: " + finalAmount);
 
                 customerOrderItems.setRazorpayFees(String.valueOf(razorpayBaseFee));
                 customerOrderItems.setRazorpayGst(String.valueOf(razorpayGst));
@@ -666,8 +666,6 @@ public class RazorpayServiceImple implements RazorpayServices {
 
         Random random = new Random();
         int randomNum = 1000 + random.nextInt(90000); // 5-digit random number
-        System.out.println("RANDOM NUMBER :: " +randomNum);
-
         return "ORD-" + timestamp + randomNum; // Example: ORD202503311230451234
     }
 

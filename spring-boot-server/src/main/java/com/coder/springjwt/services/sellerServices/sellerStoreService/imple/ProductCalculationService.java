@@ -89,6 +89,20 @@ public class ProductCalculationService {
                 double bankSettlementAmount = productPrice -(grossServiceTax + tcs + tds + commissionFeeCharge);
                 pv.setBankSettlementAmount(String.valueOf(bankSettlementAmount));
                 log.info("BankSettlementAmount :: " + bankSettlementAmount);
+
+                //Price + GST
+                double priceWithGst = productPrice + grossServiceTax;
+                pv.setPricePlusGst(String.valueOf(priceWithGst));
+                log.info("pricePlusGst :: " + priceWithGst);
+
+                //Price - GST
+                double priceMinusGst = productPrice - grossServiceTax;
+                pv.setPriceMinusGst(String.valueOf(priceMinusGst));
+                log.info("priceMinusGst :: " + priceMinusGst);
+
+                //GST
+                pv.setGst(gst);
+
             }
         }
         catch (Exception e){
