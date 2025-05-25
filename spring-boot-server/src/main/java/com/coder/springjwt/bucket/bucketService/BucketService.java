@@ -59,8 +59,7 @@ public class BucketService {
        }
        catch (Exception e)
        {
-           log.error("Exception : " , "AWS Secrent Creditials Not Found | or Check AWS CRED...");
-
+           log.error("Exception : AWS Secret Credentials Not Found | Check AWS CRED...");
            //Upload Cloudinary
            return this.uploadCloudinaryFile(file);
            //return this.getRandomFile();
