@@ -35,6 +35,12 @@ public class DeliveryStatusController {
     }
 
 
+    @GetMapping(SellerUrlMappings.DOWNLOAD_SHIPPING_LABEL)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> downloadShippingLabel(@PathVariable Long shipmentId) {
+        return this.deliveryStatusService.downloadShippingLabel(shipmentId);
+    }
+
 
 
 }

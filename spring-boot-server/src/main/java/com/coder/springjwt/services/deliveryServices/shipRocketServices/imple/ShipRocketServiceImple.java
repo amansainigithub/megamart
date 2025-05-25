@@ -35,6 +35,8 @@ public class ShipRocketServiceImple implements ShipRocketService {
     private String TRACKING_URL = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
     private String TRACK_SHIPMENTS =  "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
 
+    private String LABEL_GENERATE_URL =  "https://apiv2.shiprocket.in/v1/external/courier/generate/label";
+
 
     @Autowired
     private OrderItemsRepository orderItemsRepository;
@@ -71,11 +73,9 @@ public class ShipRocketServiceImple implements ShipRocketService {
            orderItem.setName(customerOrderItems.getProductName());
            orderItem.setSku(productVariant.getSkuId());
            orderItem.setUnits(Integer.parseInt(customerOrderItems.getQuantity()));
-           orderItem.setSelling_price(Integer.parseInt(customerOrderItems.getProductPrice()));
-//         orderItem.setDiscount(customerOrderItems.getProductDiscount().replace("%",""));
+           orderItem.setSelling_price(Double.parseDouble(productVariant.getPriceMinusGst()));
            orderItem.setDiscount("0");
-//         orderItem.setTax(productVariant.getSellerProduct().getGst().replace("%","").trim());
-           orderItem.setTax("0");
+           orderItem.setTax("05");
            orderItem.setHsn(Integer.parseInt(productVariant.getSellerProduct().getHsn()));
            cosp.setOrder_items(Arrays.asList(orderItem));
 
@@ -101,34 +101,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
            HttpEntity<CreateOrderRequestSRDto> entity = new HttpEntity<>(cosp, headers);
            ResponseEntity<String> response = restTemplate.exchange( CREATE_ORDER,HttpMethod.POST,entity,String.class );
 
-//           System.out.println("Response " + response);
-//           JSONObject jsonObject = new JSONObject(response.getBody());
-//           System.out.println("jsonObject " + jsonObject);
-//           int order_id = jsonObject.getInt("order_id");
-//           String channel_order_id = jsonObject.getString("channel_order_id");
-//           int shipment_id = jsonObject.getInt("shipment_id");
-//           String status = jsonObject.getString("status");
-//           int status_code = jsonObject.getInt("status_code");
-//           int onboarding_completed_now = jsonObject.getInt("onboarding_completed_now");
-//           String awb_code = jsonObject.getString("awb_code");
-//           String courier_company_id = jsonObject.getString("courier_company_id");
-//           String courier_name = jsonObject.getString("courier_name");
-//           boolean new_channel = jsonObject.getBoolean("new_channel");
-//           String packaging_box_error = jsonObject.getString("packaging_box_error");
-
-           //Set the Data Customer Order Items
-//           System.out.println("Order ID: " + order_id);
-//           System.out.println("Channel Order ID: " + channel_order_id);
-//           System.out.println("Shipment ID: " + shipment_id);
-//           System.out.println("Status: " + status);
-//           System.out.println("Status Code: " + status_code);
-//           System.out.println("Onboarding Completed Now: " + onboarding_completed_now);
-//           System.out.println("AWB Code: " + awb_code);
-//           System.out.println("Courier Company ID: " + courier_company_id);
-//           System.out.println("Courier Name: " + courier_name);
-//           System.out.println("New Channel: " + new_channel);
-//           System.out.println("Packaging Box Error: " + packaging_box_error);
-
            return response;
        }
        catch (Exception e)
@@ -137,17 +109,6 @@ public class ShipRocketServiceImple implements ShipRocketService {
            return null;
        }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     public ResponseEntity<String> orderDetails(int orderId) {
@@ -224,22 +185,54 @@ public class ShipRocketServiceImple implements ShipRocketService {
     }
 
 
+    public ResponseEntity<String> shippingLabelDownload(String shipmentId) {
+        try {
+            // Headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(TOKEN);// Prepare request body
+
+
+            Map<String, List<String>> body = new HashMap<>();
+            body.put("shipment_id", Arrays.asList(shipmentId));
+
+            HttpEntity<Map<String, List<String>>> requestEntity = new HttpEntity<>(body, headers);
+
+            // Make POST request
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    LABEL_GENERATE_URL,
+                    requestEntity,
+                    String.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                return response;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
 
 
-    //CORN JOBS
-//    @Scheduled(cron = "*/5 * * * * *") // 5 SEC
-//    @Scheduled(cron = "0 0/30 * * * *") //30 MINUTES
-//
+
+
     @Scheduled(cron = "0 0 * * * *")  //1 HOUR
 //    @Scheduled(cron = "0 * * * * *") //1 MINUTE
+//    @Scheduled(cron = "*/5 * * * * *") // 5 SEC
+//    @Scheduled(cron = "0 0/30 * * * *") //30 MINUTES
     public void trackShipments() {
         try {
             List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
 
             if (shippedItems.isEmpty())
             {
-                System.out.println("Shipped Items Empty...");
+                log.info("Shipped Items Empty...");
                 return;
             }
 
@@ -258,10 +251,10 @@ public class ShipRocketServiceImple implements ShipRocketService {
                                                                         String.class);
 
                 if (response.getStatusCode() == HttpStatus.OK) {
-                    System.out.println("ID :: " + si.getId());
-                    System.out.println("ORDER ITEM ID :: " + si.getOrderIdPerItem());
-                    System.out.println("SHIP-ROCKET STATUS :: " + si.getDeliveryStatus());
-                    System.out.println("API RESPONSE :: " + response.getBody());
+                    log.info("ID :: " + si.getId());
+                    log.info("ORDER ITEM ID :: " + si.getOrderIdPerItem());
+                    log.info("SHIP-ROCKET STATUS :: " + si.getDeliveryStatus());
+                    log.info("API RESPONSE :: " + response.getBody());
 
                     String responseBody = response.getBody();
                     JSONObject jsonObject = new JSONObject(responseBody);
@@ -279,7 +272,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
                                 String date = activity.getString("date");
                                 String status = activity.getString("status");
                                 String location = activity.getString("location");
-                                System.out.println("Status: OUT FOR DELIVERY, Date: " + date + ", Location: " + location);
+                                log.info("Status: OUT FOR DELIVERY, Date: " + date + ", Location: " + location);
 
                                 si.setDeliveryStatus(DeliveryStatus.OUT_OF_DELIVERY.toString());
                                 si.setSrStatus(DeliveryStatus.OUT_OF_DELIVERY.toString());

@@ -466,7 +466,7 @@ public class RazorpayServiceImple implements RazorpayServices {
                 //Add Order Items To List
                 customerOrderItemsList.add(customerOrderItems);
 
-                //Razorpay-Fees
+                //Save Product Price Minus GST
 
             }
             //Set Customer Order Items List

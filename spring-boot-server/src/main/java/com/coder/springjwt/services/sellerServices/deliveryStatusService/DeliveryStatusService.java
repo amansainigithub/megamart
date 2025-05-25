@@ -15,4 +15,6 @@ public interface DeliveryStatusService {
 
 
     ResponseEntity<?> awbNumberMapping(Long id);
+
+    ResponseEntity<byte[]> downloadShippingLabel(Long shipmentId);
 }

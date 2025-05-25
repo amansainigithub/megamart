@@ -267,6 +267,7 @@ public class SellerUrlMappings {
     public static final String UPDATE_PENDING_DELIVERY_STATUS="/updatePendingDeliveryStatus";
     public static final String GET_DELIVERY_DETAILS_BY_ID="/getDeliveryDetailsById/{id}";
     public static final String AWB_NUMBER_MAPPING="/awbNumberMapping/{id}";
+    public static final String DOWNLOAD_SHIPPING_LABEL="/downloadShippingLabel/{shipmentId}";
 
 
 

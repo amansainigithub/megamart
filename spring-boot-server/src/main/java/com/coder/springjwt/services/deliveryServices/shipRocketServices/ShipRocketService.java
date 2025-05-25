@@ -23,4 +23,6 @@ public interface ShipRocketService {
 
     ResponseEntity<String> getTrackingUrl(String awbCode);
 
+    ResponseEntity<String> shippingLabelDownload(String shipmentId);
+
 }

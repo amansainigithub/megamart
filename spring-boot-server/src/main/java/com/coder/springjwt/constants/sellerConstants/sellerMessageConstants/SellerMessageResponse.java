@@ -106,5 +106,6 @@ public class SellerMessageResponse {
 
     public static final String AWB_MAPPED_SUCCESS = "AWB mapped Success...";
 
+    public static final String LABEL_DOWNLOAD_SUCCESS = "Label Download Success...";
 
 }

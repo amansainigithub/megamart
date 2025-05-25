@@ -17,8 +17,9 @@ import com.coder.springjwt.util.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
@@ -162,7 +163,6 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
                 //Set Delivery Status
                 customerOrderItems.setDeliveryStatus(DeliveryStatus.SHIPPED.toString());
 
-
                 //Get Delivery Tracker URL
                 ResponseEntity<String> tracking = this.shipRocketServiceImple.getTrackingUrl(awb);
                 JSONObject trackerBody = new JSONObject(tracking.getBody());
@@ -172,9 +172,6 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
 
                 //save Customer Order Items
                 orderItemsRepository.save(customerOrderItems);
-
-
-
 
                 return ResponseGenerator.generateSuccessResponse(SellerMessageResponse.AWB_MAPPED_SUCCESS, CustMessageResponse.SUCCESS);
             }
@@ -190,8 +187,37 @@ public class DeliveryStatusServiceImple implements DeliveryStatusService {
         }
     }
 
+    @Override
+    public  ResponseEntity<byte[]> downloadShippingLabel(Long shipmentId) {
+        try {
+            ResponseEntity<String> shippingLabel = shipRocketServiceImple.shippingLabelDownload(String.valueOf(shipmentId));
 
+            JSONObject jsonObject = new JSONObject(shippingLabel.getBody());
+            Integer label_created = jsonObject.getInt("label_created");
+            String response = jsonObject.getString("response");
+            String label_url = jsonObject.getString("label_url");
+            log.info("label_url :: " + label_url);
 
+            // Now download the PDF from labelUrl
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<byte[]> fileResponse = restTemplate.exchange(label_url,HttpMethod.GET,null,byte[].class);
+
+            // Set headers to force download
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition
+                    .builder("attachment")
+                    .filename("shipping-label-" + shipmentId + ".pdf")
+                    .build());
+
+            return new ResponseEntity<>(fileResponse.getBody(), headers, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
 
 }
