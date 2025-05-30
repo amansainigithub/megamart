@@ -288,8 +288,13 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
     public ResponseEntity<?> customerSignUpCompleted(FreshSignUpPayload freshSignUpPayload) {
         logger.info("<-- customerSignUpCompleted Flying --> ");
 
-                User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
-                orElseThrow(()-> new RuntimeException("User Not Fount"));
+        User user = userRepository.findByUsername(freshSignUpPayload.getUsername()).
+                orElseThrow(()-> new RuntimeException(CustMessageResponse.USERNAME_NOT_FOUND));
+
+       if( userRepository.existsByCustomerEmail(freshSignUpPayload.getEmail()))
+       {
+           return ResponseEntity.badRequest().body(new MessageResponse(CustMessageResponse.EMAIL_ID_ALREADY_EXISTS,HttpStatus.BAD_REQUEST));
+       }
 
         if ( (user.getCustomerRegisterComplete().equals("N")
                 ||  user.getCustomerRegisterComplete().isEmpty()
@@ -313,11 +318,11 @@ public class CustomerAuthServiceImple implements CustomerAuthService {
             this.sendRegistrationCompleteMail(user);
 
             userRepository.save(user);
-            logger.info("Registration Completed Fully Success");
-
+            logger.info(CustMessageResponse.REGISTER_COMPLETED_SUCCESS);
             return ResponseEntity.ok(new MessageResponse(CustMessageResponse.REGISTER_COMPLETED_FULLY,HttpStatus.OK));
         }else{
-            return ResponseEntity.badRequest().body(new MessageResponse(CustMessageResponse.SOMETHING_WENT_WRONG,HttpStatus.BAD_REQUEST));
+
+            return ResponseEntity.badRequest().body(new MessageResponse(CustMessageResponse.EMAIL_ID_ALREADY_EXISTS,HttpStatus.BAD_REQUEST));
         }
     }
 
