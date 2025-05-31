@@ -54,7 +54,7 @@ public class SellerCancelOrderServiceImple implements SellerCancelOrderService {
 
     @Override
     public ResponseEntity<?> sellerCancelOrdersFetch(Integer page, Integer size) {
-        log.info("<--  sellerCancelOrdersFetch Flying  -->");
+        log.info("<--  sellerCancelOrdersFetch Refund Pending Flying  -->");
 
             try {
                 String currentUser = UserHelper.getOnlyCurrentUser();
@@ -63,7 +63,9 @@ public class SellerCancelOrderServiceImple implements SellerCancelOrderService {
 
                 Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC , "orderDateTime"));
 
-                Page<CustomerOrderItems> allCancelledOrders = this.orderItemsRepository.findAllByDeliveryStatus(DeliveryStatus.CANCELLED.toString(),pageable);
+                Page<CustomerOrderItems> allCancelledOrders = this.orderItemsRepository
+                                                                .findAllByDeliveryStatusAndRefundStatus(DeliveryStatus.CANCELLED.toString()
+                                                                ,RefundStatus.REFUND_PENDING.toString() ,  pageable);
 
 
                 return ResponseGenerator.generateSuccessResponse(allCancelledOrders, CustMessageResponse.SUCCESS);
@@ -72,6 +74,29 @@ public class SellerCancelOrderServiceImple implements SellerCancelOrderService {
                 return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
             }
 
+    }
+
+    @Override
+    public ResponseEntity<?> sellerCancelOrdersFetchPaymentComplete(Integer page, Integer size) {
+        log.info("<--  sellerCancelOrdersFetch Refund Pending Flying  -->");
+
+        try {
+            String currentUser = UserHelper.getOnlyCurrentUser();
+            this.userRepository.findByUsername(currentUser)
+                    .orElseThrow(() -> new UserNotFoundException(CustMessageResponse.USERNAME_NOT_FOUND));
+
+            Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC , "orderDateTime"));
+
+            Page<CustomerOrderItems> allCancelledOrders = this.orderItemsRepository
+                    .findAllByDeliveryStatusAndRefundStatus(DeliveryStatus.CANCELLED.toString()
+                            ,RefundStatus.REFUND_COMPLETED.toString() ,  pageable);
+
+
+            return ResponseGenerator.generateSuccessResponse(allCancelledOrders, CustMessageResponse.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseGenerator.generateBadRequestResponse(CustMessageResponse.SOMETHING_WENT_WRONG);
+        }
     }
 
     @Override

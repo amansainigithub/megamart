@@ -22,6 +22,11 @@ public class SellerOrderCancelController {
         return this.sellerCancelOrderService.sellerCancelOrdersFetch(page,size);
     }
 
+    @GetMapping(SellerUrlMappings.SELLER_CANCEL_ORDERS_FETCH_PAYMENT_COMPLETE)
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> sellerCancelOrdersFetchPaymentComplete(@RequestParam Integer page , @RequestParam  Integer size) {
+        return this.sellerCancelOrderService.sellerCancelOrdersFetchPaymentComplete(page,size);
+    }
 
     @PostMapping(SellerUrlMappings.SELLER_ORDER_REFUND_REQUEST)
     @PreAuthorize("hasRole('SELLER')")

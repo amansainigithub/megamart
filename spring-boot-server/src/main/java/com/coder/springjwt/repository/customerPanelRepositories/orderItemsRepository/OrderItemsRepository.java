@@ -33,6 +33,8 @@ public interface OrderItemsRepository extends JpaRepository<CustomerOrderItems,L
 
     Page<CustomerOrderItems> findAllByDeliveryStatus(String deliveryStatus , Pageable pageable);
 
+    Page<CustomerOrderItems> findAllByDeliveryStatusAndRefundStatus(String deliveryStatus , String refundStatus, Pageable pageable);
+
 
 //    @Query("SELECT coi, r FROM CustomerOrderItems coi " +
 //            "LEFT JOIN Ratings r ON coi.id = CAST(r.orderItemsId as long) " +

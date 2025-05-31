@@ -276,6 +276,9 @@ public class SellerUrlMappings {
     //Seller Cancel Orders Controller
     public static final String SELLER_CANCEL_ORDER_CONTROLLER = SELLER_AUTH_URL +"/sellerCancelOrderController";
     public static final String  SELLER_CANCEL_ORDERS_FETCH= "/sellerCancelOrdersFetch";
+
+    public static final String  SELLER_CANCEL_ORDERS_FETCH_PAYMENT_COMPLETE= "/sellerCancelOrdersFetchPaymentComplete";
+
     public static final String  SELLER_ORDER_REFUND_REQUEST= "/sellerOrderRefundRequest";
     public static final String  SELLER_CANCEL_ORDERS= "/sellerCancelOrders/{id}";
 

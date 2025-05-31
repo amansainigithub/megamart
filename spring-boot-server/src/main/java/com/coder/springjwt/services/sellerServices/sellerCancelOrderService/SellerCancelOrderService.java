@@ -8,7 +8,11 @@ import org.springframework.stereotype.Component;
 public interface SellerCancelOrderService {
     ResponseEntity<?> sellerCancelOrdersFetch(Integer page, Integer size);
 
+    ResponseEntity<?> sellerCancelOrdersFetchPaymentComplete(Integer page, Integer size);
+
+
     ResponseEntity<?> sellerOrderRefundRequest(RefundRequestDto refundRequestDto);
 
     ResponseEntity<?> sellerCancelOrders(long id);
+
 }
