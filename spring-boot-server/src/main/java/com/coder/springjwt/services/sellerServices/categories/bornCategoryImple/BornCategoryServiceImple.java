@@ -76,6 +76,15 @@ public class BornCategoryServiceImple implements BornCategoryService {
 
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 bornCategoryModel.setUser(auth.getName());
+
+
+                //Set TDS, TCS ,SHIPPING CHARGES ,COMMISSION CHARGES
+                bornCategoryModel.setTdsCharge(String.valueOf(0));
+                bornCategoryModel.setTcsCharge(String.valueOf(0));
+                bornCategoryModel.setShippingCharge(String.valueOf(0));
+                bornCategoryModel.setCommissionFeesCharge(String.valueOf(0));
+
+
                 //save Category
                 this.bornCategoryRepo.save(bornCategoryModel);
 

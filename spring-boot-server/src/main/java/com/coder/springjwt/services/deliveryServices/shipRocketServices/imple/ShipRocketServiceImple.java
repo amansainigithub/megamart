@@ -1,12 +1,15 @@
 package com.coder.springjwt.services.deliveryServices.shipRocketServices.imple;
 
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.sellerDtos.deliveryStatusDto.DeliveryStatusDto;
 import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.CreateOrderRequestSRDto;
 import com.coder.springjwt.dtos.sellerDtos.shipRocketDto.OrderItem;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
+import com.coder.springjwt.models.sellerModels.props.Api_Props;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.repository.customerPanelRepositories.orderItemsRepository.OrderItemsRepository;
+import com.coder.springjwt.repository.sellerRepository.apiProps.ApiPropsRepository;
 import com.coder.springjwt.services.deliveryServices.shipRocketServices.ShipRocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -27,17 +30,15 @@ import java.util.Map;
 @Service
 @Slf4j
 public class ShipRocketServiceImple implements ShipRocketService {
-
-    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY2OTg4MDgsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ4OTQzNDgyLCJqdGkiOiJ2c1Jwa1NGSXdUZ2hvWkkyIiwiaWF0IjoxNzQ4MDc5NDgyLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0ODA3OTQ4MiwiY2lkIjo1MzY5NDM2LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.xg6Qe53G3ZM0LwUncpFrFInbQeXO7CSu6fcASyI8ncA";
     private final String CREATE_ORDER = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
     private final String SHIPROCKET_CANCLE_ORDER_URL = "https://apiv2.shiprocket.in/v1/external/orders/cancel";
     private String ORDER_DETAILS = "https://apiv2.shiprocket.in/v1/external/orders/show/";
     private String TRACKING_URL = "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
     private String TRACK_SHIPMENTS =  "https://apiv2.shiprocket.in/v1/external/courier/track/awb/";
-
     private String LABEL_GENERATE_URL =  "https://apiv2.shiprocket.in/v1/external/courier/generate/label";
 
-
+    @Autowired
+    private ApiPropsRepository apiPropsRepository;
     @Autowired
     private OrderItemsRepository orderItemsRepository;
 
@@ -46,6 +47,10 @@ public class ShipRocketServiceImple implements ShipRocketService {
     public  ResponseEntity<String> createOrder(CustomerOrderItems customerOrderItems , ProductVariants productVariant , DeliveryStatusDto deliveryStatusDto) {
 
        try {
+
+           Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                   .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
+
            //Order Date Creation
            LocalDateTime now = LocalDateTime.now();
            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -97,7 +102,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
            HttpHeaders headers = new HttpHeaders();
            headers.setContentType(MediaType.APPLICATION_JSON);
-           headers.setBearerAuth(TOKEN);
+           headers.setBearerAuth(props.getToken());
            HttpEntity<CreateOrderRequestSRDto> entity = new HttpEntity<>(cosp, headers);
            ResponseEntity<String> response = restTemplate.exchange( CREATE_ORDER,HttpMethod.POST,entity,String.class );
 
@@ -113,10 +118,13 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
     public ResponseEntity<String> orderDetails(int orderId) {
         try {
+            Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
+
             System.out.println("orderDetails JOBS");
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
-            headers.set("Authorization", "Bearer " + TOKEN);
+            headers.set("Authorization", "Bearer " + props.getToken());
 
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -135,10 +143,12 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
 
     public ResponseEntity<String> cancelOrders(List<Integer> orderIds) {
+        Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(TOKEN);
+        headers.setBearerAuth(props.getToken());
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
@@ -155,17 +165,15 @@ public class ShipRocketServiceImple implements ShipRocketService {
     }
 
 
-
-
-
-
-
     public ResponseEntity<String> getTrackingUrl(String awbCode) {
         try {
+            Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
+
             // Headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(TOKEN);
+            headers.setBearerAuth(props.getToken());
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             // Make the request
@@ -187,10 +195,13 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
     public ResponseEntity<String> shippingLabelDownload(String shipmentId) {
         try {
+            Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
+
             // Headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(TOKEN);// Prepare request body
+            headers.setBearerAuth(props.getToken());// Prepare request body
 
 
             Map<String, List<String>> body = new HashMap<>();
@@ -228,6 +239,9 @@ public class ShipRocketServiceImple implements ShipRocketService {
 //    @Scheduled(cron = "0 0/30 * * * *") //30 MINUTES
     public void trackShipments() {
         try {
+            Api_Props props = this.apiPropsRepository.findByProvider("SHIP_ROCKET_SHIPPING")
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.SHIP_ROCKET_PROPS_NOT_FOUND));
+
             List<CustomerOrderItems> shippedItems = this.orderItemsRepository.findAllByDeliveryStatus("SHIPPED");
 
             if (shippedItems.isEmpty())
@@ -242,7 +256,7 @@ public class ShipRocketServiceImple implements ShipRocketService {
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.setBearerAuth(TOKEN);
+                headers.setBearerAuth(props.getToken());
                 HttpEntity<String> entity = new HttpEntity<>(headers);
 
                 ResponseEntity<String> response = restTemplate.exchange(currentTrackingUrl,

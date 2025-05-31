@@ -108,3 +108,707 @@ ERROR in ch.qos.logback.core.pattern.parser.Compiler@73914cc7 - Failed to create
 2025-05-31T10:10:46.773+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] s.s.s.c.i.ProductNetQuantityServiceImple : Data fetch Success :::: {}com.coder.springjwt.services.sellerServices.catalogNetQuantityService.imple.ProductNetQuantityServiceImple
 2025-05-31T10:10:47.135+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] s.s.s.c.i.ProductNetQuantityServiceImple : Data fetch Success :::: {}com.coder.springjwt.services.sellerServices.catalogNetQuantityService.imple.ProductNetQuantityServiceImple
 2025-05-31T10:10:47.589+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] s.s.s.c.i.ProductNetQuantityServiceImple : Data fetch Success :::: {}com.coder.springjwt.services.sellerServices.catalogNetQuantityService.imple.ProductNetQuantityServiceImple
+2025-05-31T10:11:52.871+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] .s.s.i.SellerProductCategoryServiceImple : Parent Category Data Fetched Success
+2025-05-31T10:11:52.883+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerProductServiceImple  : getProductCounts Flying
+2025-05-31T10:11:57.269+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.h.h.HsnServiceImple            : Data fetch Success :::: {}com.coder.springjwt.services.sellerServices.sellerStoreService.userService.userServiceImple.UserServiceImple
+2025-05-31T10:11:59.712+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:12:02.944+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:12:03.585+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:12:03.985+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:12:04.659+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:12:05.230+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:12:06.411+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:16:16.925+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:16:17.552+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:17:29.471+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:17:39.501+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:17:49.211+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:18:00.487+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:18:23.894+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T10:18:24.528+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:18:25.731+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:18:26.320+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:18:27.252+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:18:28.865+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:18:29.864+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:18:30.539+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:18:31.020+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:18:31.608+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:18:45.384+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:18:54.359+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:19:46.852+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T10:19:49.492+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:19:52.313+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:19:52.944+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:20:29.475+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:20:43.151+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:20:46.839+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:20:47.356+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:20:47.973+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:20:48.813+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:20:49.186+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:20:49.659+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:20:50.288+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:20:58.573+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:20:59.074+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:21:00.142+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:21:00.824+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:21:01.356+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:21:01.962+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:21:02.664+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:21:27.904+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:21:30.087+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:21:30.682+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:21:36.563+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:21:37.115+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:21:41.961+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:21:42.643+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:21:43.142+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:21:43.665+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:21:59.435+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:22:00.094+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:22:12.760+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T10:22:15.659+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:22:16.133+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T10:22:17.115+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:22:17.601+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T10:22:25.248+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:23:19.737+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] .s.s.i.SellerProductCategoryServiceImple : Parent Category Data Fetched Success
+2025-05-31T10:23:19.776+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerProductServiceImple  : getProductCounts Flying
+2025-05-31T10:23:37.327+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-7] .s.s.i.SellerProductCategoryServiceImple : Parent Category Data Fetched Success
+2025-05-31T10:23:37.330+05:30  INFO 115440 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerProductServiceImple  : getProductCounts Flying
+2025-05-31T10:32:21.280+05:30  INFO 115440 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:32:21.285+05:30  INFO 115440 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T10:32:21.298+05:30  INFO 115440 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T10:32:30.937+05:30  INFO 8624 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 8624 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T10:32:30.941+05:30  INFO 8624 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T10:32:31.060+05:30  INFO 8624 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T10:32:31.061+05:30  INFO 8624 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T10:32:33.459+05:30  INFO 8624 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T10:32:33.991+05:30  INFO 8624 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 517 ms. Found 36 JPA repository interfaces.
+2025-05-31T10:32:36.174+05:30  INFO 8624 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T10:32:36.212+05:30  INFO 8624 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T10:32:36.214+05:30  INFO 8624 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T10:32:36.456+05:30  INFO 8624 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T10:32:36.456+05:30  INFO 8624 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5391 ms
+2025-05-31T10:32:36.826+05:30  INFO 8624 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T10:32:36.943+05:30  INFO 8624 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T10:32:36.950+05:30  INFO 8624 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T10:32:37.528+05:30  INFO 8624 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T10:32:37.597+05:30  INFO 8624 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T10:32:37.879+05:30  INFO 8624 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17abf3e3
+2025-05-31T10:32:37.885+05:30  INFO 8624 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T10:32:37.975+05:30  WARN 8624 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T10:32:41.221+05:30  INFO 8624 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T10:32:41.646+05:30  INFO 8624 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:32:43.627+05:30  INFO 8624 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T10:32:46.550+05:30  WARN 8624 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T10:32:47.146+05:30  INFO 8624 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4f59c882, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@65a451b5, org.springframework.security.web.context.SecurityContextHolderFilter@76cfed19, org.springframework.security.web.header.HeaderWriterFilter@5d02f592, org.springframework.security.web.authentication.logout.LogoutFilter@c5e5a70, com.coder.springjwt.security.jwt.AuthTokenFilter@5af3d386, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55273913, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3b5a5c1a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2805332f, org.springframework.security.web.session.SessionManagementFilter@1b6b4bda, org.springframework.security.web.access.ExceptionTranslationFilter@32127154, org.springframework.security.web.access.intercept.AuthorizationFilter@72ab0f8b]
+2025-05-31T10:32:48.399+05:30  INFO 8624 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T10:32:48.751+05:30  INFO 8624 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T10:32:48.785+05:30  INFO 8624 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T10:32:48.815+05:30  INFO 8624 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 18.851 seconds (process running for 20.681)
+2025-05-31T10:32:54.376+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T10:32:54.376+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T10:32:54.380+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-05-31T10:33:16.360+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-10] c.c.s.b.b.BucketController               : SPORT2.jpg
+2025-05-31T10:33:17.052+05:30 ERROR 8624 --- [https-jsse-nio-8443-exec-10] c.c.s.b.bucketService.BucketService      : Exception : AWS Secret Credentials Not Found | Check AWS CRED...
+2025-05-31T10:33:17.052+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-10] c.c.s.b.bucketService.BucketService      : Cloudinary File Upload---Flying
+2025-05-31T10:33:19.218+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-10] c.c.s.b.bucketService.BucketService      : ======= File Upload in Cloudinary ============
+2025-05-31T10:33:19.358+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.c.b.BornCategoryServiceImple   : Mapper Convert Success
+2025-05-31T10:33:19.369+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.c.b.BornCategoryServiceImple   : Data Present Success
+2025-05-31T10:33:19.513+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.c.b.BornCategoryServiceImple   : Born-Category Saved Success
+2025-05-31T10:33:36.254+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.c.b.BornCategoryServiceImple   : Delete Success => Category id :: 4
+2025-05-31T10:34:53.462+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerProductServiceImple  : getProductCounts Flying
+2025-05-31T10:34:53.464+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-2] .s.s.i.SellerProductCategoryServiceImple : Parent Category Data Fetched Success
+2025-05-31T10:35:03.844+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T10:35:06.420+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-3] .s.s.i.SellerProductCategoryServiceImple : Parent Category Data Fetched Success
+2025-05-31T10:35:06.421+05:30  INFO 8624 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerProductServiceImple  : getProductCounts Flying
+2025-05-31T10:38:53.577+05:30  INFO 8624 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:38:53.590+05:30  INFO 8624 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T10:38:53.606+05:30  INFO 8624 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T10:39:39.024+05:30  INFO 122280 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 122280 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T10:39:39.027+05:30  INFO 122280 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T10:39:39.199+05:30  INFO 122280 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T10:39:39.200+05:30  INFO 122280 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T10:39:41.689+05:30  INFO 122280 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T10:39:42.148+05:30  INFO 122280 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 443 ms. Found 36 JPA repository interfaces.
+2025-05-31T10:39:44.711+05:30  INFO 122280 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T10:39:44.735+05:30  INFO 122280 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T10:39:44.736+05:30  INFO 122280 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T10:39:45.041+05:30  INFO 122280 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T10:39:45.041+05:30  INFO 122280 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5839 ms
+2025-05-31T10:39:45.357+05:30  INFO 122280 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T10:39:45.481+05:30  INFO 122280 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T10:39:45.487+05:30  INFO 122280 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T10:39:46.074+05:30  INFO 122280 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T10:39:46.135+05:30  INFO 122280 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T10:39:46.440+05:30  INFO 122280 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@78867c69
+2025-05-31T10:39:46.444+05:30  INFO 122280 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T10:39:46.529+05:30  WARN 122280 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T10:39:49.731+05:30  INFO 122280 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T10:39:50.006+05:30  INFO 122280 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:39:51.901+05:30  INFO 122280 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T10:39:55.425+05:30  WARN 122280 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T10:39:55.926+05:30  INFO 122280 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@75bca42a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@b4fed37, org.springframework.security.web.context.SecurityContextHolderFilter@3bef9950, org.springframework.security.web.header.HeaderWriterFilter@60c44114, org.springframework.security.web.authentication.logout.LogoutFilter@71e2720e, com.coder.springjwt.security.jwt.AuthTokenFilter@7016e7e3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@45659c17, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5c897c02, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5e48caff, org.springframework.security.web.session.SessionManagementFilter@232f66dc, org.springframework.security.web.access.ExceptionTranslationFilter@1b8f404d, org.springframework.security.web.access.intercept.AuthorizationFilter@c5e5a70]
+2025-05-31T10:39:56.923+05:30  INFO 122280 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T10:39:57.252+05:30  INFO 122280 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T10:39:57.287+05:30  INFO 122280 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T10:39:57.309+05:30  INFO 122280 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 19.279 seconds (process running for 20.926)
+2025-05-31T10:42:24.753+05:30  INFO 122280 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:42:24.758+05:30  INFO 122280 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T10:42:24.776+05:30  INFO 122280 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T10:42:33.768+05:30  INFO 97324 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 97324 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T10:42:33.772+05:30  INFO 97324 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T10:42:33.971+05:30  INFO 97324 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T10:42:33.972+05:30  INFO 97324 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T10:42:36.413+05:30  INFO 97324 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T10:42:36.884+05:30  INFO 97324 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 458 ms. Found 36 JPA repository interfaces.
+2025-05-31T10:42:39.151+05:30  INFO 97324 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T10:42:39.173+05:30  INFO 97324 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T10:42:39.173+05:30  INFO 97324 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T10:42:39.439+05:30  INFO 97324 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T10:42:39.440+05:30  INFO 97324 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5467 ms
+2025-05-31T10:42:39.748+05:30  INFO 97324 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T10:42:39.875+05:30  INFO 97324 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T10:42:39.881+05:30  INFO 97324 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T10:42:40.468+05:30  INFO 97324 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T10:42:40.527+05:30  INFO 97324 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T10:42:40.774+05:30  INFO 97324 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@19e6285
+2025-05-31T10:42:40.778+05:30  INFO 97324 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T10:42:40.840+05:30  WARN 97324 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T10:42:43.872+05:30  INFO 97324 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T10:42:44.191+05:30  INFO 97324 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:42:46.065+05:30  INFO 97324 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T10:42:48.902+05:30  WARN 97324 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T10:42:49.390+05:30  INFO 97324 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5a10f001, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@15f338fa, org.springframework.security.web.context.SecurityContextHolderFilter@43218c55, org.springframework.security.web.header.HeaderWriterFilter@46777f77, org.springframework.security.web.authentication.logout.LogoutFilter@4cbe1134, com.coder.springjwt.security.jwt.AuthTokenFilter@1733e3ac, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@16802a80, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b759d56, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5ee978f4, org.springframework.security.web.session.SessionManagementFilter@24afc85a, org.springframework.security.web.access.ExceptionTranslationFilter@596c9e8e, org.springframework.security.web.access.intercept.AuthorizationFilter@7956cf46]
+2025-05-31T10:42:50.452+05:30  INFO 97324 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T10:42:50.750+05:30  INFO 97324 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T10:42:50.784+05:30  INFO 97324 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T10:42:50.810+05:30  INFO 97324 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 18.02 seconds (process running for 19.67)
+2025-05-31T10:54:35.343+05:30  INFO 97324 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:54:35.347+05:30  INFO 97324 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T10:54:35.357+05:30  INFO 97324 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T10:55:50.423+05:30  INFO 118816 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 118816 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T10:55:50.427+05:30  INFO 118816 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T10:55:50.551+05:30  INFO 118816 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T10:55:50.551+05:30  INFO 118816 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T10:55:53.070+05:30  INFO 118816 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T10:55:53.660+05:30  INFO 118816 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 568 ms. Found 36 JPA repository interfaces.
+2025-05-31T10:55:56.205+05:30  INFO 118816 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T10:55:56.229+05:30  INFO 118816 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T10:55:56.229+05:30  INFO 118816 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T10:55:56.512+05:30  INFO 118816 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T10:55:56.512+05:30  INFO 118816 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5960 ms
+2025-05-31T10:55:56.814+05:30  INFO 118816 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T10:55:56.932+05:30  INFO 118816 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T10:55:56.938+05:30  INFO 118816 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T10:55:57.541+05:30  INFO 118816 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T10:55:57.603+05:30  INFO 118816 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T10:55:57.804+05:30  INFO 118816 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@406390a0
+2025-05-31T10:55:57.807+05:30  INFO 118816 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T10:55:57.872+05:30  WARN 118816 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T10:56:00.828+05:30  INFO 118816 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T10:56:01.144+05:30  INFO 118816 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T10:56:03.052+05:30  INFO 118816 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T10:56:06.128+05:30  WARN 118816 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T10:56:06.596+05:30  INFO 118816 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@14e45321, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6339c0c9, org.springframework.security.web.context.SecurityContextHolderFilter@2988f1b, org.springframework.security.web.header.HeaderWriterFilter@c5e5a70, org.springframework.security.web.authentication.logout.LogoutFilter@c48484d, com.coder.springjwt.security.jwt.AuthTokenFilter@13fe4561, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@13ae1998, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6490dd9b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@543c269, org.springframework.security.web.session.SessionManagementFilter@2805332f, org.springframework.security.web.access.ExceptionTranslationFilter@1003e401, org.springframework.security.web.access.intercept.AuthorizationFilter@5134c3cf]
+2025-05-31T10:56:07.575+05:30  INFO 118816 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T10:56:07.925+05:30  INFO 118816 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T10:56:07.962+05:30  INFO 118816 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T10:56:07.991+05:30  INFO 118816 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 18.543 seconds (process running for 20.238)
+2025-05-31T11:00:00.623+05:30  INFO 118816 --- [scheduling-1] c.c.s.s.d.s.i.ShipRocketServiceImple     : ID :: 165
+2025-05-31T11:00:00.624+05:30  INFO 118816 --- [scheduling-1] c.c.s.s.d.s.i.ShipRocketServiceImple     : ORDER ITEM ID :: ORD-2505202516491829975
+2025-05-31T11:00:00.624+05:30  INFO 118816 --- [scheduling-1] c.c.s.s.d.s.i.ShipRocketServiceImple     : SHIP-ROCKET STATUS :: SHIPPED
+2025-05-31T11:00:00.624+05:30  INFO 118816 --- [scheduling-1] c.c.s.s.d.s.i.ShipRocketServiceImple     : API RESPONSE :: {"tracking_data":{"track_status":0,"shipment_status":0,"shipment_track":[{"id":0,"awb_code":"","courier_company_id":null,"shipment_id":0,"order_id":0,"pickup_date":"","delivered_date":"","weight":"","packages":0,"current_status":"","delivered_to":"","destination":"","consignee_name":"","origin":"","courier_agent_details":null,"courier_name":"","edd":null,"pod":"","pod_status":"","rto_delivered_date":"","return_awb_code":"","updated_time_stamp":""}],"shipment_track_activities":null,"track_url":"","qc_response":"","is_return":false,"error":"Aahh! There is no shipment present against this tracking id."}}
+2025-05-31T11:03:01.753+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T11:03:01.754+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T11:03:01.758+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-05-31T11:03:02.022+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:03:02.271+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:03:02.517+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:03:02.518+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.p.p.imple.PublicServiceImple     : getProductCategoryService Fetch Data Success
+2025-05-31T11:03:04.217+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:03:04.456+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : getProductListByBornCategoryId Fetch Data Success :: 
+2025-05-31T11:03:05.214+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : <--- productWatching Flying --->
+2025-05-31T11:03:05.244+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:03:05.355+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:03:05.359+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : productWatching Fetch Data Success:: 
+2025-05-31T11:03:12.571+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.p.c.i.CustomerAuthServiceImple   : <-- customerAuthenticateUser Flying --> 
+2025-05-31T11:03:13.831+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:03:13.926+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:03:14.002+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:03:14.003+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.p.imple.PublicServiceImple     : getProductCategoryService Fetch Data Success
+2025-05-31T11:03:17.450+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-7] c.c.s.s.p.a.AddressServiceImple          : <-- getAddress Flying --> 
+2025-05-31T11:03:17.464+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-7] c.c.s.s.p.a.AddressServiceImple          : <-- getAddress Fetch Success --> 
+2025-05-31T11:03:20.882+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : <--- createOrder  Flying -->
+2025-05-31T11:03:20.882+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : AMOUNT :: 799.0
+2025-05-31T11:03:20.882+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : ADDRESS ID :: 28
+2025-05-31T11:03:20.886+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Items :: [CartItemsDto(pId=58, pName=Amazon Brand - Symbol Men's Cotton Shirt Regular Fit (Available in Plus Size and Combo Packs), pPrice=799, pBrand=Jack & jones, pSize=S, quantity=1, totalPrice=799.0, pFileUrl=http://res.cloudinary.com/doeatgrpl/image/upload/v1748089766/user_uploads/RADJAC/BLACK5.jpg.jpg, pColor=Green, pMrp=1499.0, pCalculatedDiscount=46.70%)]
+2025-05-31T11:03:20.902+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Matched Cart Items 
+2025-05-31T11:03:20.902+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Variant Total Price :: 799
+2025-05-31T11:03:20.902+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Total Price :: 799
+2025-05-31T11:03:22.505+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : order created Success!!
+2025-05-31T11:03:22.607+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Payment Transaction Saved Success...
+2025-05-31T11:03:22.607+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : saveCustomerOrder flying
+2025-05-31T11:03:22.644+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.P.r.imple.RazorpayServiceImple   : Customer Order Saved Success...
+2025-05-31T11:03:45.972+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : <-- orderUpdate Flying -->
+2025-05-31T11:03:45.976+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:03:45.977+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Matched Cart Items 
+2025-05-31T11:03:45.978+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Variant Total Price :: 799
+2025-05-31T11:03:45.978+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Total Price :: 799
+2025-05-31T11:03:45.982+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : saveCustomerOrderItems flying
+2025-05-31T11:03:46.024+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:03:46.029+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : razorpayBaseFee :: 15.98
+2025-05-31T11:03:46.035+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : razorpayGst :: 2.88
+2025-05-31T11:03:46.037+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : totalFee :: 18.86
+2025-05-31T11:03:46.039+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : finalAmount :: 780.14
+2025-05-31T11:03:46.095+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:03:46.095+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.p.p.imple.PublicServiceImple     : getProductCategoryService Fetch Data Success
+2025-05-31T11:03:46.159+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Customer Order Items Saved Success!!!
+2025-05-31T11:03:46.174+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Payment Transaction Data Update Success
+2025-05-31T11:03:46.174+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : <-- updateCustomerOrderStatus Flying --> 
+2025-05-31T11:03:46.188+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] c.c.s.s.P.r.imple.RazorpayServiceImple   : Order Update Success ::  ORDER-ID-> order_QbQECFYlXLRgL5
+2025-05-31T11:03:53.037+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:03:57.231+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:04:18.481+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:04:20.480+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-7] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:04:21.210+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:04:24.093+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:04:40.298+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:04:45.327+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:04:59.446+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-3] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:05:11.269+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:05:11.815+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-1] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:05:26.562+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:05:27.255+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:05:27.811+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-8] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:05:39.373+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:05:40.051+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:05:40.867+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:06:18.266+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-4] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:06:24.406+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.p.o.i.OrderCancelServiceImple    : <--  orderCancelService Flying  -->
+2025-05-31T11:06:24.442+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-10] c.c.s.s.p.o.i.OrderCancelServiceImple    : Order Cancel | ShipRocket Order Current Not Generated | Success
+2025-05-31T11:06:24.462+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:06:32.477+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:06:32.950+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-9] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:06:41.099+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerOrderRefundRequest Flying  -->
+2025-05-31T11:06:42.712+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-2] .s.s.s.s.i.SellerCancelOrderServiceImple : Order Refund Payment Initiated Success... 
+2025-05-31T11:06:42.780+05:30  INFO 118816 --- [https-jsse-nio-8443-exec-7] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:14:24.355+05:30  INFO 118816 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:14:24.359+05:30  INFO 118816 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:14:24.367+05:30  INFO 118816 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:14:32.470+05:30  INFO 98872 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 98872 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:14:32.474+05:30  INFO 98872 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:14:32.602+05:30  INFO 98872 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:14:32.602+05:30  INFO 98872 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:14:36.112+05:30  INFO 98872 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:14:36.574+05:30  INFO 98872 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 449 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:14:38.711+05:30  INFO 98872 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:14:38.734+05:30  INFO 98872 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:14:38.736+05:30  INFO 98872 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:14:39.000+05:30  INFO 98872 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:14:39.000+05:30  INFO 98872 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6398 ms
+2025-05-31T11:14:39.272+05:30  INFO 98872 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:14:39.394+05:30  INFO 98872 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:14:39.403+05:30  INFO 98872 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:14:40.051+05:30  INFO 98872 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:14:40.112+05:30  INFO 98872 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:14:40.379+05:30  INFO 98872 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@58fa005a
+2025-05-31T11:14:40.382+05:30  INFO 98872 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:14:40.460+05:30  WARN 98872 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:14:43.586+05:30  INFO 98872 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:14:43.865+05:30  INFO 98872 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:14:45.790+05:30  INFO 98872 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T11:14:48.543+05:30  WARN 98872 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T11:14:49.072+05:30  INFO 98872 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@49fe8401, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5f0b32dc, org.springframework.security.web.context.SecurityContextHolderFilter@4a1f22c9, org.springframework.security.web.header.HeaderWriterFilter@2805332f, org.springframework.security.web.authentication.logout.LogoutFilter@543c269, com.coder.springjwt.security.jwt.AuthTokenFilter@3e424c0e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@46a21d23, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@84cc9ca, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6509e6d0, org.springframework.security.web.session.SessionManagementFilter@48a915b0, org.springframework.security.web.access.ExceptionTranslationFilter@4f59c882, org.springframework.security.web.access.intercept.AuthorizationFilter@7022c3e]
+2025-05-31T11:14:50.082+05:30  INFO 98872 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T11:14:50.417+05:30  INFO 98872 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T11:14:50.461+05:30  INFO 98872 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T11:14:50.486+05:30  INFO 98872 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 19.089 seconds (process running for 20.816)
+2025-05-31T11:16:42.635+05:30  INFO 98872 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:16:42.640+05:30  INFO 98872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:16:42.647+05:30  INFO 98872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:16:50.420+05:30  INFO 113868 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 113868 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:16:50.425+05:30  INFO 113868 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:16:50.543+05:30  INFO 113868 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:16:50.544+05:30  INFO 113868 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:16:53.071+05:30  INFO 113868 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:16:53.630+05:30  INFO 113868 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 540 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:16:55.902+05:30  INFO 113868 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:16:55.926+05:30  INFO 113868 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:16:55.927+05:30  INFO 113868 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:16:56.183+05:30  INFO 113868 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:16:56.183+05:30  INFO 113868 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5638 ms
+2025-05-31T11:16:56.476+05:30  INFO 113868 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:16:56.583+05:30  INFO 113868 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:16:56.590+05:30  INFO 113868 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:16:57.161+05:30  INFO 113868 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:16:57.222+05:30  INFO 113868 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:16:57.447+05:30  INFO 113868 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@19e6285
+2025-05-31T11:16:57.449+05:30  INFO 113868 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:16:57.514+05:30  WARN 113868 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:17:00.576+05:30  INFO 113868 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:17:00.879+05:30  INFO 113868 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:17:02.930+05:30  INFO 113868 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T11:17:05.972+05:30  WARN 113868 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T11:17:06.539+05:30  INFO 113868 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@24afc85a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@25955180, org.springframework.security.web.context.SecurityContextHolderFilter@299f9c76, org.springframework.security.web.header.HeaderWriterFilter@742dbe75, org.springframework.security.web.authentication.logout.LogoutFilter@2c34a83c, com.coder.springjwt.security.jwt.AuthTokenFilter@25da81d7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@bc8f7bd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@566bf09b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6631752b, org.springframework.security.web.session.SessionManagementFilter@56fc19ca, org.springframework.security.web.access.ExceptionTranslationFilter@4c4c39f5, org.springframework.security.web.access.intercept.AuthorizationFilter@4648fe79]
+2025-05-31T11:17:07.695+05:30  INFO 113868 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T11:17:08.016+05:30  INFO 113868 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T11:17:08.048+05:30  INFO 113868 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T11:17:08.071+05:30  INFO 113868 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 18.591 seconds (process running for 20.093)
+2025-05-31T11:22:14.254+05:30  INFO 113868 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:22:14.260+05:30  INFO 113868 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:22:14.269+05:30  INFO 113868 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:22:22.805+05:30  INFO 118392 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 118392 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:22:22.809+05:30  INFO 118392 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:22:22.976+05:30  INFO 118392 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:22:22.976+05:30  INFO 118392 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:22:25.376+05:30  INFO 118392 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:22:25.858+05:30  INFO 118392 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 467 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:22:28.067+05:30  INFO 118392 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:22:28.094+05:30  INFO 118392 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:22:28.095+05:30  INFO 118392 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:22:28.378+05:30  INFO 118392 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:22:28.378+05:30  INFO 118392 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5401 ms
+2025-05-31T11:22:28.707+05:30  INFO 118392 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:22:28.813+05:30  INFO 118392 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:22:28.819+05:30  INFO 118392 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:22:29.324+05:30  INFO 118392 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:22:29.380+05:30  INFO 118392 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:22:29.650+05:30  INFO 118392 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@20e236be
+2025-05-31T11:22:29.653+05:30  INFO 118392 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:22:29.710+05:30  WARN 118392 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:22:32.619+05:30  INFO 118392 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:22:32.858+05:30  INFO 118392 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:22:34.636+05:30  INFO 118392 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T11:22:37.194+05:30  WARN 118392 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T11:22:37.787+05:30  INFO 118392 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6339c0c9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@543c269, org.springframework.security.web.context.SecurityContextHolderFilter@385582c, org.springframework.security.web.header.HeaderWriterFilter@53b0cc45, org.springframework.security.web.authentication.logout.LogoutFilter@4712a708, com.coder.springjwt.security.jwt.AuthTokenFilter@3657f9a5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6490dd9b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@22b66645, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@11c7e123, org.springframework.security.web.session.SessionManagementFilter@446a9a2e, org.springframework.security.web.access.ExceptionTranslationFilter@32737f48, org.springframework.security.web.access.intercept.AuthorizationFilter@13ceaa45]
+2025-05-31T11:22:38.961+05:30  INFO 118392 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T11:22:39.369+05:30  INFO 118392 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T11:22:39.402+05:30  INFO 118392 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T11:22:39.425+05:30  INFO 118392 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 17.588 seconds (process running for 19.025)
+2025-05-31T11:22:46.788+05:30  INFO 118392 --- [https-jsse-nio-8443-exec-9] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T11:22:46.788+05:30  INFO 118392 --- [https-jsse-nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T11:22:46.796+05:30  INFO 118392 --- [https-jsse-nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2025-05-31T11:23:00.356+05:30 ERROR 118392 --- [https-jsse-nio-8443-exec-1] c.c.s.b.bucketService.BucketService      : Error in delete File in AWS Bucket :::::::::::  {}
+2025-05-31T11:23:00.451+05:30 ERROR 118392 --- [https-jsse-nio-8443-exec-1] c.c.s.b.bucketService.BucketService      : Exception : AWS Secret Credentials Not Found | Check AWS CRED...
+2025-05-31T11:23:00.451+05:30  INFO 118392 --- [https-jsse-nio-8443-exec-1] c.c.s.b.bucketService.BucketService      : Cloudinary File Upload---Flying
+2025-05-31T11:23:03.185+05:30  INFO 118392 --- [https-jsse-nio-8443-exec-1] c.c.s.b.bucketService.BucketService      : ======= File Upload in Cloudinary ============
+2025-05-31T11:32:22.244+05:30  INFO 118392 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:32:22.252+05:30  INFO 118392 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:32:22.269+05:30  INFO 118392 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:32:30.732+05:30  INFO 122488 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 122488 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:32:30.735+05:30  INFO 122488 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:32:30.869+05:30  INFO 122488 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:32:30.870+05:30  INFO 122488 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:32:33.393+05:30  INFO 122488 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:32:33.845+05:30  INFO 122488 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 437 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:32:36.426+05:30  INFO 122488 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:32:36.445+05:30  INFO 122488 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:32:36.446+05:30  INFO 122488 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:32:36.736+05:30  INFO 122488 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:32:36.738+05:30  INFO 122488 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5867 ms
+2025-05-31T11:32:37.037+05:30  INFO 122488 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:32:37.161+05:30  INFO 122488 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:32:37.168+05:30  INFO 122488 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:32:37.717+05:30  INFO 122488 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:32:37.774+05:30  INFO 122488 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:32:37.994+05:30  INFO 122488 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49d2bf56
+2025-05-31T11:32:37.997+05:30  INFO 122488 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:32:38.060+05:30  WARN 122488 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:32:41.027+05:30  INFO 122488 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:32:41.313+05:30  INFO 122488 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:32:42.070+05:30  WARN 122488 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+2025-05-31T11:32:42.070+05:30  INFO 122488 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:32:42.077+05:30  INFO 122488 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:32:42.095+05:30  INFO 122488 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:32:42.098+05:30  INFO 122488 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-31T11:32:42.118+05:30  INFO 122488 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-31T11:32:42.167+05:30 ERROR 122488 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:503) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1414) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:595) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:518) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:952) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:615) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:738) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:440) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1317) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) ~[spring-boot-3.1.10.jar:3.1.10]
+	at com.coder.springjwt.SpringBootServerApplication.main(SpringBootServerApplication.java:16) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.10.jar:3.1.10]
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'cloud.aws.credentials.access-key' in value "${cloud.aws.credentials.access-key}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:200) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:919) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1358) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:773) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:756) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:497) ~[spring-beans-6.0.18.jar:6.0.18]
+	... 22 common frames omitted
+
+2025-05-31T11:34:25.824+05:30  INFO 120796 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 120796 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:34:25.828+05:30  INFO 120796 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:34:25.964+05:30  INFO 120796 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:34:25.965+05:30  INFO 120796 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:34:28.726+05:30  INFO 120796 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:34:29.267+05:30  INFO 120796 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 525 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:34:31.696+05:30  INFO 120796 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:34:31.721+05:30  INFO 120796 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:34:31.722+05:30  INFO 120796 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:34:32.018+05:30  INFO 120796 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:34:32.018+05:30  INFO 120796 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6052 ms
+2025-05-31T11:34:32.372+05:30  INFO 120796 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:34:32.490+05:30  INFO 120796 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:34:32.497+05:30  INFO 120796 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:34:33.088+05:30  INFO 120796 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:34:33.141+05:30  INFO 120796 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:34:33.386+05:30  INFO 120796 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6bcd5bcd
+2025-05-31T11:34:33.389+05:30  INFO 120796 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:34:33.463+05:30  WARN 120796 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:34:36.301+05:30  INFO 120796 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:34:36.546+05:30  INFO 120796 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:34:37.370+05:30  WARN 120796 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+2025-05-31T11:34:37.371+05:30  INFO 120796 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:34:37.376+05:30  INFO 120796 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:34:37.389+05:30  INFO 120796 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:34:37.393+05:30  INFO 120796 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-31T11:34:37.424+05:30  INFO 120796 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-31T11:34:37.469+05:30 ERROR 120796 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:503) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1414) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:595) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:518) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:952) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:615) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:738) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:440) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1317) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) ~[spring-boot-3.1.10.jar:3.1.10]
+	at com.coder.springjwt.SpringBootServerApplication.main(SpringBootServerApplication.java:16) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.10.jar:3.1.10]
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'cloud.aws.credentials.access-key' in value "${cloud.aws.credentials.access-key}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:200) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:919) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1358) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:773) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:756) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:497) ~[spring-beans-6.0.18.jar:6.0.18]
+	... 22 common frames omitted
+
+2025-05-31T11:35:08.600+05:30  INFO 113120 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 113120 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:35:08.605+05:30  INFO 113120 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:35:08.740+05:30  INFO 113120 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:35:08.741+05:30  INFO 113120 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:35:11.205+05:30  INFO 113120 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:35:11.673+05:30  INFO 113120 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 455 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:35:13.974+05:30  INFO 113120 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:35:13.996+05:30  INFO 113120 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:35:13.997+05:30  INFO 113120 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:35:14.265+05:30  INFO 113120 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:35:14.265+05:30  INFO 113120 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5523 ms
+2025-05-31T11:35:14.574+05:30  INFO 113120 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:35:14.693+05:30  INFO 113120 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:35:14.700+05:30  INFO 113120 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:35:15.287+05:30  INFO 113120 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:35:15.344+05:30  INFO 113120 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:35:15.610+05:30  INFO 113120 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5575c385
+2025-05-31T11:35:15.614+05:30  INFO 113120 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:35:15.693+05:30  WARN 113120 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:35:18.726+05:30  INFO 113120 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:35:18.997+05:30  INFO 113120 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:35:19.763+05:30  WARN 113120 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+2025-05-31T11:35:19.764+05:30  INFO 113120 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:35:19.769+05:30  INFO 113120 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-31T11:35:19.781+05:30  INFO 113120 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T11:35:19.784+05:30  INFO 113120 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-31T11:35:19.805+05:30  INFO 113120 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-31T11:35:19.849+05:30 ERROR 113120 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bucketConfig': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:503) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1414) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:595) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:518) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:952) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:615) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:738) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:440) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1317) ~[spring-boot-3.1.10.jar:3.1.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) ~[spring-boot-3.1.10.jar:3.1.10]
+	at com.coder.springjwt.SpringBootServerApplication.main(SpringBootServerApplication.java:16) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.10.jar:3.1.10]
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'cloud.aws.credentials.access-key' in value "${cloud.aws.credentials.access-key}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210) ~[spring-core-6.0.18.jar:6.0.18]
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:200) ~[spring-context-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:919) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1358) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:773) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:756) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145) ~[spring-beans-6.0.18.jar:6.0.18]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:497) ~[spring-beans-6.0.18.jar:6.0.18]
+	... 22 common frames omitted
+
+2025-05-31T11:43:19.437+05:30  INFO 66976 --- [restartedMain] c.c.s.SpringBootServerApplication        : Starting SpringBootServerApplication using Java 17.0.9 with PID 66976 (C:\H DRIVE\MegaMart Project\Ecomm-adminPanel\spring-boot-server\target\classes started by amans in C:\H DRIVE\MegaMart Project\Ecomm-adminPanel)
+2025-05-31T11:43:19.444+05:30  INFO 66976 --- [restartedMain] c.c.s.SpringBootServerApplication        : The following 1 profile is active: "dev"
+2025-05-31T11:43:19.577+05:30  INFO 66976 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-31T11:43:19.577+05:30  INFO 66976 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-31T11:43:21.978+05:30  INFO 66976 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-31T11:43:22.450+05:30  INFO 66976 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 459 ms. Found 36 JPA repository interfaces.
+2025-05-31T11:43:24.941+05:30  INFO 66976 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8443 (https)
+2025-05-31T11:43:24.967+05:30  INFO 66976 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T11:43:24.967+05:30  INFO 66976 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-31T11:43:25.232+05:30  INFO 66976 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T11:43:25.232+05:30  INFO 66976 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5653 ms
+2025-05-31T11:43:25.548+05:30  INFO 66976 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-31T11:43:25.667+05:30  INFO 66976 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.22.Final
+2025-05-31T11:43:25.684+05:30  INFO 66976 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-31T11:43:26.245+05:30  INFO 66976 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-31T11:43:26.295+05:30  INFO 66976 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T11:43:26.562+05:30  INFO 66976 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5768379a
+2025-05-31T11:43:26.565+05:30  INFO 66976 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T11:43:26.647+05:30  WARN 66976 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-31T11:43:29.691+05:30  INFO 66976 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-31T11:43:29.942+05:30  INFO 66976 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-31T11:43:31.696+05:30  INFO 66976 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-31T11:43:34.271+05:30  WARN 66976 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-31T11:43:34.731+05:30  INFO 66976 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@228f0dbc, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@17845f58, org.springframework.security.web.context.SecurityContextHolderFilter@5ef34d82, org.springframework.security.web.header.HeaderWriterFilter@6ac359ef, org.springframework.security.web.authentication.logout.LogoutFilter@6ddd4e19, com.coder.springjwt.security.jwt.AuthTokenFilter@db19ee3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4c4c39f5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30f66ab4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b61240b, org.springframework.security.web.session.SessionManagementFilter@78eb10bc, org.springframework.security.web.access.ExceptionTranslationFilter@4e15df0e, org.springframework.security.web.access.intercept.AuthorizationFilter@513c904d]
+2025-05-31T11:43:35.715+05:30  INFO 66976 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-31T11:43:35.986+05:30  INFO 66976 --- [restartedMain] o.a.t.util.net.NioEndpoint.certificate   : Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [C:\Users\amans\.keystore] using alias [mysslkey] with trust store [null]
+2025-05-31T11:43:36.023+05:30  INFO 66976 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8443 (https) with context path ''
+2025-05-31T11:43:36.049+05:30  INFO 66976 --- [restartedMain] c.c.s.SpringBootServerApplication        : Started SpringBootServerApplication in 17.547 seconds (process running for 19.033)
+2025-05-31T11:44:37.586+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-10] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T11:44:37.586+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-10] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T11:44:37.590+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-10] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-05-31T11:44:38.183+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:44:38.337+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:44:38.815+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:44:38.815+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.p.p.imple.PublicServiceImple     : getProductCategoryService Fetch Data Success
+2025-05-31T11:45:15.228+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-9] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:45:15.410+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-9] c.c.s.s.p.p.imple.PublicServiceImple     : getProductListByBornCategoryId Fetch Data Success :: 
+2025-05-31T11:45:16.259+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : <--- productWatching Flying --->
+2025-05-31T11:45:16.316+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:45:16.442+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:45:16.449+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.p.p.imple.PublicServiceImple     : productWatching Fetch Data Success:: 
+2025-05-31T11:45:46.295+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-7] c.c.s.s.p.a.AddressServiceImple          : <-- getAddress Flying --> 
+2025-05-31T11:45:46.319+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-7] c.c.s.s.p.a.AddressServiceImple          : <-- getAddress Fetch Success --> 
+2025-05-31T11:45:55.768+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : <--- createOrder  Flying -->
+2025-05-31T11:45:55.768+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : AMOUNT :: 799.0
+2025-05-31T11:45:55.768+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : ADDRESS ID :: 28
+2025-05-31T11:45:55.789+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Items :: [CartItemsDto(pId=58, pName=Amazon Brand - Symbol Men's Cotton Shirt Regular Fit (Available in Plus Size and Combo Packs), pPrice=799, pBrand=Jack & jones, pSize=S, quantity=1, totalPrice=799.0, pFileUrl=http://res.cloudinary.com/doeatgrpl/image/upload/v1748089766/user_uploads/RADJAC/BLACK5.jpg.jpg, pColor=Green, pMrp=1499.0, pCalculatedDiscount=46.70%)]
+2025-05-31T11:45:55.804+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Matched Cart Items 
+2025-05-31T11:45:55.806+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Variant Total Price :: 799
+2025-05-31T11:45:55.806+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Total Price :: 799
+2025-05-31T11:45:57.431+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : order created Success!!
+2025-05-31T11:45:57.536+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Payment Transaction Saved Success...
+2025-05-31T11:45:57.536+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : saveCustomerOrder flying
+2025-05-31T11:45:57.572+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.P.r.imple.RazorpayServiceImple   : Customer Order Saved Success...
+2025-05-31T11:46:19.020+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : <-- orderUpdate Flying -->
+2025-05-31T11:46:19.030+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Matched Cart Items 
+2025-05-31T11:46:19.030+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Variant Total Price :: 799
+2025-05-31T11:46:19.030+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Cart Total Price :: 799
+2025-05-31T11:46:19.036+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : saveCustomerOrderItems flying
+2025-05-31T11:46:19.073+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getProductListByCategoryId Flying --->
+2025-05-31T11:46:19.079+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : razorpayBaseFee :: 15.98
+2025-05-31T11:46:19.081+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : razorpayGst :: 2.88
+2025-05-31T11:46:19.081+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : totalFee :: 18.86
+2025-05-31T11:46:19.081+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : finalAmount :: 780.14
+2025-05-31T11:46:19.146+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : <--- getBornCategoryList Flying --->
+2025-05-31T11:46:19.211+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Customer Order Items Saved Success!!!
+2025-05-31T11:46:19.263+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Payment Transaction Data Update Success
+2025-05-31T11:46:19.264+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : <-- updateCustomerOrderStatus Flying --> 
+2025-05-31T11:46:19.293+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : getBornCategoryList Fetch Data Success:: 
+2025-05-31T11:46:19.293+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] c.c.s.s.p.p.imple.PublicServiceImple     : getProductCategoryService Fetch Data Success
+2025-05-31T11:46:19.323+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.P.r.imple.RazorpayServiceImple   : Order Update Success ::  ORDER-ID-> order_QbQxB7qYfkDQpY
+2025-05-31T11:46:20.333+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:46:35.012+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:46:46.495+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.d.i.DeliveryStatusServiceImple : ===> updateDeliveryStatusOrderItems Flying
+2025-05-31T11:46:46.495+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.d.i.DeliveryStatusServiceImple : ORDER ITEMS :: 168
+2025-05-31T11:46:47.589+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:47:18.686+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-7] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getMyOrdersDelivered Flying -->
+2025-05-31T11:47:19.185+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:47:33.882+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-1] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:47:36.627+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.d.i.DeliveryStatusServiceImple : awbNumberMapping Flying...
+2025-05-31T11:47:37.158+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:47:41.008+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T11:47:46.936+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-2] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:48:31.154+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.d.i.DeliveryStatusServiceImple : label_url :: https://kr-shipmultichannel-mum.s3.ap-south-1.amazonaws.com/5369436/labels/shipping-label-847022509-19041755702860.pdf
+2025-05-31T11:49:02.583+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  seller-Cancel-Orders Flying  -->
+2025-05-31T11:49:03.886+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] .s.s.s.s.i.SellerCancelOrderServiceImple : Order Cancel | ShipRocket Order Cancel | Success
+2025-05-31T11:49:03.908+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:49:56.776+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-1] c.c.s.s.p.o.imple.OrderServiceImple      : <-- getCustomerOrders Flying -->
+2025-05-31T11:50:20.114+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-2] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:50:36.315+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerOrderRefundRequest Flying  -->
+2025-05-31T11:50:37.987+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-5] .s.s.s.s.i.SellerCancelOrderServiceImple : Order Refund Payment Initiated Success... 
+2025-05-31T11:50:38.042+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:50:55.106+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:50:55.561+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:51:00.977+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-10] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:51:02.061+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getShippedOrderBySeller Flying ===>
+2025-05-31T11:51:02.470+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-2] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getOutOfDeliveryOrderBySellerService Flying ===>
+2025-05-31T11:51:03.029+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-8] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getDeliveredOrderBySellerService Flying ===>
+2025-05-31T11:51:03.544+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-9] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:51:04.882+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-4] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:51:05.423+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-3] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>
+2025-05-31T11:51:06.136+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-7] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getExchangeOrdersData Flying ===>
+2025-05-31T11:51:06.599+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-10] .s.s.s.s.i.SellerCancelOrderServiceImple : <--  sellerCancelOrdersFetch Flying  -->
+2025-05-31T11:51:07.417+05:30  INFO 66976 --- [https-jsse-nio-8443-exec-6] c.c.s.s.s.s.i.SellerOrdersServiceImple   : <=== getPendingOrderBySeller Flying ===>

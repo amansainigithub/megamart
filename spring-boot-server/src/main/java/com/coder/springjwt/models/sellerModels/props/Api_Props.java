@@ -17,15 +17,25 @@ public class Api_Props extends BaseEntity {
     @NotBlank
     private String provider;
 
-    @NotBlank(message = "apikey must Not be Blank!!")
-    @Column(length = 500 ,unique = true)
-    private String apiKey;
+    @NotBlank(message = "Apikey must Not be Blank!!")
+    @Column(length = 1000 ,unique = true)
+    private String keyId;
 
-    @NotBlank(message = "apiUrl must Not be Blank")
-    @Column(unique = true)
-    private String apiUrl;
+    @NotBlank(message = "KeySecret must Not be Blank!!")
+    @Column(length = 1000 ,unique = true)
+    private String keySecret;
+
+    @NotBlank(message = "Token must Not be Blank!!")
+    @Column(length = 1000 ,unique = true)
+    private String token;
+
+    @NotBlank(message = "Token must Not be Blank!!")
+    @Column(length = 1000 ,unique = true)
+    private String url;
 
     private String remarks;
+
+    private String region;
 
     @Column(length = 20)
     private String status;

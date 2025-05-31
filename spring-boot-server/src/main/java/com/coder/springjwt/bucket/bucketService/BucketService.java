@@ -9,6 +9,9 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.coder.springjwt.bucket.BucketUrlMappings;
 import com.coder.springjwt.bucket.bucketModels.BucketModel;
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
+import com.coder.springjwt.models.sellerModels.props.Api_Props;
+import com.coder.springjwt.repository.sellerRepository.apiProps.ApiPropsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +35,15 @@ public class BucketService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //Cloudnairy Api Settings
+    //CLOUDINARY Api Settings
     private final String CLOUDINARY = "cloudinary";
     private final String CLOUD_NAME = "doeatgrpl";
-    private final String API_KEY = "211869472659872";
-    private final String API_SECRET = "jtMvpCA3CS2DviLvCH_tkFFatxY";
+
     private final Boolean SECURE = Boolean.TRUE;
 
+
+    @Autowired
+    private ApiPropsRepository apiPropsRepository;
 
     @Autowired
     public BucketService(AmazonS3 s3Client) {
@@ -117,10 +122,14 @@ public class BucketService {
     {
         log.info("Cloudinary File Upload---Flying");
         try {
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+
+            Api_Props apiProps = apiPropsRepository.findByProvider("CLOUDINARY_FILES")
+                    .orElseThrow(() -> new RuntimeException(SellerMessageResponse.CLOUDINARY_PROPS_NOT_FOUND));
+
+            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                                       "cloud_name", CLOUD_NAME,
-                                            "api_key", API_KEY,
-                                            "api_secret", API_SECRET,
+                                            "api_key", apiProps.getKeyId(),
+                                            "api_secret", apiProps.getKeySecret(),
                                             "secure", SECURE));
         // Upload the image
         Map conditionVerifier = ObjectUtils.asMap(

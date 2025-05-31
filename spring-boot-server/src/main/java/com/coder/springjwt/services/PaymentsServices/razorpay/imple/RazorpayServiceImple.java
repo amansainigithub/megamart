@@ -1,6 +1,7 @@
 package com.coder.springjwt.services.PaymentsServices.razorpay.imple;
 
 import com.coder.springjwt.constants.customerPanelConstants.messageConstants.CustMessageResponse;
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.dtos.customerPanelDtos.cartItemsDto.CartItemsDto;
 import com.coder.springjwt.emuns.DeliveryStatus;
 import com.coder.springjwt.emuns.PaymentModeStatus;
@@ -12,6 +13,7 @@ import com.coder.springjwt.models.customerPanelModels.CustomerOrderItems;
 import com.coder.springjwt.models.customerPanelModels.CustomerOrders;
 import com.coder.springjwt.models.customerPanelModels.address.CustomerAddress;
 import com.coder.springjwt.models.customerPanelModels.payments.razorPay.PaymentsTransactions;
+import com.coder.springjwt.models.sellerModels.props.Api_Props;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.ProductVariants;
 import com.coder.springjwt.models.sellerModels.sellerProductModels.SellerProduct;
 import com.coder.springjwt.payload.customerPayloads.paymentTransaction.PaymentTransactionPayload;
@@ -19,6 +21,7 @@ import com.coder.springjwt.repository.UserRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.addressRepository.AddressRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.ordersRepository.OrderRepository;
 import com.coder.springjwt.repository.customerPanelRepositories.paymentRepository.PaymentRepository;
+import com.coder.springjwt.repository.sellerRepository.apiProps.ApiPropsRepository;
 import com.coder.springjwt.repository.sellerRepository.sellerStoreRepository.SellerProductRepository;
 import com.coder.springjwt.services.PaymentsServices.razorpay.RazorpayServices;
 import com.coder.springjwt.util.ResponseGenerator;
@@ -45,13 +48,6 @@ import java.util.*;
 @Slf4j
 public class RazorpayServiceImple implements RazorpayServices {
 
-    @Value("${razorpay.key_id}")
-    private String keyId;
-
-    @Value("${razorpay.key_secret}")
-    private String keySecret;
-
-
     @Autowired
     private ModelMapper modelMapper;
 
@@ -69,6 +65,9 @@ public class RazorpayServiceImple implements RazorpayServices {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private ApiPropsRepository apiPropsRepository;
 
 
     @Override
@@ -88,9 +87,12 @@ public class RazorpayServiceImple implements RazorpayServices {
                 String currentUser = UserHelper.getOnlyCurrentUser();
                 User user = this.userRepository.findByUsername(currentUser).orElseThrow(() -> new RuntimeException("User Not Fount"));
 
-                if(isValidCart){
+                Api_Props api_props = this.apiPropsRepository.findByProvider("RAZORPAY_PAYMENT")
+                                        .orElseThrow(() -> new RuntimeException(SellerMessageResponse.RAZORPAY_PROPS_NOT_FOUND));
 
-                RazorpayClient client = new RazorpayClient(keyId, keySecret);
+            if(isValidCart){
+
+                RazorpayClient client = new RazorpayClient(api_props.getKeyId(), api_props.getKeySecret());
                 JSONObject orderRequest = new JSONObject();
                 orderRequest.put("amount", amount * 100);
                 orderRequest.put("currency", "INR");
@@ -686,7 +688,10 @@ public class RazorpayServiceImple implements RazorpayServices {
 
 
     public Refund initiateRefund(String paymentId, double amountInRupees) throws RazorpayException {
-        RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
+        Api_Props api_props = this.apiPropsRepository.findByProvider("RAZORPAY_PAYMENT")
+                .orElseThrow(() -> new RuntimeException(SellerMessageResponse.RAZORPAY_PROPS_NOT_FOUND));
+
+        RazorpayClient razorpayClient = new RazorpayClient(api_props.getKeyId(), api_props.getKeySecret());
 
         int amountInPaise = (int) Math.round(amountInRupees * 100); // ₹ to paise
 

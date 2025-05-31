@@ -1,5 +1,6 @@
 package com.coder.springjwt.services.MobileOtpService.imple;
 
+import com.coder.springjwt.constants.sellerConstants.sellerMessageConstants.SellerMessageResponse;
 import com.coder.springjwt.exception.customerPanelException.PropsNotFoundException;
 import com.coder.springjwt.helpers.userHelper.UserHelper;
 import com.coder.springjwt.models.sellerModels.props.Api_Props;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,39 +28,37 @@ public class OtpServiceImple implements MobileOtpService {
     @Autowired
     private ApiPropsRepository apiPropsRepository;
     @Autowired
-    OtpRequestResponseRepo otpRequestResponseRepo;
+    private OtpRequestResponseRepo otpRequestResponseRepo;
     private static String LANGUAGE = "english";
     private static String ROUTE = "q";
 
 
     public  void sendSMS(String number , String messageContent , String userRole , String areaMode) throws IOException {
-        logger.info("Starting Messaging Service");
+        logger.info("Starting Messaging Service Flying....");
 
         //get UserName
         Map<String,String> node =  UserHelper.getCurrentUser();
         String username =  node.get("username");
 
         //Get API Properties
-        Api_Props props = this.apiPropsRepository.findByProvider("FAST2SMS");
+        Api_Props props = this.apiPropsRepository.findByProvider("FAST2SMS")
+                .orElseThrow(() -> new RuntimeException(SellerMessageResponse.FAST2SMS_PROPS_NOT_FOUND));
         if(props == null)
         {
             //Save Data to Props
             this.savePropsRequestResponse(number,userRole , areaMode , username);
-
-            logger.error("Props Not Found :" +OtpServiceImple.class.getName());
             throw new PropsNotFoundException("Props Not Found " + "`FAST2SMS`");
         }else{
 
             String encodeMessage = OtpServiceImple.encodeMessage(messageContent);
-            String smsUrl = props.getApiUrl()+ props.getApiKey()
-                            +"&message="+encodeMessage+"&language="+LANGUAGE+"&route="+ROUTE+"&numbers="+number+"";
+            String smsUrl = props.getUrl()+ props.getKeyId() +"&message="+encodeMessage
+                            +"&language="+LANGUAGE+"&route="+ROUTE+"&numbers="+number+"";
         try {
                 URL url = new URL(smsUrl);
                 HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
                 httpsURLConnection.setRequestMethod("GET");
                 httpsURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
                 int code = httpsURLConnection.getResponseCode();
-                logger.info("Status Code:: " + code);
 
                 if(code == 200){
                     StringBuffer response = new StringBuffer();
@@ -82,7 +80,7 @@ public class OtpServiceImple implements MobileOtpService {
                 this.saveErrorRequestResponse(number,code,smsUrl , userRole , areaMode , username);
             }
             } catch (MalformedURLException e) {
-                throw new RuntimeException("Message Not Sent ! Error in FastSMS API " + this.getClass().getName());
+                throw new RuntimeException(SellerMessageResponse.ERROR_IN_FAST2SMS);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
